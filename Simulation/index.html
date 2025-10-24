@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IoT Swarm Network Simulator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>IoT Swarm Network Simulator</header>
+    <main>
+      <div id="control-panel">
+        <div id="buttons">
+          <button id="start-simulation">Start Simulation</button>
+          <button id="open-add-modal">Add Device</button>
+          <div id="device-selected-buttons">
+            <button id="edit-device">Edit Device</button>
+            <button id="delete-device">Delete Device</button>
+            <button id="send-packet">Send Packet</button>
+          </div>
+          <div id="hub-controls">
+            <button id="build-tree">Build Tree</button>
+          </div>
+        </div>
+        <div id="selected-device-info"></div>
+      </div>
+      <canvas id="canvas"></canvas>
+    </main>
+
+    <div id="add-device-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-modal" class="close">&times;</span>
+        <h3 id="modal-title">Add Device</h3>
+        <form id="device-form">
+          <input type="hidden" id="device-id" name="deviceId" />
+
+          <label
+            >Type:
+            <select id="device-type" name="type" required>
+              <option value="hub">Hub</option>
+              <option value="lamp">Lamp</option>
+              <option value="sensor">Sensor</option>
+            </select>
+          </label>
+
+          <label
+            >Name:
+            <input type="text" id="device-name" name="name" required />
+          </label>
+
+          <label
+            >Battery:
+            <input
+              type="number"
+              id="device-battery"
+              name="battery"
+              min="0"
+              max="1"
+              step="0.01"
+            />
+          </label>
+
+          <label
+            >Power Type:
+            <select id="device-powerType" name="powerType">
+              <option value="Battery">Battery</option>
+              <option value="AC">AC</option>
+            </select>
+          </label>
+
+          <label
+            >Radius:
+            <input type="number" id="device-radius" name="radius" />
+          </label>
+
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="scripts/device.js"></script>
+    <script src="scripts/simulation.js"></script>
+    <script type="module" src="scripts/main.js"></script>
+  </body>
+</html>

@@ -1,35 +1,51 @@
-name: Deploy simulation content to Pages
+name: Build and publish Blazor Simulator
 
 on:
   push:
-    branches: ["master"]
-
+    branches: [ main ]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+env:
+  # Настройте путь к вашему Blazor проекту (.csproj)
+  PROJECT_PATH: "Simulator/Simulator.csproj"
+  CONFIGURATION: "Release"
+  PUBLISH_DIR: "publish_output"
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
-          path: './Simulation'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore "${{ env.PROJECT_PATH }}"
+
+      - name: Build
+        run: dotnet build "${{ env.PROJECT_PATH }}" -c ${{ env.CONFIGURATION }} --no-restore
+
+      - name: Publish (produce static files)
+        run: |
+          dotnet publish "${{ env.PROJECT_PATH }}" -c ${{ env.CONFIGURATION }} -o "${{ env.PUBLISH_DIR }}" --no-build
+          echo "Publish output -> ${{ env.PUBLISH_DIR }}"
+      
+      - name: Normalize publish folder (move wwwroot contents up if needed)
+        run: |
+          if [ -d "${{ env.PUBLISH_DIR }}/wwwroot" ]; then
+            # move contents of wwwroot to publish dir root (for blazor wasm standalone)
+            shopt -s dotglob || true
+            mv "${{ env.PUBLISH_DIR }}/wwwroot/"* "${{ env.PUBLISH_DIR }}/" || true
+            rmdir "${{ env.PUBLISH_DIR }}/wwwroot" || true
+          fi
+          ls -la "${{ env.PUBLISH_DIR }}"
+
+      - name: Deploy to GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ env.PUBLISH_DIR }}

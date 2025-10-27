@@ -7,7 +7,7 @@ on:
 
 env:
   # Настройте путь к вашему Blazor проекту (.csproj)
-  PROJECT_PATH: "Simulator/Simulator.csproj"
+  PROJECT_PATH: "BlazorSimulation/Simulation/BlazorApp/BlazorApp.csproj"
   CONFIGURATION: "Release"
   PUBLISH_DIR: "publish_output"
 

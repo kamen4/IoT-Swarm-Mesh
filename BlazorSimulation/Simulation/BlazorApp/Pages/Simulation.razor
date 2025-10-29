@@ -2,305 +2,399 @@
 @using Blazor.Extensions
 @using Blazor.Extensions.Canvas
 @using Blazor.Extensions.Canvas.Canvas2D
+@using Core.Managers
 @using Microsoft.AspNetCore.Components.Web
 
 @using Core
 @using System.Numerics
+@using System.Text
+@using System.Text.Json
+
+<PageTitle>IoT Swarm Simulator</PageTitle>
 
 <div class="d-flex flex-column vh-100">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">IoT Swarm Simulator</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    @* <li class="nav-item"><a class="nav-link" href="#">Функция 1</a></li> *@
-                </ul>
-            </div>
-        </div>
-    </nav>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">IoT Swarm Simulator</a>
+		</div>
+	</nav>
 
-    <div class="d-flex flex-grow-1 overflow-hidden">
-        <div class="bg-light border-end p-3" style="width:250px;">
-            <h5>Управление</h5>
-            <div class="d-grid gap-2 w-100">
-                <button class="btn btn-primary btn-sm" @onclick="ShowDeviceModalForm">Создать устройство</button>
-            </div>
-        </div>
+	<div class="d-flex flex-grow-1 overflow-hidden">
+		<div class="bg-light border-end p-3" style="width:250px;">
+			<h5>Управление</h5>
+			<div class="d-grid gap-2 w-100">
+				<button class="btn btn-primary btn-sm" @onclick="ShowDeviceModalForm">Создать устройство</button>
+				@if (_selectedDevice is not null)
+				{
+					<button class="btn btn-primary btn-sm" @onclick="SendPacketButton">Отправить пакет</button>
+				}
+			</div>
+		</div>
 
-        <div class="flex-grow-1 position-relative bg-white">
-            <div class="w-100 h-100"
-            @onmousedown="OnMouseDown"
-            @onmousemove="OnMouseMove"
-            @onmouseup="OnMouseUp"
-            @oncontextmenu:preventDefault
-            @oncontextmenu="OnRightClick">
-                <BECanvas Width="2000" Height="1500" @ref="_canvasRef"></BECanvas>
-            </div>
-        </div>
-    </div>
+		<div class="flex-grow-1 position-relative bg-white">
+			<div class="w-100 h-100"
+			@onmousedown="OnMouseDown"
+			@onmousemove="OnMouseMove"
+			@onmouseup="OnMouseUp"
+			@oncontextmenu:preventDefault
+			@oncontextmenu="OnRightClick">
+				<BECanvas Width="2000" Height="1500" @ref="_canvasRef"></BECanvas>
+				@if (_sendPacketFrom is not null)
+				{
+					<p class="position-absolute text-secondary" style="bottom:1.5vh; width: 100vw; text-align: center;">
+						Выберите устройство на которое надо отправить ping
+					</p>
+				}
+			</div>
+		</div>
+	</div>
 </div>
 
-@if (IsDeviceModalFormVisible && formDevice is not null)
+@if (_isDeviceModalFormVisible && _formDevice is not null)
 {
-    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    @if (!IsDeviceContextMenuVisible)
-                    {
-                        <h5 class="modal-title">Добавить устройство</h5>
-                    }
-                    else
-                    {
-                        <h5 class="modal-title">Изменить устройство</h5>
-                    }
-                    <button type="button" class="btn-close" @onclick="CloseDeviceModalForm"></button>
-                </div>
-                <div class="modal-body">
-                    <EditForm Model="@formDevice" OnValidSubmit="@SubmitDeviceForm">
-                        <div class="mb-3">
-                            <label class="form-label">Id: @formDevice.Id</label>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Тип устройства</label>
-                            <InputSelect class="form-select" @bind-Value="formDevice.DeviceType">
-                                @foreach (var type in Enum.GetValues(typeof(Device.Type)))
-                                {
-                                    <option value="@type">@type</option>
-                                }
-                            </InputSelect>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Имя</label>
-                            <InputText class="form-control" @bind-Value="formDevice.Name" />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Батарея (0–1)</label>
-                            <InputNumber class="form-control" @bind-Value="formDevice.Battery" Min="0" Max="1" Step="0.001" />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Тип питания</label>
-                            <InputSelect class="form-select" @bind-Value="formDevice.DevicePowerType">
-                                @foreach (var powerType in Enum.GetValues(typeof(Device.PowerType)))
-                                {
-                                    <option value="@powerType">@powerType</option>
-                                }
-                            </InputSelect>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Радиус</label>
-                            <InputNumber class="form-control" @bind-Value="formDevice.Radius" />
-                        </div>
-                        <button type="submit" class="btn btn-success">Сохранить</button>
-                    </EditForm>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					@if (!_isDeviceContextMenuVisible)
+					{
+						<h5 class="modal-title">Добавить устройство</h5>
+					}
+					else
+					{
+						<h5 class="modal-title">Изменить устройство</h5>
+					}
+					<button type="button" class="btn-close" @onclick="CloseDeviceModalForm"></button>
+				</div>
+				<div class="modal-body">
+					<EditForm Model="@_formDevice" OnValidSubmit="@SubmitDeviceForm">
+						<div class="mb-3">
+							<label class="form-label">Id: @_formDevice.Id</label>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Тип устройства</label>
+							<InputSelect class="form-select" @bind-Value="_formDevice.DeviceType">
+								@foreach (var type in Enum.GetValues(typeof(Device.Type)))
+								{
+									@if((Device.Type)type != Device.Type.Hub)
+									{
+										<option value="@type">@type</option>
+									}
+								}
+							</InputSelect>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Имя</label>
+							<InputText class="form-control" @bind-Value="_formDevice.Name" />
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Батарея (0–1)</label>
+							<InputNumber class="form-control" @bind-Value="_formDevice.Battery" Min="0" Max="1" Step="0.001" />
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Тип питания</label>
+							<InputSelect class="form-select" @bind-Value="_formDevice.DevicePowerType">
+								@foreach (var powerType in Enum.GetValues(typeof(Device.PowerType)))
+								{
+									<option value="@powerType">@powerType</option>
+								}
+							</InputSelect>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Радиус</label>
+							<InputNumber class="form-control" @bind-Value="_formDevice.Radius" />
+						</div>
+						<button type="submit" class="btn btn-success">Сохранить</button>
+					</EditForm>
+				</div>
+			</div>
+		</div>
+	</div>
 }
 
-@if (IsDeviceContextMenuVisible && selectedDevice is not null)
+@if (_isDeviceContextMenuVisible && _selectedDevice is not null)
 {
-    <div class="position-absolute bg-white border rounded shadow p-2"
-    style="z-index:1000; width:150px; top:@ContextMenuPositionPX.Y; left:@ContextMenuPositionPX.X;">
-        <button class="btn btn-sm btn-secondary w-100 mb-1" @onclick="EditSelectedDevice">Изменить</button>
-        <button class="btn btn-sm btn-danger w-100" @onclick="DeleteSelectedDevice">Удалить</button>
-    </div>
+	<div class="position-absolute bg-white border rounded shadow p-2"
+	style="z-index:1000; width:150px; top:@_contextMenuPositionPX.Y; left:@_contextMenuPositionPX.X;">
+		<button class="btn btn-sm btn-secondary w-100 mb-1" @onclick="EditSelectedDevice">Изменить</button>
+		<button class="btn btn-sm btn-danger w-100 mb-1" @onclick="DeleteSelectedDevice">Удалить</button>
+		<button class="btn btn-sm btn-info w-100" @onclick="CloneSelectedDevice">Клонировать</button>
+	</div>
 }
 
 @code {
-    private BECanvas? _canvasRef;
-    private Canvas2DContext? _context;
+	private BECanvas? _canvasRef;
+	private Canvas2DContext? _context;
 
-    private bool IsDeviceModalFormVisible = false;
+	private bool _isDeviceModalFormVisible = false;
 
-    private Device? formDevice;
-    private List<Device> devices = new();
+	private Device? _formDevice;
 
-    private Device? selectedDevice = null;
-    private bool deviceDragFlag = false;
+	private Device? _selectedDevice = null;
+	private bool _deviceDragFlag = false;
 
-    private bool IsDeviceContextMenuVisible = false;
-    private (double X, double Y) ContextMenuPosition;
-    private (string X, string Y) ContextMenuPositionPX => ($"{ContextMenuPosition.X}px", $"{ContextMenuPosition.Y}px");
+	private bool _isDeviceContextMenuVisible = false;
+	private (double X, double Y) _contextMenuPosition;
+	private (string X, string Y) _contextMenuPositionPX => ($"{_contextMenuPosition.X}px", $"{_contextMenuPosition.Y}px");
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender && _canvasRef is not null)
-        {
-            _context = await _canvasRef.CreateCanvas2DAsync();
-        }
-    }
+	private Device? _sendPacketFrom = null;
 
-    private void ShowDeviceModalForm()
-    {
-        formDevice = new Device();
-        IsDeviceModalFormVisible = true;
-    }
+	private PeriodicTimer? _timer;
+	private Task? _animatePacketsTask;
 
-    private void CloseDeviceModalForm()
-    {
-        IsDeviceModalFormVisible = false;
-        IsDeviceContextMenuVisible = false;
-    }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender && _canvasRef is not null)
+		{
+			_context = await _canvasRef.CreateCanvas2DAsync();
+		}
+	}
 
-    private async Task SubmitDeviceForm()
-    {
-        IsDeviceModalFormVisible = false;
+	private void ShowDeviceModalForm()
+	{
+		_formDevice = new Device();
+		_isDeviceModalFormVisible = true;
+	}
 
-        if (IsDeviceContextMenuVisible)
-        {
-            IsDeviceContextMenuVisible = false;
-            formDevice = null;
-        }
+	private void CloseDeviceModalForm()
+	{
+		_isDeviceModalFormVisible = false;
+		_isDeviceContextMenuVisible = false;
+	}
 
-        if (formDevice is not null)
-        {
-            devices.Add(formDevice);
-        }
+	private async Task SubmitDeviceForm()
+	{
+		_isDeviceModalFormVisible = false;
+
+		if (_isDeviceContextMenuVisible)
+		{
+			_isDeviceContextMenuVisible = false;
+			_formDevice = null;
+		}
+
+		if (_formDevice is not null)
+		{
+			DeviceManager.Devices.Add(_formDevice);
+		}
 
 
-        await Draw();
-        StateHasChanged();
-    }
+		await Draw();
+		StateHasChanged();
+	}
 
-    private async Task Draw()
-    {
-        if (_context is null) return;
-        await _context.ClearRectAsync(0, 0, 2000, 1500);
+	private async Task Draw()
+	{
+		if (_context is null) return;
+		await _context.ClearRectAsync(0, 0, 1930, 1080);
 
-        foreach (var d in devices)
-        {
-            // кружок
-            await _context.BeginPathAsync();
-            await _context.ArcAsync(d.Pos.X, d.Pos.Y, (int)d.DeviceType, 0, 2 * Math.PI);
-            await _context.SetFillStyleAsync(d.Color);
-            await _context.FillAsync();
-            if (d.Equals(selectedDevice))
-            {
-                await _context.SetLineWidthAsync(2f);
-                await _context.SetStrokeStyleAsync("blue");
-                await _context.StrokeAsync();
+		//рисуем лиинии как устройства видят друг друга
+		await _context.SetLineWidthAsync(0.1f);
+		await _context.SetStrokeStyleAsync("#c73e65");
+		await _context.BeginPathAsync();
+		List<Task> connectionTasks = [];
+		foreach (var c in DeviceManager.GetAllVisibilities())
+		{
+			connectionTasks.Add(_context.MoveToAsync(c.d1.Pos.X, c.d1.Pos.Y));
+			connectionTasks.Add(_context.LineToAsync(c.d2.Pos.X, c.d2.Pos.Y));
+		}
+		await Task.WhenAll(connectionTasks);
+		await _context.StrokeAsync();
+		await _context.ClosePathAsync();
 
-                await _context.BeginPathAsync();
-                await _context.ArcAsync(d.Pos.X, d.Pos.Y, d.Radius, 0, 2 * Math.PI);
-                await _context.SetStrokeStyleAsync("orange");
-                await _context.SetLineWidthAsync(.5f);
-                await _context.StrokeAsync();
-            }
+		foreach (var d in DeviceManager.Devices)
+		{
+			// кружок
+			await _context.BeginPathAsync();
+			await _context.ArcAsync(d.Pos.X, d.Pos.Y, d.SizeR, 0, 2 * Math.PI);
+			await _context.SetFillStyleAsync(d.Color);
+			await _context.FillAsync();
+			if (d.Equals(_selectedDevice))
+			{
+				await _context.SetLineWidthAsync(2f);
+				await _context.SetStrokeStyleAsync("blue");
+				await _context.StrokeAsync();
 
-            // подпись
-            await _context.SetFillStyleAsync("black");
-            await _context.SetFontAsync("14px Arial");
-            var nameSize = await _context.MeasureTextAsync(d.Name);
-            await _context.FillTextAsync($"{d.Name}", d.Pos.X - nameSize.Width / 2, d.Pos.Y + (int)d.DeviceType + 15);
-            // await _context.SetFillStyleAsync("gray");
-            // await _context.SetFontAsync("10px Arial");
-            // await _context.FillTextAsync($"{d.Id}", d.Pos.X - 30, d.Pos.Y + 55);
-        }
-    }
+				await _context.BeginPathAsync();
+				await _context.ArcAsync(d.Pos.X, d.Pos.Y, d.Radius, 0, 2 * Math.PI);
+				await _context.SetStrokeStyleAsync("orange");
+				await _context.SetLineWidthAsync(.5f);
+				await _context.StrokeAsync();
+			}
 
-    private async void OnMouseDown(MouseEventArgs e)
-    {
-        if (e.Button == 2)
-        {
-            return;
-        }
-        IsDeviceContextMenuVisible = false;
+			// подпись
+			await _context.SetFillStyleAsync("black");
+			await _context.SetFontAsync("14px Arial");
+			var nameSize = await _context.MeasureTextAsync(d.Name);
+			await _context.FillTextAsync($"{d.Name}", d.Pos.X - nameSize.Width / 2, d.Pos.Y + d.SizeR + 15);
+		}
 
-        if (formDevice is not null)
-        {
-            selectedDevice = formDevice;
-            formDevice = null;
-            await Draw();
-            StateHasChanged();
-            return;
-        }
+		var packets = PacketManager.TickPackets();
+		const int PACKET_SIZE = 3;
+		int ps2 = PACKET_SIZE << 1;
 
-        selectedDevice = GetDeviceUnderMouse((float)e.OffsetX, (float)e.OffsetY);
-        deviceDragFlag = selectedDevice is not null;
+		await _context.SetFillStyleAsync("#102de6");
+		await _context.BeginPathAsync();
+		List<Task> packetsTasks = [];
+		foreach (var p in packets)
+		{
+			packetsTasks.Add(_context.FillRectAsync(p.X - PACKET_SIZE, p.Y - PACKET_SIZE, ps2, ps2));
+		}
+		await Task.WhenAll(packetsTasks);
+		await _context.FillAsync();
+		await _context.ClosePathAsync();
+	}
 
-        await Draw();
-        StateHasChanged();
-    }
-    private async void OnMouseMove(MouseEventArgs e)
-    {
-        if (formDevice is not null)
-        {
-            formDevice.Pos = new((float)e.OffsetX, (float)e.OffsetY);
-            await Draw();
-            StateHasChanged();
-        }
+	private async void OnMouseDown(MouseEventArgs e)
+	{
+		if (e.Button == 2)
+		{
+			return;
+		}
+		_isDeviceContextMenuVisible = false;
 
-        if (deviceDragFlag && selectedDevice is not null)
-        {
-            selectedDevice.Pos = new((float)e.OffsetX, (float)e.OffsetY);
-            await Draw();
-            StateHasChanged();
-        }
-    }
-    private void OnMouseUp(MouseEventArgs e)
-    {
-        deviceDragFlag = false;
-    }
+		if (_formDevice is not null)
+		{
+			_selectedDevice = _formDevice;
+			_formDevice = null;
+			await Draw();
+			StateHasChanged();
+			return;
+		}
 
-    private async void OnRightClick(MouseEventArgs e)
-    {
-        selectedDevice = GetDeviceUnderMouse((float)e.OffsetX, (float)e.OffsetY);
+		_selectedDevice = GetDeviceUnderMouse((float)e.OffsetX, (float)e.OffsetY);
+		_deviceDragFlag = _selectedDevice is not null;
 
-        if (selectedDevice is not null)
-        {
-            ContextMenuPosition = (e.PageX, e.PageY);
-            IsDeviceContextMenuVisible = true;
-        }
-        else
-        {
-            IsDeviceContextMenuVisible = false;
-        }
+		if (_sendPacketFrom is not null)
+		{
+			if (_selectedDevice is not null)
+			{
+				SendPacket(_sendPacketFrom, _selectedDevice);
+			}
+			_sendPacketFrom = null;
+			_selectedDevice = null;
+		}
 
-        await Draw();
-        StateHasChanged();
-    }
+		await Draw();
+		StateHasChanged();
+	}
+	private async void OnMouseMove(MouseEventArgs e)
+	{
+		if (_formDevice is not null)
+		{
+			_formDevice.Pos = new((float)e.OffsetX, (float)e.OffsetY);
+			await Draw();
+			StateHasChanged();
+		}
 
-    private Device? GetDeviceUnderMouse(float x, float y)
-    {
-        return selectedDevice = devices
-            .Reverse<Device>()
-            .FirstOrDefault(d =>
-            {
-                var posDif = d.Pos - new Vector2(x, y);
-                var dTypeSquared = (int)d.DeviceType * (int)d.DeviceType;
-                return posDif.LengthSquared() < dTypeSquared;
-            });
-    }
+		if (_deviceDragFlag && _selectedDevice is not null)
+		{
+			_selectedDevice.Pos = new((float)e.OffsetX, (float)e.OffsetY);
+			await Draw();
+			StateHasChanged();
+		}
+	}
+	private void OnMouseUp(MouseEventArgs e)
+	{
+		_deviceDragFlag = false;
+	}
 
-    private void CloseDeviceContextMenu()
-    {
-        IsDeviceContextMenuVisible = false;
-        StateHasChanged();
-    }
+	private async void OnRightClick(MouseEventArgs e)
+	{
+		_selectedDevice = GetDeviceUnderMouse((float)e.OffsetX, (float)e.OffsetY);
 
-    private void EditSelectedDevice()
-    {
-        if (selectedDevice is null)
-        {
-            return;
-        }
-        formDevice = selectedDevice;
-        IsDeviceModalFormVisible = true;
-    }
+		if (_selectedDevice is not null)
+		{
+			_contextMenuPosition = (e.PageX, e.PageY);
+			_isDeviceContextMenuVisible = true;
+		}
+		else
+		{
+			_isDeviceContextMenuVisible = false;
+		}
 
-    private async void DeleteSelectedDevice()
-    {
-        if (selectedDevice is null)
-        {
-            return;
-        }
-        IsDeviceContextMenuVisible = false;
-        devices.Remove(selectedDevice);
-        selectedDevice = null;
+		await Draw();
+		StateHasChanged();
+	}
 
-        await Draw();
-        StateHasChanged();
-    }
+	private Device? GetDeviceUnderMouse(float x, float y)
+	{
+		return _selectedDevice = DeviceManager.Devices
+			.Reverse<Device>()
+			.FirstOrDefault(d =>
+			{
+				var posDif = d.Pos - new Vector2(x, y);
+				var dTypeSquared = d.SizeR * d.SizeR;
+				return posDif.LengthSquared() < dTypeSquared;
+			});
+	}
+
+	private void CloseDeviceContextMenu()
+	{
+		_isDeviceContextMenuVisible = false;
+		StateHasChanged();
+	}
+
+	private void EditSelectedDevice()
+	{
+		if (_selectedDevice is null)
+		{
+			return;
+		}
+		_formDevice = _selectedDevice;
+		_isDeviceModalFormVisible = true;
+	}
+
+	private async void DeleteSelectedDevice()
+	{
+		if (_selectedDevice is null)
+		{
+			return;
+		}
+		_isDeviceContextMenuVisible = false;
+		DeviceManager.Devices.Remove(_selectedDevice);
+		_selectedDevice = null;
+
+		await Draw();
+		StateHasChanged();
+	}
+
+	private async void CloneSelectedDevice()
+	{
+		if (_selectedDevice is null) 
+		{
+			return;
+		}
+		_isDeviceContextMenuVisible = false;
+		_formDevice = (Device)_selectedDevice.Clone();
+		DeviceManager.Devices.Add(_formDevice);
+
+		await Draw();
+		StateHasChanged();
+	}
+
+	private void SendPacketButton()
+	{
+		_sendPacketFrom = _selectedDevice;
+		_selectedDevice = null;
+	}
+
+	private void SendPacket(Device from, Device to)
+	{
+		new Packet(from, to)
+			{
+				Payload = UTF8Encoding.UTF8.GetBytes("PING"),
+			};
+		_timer ??= new PeriodicTimer(TimeSpan.FromMilliseconds(33));
+		_animatePacketsTask = AnimateForPackets();
+	}
+
+	private async Task AnimateForPackets()
+	{
+		while (PacketManager.ActivePackets.Count > 0 && await _timer!.WaitForNextTickAsync())
+		{
+			await Draw();
+			StateHasChanged();
+		}
+		_animatePacketsTask = null;
+	}
 }

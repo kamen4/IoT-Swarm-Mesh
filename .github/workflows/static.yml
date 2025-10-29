@@ -9,10 +9,10 @@ on:
   workflow_dispatch:
 
 env:
-  # Настройте путь к вашему Blazor проекту (.csproj)
   PROJECT_PATH: "BlazorSimulation/Simulation/BlazorApp/BlazorApp.csproj"
   CONFIGURATION: "Release"
   PUBLISH_DIR: "publish_output"
+  CUSTOM_DOMAIN: "iotswarmsim.gorbach.site"
 
 jobs:
   build-and-publish:
@@ -46,6 +46,21 @@ jobs:
             shopt -s dotglob || true
             mv "${{ env.PUBLISH_DIR }}/wwwroot/"* "${{ env.PUBLISH_DIR }}/" || true
             rmdir "${{ env.PUBLISH_DIR }}/wwwroot" || true
+          fi
+          ls -la "${{ env.PUBLISH_DIR }}"
+
+      - name: Ensure CNAME in publish dir
+        run: |
+          # if CUSTOM_DOMAIN is provided, create CNAME in publish dir
+          if [ -n "${{ env.CUSTOM_DOMAIN }}" ] && [ "${{ env.CUSTOM_DOMAIN }}" != "your.domain.com" ]; then
+            echo "${{ env.CUSTOM_DOMAIN }}" > "${{ env.PUBLISH_DIR }}/CNAME"
+            echo "Created CNAME from CUSTOM_DOMAIN: ${{ env.CUSTOM_DOMAIN }}"
+          elif [ -f CNAME ]; then
+            # if there's a CNAME in repo root (checked out), copy it
+            cp CNAME "${{ env.PUBLISH_DIR }}/CNAME"
+            echo "Copied CNAME from repo root to publish dir."
+          else
+            echo "No CNAME set (set env CUSTOM_DOMAIN or add CNAME to repo root) — Pages custom domain will not be preserved."
           fi
           ls -la "${{ env.PUBLISH_DIR }}"
 

@@ -5,13 +5,22 @@ namespace Core;
 
 public class Packet
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public Device Sender { get; set; }
-    public Device Receiver { get; set; }
+    public enum Type
+    {
+        Ping,
+        Data,
+        FindDevice,
+    };
+
+    public Guid IdempotencyId { get; set; } = Guid.NewGuid();
+    public Type PacketType { get; set; } = Type.Ping;
+    public Device Sender { get; set; } = null!;
+    public Device Receiver { get; set; } = null!;
     public byte[]? Payload { get; set; }
-    public bool ConfirmDelivery { get; set; } = false; 
+    public bool ConfirmDelivery { get; set; } = true; 
     public bool DirectionForward { get; set; } = true;
 
+    public Guid Id { get; } = Guid.NewGuid();
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     public Device? CurrentHop { get; set; }
     public Device? NextHop { get; set; }
@@ -38,6 +47,7 @@ public class Packet
     {
         return new Packet()
         {
+            IdempotencyId = IdempotencyId,
             Sender = Sender,
             Receiver = Receiver,
             Payload = Payload,

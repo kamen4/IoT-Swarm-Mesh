@@ -1,0 +1,63 @@
+﻿@using Core
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Title</h5>
+                <button type="button" class="btn-close" @onclick="OnClose"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm Model="Device" OnValidSubmit="OnValidSubmit">
+                    <div class="mb-3">
+                        <label class="form-label">Id: @Device.Id</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Тип устройства</label>
+                        <InputSelect class="form-select" @bind-Value="Device.DeviceType">
+                            @foreach (var type in Enum.GetValues(typeof(Device.Type)))
+                            {
+                                @if ((Device.Type)type != Device.Type.Hub)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Имя</label>
+                        <InputText class="form-control" @bind-Value="Device.Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Батарея (0–1)</label>
+                        <InputNumber class="form-control" @bind-Value="Device.Battery" Min="0" Max="1" Step="0.001" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Тип питания</label>
+                        <InputSelect class="form-select" @bind-Value="Device.DevicePowerType">
+                            @foreach (var powerType in Enum.GetValues(typeof(Device.PowerType)))
+                            {
+                                <option value="@powerType">@powerType</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Радиус</label>
+                        <InputNumber class="form-control" @bind-Value="Device.Radius" />
+                    </div>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Device Device { get; set; } = default!;
+    [Parameter] public bool IsEditMode { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private string Title => IsEditMode ? "Изменить устройство" : "Добавить устройство";
+}

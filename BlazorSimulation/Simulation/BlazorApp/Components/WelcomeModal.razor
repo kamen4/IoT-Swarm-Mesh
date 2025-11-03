@@ -1,0 +1,117 @@
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5); z-index: 2000;">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добро пожаловать в IoT Swarm Simulator!</h5>
+                <button type="button" class="btn-close" @onclick="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="carouselWelcome" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < Slides.Count; i++)
+                        {
+                            <div class="carousel-item @(i == CurrentSlide ? "active" : "")">
+                                <div class="d-flex flex-column align-items-center">
+                                    @* <img src="@Slides[i].Image" class="mb-3" style="max-height:180px; max-width:100%;" alt="Слайд @(i+1)" /> *@
+                                    <h6>@Slides[i].Title</h6>
+                                    <p>@Slides[i].Description</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" @onclick="PrevSlide">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" @onclick="NextSlide">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" @onclick="NextOrClose">
+                    @(CurrentSlide == Slides.Count - 1 ? "Начать работу" : "Далее")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]  public EventCallback OnClose { get; set; }
+
+    private int CurrentSlide = 0;
+
+    private List<WelcomeSlide> Slides = new()
+    {
+        new WelcomeSlide
+        {
+            Title = "Что это за приложение?",
+            Description = "IoT Swarm Simulator — это визуальный симулятор для моделирования и тестирования взаимодействия устройств интернета вещей (IoT) в единой среде.",
+            Image = "_content/BlazorApp/images/welcome1.png"
+        },
+        new WelcomeSlide
+        {
+            Title = "Панель управления",
+            Description = "Слева находится панель управления, где можно создавать, изменять и удалять устройства, а также отправлять пакеты между ними.",
+            Image = "_content/BlazorApp/images/welcome2.png"
+        },
+        new WelcomeSlide
+        {
+            Title = "Рабочая область",
+            Description = "В центре — рабочая область, где отображаются устройства, их радиусы действия и соединения. Перетаскивайте устройства мышью для изменения их положения.",
+            Image = "_content/BlazorApp/images/welcome3.png"
+        },
+        new WelcomeSlide
+        {
+            Title = "Контекстное меню",
+            Description = "Клик правой кнопкой мыши по устройству откроет контекстное меню для редактирования, удаления или клонирования устройства.",
+            Image = "_content/BlazorApp/images/welcome4.png"
+        },
+        new WelcomeSlide
+        {
+            Title = "Отправка пакетов",
+            Description = "Выберите устройство и нажмите 'Отправить пакет', затем выберите получателя. Пакет будет визуально перемещаться между устройствами.",
+            Image = "_content/BlazorApp/images/welcome5.png"
+        }
+    };
+
+    private void NextSlide()
+    {
+        if (CurrentSlide < Slides.Count - 1)
+            CurrentSlide++;
+    }
+
+    private void PrevSlide()
+    {
+        if (CurrentSlide > 0)
+            CurrentSlide--;
+    }
+
+    private async void NextOrClose()
+    {
+        if (CurrentSlide == Slides.Count - 1)
+        {
+            await Close();
+        }
+        else
+        {
+            NextSlide();
+        }
+    }
+
+    private async Task Close()
+    {
+        if (OnClose.HasDelegate)
+            await OnClose.InvokeAsync();
+    }
+
+    private class WelcomeSlide
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Image { get; set; } = "";
+    }
+}

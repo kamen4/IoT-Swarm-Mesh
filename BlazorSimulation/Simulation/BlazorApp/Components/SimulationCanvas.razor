@@ -1,0 +1,214 @@
+﻿@using Blazor.Extensions
+@using Blazor.Extensions.Canvas
+@using Blazor.Extensions.Canvas.Canvas2D
+@using Core
+@using System.Numerics
+@using System.Text
+@using Core.Managers
+@inject IJSRuntime JSRuntime
+
+<div class="simulation-canvas-container w-100 h-100" @ref="_containerRef">
+    <BECanvas Width="@_canvasWidth" Height="@_canvasHeight" @ref="_canvasRef"></BECanvas>
+</div>
+
+@code {
+    private BECanvas? _canvasRef;
+    private Canvas2DContext? _context;
+    private ElementReference _containerRef;
+    private DotNetObjectReference<SimulationCanvas>? _dotNetRef;
+
+    private int _canvasWidth = 800;
+    private int _canvasHeight = 600;
+    private bool _isInitialized = false;
+
+    [Parameter] public Device? SendPacketFrom { get; set; }
+    [Parameter] public Device? SelectedDevice { get; set; }
+
+    [Parameter] public bool AreVisibilitiesVisible { get; set; } = true;
+    [Parameter] public bool AreConnectionsVisible { get; set; } = true;
+    [Parameter] public bool ArePacketsVisible { get; set; } = true;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await InitializeCanvas();
+            await UpdateCanvasSize();
+            _isInitialized = true;
+
+            await JSRuntime.InvokeVoidAsync("simulationCanvas.initResizeListener", _dotNetRef);
+        }
+    }
+
+    private async Task InitializeCanvas()
+    {
+        if (_canvasRef is not null)
+        {
+            _context = await _canvasRef.CreateCanvas2DAsync();
+        }
+    }
+
+    private async Task UpdateCanvasSize()
+    {
+        try
+        {
+            var size = await JSRuntime.InvokeAsync<ContainerSize>("simulationCanvas.getContainerSize", _containerRef);
+            _canvasWidth = (int)size.Width;
+            _canvasHeight = (int)size.Height;
+
+            if (_isInitialized)
+            {
+                StateHasChanged();
+                await Draw();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error getting container size: {ex.Message}");
+            _canvasWidth = 2000;
+            _canvasHeight = 1500;
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnWindowResized()
+    {
+        await UpdateCanvasSize();
+    }
+
+    public async Task Draw()
+    {
+        if (_context is null)
+        {
+            return;
+        }
+        await _context.ClearRectAsync(0, 0, _canvasWidth, _canvasHeight);
+
+        if (AreVisibilitiesVisible)
+        {
+            await DrawDeviceConnections();
+        }
+        await DrawDevices();
+        await DrawPackets();
+    }
+
+    private async Task DrawDeviceConnections()
+    {
+        if (_context is null)
+        {
+            return;
+        }
+        await _context.SetLineWidthAsync(0.1f);
+        await _context.SetStrokeStyleAsync("#c73e65");
+        await _context.BeginPathAsync();
+
+        foreach (var connection in DeviceManager.GetAllVisibilities())
+        {
+            await _context.MoveToAsync(connection.d1.Pos.X, connection.d1.Pos.Y);
+            await  _context.LineToAsync(connection.d2.Pos.X, connection.d2.Pos.Y);
+        }
+
+        await _context.StrokeAsync();
+        await _context.ClosePathAsync();
+    }
+
+    private async Task DrawDevices()
+    {
+        if (_context is null)
+        {
+            return;
+        }
+
+        foreach (var device in DeviceManager.Devices)
+        {
+            await DrawDevice(device);
+        }
+    }
+
+    private async Task DrawDevice(Device device)
+    {
+        if (_context is null)
+        {
+            return;
+        }
+        await _context.BeginPathAsync();
+        await _context.ArcAsync(device.Pos.X, device.Pos.Y, device.SizeR, 0, 2 * Math.PI);
+        await _context.SetFillStyleAsync(device.Color);
+        await _context.FillAsync();
+
+        if (device.Equals(SelectedDevice))
+        {
+            await _context.SetLineWidthAsync(2f);
+            await _context.SetStrokeStyleAsync("blue");
+            await _context.StrokeAsync();
+
+            await _context.BeginPathAsync();
+            await _context.ArcAsync(device.Pos.X, device.Pos.Y, device.Radius, 0, 2 * Math.PI);
+            await _context.SetStrokeStyleAsync("orange");
+            await _context.SetLineWidthAsync(.5f);
+            await _context.StrokeAsync();
+        }
+
+        await DrawDeviceLabel(device);
+    }
+
+    private async Task DrawDeviceLabel(Device device)
+    {
+        if (_context is null)
+        {
+            return;
+        }
+        await _context.SetFillStyleAsync("black");
+        await _context.SetFontAsync("14px Arial");
+        var nameSize = await _context.MeasureTextAsync(device.Name);
+        await _context.FillTextAsync(device.Name, device.Pos.X - nameSize.Width / 2, device.Pos.Y + device.SizeR + 15);
+    }
+
+    private async Task DrawPackets()
+    {
+        if (_context is null || PacketManager.ActivePackets.Count == 0)
+        {
+            return;
+        }
+        var packets = PacketManager.TickPackets();
+        if (!ArePacketsVisible)
+        {
+            return;
+        }
+
+        const int PACKET_SIZE = 3;
+        int ps2 = PACKET_SIZE << 1;
+
+        await _context.SetFillStyleAsync("#102de6");
+        await _context.BeginPathAsync();
+
+        var packetsTasks = new List<Task>(packets.Count);
+        foreach (var packet in packets)
+        {
+            packetsTasks.Add(_context.FillRectAsync(packet.X - PACKET_SIZE, packet.Y - PACKET_SIZE, ps2, ps2));
+        }
+        await Task.WhenAll(packetsTasks);
+
+        await _context.FillAsync();
+        await _context.ClosePathAsync();
+    }
+
+    public async Task Redraw()
+    {
+        await Draw();
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        _dotNetRef?.Dispose();
+    }
+
+    public class ContainerSize
+    {
+        public double Width { get; set; }
+        public double Height { get; set; }
+    }
+}

@@ -9,6 +9,32 @@ public static class DeviceManager
             new Device() { Name = "HUB", Pos = new(100,100), Radius = 300, DeviceType = Device.Type.Hub}
         ];
 
+    public static void SetPredefinedPreset(string presetName)
+    {
+        switch (presetName)
+        {
+            case "Diamonds":
+                {
+                    Devices.Clear();
+                    Devices.EnsureCapacity(10);
+                    Devices.Add(new Device() { Name = "H", Pos = new(50, 50), Radius = 200, DeviceType = Device.Type.Hub });
+
+                    Devices.Add(new Device() { Name = "d1", Pos = new(50, 250), Radius = 300, DeviceType = Device.Type.Lamp });
+                    Devices.Add(new Device() { Name = "d2", Pos = new(50, 450), Radius = 300, DeviceType = Device.Type.Sensor });
+                    Devices.Add(new Device() { Name = "d3", Pos = new(250, 450), Radius = 300, DeviceType = Device.Type.Lamp });
+                    Devices.Add(new Device() { Name = "d4", Pos = new(250, 250), Radius = 300, DeviceType = Device.Type.Sensor });
+
+                    Devices.Add(new Device() { Name = "d5", Pos = new(550, 450), Radius = 300, DeviceType = Device.Type.Sensor });
+                    Devices.Add(new Device() { Name = "d6", Pos = new(750, 450), Radius = 300, DeviceType = Device.Type.Lamp });
+                    Devices.Add(new Device() { Name = "d7", Pos = new(550, 650), Radius = 300, DeviceType = Device.Type.Lamp });
+                    Devices.Add(new Device() { Name = "d8", Pos = new(750, 650), Radius = 300, DeviceType = Device.Type.Sensor });
+
+                    Devices.Add(new Device() { Name = "d9", Pos = new(1050, 650), Radius = 300, DeviceType = Device.Type.Sensor });
+                    break;
+                }
+        }
+    }
+
 #warning TODO BETTER ALGORITHM
     public static IEnumerable<(Device d1, Device d2)> GetAllVisibilities()
     {

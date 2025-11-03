@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Text;
 using Core.Contracts;
+using Core.Managers;
 
 namespace Core;
 
@@ -25,6 +26,8 @@ public class Device : ICloneable
     public double Battery { get; set; } = 1;
     public PowerType DevicePowerType { get; set; } = PowerType.Battery;
     public double Radius { get; set; } = 50;
+
+    public List<Device> Connections { get; set; } = [];
 
     public override bool Equals(object? obj)
     {
@@ -55,20 +58,29 @@ public class Device : ICloneable
         _ => 0
     };
 
-    public IPacketHandler? PacketHandler { get; set; } = new BroadcastBacktrackPH();
-    
     public void HandlePacket(Packet packet)
     {
-        if (PacketHandler is null)
-        {
-            throw new NullReferenceException(nameof(PacketHandler));
-        }
-        PacketHandler.Handle(this, packet);
+        HandlerManager.GetActiveHandler().Handle(this, packet);
     }
 
+    private static readonly HashSet<Guid> _idempKeys = [];
     public void AcceptPacket(Packet packet)
     {
-        Console.WriteLine($"Msg accepted by {Id}:\n{Encoding.UTF8.GetString(packet.Payload ?? [])}");
+        if (!_idempKeys.Contains(packet.IdempotencyId))
+        {
+            _idempKeys.Add(packet.IdempotencyId);
+            Console.WriteLine($"Msg accepted by {Id}: {Encoding.UTF8.GetString(packet.Payload ?? [])}");
+
+            if (packet.ConfirmDelivery &&  packet.DirectionForward)
+            {
+                _ = new Packet(this, packet.Sender)
+                {
+                    HandlerData = packet.HandlerData,
+                    DirectionForward = false,
+                    Payload = Encoding.UTF8.GetBytes($"MSG OK {packet.IdempotencyId}")
+                };
+            }
+        }
     }
 
     public object Clone()

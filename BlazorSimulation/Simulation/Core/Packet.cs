@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+﻿using Core.Devices;
 using Core.Managers;
 
 namespace Core;
@@ -17,7 +17,7 @@ public class Packet
     public Device Sender { get; set; } = null!;
     public Device Receiver { get; set; } = null!;
     public byte[]? Payload { get; set; }
-    public bool ConfirmDelivery { get; set; } = true; 
+    public bool ConfirmDelivery { get; set; } = true;
     public bool DirectionForward { get; set; } = true;
 
     public Guid Id { get; } = Guid.NewGuid();
@@ -29,17 +29,17 @@ public class Packet
 
     public List<Device>? ConnectedDevices { get; set; }
 
-    public Packet() 
+    public Packet()
     {
         PacketManager.RegisterPacket(this);
     }
 
-    public Packet(Device sender, Device reciever)
+    public Packet(Device sender, Device receiver)
     {
         Sender = sender;
         CurrentHop = sender;
         NextHop = sender;
-        Receiver = reciever;
+        Receiver = receiver;
         PacketManager.RegisterPacket(this);
     }
 

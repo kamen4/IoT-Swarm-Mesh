@@ -3,6 +3,8 @@
 @using Blazor.Extensions.Canvas
 @using Blazor.Extensions.Canvas.Canvas2D
 @using BlazorApp.Components
+@using BlazorApp.Models
+@using Core.Devices
 @using Core.Managers
 @using Microsoft.AspNetCore.Components.Web
 
@@ -40,18 +42,18 @@
 				</label>
 				<label class="d-flex flex-row-reverse align-items-center justify-content-end user-select-none gap-2">
 					Отображать видимости
-					<InputCheckbox class="form-check-input" 
-					@bind-Value="_areVisibilitiesVisible"/>
+					<InputCheckbox class="form-check-input"
+					@bind-Value="_areVisibilitiesVisible" />
 				</label>
 				<label class="d-flex flex-row-reverse align-items-center justify-content-end user-select-none gap-2">
 					Отображать связи
-					<InputCheckbox class="form-check-input" 
-					@bind-Value="_areConnectionsVisible"/>
+					<InputCheckbox class="form-check-input"
+					@bind-Value="_areConnectionsVisible" />
 				</label>
 				<label class="d-flex flex-row-reverse align-items-center justify-content-end user-select-none gap-2">
 					Отображать пакеты
-					<InputCheckbox class="form-check-input" 
-					@bind-Value="_arePacketsVisible"/>
+					<InputCheckbox class="form-check-input"
+					@bind-Value="_arePacketsVisible" />
 				</label>
 				<button class="btn btn-primary btn-sm" @onclick="PresetChosen">Установить пресет</button>
 			</div>
@@ -68,7 +70,7 @@
 			SelectedDevice="_selectedDevice"
 			AreConnectionsVisible="_areConnectionsVisible"
 			AreVisibilitiesVisible="_areVisibilitiesVisible"
-			ArePacketsVisible="_arePacketsVisible"/>
+			ArePacketsVisible="_arePacketsVisible" />
 		</div>
 
 		@if (_sendPacketFrom is not null)
@@ -80,10 +82,9 @@
 	</div>
 </div>
 
-@if (_isDeviceModalFormVisible && _formDevice is not null)
+@if (_isDeviceModalFormVisible && _formDeviceModel is not null)
 {
-	<DeviceFormModal 
-	Device="_formDevice"
+	<DeviceFormModal Device="_formDeviceModel"
 	IsEditMode="_isDeviceContextMenuVisible"
 	OnClose="CloseDeviceModalForm"
 	OnValidSubmit="SubmitDeviceForm" />
@@ -91,17 +92,20 @@
 
 @if (false && _welcomeModalVisible)
 {
-	<WelcomeModal OnClose="CloseWelcomeModal"/>
+	<WelcomeModal OnClose="CloseWelcomeModal" />
 }
 
 
 @if (_isDeviceContextMenuVisible && _selectedDevice is not null)
 {
 	<div class="position-absolute bg-white border rounded shadow p-2"
-	style="z-index:1000; width:150px; top:@_contextMenuPositionPX.Y; left:@_contextMenuPositionPX.X;">
+	style="z-index:1000; width:150px; top:@(_contextMenuPositionPX.Y); left:@(_contextMenuPositionPX.X);">
 		<button class="btn btn-sm btn-secondary w-100 mb-1" @onclick="EditSelectedDevice">Изменить</button>
 		<button class="btn btn-sm btn-danger w-100 mb-1" @onclick="DeleteSelectedDevice">Удалить</button>
-		<button class="btn btn-sm btn-info w-100" @onclick="CloneSelectedDevice">Клонировать</button>
+		@if (_selectedDevice is not Hub)
+		{
+			<button class="btn btn-sm btn-info w-100" @onclick="CloneSelectedDevice">Клонировать</button>
+		}
 	</div>
 }
 
@@ -111,6 +115,7 @@
 	private bool _isDeviceModalFormVisible = false;
 
 	private Device? _formDevice;
+	private DeviceModel? _formDeviceModel;
 
 	private Device? _selectedDevice = null;
 	private bool _deviceDragFlag = false;
@@ -134,7 +139,7 @@
 
 	private void ShowDeviceModalForm()
 	{
-		_formDevice = new Device();
+		_formDeviceModel = new DeviceModel();
 		_isDeviceModalFormVisible = true;
 	}
 
@@ -147,18 +152,20 @@
 	private async Task SubmitDeviceForm()
 	{
 		_isDeviceModalFormVisible = false;
+		if (_formDeviceModel is null)
+		{
+			return;
+		}
 
 		if (_isDeviceContextMenuVisible)
 		{
 			_isDeviceContextMenuVisible = false;
+			_formDeviceModel.ApplyTo(_formDevice);
 			_formDevice = null;
 		}
 
-		if (_formDevice is not null)
-		{
-			DeviceManager.Devices.Add(_formDevice);
-		}
-
+		_formDevice = _formDeviceModel.ToDevice();
+		DeviceManager.Devices.Add(_formDevice);
 
 		await _canvasRef.Redraw();
 		StateHasChanged();
@@ -261,6 +268,7 @@
 			return;
 		}
 		_formDevice = _selectedDevice;
+		_formDeviceModel = new DeviceModel(_formDevice);
 		_isDeviceModalFormVisible = true;
 	}
 
@@ -279,7 +287,7 @@
 
 	private async void CloneSelectedDevice()
 	{
-		if (_selectedDevice is null) 
+		if (_selectedDevice is null)
 		{
 			return;
 		}

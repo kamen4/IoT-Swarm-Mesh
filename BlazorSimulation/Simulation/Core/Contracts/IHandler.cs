@@ -1,4 +1,6 @@
-﻿namespace Core.Contracts;
+﻿using Core.Devices;
+
+namespace Core.Contracts;
 
 public interface IHandler
 {

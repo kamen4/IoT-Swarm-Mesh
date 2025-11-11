@@ -1,31 +1,32 @@
 ﻿using System.Numerics;
 using System.Text;
-using Core.Contracts;
 using Core.Managers;
 
-namespace Core;
+namespace Core.Devices;
 
-public class Device : ICloneable
+public abstract class Device : ICloneable
 {
-    public enum Type
-    {
-        Hub,
-        Lamp,
-        Sensor,
-    }
-
     public enum PowerType
     {
         Battery,
         AC,
     }
 
-    public Guid Id { get; private set; } = Guid.NewGuid();
-    public Type DeviceType { get; set; } = Type.Sensor;
+    public Guid Id { get; private set; }
     public string Name { get; set; } = "";
     public double Battery { get; set; } = 1;
     public PowerType DevicePowerType { get; set; } = PowerType.Battery;
     public double Radius { get; set; } = 50;
+
+    public Device()
+    {
+        Id = Guid.NewGuid();
+    }
+
+    public Device(Guid id)
+    {
+        Id = id;   
+    }
 
     public List<Device> Connections { get; set; } = [];
 
@@ -37,26 +38,16 @@ public class Device : ICloneable
         }
         return base.Equals(obj);
     }
+
     public override int GetHashCode()
     {
         return Id.GetHashCode();
     }
 
     public Vector2 Pos { get; set; } = new();
-    public string Color => DeviceType switch
-        {
-            Type.Hub => "#7337bd",
-            Type.Lamp => "#c2ae1b",
-            Type.Sensor => "#299450",
-            _ => "#000000"
-        };
-    public int SizeR => DeviceType switch
-    {
-        Type.Hub => 20,
-        Type.Lamp => 15,
-        Type.Sensor => 10,
-        _ => 0
-    };
+
+    public abstract string Color { get; }
+    public abstract int SizeR { get; }
 
     public void HandlePacket(Packet packet)
     {
@@ -64,14 +55,24 @@ public class Device : ICloneable
     }
 
     private static readonly HashSet<Guid> _idempKeys = [];
-    public void AcceptPacket(Packet packet)
+    public virtual void AcceptPacket(Packet packet)
     {
         if (!_idempKeys.Contains(packet.IdempotencyId))
         {
             _idempKeys.Add(packet.IdempotencyId);
             Console.WriteLine($"Msg accepted by {Id}: {Encoding.UTF8.GetString(packet.Payload ?? [])}");
 
-            if (packet.ConfirmDelivery &&  packet.DirectionForward)
+            switch (packet.PacketType)
+            {
+                case Packet.Type.Ping:
+                    break;
+                case Packet.Type.FindDevice:
+                    break;
+                default:
+                    break;
+            }
+
+            if (packet.ConfirmDelivery && packet.DirectionForward)
             {
                 _ = new Packet(this, packet.Sender)
                 {
@@ -83,7 +84,7 @@ public class Device : ICloneable
         }
     }
 
-    public object Clone()
+    public virtual object Clone()
     {
         var mclone = (Device)MemberwiseClone();
         mclone.Id = Guid.NewGuid();

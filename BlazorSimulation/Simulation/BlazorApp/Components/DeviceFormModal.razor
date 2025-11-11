@@ -1,4 +1,6 @@
-﻿@using Core
+﻿@using BlazorApp.Models
+@using Core
+@using Core.Devices
 @using Microsoft.AspNetCore.Components.Web
 
 <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
@@ -13,18 +15,22 @@
                     <div class="mb-3">
                         <label class="form-label">Id: @Device.Id</label>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Тип устройства</label>
-                        <InputSelect class="form-select" @bind-Value="Device.DeviceType">
-                            @foreach (var type in Enum.GetValues(typeof(Device.Type)))
-                            {
-                                @if ((Device.Type)type != Device.Type.Hub)
+                    @if (!IsEditMode)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">Тип устройства</label>
+                            <InputSelect class="form-select" @bind-Value="Device.DeviceType">
+                                @foreach (var type in Enum.GetValues(typeof(DeviceModel.Type)))
                                 {
-                                    <option value="@type">@type</option>
+                                    @if ((DeviceModel.Type)type != DeviceModel.Type.Hub)
+                                    {
+                                        <option value="@type">@type</option>
+                                    }
                                 }
-                            }
-                        </InputSelect>
-                    </div>
+                            </InputSelect>
+                        </div>
+                    }
+
                     <div class="mb-3">
                         <label class="form-label">Имя</label>
                         <InputText class="form-control" @bind-Value="Device.Name" />
@@ -54,7 +60,7 @@
 </div>
 
 @code {
-    [Parameter] public Device Device { get; set; } = default!;
+    [Parameter] public DeviceModel Device { get; set; } = default!;
     [Parameter] public bool IsEditMode { get; set; }
     [Parameter] public EventCallback OnClose { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }

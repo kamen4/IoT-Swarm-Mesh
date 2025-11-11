@@ -1,12 +1,12 @@
 {
   "mainAssemblyName": "BlazorApp",
   "resources": {
-    "hash": "sha256-UtoU0f+A22XO6V8I88OoGw/OaSYH5EAaN5cwbnyg+nU=",
+    "hash": "sha256-Rr3meV3WiOGZtw7knhU7x8pLKxxuJxzv/MXiKBqyXZ4=",
     "fingerprinting": {
       "Blazor.Extensions.Canvas.JS.iokb7a5y98.wasm": "Blazor.Extensions.Canvas.JS.wasm",
       "Blazor.Extensions.Canvas.45bjdsigtk.wasm": "Blazor.Extensions.Canvas.wasm",
-      "BlazorApp.7qveotqy72.wasm": "BlazorApp.wasm",
-      "Core.8p2i67kr6l.wasm": "Core.wasm",
+      "BlazorApp.0jd5bdnmqi.wasm": "BlazorApp.wasm",
+      "Core.n22mnedq4n.wasm": "Core.wasm",
       "Microsoft.AspNetCore.Components.Forms.paab7a530z.wasm": "Microsoft.AspNetCore.Components.Forms.wasm",
       "Microsoft.AspNetCore.Components.v9mmjzx5n6.wasm": "Microsoft.AspNetCore.Components.wasm",
       "Microsoft.AspNetCore.Components.Web.khfhhtwm1c.wasm": "Microsoft.AspNetCore.Components.Web.wasm",
@@ -40,11 +40,11 @@
       "System.Net.Primitives.om9mt4c0ro.wasm": "System.Net.Primitives.wasm",
       "System.Numerics.Vectors.rbe8tc11y6.wasm": "System.Numerics.Vectors.wasm",
       "System.ObjectModel.7m6n1tcre6.wasm": "System.ObjectModel.wasm",
-      "System.Private.CoreLib.pcupdaz2gd.wasm": "System.Private.CoreLib.wasm",
+      "System.Private.CoreLib.bwd2fpm7in.wasm": "System.Private.CoreLib.wasm",
       "System.Private.Uri.1xae58batv.wasm": "System.Private.Uri.wasm",
       "System.Runtime.InteropServices.JavaScript.lu7n7av6ff.wasm": "System.Runtime.InteropServices.JavaScript.wasm",
       "System.Runtime.Serialization.Primitives.53mp5ktcqx.wasm": "System.Runtime.Serialization.Primitives.wasm",
-      "System.Runtime.5cdde8oo8z.wasm": "System.Runtime.wasm",
+      "System.Runtime.hmjgj26b9k.wasm": "System.Runtime.wasm",
       "System.Text.Encodings.Web.hq94nfnuw2.wasm": "System.Text.Encodings.Web.wasm",
       "System.Text.Json.o757yx24xt.wasm": "System.Text.Json.wasm",
       "System.Text.RegularExpressions.5gjltihx5v.wasm": "System.Text.RegularExpressions.wasm",
@@ -72,14 +72,14 @@
       "icudt_no_CJK.lfu7j35m59.dat": "sha256-L7sV7NEYP37/Qr2FPCePo5cJqRgTXRwGHuwF5Q+0Nfs="
     },
     "coreAssembly": {
-      "System.Private.CoreLib.pcupdaz2gd.wasm": "sha256-F1X2A02pIxqG4gVkDhyoYAvRs/KahGtyiDmp8VMY5TA=",
+      "System.Private.CoreLib.bwd2fpm7in.wasm": "sha256-JbqG0CV+5zKpxG0oJwYjap/5JWHQK6kCA2FCYvuUtS0=",
       "System.Runtime.InteropServices.JavaScript.lu7n7av6ff.wasm": "sha256-fcbhHB7hDI448FbXH9oGRMD0YiK7sml91c0Cfomkn6c="
     },
     "assembly": {
       "Blazor.Extensions.Canvas.JS.iokb7a5y98.wasm": "sha256-ctyeKHsvFswpiKQJpTUUWdSrDGr4UNirukOrWYnwW78=",
       "Blazor.Extensions.Canvas.45bjdsigtk.wasm": "sha256-2AOrAB5tgoiK9wMMmwiE/pKPAtTjzgFudxSl6g4dt9s=",
-      "BlazorApp.7qveotqy72.wasm": "sha256-H2RhoMeX8CtaXFL4m1RsvZX1sMzY0nQVi0tDC9jidtI=",
-      "Core.8p2i67kr6l.wasm": "sha256-LCDJ6foxLAdLYohZPthqsgJX34s9n0PK/prlgdEWBN4=",
+      "BlazorApp.0jd5bdnmqi.wasm": "sha256-RP2R5EEhR+jEghNQeSLBLvxzONXzx3d+ObkU9PZvBY0=",
+      "Core.n22mnedq4n.wasm": "sha256-/3I48cBinOIgCa6m+2pywkFzzrQORXp5Fl4+lPlIXNU=",
       "Microsoft.AspNetCore.Components.Forms.paab7a530z.wasm": "sha256-Hxi4RVzxumy77zl8fmKCUk+KSex+d3MY7BfE0nKI9bo=",
       "Microsoft.AspNetCore.Components.v9mmjzx5n6.wasm": "sha256-Q8lyIiZZdm9ymX3Dt+TMFVFobum8qeH1kiOAe/dwf9E=",
       "Microsoft.AspNetCore.Components.Web.khfhhtwm1c.wasm": "sha256-WNJ+a0iKEa+nSy7h/w7cjqUCJA6mBkdQhfPN0nia5MI=",
@@ -115,7 +115,7 @@
       "System.ObjectModel.7m6n1tcre6.wasm": "sha256-wcmlpe+jkCyBS3vavLw0cdDgRBV+rg0VDjRGkcGTaZs=",
       "System.Private.Uri.1xae58batv.wasm": "sha256-O1wz1mW+V7Pg5d/eetANlH5yb6osav2FSfptR2psLDg=",
       "System.Runtime.Serialization.Primitives.53mp5ktcqx.wasm": "sha256-EQFV/X5fi+UF4pyjHvt9aKck8oHREQLeEeex/z5vamM=",
-      "System.Runtime.5cdde8oo8z.wasm": "sha256-Ow1HfpFMQCKhIHOlXqdWHTlkPXG2Ne++IDJxYu4mlvo=",
+      "System.Runtime.hmjgj26b9k.wasm": "sha256-p91XGcebPoOMztVk2uxyQ5oUEA5YqK6ne6/6SRmIUDE=",
       "System.Text.Encodings.Web.hq94nfnuw2.wasm": "sha256-SQ1+aS+lCxp43qhvbxWS01rhQfbvNeDSN0xyk2P9/Hc=",
       "System.Text.Json.o757yx24xt.wasm": "sha256-JLw3/JWgbPcOqNl4iLwefRZJFPDDFrWHug6U+st4ILE=",
       "System.Text.RegularExpressions.5gjltihx5v.wasm": "sha256-tWq9vht0rY9iM6tvHI4CaV2Nogm0sR+EJEOy72TVrIk=",

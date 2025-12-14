@@ -5,7 +5,7 @@ namespace Core.Managers;
 
 public static class PacketManager
 {
-    public const float PACKET_SPEED = 150f; //px/s
+    public const float PACKET_SPEED = 300f; //px/s
 
     public static HashSet<Packet> ActivePackets { get; set; } = [];
 

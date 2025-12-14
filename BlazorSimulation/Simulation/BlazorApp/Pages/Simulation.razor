@@ -55,6 +55,11 @@
 					<InputCheckbox class="form-check-input"
 					@bind-Value="_arePacketsVisible" />
 				</label>
+				<label class="d-flex flex-row-reverse align-items-center justify-content-end user-select-none gap-2">
+					Отображать заряд
+					<InputCheckbox class="form-check-input"
+								   @bind-Value="_areBattariesVisible" />
+				</label>
 				<button class="btn btn-primary btn-sm" @onclick="PresetChosen">Установить пресет</button>
 			</div>
 		</div>
@@ -70,7 +75,8 @@
 			SelectedDevice="_selectedDevice"
 			AreConnectionsVisible="_areConnectionsVisible"
 			AreVisibilitiesVisible="_areVisibilitiesVisible"
-			ArePacketsVisible="_arePacketsVisible" />
+			ArePacketsVisible="_arePacketsVisible" 
+			AreBattariesVisible="_areBattariesVisible"/>
 		</div>
 
 		@if (_sendPacketFrom is not null)
@@ -136,6 +142,7 @@
 	private bool _areVisibilitiesVisible = true;
 	private bool _areConnectionsVisible = true;
 	private bool _arePacketsVisible = true;
+	private bool _areBattariesVisible = true;
 
 	private void ShowDeviceModalForm()
 	{

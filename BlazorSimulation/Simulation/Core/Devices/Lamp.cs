@@ -1,5 +1,4 @@
-﻿
-namespace Core.Devices;
+﻿namespace Core.Devices;
 
 public class Lamp : Device
 {
@@ -13,12 +12,11 @@ public class Lamp : Device
     {
     }
     
-    public override string Color => "#c2ae1b";
+    public override string Color => IsLampOn ? "#c2ae1b" : "#dddddd";
     public override int SizeR => 15;
 
     public override void AcceptPacket(Packet packet)
     {
-        base.AcceptPacket(packet); // Call base logic first
-        // Lamp-specific packet handling can go here if needed
+        base.AcceptPacket(packet);
     }
 }

@@ -9,13 +9,13 @@ public class Packet
     {
         Ping,
         Data,
-        FindDevice,
+        NetworkBuild,
     };
 
     public Guid IdempotencyId { get; set; } = Guid.NewGuid();
     public Type PacketType { get; set; } = Type.Ping;
     public Device Sender { get; set; } = null!;
-    public Device Receiver { get; set; } = null!;
+    public Device? Receiver { get; set; } = null!;
     public byte[]? Payload { get; set; }
     public bool ConfirmDelivery { get; set; } = true;
     public bool DirectionForward { get; set; } = true;
@@ -34,7 +34,7 @@ public class Packet
         PacketManager.RegisterPacket(this);
     }
 
-    public Packet(Device sender, Device receiver)
+    public Packet(Device sender, Device? receiver)
     {
         Sender = sender;
         CurrentHop = sender;

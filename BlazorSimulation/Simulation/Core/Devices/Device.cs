@@ -66,12 +66,12 @@ public abstract class Device : ICloneable
             {
                 case Packet.Type.Ping:
                     break;
-                case Packet.Type.FindDevice:
+                case Packet.Type.NetworkBuild:
                     break;
                 default:
                     break;
             }
-
+                
             if (packet.ConfirmDelivery && packet.DirectionForward)
             {
                 _ = new Packet(this, packet.Sender)

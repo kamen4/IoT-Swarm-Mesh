@@ -5,10 +5,12 @@ public class Hub : Device
 {
     public Hub(Guid id) : base(id)
     {
+        DevicePowerType = PowerType.AC;
     }
 
     public Hub()
     {
+        DevicePowerType = PowerType.AC;
     }
 
 

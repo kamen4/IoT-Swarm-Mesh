@@ -14,7 +14,11 @@ public class BroadcastHandler : IHandler
 
     public void Handle(Device device, Packet packet)
     {
-        if (packet.Receiver == device)
+        if (packet.Receiver is null)
+        {
+            device.AcceptPacket(packet);
+        }
+        else if (packet.Receiver == device)
         {
             device.AcceptPacket(packet);
             packet.Terminate();

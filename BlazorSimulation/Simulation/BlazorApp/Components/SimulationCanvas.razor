@@ -28,6 +28,7 @@
     [Parameter] public bool AreVisibilitiesVisible { get; set; } = true;
     [Parameter] public bool AreConnectionsVisible { get; set; } = true;
     [Parameter] public bool ArePacketsVisible { get; set; } = true;
+    [Parameter] public bool AreBattariesVisible { get; set; } = true;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -151,6 +152,28 @@
             await _context.SetLineWidthAsync(.5f);
             await _context.StrokeAsync();
         }
+
+        const int BATTERY_BAR_W = 20;
+        const int BATTERY_BAR_Wh = 10;
+        const int BATTERY_BAR_H = 4;
+
+		if (AreBattariesVisible)
+		{
+            await _context.BeginPathAsync();
+            await _context.SetLineWidthAsync(1f);
+            await _context.SetStrokeStyleAsync("black");
+            if (device.DevicePowerType == Device.PowerType.AC)
+            {
+                await _context.SetFillStyleAsync("yellow");
+                await _context.FillRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W, BATTERY_BAR_H);
+            }
+            else
+            {
+                await _context.SetFillStyleAsync("green");
+                await _context.FillRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W * device.Battery, BATTERY_BAR_H);
+            }
+            await _context.StrokeRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W, BATTERY_BAR_H);
+		}
 
         await DrawDeviceLabel(device);
     }

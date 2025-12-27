@@ -5,84 +5,256 @@
 @using BlazorApp.Components
 @using BlazorApp.Models
 @using Core.Devices
-@using Core.Managers
+@using Core.Services
+@using Core.Statistics
 @using Microsoft.AspNetCore.Components.Web
-
 @using Core
 @using System.Numerics
 @using System.Text
 @using System.Text.Json
+@inject ISimulationService Sim
+@inject IJSRuntime JS
 
 <PageTitle>IoT Swarm Simulator</PageTitle>
+
+<input type="file" id="importFileInput" accept=".json" style="display:none" @onchange="OnFileSelected" />
 
 <div class="d-flex flex-column vh-100">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">IoT Swarm Simulator</a>
+			<span class="navbar-text text-light">
+				@_stateText | Пакетов: @Sim.Packets.ActivePackets.Count | Связей: @CountConnections()
+				@if (Sim.Statistics.SavedResults.Count > 0)
+				{
+					<span class="badge bg-info ms-2">@Sim.Statistics.SavedResults.Count сохр.</span>
+				}
+			</span>
 		</div>
 	</nav>
 
 	<div class="d-flex flex-grow-1 overflow-hidden">
-		<div class="bg-light border-end p-3" style="width:250px;">
+		<div class="bg-light border-end p-3 overflow-auto" style="width:300px;">
 			<h5>Управление</h5>
 			<div class="d-grid gap-2 w-100">
 				<button class="btn btn-primary btn-sm" @onclick="ShowDeviceModalForm">Создать устройство</button>
+				
 				@if (_selectedDevice is not null)
 				{
-					<button class="btn btn-primary btn-sm" @onclick="SendPacketButton">Отправить пакет</button>
+					<button class="btn btn-primary btn-sm" @onclick="SendPacketButton">Отправить ping</button>
 				}
-				<label class="form-label mb-3" style="width:13vw;">
-					Обработчик пакетов
-					<InputSelect class="form-select w-100" @onchange="HandlerChanged" @bind-Value="_selectedHandlerName">
-						@foreach (var handlerName in HandlerManager.GetAllHandlerNames())
+
+				<hr />
+				<h6>Сеть</h6>
+				<label class="form-label">
+					Стратегия построения
+					<select class="form-select form-select-sm" @bind="_selectedBuilderName">
+						@foreach (var name in Sim.NetworkBuilder.GetStrategyNames())
 						{
-							<option value="@handlerName">@handlerName</option>
+							<option value="@name">@name</option>
 						}
-					</InputSelect>
+					</select>
 				</label>
-				<label class="d-flex flex-row-reverse align-items-center justify-content-end user-select-none gap-2">
-					Отображать видимости
-					<InputCheckbox class="form-check-input"
-					@bind-Value="_areVisibilitiesVisible" />
+				<button class="btn btn-success btn-sm" @onclick="BuildNetwork" 
+					disabled="@(Sim.State == SimulationState.BuildingNetwork)">
+					Построить сеть
+				</button>
+				<button class="btn btn-outline-secondary btn-sm" @onclick="ClearConnections">
+					Очистить связи
+				</button>
+
+				<hr />
+				<h6>Симуляция</h6>
+				<label class="form-label">
+					Протокол маршрутизации
+					<select class="form-select form-select-sm" @bind="_selectedHandlerName" @bind:after="HandlerChanged">
+						@foreach (var name in Sim.Packets.GetHandlerNames())
+						{
+							<option value="@name">@name</option>
+						}
+					</select>
 				</label>
-				<label class="d-flex flex-row-reverse align-items-center justify-content-end user-select-none gap-2">
-					Отображать связи
-					<InputCheckbox class="form-check-input"
-					@bind-Value="_areConnectionsVisible" />
+				<label class="form-label">
+					Интервал пакетов (мс)
+					<input type="number" class="form-control form-control-sm" @bind="_config.PacketIntervalMs" min="50" />
 				</label>
-				<label class="d-flex flex-row-reverse align-items-center justify-content-end user-select-none gap-2">
-					Отображать пакеты
-					<InputCheckbox class="form-check-input"
-					@bind-Value="_arePacketsVisible" />
+				<label class="form-label">
+					Длительность (мс)
+					<input type="number" class="form-control form-control-sm" @bind="_config.SimulationDurationMs" min="1000" />
 				</label>
-				<label class="d-flex flex-row-reverse align-items-center justify-content-end user-select-none gap-2">
-					Отображать заряд
-					<InputCheckbox class="form-check-input"
-								   @bind-Value="_areBattariesVisible" />
+				<label class="form-label">
+					Скорость пакетов
+					<input type="number" class="form-control form-control-sm" @bind="_config.PacketSpeed" min="50" step="50" />
 				</label>
-				<button class="btn btn-primary btn-sm" @onclick="PresetChosen">Установить пресет</button>
+				<label class="form-label">
+					Базовый packet loss (0-1)
+					<input type="number" class="form-control form-control-sm" @bind="_config.BasePacketLossRate" min="0" max="1" step="0.01" />
+				</label>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" @bind="_config.RandomLampCommands" id="lampCmd">
+					<label class="form-check-label" for="lampCmd">Команды лампам</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" @bind="_config.RandomSensorData" id="sensorData">
+					<label class="form-check-label" for="sensorData">Данные сенсоров</label>
+				</div>
+				<button class="btn btn-success btn-sm" @onclick="StartSimulation"
+					disabled="@(Sim.State == SimulationState.Running)">
+					▶ Запустить
+				</button>
+				<button class="btn btn-danger btn-sm" @onclick="StopSimulation">
+					⏹ Остановить
+				</button>
+				
+				<hr />
+				<h6>💾 Сохранение результатов</h6>
+				<div class="input-group input-group-sm mb-2">
+					<input type="text" class="form-control" placeholder="Имя симуляции" @bind="_saveResultName" />
+					<button class="btn btn-outline-primary" @onclick="SaveCurrentResult" 
+						disabled="@(_stats.TotalPacketsCreated == 0)">
+						Сохранить
+					</button>
+				</div>
+				@if (Sim.Statistics.SavedResults.Count > 0)
+				{
+					<div class="small text-muted mb-2">
+						Сохранено: @Sim.Statistics.SavedResults.Count симуляций
+					</div>
+					<button class="btn btn-info btn-sm" @onclick="DownloadComparisonReport">
+						📊 Скачать сравнительный отчёт
+					</button>
+					<button class="btn btn-outline-warning btn-sm" @onclick="ClearSavedResults">
+						🗑️ Очистить сохранённые
+					</button>
+				}
+
+				<hr />
+				<h6>Отображение</h6>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" @bind="_areVisibilitiesVisible" id="visCheck">
+					<label class="form-check-label" for="visCheck">Видимости</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" @bind="_areConnectionsVisible" id="connCheck">
+					<label class="form-check-label" for="connCheck">Связи</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" @bind="_arePacketsVisible" id="packCheck">
+					<label class="form-check-label" for="packCheck">Пакеты</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" @bind="_areBattariesVisible" id="battCheck">
+					<label class="form-check-label" for="battCheck">Заряд</label>
+				</div>
+
+				<hr />
+				<h6>Пресеты</h6>
+				<select class="form-select form-select-sm mb-2" @bind="_selectedPreset">
+					@foreach (var name in Sim.Devices.GetPresetNames())
+					{
+						<option value="@name">@name</option>
+					}
+				</select>
+				<button class="btn btn-outline-primary btn-sm" @onclick="LoadPreset">Загрузить пресет</button>
+
+				<hr />
+				<h6>Экспорт/Импорт</h6>
+				<button class="btn btn-outline-info btn-sm" @onclick="DownloadState">
+					📥 Скачать состояние
+				</button>
+				<button class="btn btn-outline-info btn-sm" @onclick="TriggerImportFile">
+					📤 Загрузить состояние
+				</button>
+				<button class="btn btn-outline-success btn-sm" @onclick="DownloadStatisticsCsv">
+					📊 Скачать статистику
+				</button>
+				<button class="btn btn-success btn-sm" @onclick="DownloadReport">
+					📈 Скачать отчёт
+				</button>
 			</div>
 		</div>
 
 		<div class="flex-grow-1 position-relative bg-white"
-		@onmousedown="OnMouseDown"
-		@onmousemove="OnMouseMove"
-		@onmouseup="OnMouseUp"
-		@oncontextmenu:preventDefault
-		@oncontextmenu="OnRightClick">
+			@onmousedown="OnMouseDown"
+			@onmousemove="OnMouseMove"
+			@onmouseup="OnMouseUp"
+			@oncontextmenu:preventDefault
+			@oncontextmenu="OnRightClick">
 			<SimulationCanvas @ref="_canvasRef"
-			SendPacketFrom="_sendPacketFrom"
-			SelectedDevice="_selectedDevice"
-			AreConnectionsVisible="_areConnectionsVisible"
-			AreVisibilitiesVisible="_areVisibilitiesVisible"
-			ArePacketsVisible="_arePacketsVisible" 
-			AreBattariesVisible="_areBattariesVisible"/>
+				Sim="Sim"
+				SendPacketFrom="_sendPacketFrom"
+				SelectedDevice="_selectedDevice"
+				AreConnectionsVisible="_areConnectionsVisible"
+				AreVisibilitiesVisible="_areVisibilitiesVisible"
+				ArePacketsVisible="_arePacketsVisible"
+				AreBattariesVisible="_areBattariesVisible"
+				PacketSpeed="_config.PacketSpeed" />
+		</div>
+
+		<div class="bg-light border-start p-3" style="width:280px; overflow-y:auto;">
+			<h6>Текущая статистика</h6>
+			<table class="table table-sm table-borderless">
+				<tr><td>Создано</td><td><strong>@_stats.TotalPacketsCreated</strong></td></tr>
+				<tr><td>Доставлено</td><td><strong class="text-success">@_stats.TotalPacketsDelivered</strong></td></tr>
+				<tr><td>Потеряно</td><td><strong class="text-danger">@_stats.TotalPacketsLost</strong></td></tr>
+				<tr><td>Dropped</td><td><strong class="text-warning">@_stats.TotalPacketsDropped</strong></td></tr>
+				<tr><td>Forwarded</td><td><strong>@_stats.TotalPacketsForwarded</strong></td></tr>
+				<tr><td>Хопов</td><td><strong>@_stats.TotalHops</strong></td></tr>
+				<tr><td colspan="2"><hr class="my-1"/></td></tr>
+				<tr><td>Доставляемость</td><td><strong class="@GetDeliveryRateClass()">@_stats.DeliveryRate.ToString("F1")%</strong></td></tr>
+				<tr><td>Loss rate</td><td><strong class="@GetLossRateClass()">@_stats.LossRate.ToString("F1")%</strong></td></tr>
+				<tr><td>Avg hops</td><td><strong>@_stats.AverageHopsPerPacket.ToString("F1")</strong></td></tr>
+				<tr><td colspan="2"><hr class="my-1"/></td></tr>
+				<tr><td>Avg time</td><td><strong>@_stats.AverageDeliveryTimeMs.ToString("F0") ms</strong></td></tr>
+				<tr><td>Min time</td><td><strong>@((_stats.MinDeliveryTimeMs == double.MaxValue ? 0 : _stats.MinDeliveryTimeMs).ToString("F0")) ms</strong></td></tr>
+				<tr><td>Max time</td><td><strong>@_stats.MaxDeliveryTimeMs.ToString("F0") ms</strong></td></tr>
+			</table>
+			
+			@if (Sim.Statistics.SavedResults.Count > 0)
+			{
+				<h6 class="mt-3">💾 Сохранённые симуляции</h6>
+				<div style="max-height: 200px; overflow-y: auto;">
+					@foreach (var (result, idx) in Sim.Statistics.SavedResults.Select((r,i) => (r,i)))
+					{
+						<div class="card card-body p-2 mb-1 small">
+							<div class="d-flex justify-content-between align-items-start">
+								<div>
+									<strong>@result.Name</strong><br/>
+									<span class="text-muted">@result.Config.ProtocolName</span><br/>
+									<span class="text-success">@result.Statistics.DeliveryRate.ToString("F0")%</span> доставлено
+								</div>
+								<button class="btn btn-sm btn-outline-danger" @onclick="() => RemoveSavedResult(idx)">×</button>
+							</div>
+						</div>
+					}
+				</div>
+			}
+			
+			@if (_stats.DeviceStats.Count > 0)
+			{
+				<h6 class="mt-3">По устройствам</h6>
+				<div style="max-height: 150px; overflow-y: auto;">
+					<table class="table table-sm">
+						<thead><tr><th>Устр.</th><th>Отпр.</th><th>Получ.</th></tr></thead>
+						<tbody>
+						@foreach (var (id, ds) in _stats.DeviceStats.Take(10))
+						{
+							<tr>
+								<td>@ds.DeviceName</td>
+								<td>@ds.PacketsSent</td>
+								<td>@ds.PacketsReceived</td>
+							</tr>
+						}
+						</tbody>
+					</table>
+				</div>
+			}
 		</div>
 
 		@if (_sendPacketFrom is not null)
 		{
 			<p class="position-absolute text-secondary" style="bottom:1.5vh; width: 100vw; text-align: center;">
-				Выберите устройство на которое надо отправить ping
+				Выберите устройство для отправки ping
 			</p>
 		}
 	</div>
@@ -91,21 +263,15 @@
 @if (_isDeviceModalFormVisible && _formDeviceModel is not null)
 {
 	<DeviceFormModal Device="_formDeviceModel"
-	IsEditMode="_isDeviceContextMenuVisible"
-	OnClose="CloseDeviceModalForm"
-	OnValidSubmit="SubmitDeviceForm" />
+		IsEditMode="_isDeviceContextMenuVisible"
+		OnClose="CloseDeviceModalForm"
+		OnValidSubmit="SubmitDeviceForm" />
 }
-
-@if (false && _welcomeModalVisible)
-{
-	<WelcomeModal OnClose="CloseWelcomeModal" />
-}
-
 
 @if (_isDeviceContextMenuVisible && _selectedDevice is not null)
 {
 	<div class="position-absolute bg-white border rounded shadow p-2"
-	style="z-index:1000; width:150px; top:@(_contextMenuPositionPX.Y); left:@(_contextMenuPositionPX.X);">
+		style="z-index:1000; width:150px; top:@(_contextMenuPositionPX.Y); left:@(_contextMenuPositionPX.X);">
 		<button class="btn btn-sm btn-secondary w-100 mb-1" @onclick="EditSelectedDevice">Изменить</button>
 		<button class="btn btn-sm btn-danger w-100 mb-1" @onclick="DeleteSelectedDevice">Удалить</button>
 		@if (_selectedDevice is not Hub)
@@ -119,7 +285,6 @@
 	private SimulationCanvas _canvasRef = null!;
 
 	private bool _isDeviceModalFormVisible = false;
-
 	private Device? _formDevice;
 	private DeviceModel? _formDeviceModel;
 
@@ -133,16 +298,84 @@
 	private Device? _sendPacketFrom = null;
 
 	private PeriodicTimer? _timer;
-	private Task? _animatePacketsTask;
+	private bool _animating = false;
 
-	private bool _welcomeModalVisible = true;
-
-	private string? _selectedHandlerName;
+	private string _selectedHandlerName = "";
+	private string _selectedBuilderName = "";
+	private string _selectedPreset = "Line";
+	private string _saveResultName = "";
 
 	private bool _areVisibilitiesVisible = true;
 	private bool _areConnectionsVisible = true;
 	private bool _arePacketsVisible = true;
 	private bool _areBattariesVisible = true;
+
+	private SimulationConfig _config = new() { PacketSpeed = 200f };
+	private SimulationStatistics _stats => Sim.Statistics.Current;
+	
+	private string _stateText => Sim.State switch
+	{
+		SimulationState.Idle => "Готов",
+		SimulationState.BuildingNetwork => "Построение сети...",
+		SimulationState.Running => "Симуляция...",
+		SimulationState.Paused => "Пауза",
+		SimulationState.Completed => "Завершено",
+		_ => ""
+	};
+
+	private string GetDeliveryRateClass() => _stats.DeliveryRate > 80 ? "text-success" : _stats.DeliveryRate > 50 ? "text-warning" : "text-danger";
+	private string GetLossRateClass() => _stats.LossRate < 10 ? "text-success" : _stats.LossRate < 30 ? "text-warning" : "text-danger";
+	
+	private int CountConnections()
+	{
+		int count = 0;
+		var seen = new HashSet<(Guid, Guid)>();
+		foreach (var d in Sim.Devices.All)
+		{
+			foreach (var c in d.Connections)
+			{
+				var key = d.Id.CompareTo(c.Id) < 0 ? (d.Id, c.Id) : (c.Id, d.Id);
+				if (seen.Add(key)) count++;
+			}
+		}
+		return count;
+	}
+
+	protected override void OnInitialized()
+	{
+		_selectedHandlerName = Sim.Packets.GetHandlerNames().FirstOrDefault() ?? "";
+		_selectedBuilderName = Sim.NetworkBuilder.GetStrategyNames().FirstOrDefault() ?? "";
+		Sim.OnStateChanged += _ => InvokeAsync(StateHasChanged);
+	}
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			StartAnimationLoop();
+		}
+	}
+
+	private void StartAnimationLoop()
+	{
+		if (_animating) return;
+		_animating = true;
+		_timer = new PeriodicTimer(TimeSpan.FromMilliseconds(16));
+		_ = AnimateLoop();
+	}
+
+	private async Task AnimateLoop()
+	{
+		while (_animating && await _timer!.WaitForNextTickAsync())
+		{
+			Sim.Tick();
+			if (_canvasRef is not null)
+			{
+				await _canvasRef.Redraw();
+			}
+			StateHasChanged();
+		}
+	}
 
 	private void ShowDeviceModalForm()
 	{
@@ -159,10 +392,7 @@
 	private async Task SubmitDeviceForm()
 	{
 		_isDeviceModalFormVisible = false;
-		if (_formDeviceModel is null)
-		{
-			return;
-		}
+		if (_formDeviceModel is null) return;
 
 		if (_isDeviceContextMenuVisible)
 		{
@@ -170,9 +400,11 @@
 			_formDeviceModel.ApplyTo(_formDevice);
 			_formDevice = null;
 		}
-
-		_formDevice = _formDeviceModel.ToDevice();
-		DeviceManager.Devices.Add(_formDevice);
+		else
+		{
+			_formDevice = _formDeviceModel.ToDevice();
+			Sim.Devices.Add(_formDevice);
+		}
 
 		await _canvasRef.Redraw();
 		StateHasChanged();
@@ -180,15 +412,7 @@
 
 	private async void OnMouseDown(MouseEventArgs e)
 	{
-		if (_animatePacketsTask is not null)
-		{
-			return;
-		}
-
-		if (e.Button == 2)
-		{
-			return;
-		}
+		if (e.Button == 2) return;
 		_isDeviceContextMenuVisible = false;
 
 		if (_formDevice is not null)
@@ -199,7 +423,7 @@
 			return;
 		}
 
-		_selectedDevice = GetDeviceUnderMouse((float)e.OffsetX, (float)e.OffsetY);
+		_selectedDevice = Sim.Devices.GetAtPosition(new((float)e.OffsetX, (float)e.OffsetY));
 		_deviceDragFlag = _selectedDevice is not null;
 
 		if (_sendPacketFrom is not null)
@@ -214,20 +438,20 @@
 
 		await _canvasRef.Redraw();
 	}
-	private async void OnMouseMove(MouseEventArgs e)
+
+	private void OnMouseMove(MouseEventArgs e)
 	{
 		if (_formDevice is not null)
 		{
 			_formDevice.Pos = new((float)e.OffsetX, (float)e.OffsetY);
-			await _canvasRef.Redraw();
 		}
 
 		if (_deviceDragFlag && _selectedDevice is not null)
 		{
 			_selectedDevice.Pos = new((float)e.OffsetX, (float)e.OffsetY);
-			await _canvasRef.Redraw();
 		}
 	}
+
 	private void OnMouseUp(MouseEventArgs e)
 	{
 		_deviceDragFlag = false;
@@ -235,7 +459,7 @@
 
 	private async void OnRightClick(MouseEventArgs e)
 	{
-		_selectedDevice = GetDeviceUnderMouse((float)e.OffsetX, (float)e.OffsetY);
+		_selectedDevice = Sim.Devices.GetAtPosition(new((float)e.OffsetX, (float)e.OffsetY));
 
 		if (_selectedDevice is not null)
 		{
@@ -250,30 +474,9 @@
 		await _canvasRef.Redraw();
 	}
 
-	private Device? GetDeviceUnderMouse(float x, float y)
-	{
-		return _selectedDevice = DeviceManager.Devices
-			.Reverse<Device>()
-			.FirstOrDefault(d =>
-			{
-				var posDif = d.Pos - new Vector2(x, y);
-				var dTypeSquared = d.SizeR * d.SizeR;
-				return posDif.LengthSquared() < dTypeSquared;
-			});
-	}
-
-	private void CloseDeviceContextMenu()
-	{
-		_isDeviceContextMenuVisible = false;
-		StateHasChanged();
-	}
-
 	private void EditSelectedDevice()
 	{
-		if (_selectedDevice is null)
-		{
-			return;
-		}
+		if (_selectedDevice is null) return;
 		_formDevice = _selectedDevice;
 		_formDeviceModel = new DeviceModel(_formDevice);
 		_isDeviceModalFormVisible = true;
@@ -281,27 +484,19 @@
 
 	private async void DeleteSelectedDevice()
 	{
-		if (_selectedDevice is null)
-		{
-			return;
-		}
+		if (_selectedDevice is null) return;
 		_isDeviceContextMenuVisible = false;
-		DeviceManager.Devices.Remove(_selectedDevice);
+		Sim.Devices.Remove(_selectedDevice);
 		_selectedDevice = null;
-
 		await _canvasRef.Redraw();
 	}
 
 	private async void CloneSelectedDevice()
 	{
-		if (_selectedDevice is null)
-		{
-			return;
-		}
+		if (_selectedDevice is null) return;
 		_isDeviceContextMenuVisible = false;
 		_formDevice = (Device)_selectedDevice.Clone();
-		DeviceManager.Devices.Add(_formDevice);
-
+		Sim.Devices.Add(_formDevice);
 		await _canvasRef.Redraw();
 	}
 
@@ -313,37 +508,133 @@
 
 	private void SendPacket(Device from, Device to)
 	{
-		new Packet(from, to)
-			{
-				Payload = UTF8Encoding.UTF8.GetBytes("PING"),
-			};
-		_timer ??= new PeriodicTimer(TimeSpan.FromMilliseconds(33));
-		_animatePacketsTask = AnimateForPackets();
-	}
-
-	private async Task AnimateForPackets()
-	{
-		while (PacketManager.ActivePackets.Count > 0 && await _timer!.WaitForNextTickAsync())
-		{
-			await _canvasRef.Redraw();
-		}
-		_animatePacketsTask = null;
-	}
-
-	private void CloseWelcomeModal()
-	{
-		_welcomeModalVisible = false;
-		StateHasChanged();
+		var packet = Sim.Packets.CreatePing(from, to);
+		Sim.Statistics.RecordPacketCreated(packet);
 	}
 
 	private void HandlerChanged()
 	{
-		HandlerManager.SetActiveHandler(_selectedHandlerName ?? "");
+		if (!string.IsNullOrEmpty(_selectedHandlerName))
+		{
+			Sim.Packets.SetActiveHandler(_selectedHandlerName);
+		}
 	}
 
-	private async void PresetChosen(MouseEventArgs e)
+	private async Task BuildNetwork()
 	{
-		DeviceManager.SetPredefinedPreset("Diamonds");
+		if (!string.IsNullOrEmpty(_selectedBuilderName))
+		{
+			Sim.NetworkBuilder.SetActiveStrategy(_selectedBuilderName);
+		}
+		await Sim.StartNetworkBuildAsync();
+	}
+
+	private async Task ClearConnections()
+	{
+		Sim.NetworkBuilder.ClearConnections();
 		await _canvasRef.Redraw();
+	}
+
+	private async Task StartSimulation()
+	{
+		_config.ProtocolName = _selectedHandlerName;
+		_config.NetworkStrategy = _selectedBuilderName;
+		Sim.Packets.SetConfig(_config);
+		Sim.Statistics.Reset();
+		await Sim.StartDataSimulationAsync(_config);
+	}
+
+	private void StopSimulation()
+	{
+		Sim.StopSimulation();
+	}
+
+	private void SaveCurrentResult()
+	{
+		var name = string.IsNullOrWhiteSpace(_saveResultName) 
+			? $"Симуляция {Sim.Statistics.SavedResults.Count + 1}" 
+			: _saveResultName;
+		Sim.Statistics.SaveCurrentResult(name, _config.Clone());
+		_saveResultName = "";
+		StateHasChanged();
+	}
+
+	private void RemoveSavedResult(int index)
+	{
+		Sim.Statistics.RemoveSavedResult(index);
+		StateHasChanged();
+	}
+
+	private void ClearSavedResults()
+	{
+		Sim.Statistics.ClearSavedResults();
+		StateHasChanged();
+	}
+
+	private async Task LoadPreset()
+	{
+		Sim.Devices.LoadPreset(_selectedPreset);
+		await _canvasRef.Redraw();
+	}
+
+	// File operations
+	private async Task DownloadState()
+	{
+		var json = Sim.Serialization.SerializeDevices(Sim.Devices.All);
+		var filename = $"simulation_state_{DateTime.Now:yyyyMMdd_HHmmss}.json";
+		await JS.InvokeVoidAsync("fileUtils.downloadFile", filename, json, "application/json");
+	}
+
+	private async Task TriggerImportFile()
+	{
+		await JS.InvokeVoidAsync("fileUtils.triggerFileInput", "importFileInput");
+	}
+
+	private async Task OnFileSelected(ChangeEventArgs e)
+	{
+		try
+		{
+			var content = await JS.InvokeAsync<string>("fileUtils.uploadFile", "importFileInput");
+			var devices = Sim.Serialization.DeserializeDevices(content);
+			Sim.Devices.Clear();
+			foreach (var d in devices)
+			{
+				Sim.Devices.Add(d);
+			}
+			await _canvasRef.Redraw();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Import error: {ex.Message}");
+		}
+	}
+
+	private async Task DownloadStatisticsCsv()
+	{
+		string csv;
+		if (Sim.Statistics.SavedResults.Count > 0)
+		{
+			csv = Sim.Statistics.ExportAllResultsToCsv();
+		}
+		else
+		{
+			csv = Sim.Statistics.ExportToCsv() + "\n\n" + Sim.Statistics.ExportPacketLogToCsv();
+		}
+		var filename = $"simulation_stats_{DateTime.Now:yyyyMMdd_HHmmss}.csv";
+		await JS.InvokeVoidAsync("fileUtils.downloadFile", filename, csv, "text/csv");
+	}
+
+	private async Task DownloadReport()
+	{
+		var html = ReportGenerator.GenerateHtmlReport(_stats);
+		var filename = $"simulation_report_{DateTime.Now:yyyyMMdd_HHmmss}.html";
+		await JS.InvokeVoidAsync("fileUtils.downloadFile", filename, html, "text/html");
+	}
+
+	private async Task DownloadComparisonReport()
+	{
+		var html = ReportGenerator.GenerateComparisonReport(Sim.Statistics.SavedResults);
+		var filename = $"comparison_report_{DateTime.Now:yyyyMMdd_HHmmss}.html";
+		await JS.InvokeVoidAsync("fileUtils.downloadFile", filename, html, "text/html");
 	}
 }

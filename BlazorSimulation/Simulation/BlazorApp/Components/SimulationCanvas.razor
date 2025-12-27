@@ -3,9 +3,9 @@
 @using Blazor.Extensions.Canvas.Canvas2D
 @using Core
 @using Core.Devices
+@using Core.Services
 @using System.Numerics
 @using System.Text
-@using Core.Managers
 @inject IJSRuntime JSRuntime
 
 <div class="simulation-canvas-container w-100 h-100" @ref="_containerRef">
@@ -22,6 +22,7 @@
     private int _canvasHeight = 600;
     private bool _isInitialized = false;
 
+    [Parameter] public required ISimulationService Sim { get; set; }
     [Parameter] public Device? SendPacketFrom { get; set; }
     [Parameter] public Device? SelectedDevice { get; set; }
 
@@ -29,7 +30,7 @@
     [Parameter] public bool AreConnectionsVisible { get; set; } = true;
     [Parameter] public bool ArePacketsVisible { get; set; } = true;
     [Parameter] public bool AreBattariesVisible { get; set; } = true;
-
+    [Parameter] public float PacketSpeed { get; set; } = 200f;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -82,34 +83,69 @@
 
     public async Task Draw()
     {
-        if (_context is null)
-        {
-            return;
-        }
+        if (_context is null) return;
+        
         await _context.ClearRectAsync(0, 0, _canvasWidth, _canvasHeight);
 
         if (AreVisibilitiesVisible)
         {
-            await DrawDeviceConnections();
+            await DrawVisibilities();
         }
+        
+        if (AreConnectionsVisible)
+        {
+            await DrawConnections();
+        }
+        
         await DrawDevices();
-        await DrawPackets();
+        
+        if (ArePacketsVisible)
+        {
+            await DrawPackets();
+        }
     }
 
-    private async Task DrawDeviceConnections()
+    private async Task DrawVisibilities()
     {
-        if (_context is null)
-        {
-            return;
-        }
-        await _context.SetLineWidthAsync(0.1f);
-        await _context.SetStrokeStyleAsync("#c73e65");
+        if (_context is null) return;
+        
+        await _context.SetLineWidthAsync(1.5f);
+        await _context.SetStrokeStyleAsync("rgba(255, 180, 180, 0.4)");
         await _context.BeginPathAsync();
 
-        foreach (var connection in DeviceManager.GetAllVisibilities())
+        foreach (var (d1, d2) in Sim.Devices.GetAllVisibilities())
         {
-            await _context.MoveToAsync(connection.d1.Pos.X, connection.d1.Pos.Y);
-            await  _context.LineToAsync(connection.d2.Pos.X, connection.d2.Pos.Y);
+            await _context.MoveToAsync(d1.Pos.X, d1.Pos.Y);
+            await _context.LineToAsync(d2.Pos.X, d2.Pos.Y);
+        }
+
+        await _context.StrokeAsync();
+        await _context.ClosePathAsync();
+    }
+
+    private async Task DrawConnections()
+    {
+        if (_context is null) return;
+
+        await _context.SetLineWidthAsync(2.5f);
+        await _context.SetStrokeStyleAsync("#4a90d9");
+        await _context.BeginPathAsync();
+
+        var drawn = new HashSet<(Guid, Guid)>();
+        foreach (var device in Sim.Devices.All)
+        {
+            foreach (var connected in device.Connections)
+            {
+                var key = device.Id.CompareTo(connected.Id) < 0 
+                    ? (device.Id, connected.Id) 
+                    : (connected.Id, device.Id);
+                    
+                if (drawn.Add(key))
+                {
+                    await _context.MoveToAsync(device.Pos.X, device.Pos.Y);
+                    await _context.LineToAsync(connected.Pos.X, connected.Pos.Y);
+                }
+            }
         }
 
         await _context.StrokeAsync();
@@ -118,12 +154,9 @@
 
     private async Task DrawDevices()
     {
-        if (_context is null)
-        {
-            return;
-        }
+        if (_context is null) return;
 
-        foreach (var device in DeviceManager.Devices)
+        foreach (var device in Sim.Devices.All)
         {
             await DrawDevice(device);
         }
@@ -131,10 +164,8 @@
 
     private async Task DrawDevice(Device device)
     {
-        if (_context is null)
-        {
-            return;
-        }
+        if (_context is null) return;
+        
         await _context.BeginPathAsync();
         await _context.ArcAsync(device.Pos.X, device.Pos.Y, device.SizeR, 0, 2 * Math.PI);
         await _context.SetFillStyleAsync(device.Color);
@@ -149,80 +180,96 @@
             await _context.BeginPathAsync();
             await _context.ArcAsync(device.Pos.X, device.Pos.Y, device.Radius, 0, 2 * Math.PI);
             await _context.SetStrokeStyleAsync("orange");
-            await _context.SetLineWidthAsync(.5f);
+            await _context.SetLineWidthAsync(1f);
             await _context.StrokeAsync();
         }
 
-        const int BATTERY_BAR_W = 20;
-        const int BATTERY_BAR_Wh = 10;
-        const int BATTERY_BAR_H = 4;
-
-		if (AreBattariesVisible)
-		{
-            await _context.BeginPathAsync();
-            await _context.SetLineWidthAsync(1f);
-            await _context.SetStrokeStyleAsync("black");
-            if (device.DevicePowerType == Device.PowerType.AC)
-            {
-                await _context.SetFillStyleAsync("yellow");
-                await _context.FillRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W, BATTERY_BAR_H);
-            }
-            else
-            {
-                await _context.SetFillStyleAsync("green");
-                await _context.FillRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W * device.Battery, BATTERY_BAR_H);
-            }
-            await _context.StrokeRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W, BATTERY_BAR_H);
-		}
+        if (AreBattariesVisible)
+        {
+            await DrawBattery(device);
+        }
 
         await DrawDeviceLabel(device);
     }
 
+    private async Task DrawBattery(Device device)
+    {
+        if (_context is null) return;
+        
+        const int BATTERY_BAR_W = 20;
+        const int BATTERY_BAR_Wh = 10;
+        const int BATTERY_BAR_H = 4;
+
+        await _context.BeginPathAsync();
+        await _context.SetLineWidthAsync(1f);
+        await _context.SetStrokeStyleAsync("black");
+        
+        if (device.DevicePowerType == Device.PowerType.AC)
+        {
+            await _context.SetFillStyleAsync("yellow");
+            await _context.FillRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W, BATTERY_BAR_H);
+        }
+        else
+        {
+            var batteryColor = device.Battery > 0.5 ? "green" : device.Battery > 0.2 ? "orange" : "red";
+            await _context.SetFillStyleAsync(batteryColor);
+            await _context.FillRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W * device.Battery, BATTERY_BAR_H);
+        }
+        
+        await _context.StrokeRectAsync(device.Pos.X - BATTERY_BAR_Wh, device.Pos.Y - device.SizeR - BATTERY_BAR_H - 2, BATTERY_BAR_W, BATTERY_BAR_H);
+    }
+
     private async Task DrawDeviceLabel(Device device)
     {
-        if (_context is null)
-        {
-            return;
-        }
+        if (_context is null) return;
+        
         await _context.SetFillStyleAsync("black");
-        await _context.SetFontAsync("14px Arial");
+        await _context.SetFontAsync("12px Arial");
         var nameSize = await _context.MeasureTextAsync(device.Name);
         await _context.FillTextAsync(device.Name, device.Pos.X - nameSize.Width / 2, device.Pos.Y + device.SizeR + 15);
     }
 
     private async Task DrawPackets()
     {
-        if (_context is null || PacketManager.ActivePackets.Count == 0)
-        {
-            return;
-        }
-        var packets = PacketManager.TickPackets();
-        if (!ArePacketsVisible)
-        {
-            return;
-        }
+        if (_context is null) return;
 
-        const int PACKET_SIZE = 3;
-        int ps2 = PACKET_SIZE << 1;
+        var packets = Sim.Packets.ActivePackets;
+        if (packets.Count == 0) return;
 
-        await _context.SetFillStyleAsync("#102de6");
-        await _context.BeginPathAsync();
+        const int PACKET_SIZE = 6;
 
-        var packetsTasks = new List<Task>(packets.Count);
         foreach (var packet in packets)
         {
-            packetsTasks.Add(_context.FillRectAsync(packet.X - PACKET_SIZE, packet.Y - PACKET_SIZE, ps2, ps2));
+            if (packet.CurrentHop is null || packet.NextHop is null) continue;
+            
+            float distance = Vector2.Distance(packet.CurrentHop.Pos, packet.NextHop.Pos);
+            if (distance < 1e-6f) continue;
+            
+            float timeElapsed = (float)(DateTime.UtcNow - packet.CreatedOn).TotalSeconds;
+            float t = MathF.Min(timeElapsed * PacketSpeed / distance, 1f);
+            
+            var pos = Vector2.Lerp(packet.CurrentHop.Pos, packet.NextHop.Pos, t);
+            
+            // Разные цвета для разных типов пакетов
+            var color = packet.PacketType switch
+            {
+                PacketType.Ping => "#3366ff",
+                PacketType.LampCommand => "#ff9900",
+                PacketType.SensorData => "#00cc66",
+                PacketType.NetworkBuild => "#cc00cc",
+                _ => "#666666"
+            };
+            
+            await _context.SetFillStyleAsync(color);
+            await _context.BeginPathAsync();
+            await _context.ArcAsync(pos.X, pos.Y, PACKET_SIZE / 2, 0, 2 * Math.PI);
+            await _context.FillAsync();
         }
-        await Task.WhenAll(packetsTasks);
-
-        await _context.FillAsync();
-        await _context.ClosePathAsync();
     }
 
     public async Task Redraw()
     {
         await Draw();
-        StateHasChanged();
     }
 
     public void Dispose()

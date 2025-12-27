@@ -1,5 +1,4 @@
-﻿
-namespace Core.Devices;
+﻿namespace Core.Devices;
 
 public class Hub : Device
 {
@@ -12,7 +11,6 @@ public class Hub : Device
     {
         DevicePowerType = PowerType.AC;
     }
-
 
     public override string Color => "#7337bd";
     public override int SizeR => 20;

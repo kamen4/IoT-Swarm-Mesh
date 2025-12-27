@@ -2,29 +2,26 @@
 
 public class Sensor : Device
 {
+    private readonly Random _random;
+    
+    public double LastValue { get; private set; }
+
     public Sensor(Guid id) : base(id)
     {
+        _random = new Random(id.GetHashCode());
     }
 
     public Sensor()
     {
+        _random = new Random(Id.GetHashCode());
     }
 
     public double GenData()
     {
-        return new Random(Id.GetHashCode()).NextDouble();
+        LastValue = _random.NextDouble() * 100; // 0-100 range
+        return LastValue;
     }
 
     public override string Color => "#299450";
     public override int SizeR => 10;
-
-    public override void AcceptPacket(Packet packet)
-    {
-        base.AcceptPacket(packet); // Call base logic first
-        // Sensor-specific packet handling can go here if needed
-        if (packet.PacketType == Packet.Type.Data)
-        {
-            // Example specific logic
-        }
-    }
 }

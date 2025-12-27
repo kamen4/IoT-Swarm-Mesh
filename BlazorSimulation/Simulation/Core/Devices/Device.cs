@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using System.Text;
-using Core.Managers;
+using Core.Services;
 
 namespace Core.Devices;
 
@@ -14,9 +14,10 @@ public abstract class Device : ICloneable
 
     public Guid Id { get; private set; }
     public string Name { get; set; } = "";
-    public double Battery { get; set; } = 1;
+    public double Battery { get; set; } = 1.0;
     public PowerType DevicePowerType { get; set; } = PowerType.Battery;
     public double Radius { get; set; } = 50;
+    public double BatteryDrainRate { get; set; } = 1.0;
 
     public Device()
     {
@@ -39,55 +40,52 @@ public abstract class Device : ICloneable
         return base.Equals(obj);
     }
 
-    public override int GetHashCode()
-    {
-        return Id.GetHashCode();
-    }
+    public override int GetHashCode() => Id.GetHashCode();
 
     public Vector2 Pos { get; set; } = new();
 
     public abstract string Color { get; }
     public abstract int SizeR { get; }
 
-    public void HandlePacket(Packet packet)
-    {
-        HandlerManager.GetActiveHandler().Handle(this, packet);
-    }
-
-    private static readonly HashSet<Guid> _idempKeys = [];
+    private readonly HashSet<Guid> _processedPackets = [];
+    
     public virtual void AcceptPacket(Packet packet)
     {
-        if (!_idempKeys.Contains(packet.IdempotencyId))
+        if (_processedPackets.Contains(packet.IdempotencyId))
         {
-            _idempKeys.Add(packet.IdempotencyId);
-            Console.WriteLine($"Msg accepted by {Id}: {Encoding.UTF8.GetString(packet.Payload ?? [])}");
-
-            switch (packet.PacketType)
+            return;
+        }
+        
+        _processedPackets.Add(packet.IdempotencyId);
+        
+        // Limit memory - keep only last 1000 packets
+        if (_processedPackets.Count > 1000)
+        {
+            var oldest = _processedPackets.Take(100).ToList();
+            foreach (var id in oldest)
             {
-                case Packet.Type.Ping:
-                    break;
-                case Packet.Type.NetworkBuild:
-                    break;
-                default:
-                    break;
-            }
-                
-            if (packet.ConfirmDelivery && packet.DirectionForward)
-            {
-                _ = new Packet(this, packet.Sender)
-                {
-                    HandlerData = packet.HandlerData,
-                    DirectionForward = false,
-                    Payload = Encoding.UTF8.GetBytes($"MSG OK {packet.IdempotencyId}")
-                };
+                _processedPackets.Remove(id);
             }
         }
+
+        OnPacketAccepted(packet);
+    }
+
+    protected virtual void OnPacketAccepted(Packet packet)
+    {
+        // Override in derived classes for specific behavior
+    }
+
+    public void ClearProcessedPackets()
+    {
+        _processedPackets.Clear();
     }
 
     public virtual object Clone()
     {
-        var mclone = (Device)MemberwiseClone();
-        mclone.Id = Guid.NewGuid();
-        return mclone;
+        var clone = (Device)MemberwiseClone();
+        clone.Id = Guid.NewGuid();
+        clone.Connections = [];
+        return clone;
     }
 }

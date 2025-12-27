@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Core.Services;
 
 namespace BlazorApp
 {
@@ -12,6 +13,9 @@ namespace BlazorApp
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            
+            // Register simulation service as singleton
+            builder.Services.AddSingleton<ISimulationService>(_ => ServiceFactory.CreateSimulationService());
 
             await builder.Build().RunAsync();
         }

@@ -18,6 +18,7 @@ public class DeviceModel
     public PowerType DevicePowerType { get; set; } = PowerType.Battery;
     public double Radius { get; set; } = 50;
     public Type DeviceType { get; set; } = Type.Sensor;
+    public double BatteryDrainRate { get; set; } = 1.0;
 
     public Device ToDevice()
     {
@@ -42,6 +43,7 @@ public class DeviceModel
         device.Battery = Battery;
         device.DevicePowerType = DevicePowerType;
         device.Radius = Radius;
+        device.BatteryDrainRate = BatteryDrainRate;
     }
 
     public DeviceModel()
@@ -55,5 +57,13 @@ public class DeviceModel
         Battery = device.Battery;
         DevicePowerType = device.DevicePowerType;
         Radius = device.Radius;
+        BatteryDrainRate = device.BatteryDrainRate;
+        DeviceType = device switch
+        {
+            Hub => Type.Hub,
+            Lamp => Type.Lamp,
+            Sensor => Type.Sensor,
+            _ => Type.Sensor
+        };
     }
 }

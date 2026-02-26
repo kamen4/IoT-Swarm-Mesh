@@ -31,7 +31,7 @@
                             <td class="mono">@p.Id.ToString()[..8]</td>
                             <td>@p.From.Name</td>
                             <td>@p.To.Name</td>
-                            <td>@(p.NextHop?.Name ?? "—")</td>
+                            <td>@(p.NextHop?.Name ?? "\u2014")</td>
                             <td class="@TtlClass(p.TTL)">@p.TTL</td>
                             <td class="mono">@p.ArrivalTick</td>
                             <td class="mono">@PayloadText(p)</td>

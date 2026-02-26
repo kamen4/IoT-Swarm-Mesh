@@ -28,7 +28,7 @@
                         <td class="mono">@ExtraInfo(device)</td>
                         <td class="row-actions">
                             <button class="btn btn-ghost btn-sm" @onclick="() => OnEditClicked(device)">Edit</button>
-                            <button class="btn btn-danger btn-sm" @onclick="() => OnDeleteClicked(device)">??</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => OnDeleteClicked(device)">X</button>
                         </td>
                     </tr>
                 }
@@ -66,6 +66,6 @@
     {
         GeneratorDevice g => $"tick {g.CurrentTickCount}/{g.GenFrequencyTicks}",
         EmitterDevice   e => $"state={e.State}",
-        _                 => "—"
+        _                 => "\u2014"
     };
 }

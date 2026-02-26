@@ -28,6 +28,13 @@ public sealed class StatMetric
     /// <summary>Formatted string ready for display.</summary>
     public string DisplayValue => IsDecimal ? Value.ToString("F2") : ((long)Value).ToString();
 
+    /// <summary>
+    /// Initialises a new <see cref="StatMetric"/> with the given label, description, and display flags.
+    /// </summary>
+    /// <param name="label">Short label shown in the statistics panel header.</param>
+    /// <param name="description">Longer description shown as a tooltip or sub-text.</param>
+    /// <param name="isDecimal">When <c>true</c> the value is displayed with two decimal places.</param>
+    /// <param name="isPlottable">When <c>true</c> this metric can be selected as a chart series.</param>
     public StatMetric(string label, string description, bool isDecimal = false, bool isPlottable = false)
     {
         Label       = label;

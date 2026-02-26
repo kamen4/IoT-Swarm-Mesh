@@ -1,15 +1,16 @@
-@using Engine.Statistics
+﻿@using Engine.Statistics
 @using WebApp.Client.Shared
+
 @implements IDisposable
 
 <div class="stats-drawer @(_visible ? "stats-drawer--open" : "")">
 
     <div class="stats-drawer-header">
-        <span>?? Statistics</span>
+        <span>Statistics</span>
         <div class="stats-drawer-actions">
-            <button class="btn btn-ghost btn-sm" @onclick="() => _showDetail = true">?? Detailed</button>
-            <button class="btn btn-ghost btn-sm" @onclick="OnReset">? Reset</button>
-            <button class="btn btn-ghost btn-sm" @onclick="Close">?</button>
+            <button class="btn btn-ghost btn-sm" @onclick="() => _showDetail = true">Detailed</button>
+            <button class="btn btn-ghost btn-sm" @onclick="OnReset">Reset</button>
+            <button class="btn btn-ghost btn-sm" @onclick="Close">X</button>
         </div>
     </div>
 

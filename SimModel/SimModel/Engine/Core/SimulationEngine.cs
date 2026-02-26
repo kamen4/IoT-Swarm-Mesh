@@ -60,7 +60,7 @@ public class SimulationEngine
     /// </summary>
     public event EventHandler? TickEvent;
 
-    // ── Typed simulation events ──────────────────────────────────────────────
+    // -- Typed simulation events ----------------------------------------------
 
     /// <summary>Raised every time a packet is enqueued (including flood clones).</summary>
     public event EventHandler<PacketRegisteredEventArgs>? PacketRegistered;

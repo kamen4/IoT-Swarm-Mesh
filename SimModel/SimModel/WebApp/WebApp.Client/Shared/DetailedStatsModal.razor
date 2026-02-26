@@ -1,4 +1,4 @@
-@using Engine.Statistics
+ï»¿@using Engine.Statistics
 @using System.Globalization
 @implements IDisposable
 
@@ -6,10 +6,10 @@
     <div class="detail-modal" @onclick:stopPropagation>
 
         <div class="detail-header">
-            <span>?? Detailed statistics</span>
+            <span>Detailed statistics</span>
             <div class="stats-drawer-actions">
-                <button class="btn btn-ghost btn-sm" @onclick="ResetStats">? Reset</button>
-                <button class="btn btn-ghost btn-sm" @onclick="Close">?</button>
+                <button class="btn btn-ghost btn-sm" @onclick="ResetStats">Reset</button>
+                <button class="btn btn-ghost btn-sm" @onclick="Close">X</button>
             </div>
         </div>
 
@@ -226,7 +226,7 @@
     private string NoDataMarkup() =>
         $"<text x=\"{((int)(W / 2))}\" y=\"{((int)(H / 2))}\" " +
         "text-anchor=\"middle\" font-size=\"12\" fill=\"#94a3b8\">" +
-        "No data yet — start the simulation</text>";
+        "No data yet \u2014 start the simulation</text>";
 
     private void SelectSeries(StatMetric m) { _selectedSeries = m; Recompute(); }
 }

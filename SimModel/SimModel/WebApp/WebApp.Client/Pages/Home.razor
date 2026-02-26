@@ -1,4 +1,4 @@
-@page "/"
+﻿@page "/"
 @using Engine.Devices
 @using WebApp.Client.Services
 @using WebApp.Client.Shared
@@ -9,7 +9,7 @@
 
 <div class="app-shell">
 
-    @* ?? Top bar ???????????????????????????????????????????????????????? *@
+    @* -- Top bar -------------------------------------------------------- *@
     <header class="topbar">
         <span class="topbar-title">IoT Swarm Mesh</span>
         <span class="topbar-stat">Tick <strong>@Sim.Engine.TickCount</strong></span>
@@ -21,24 +21,24 @@
 
         @if (Sim.IsRunning)
         {
-            <button class="btn btn-danger btn-sm" @onclick="Sim.Stop">? Stop</button>
+            <button class="btn btn-danger btn-sm" @onclick="Sim.Stop">Stop</button>
         }
         else
         {
-            <button class="btn btn-primary btn-sm" @onclick="Sim.Start">? Start</button>
+            <button class="btn btn-primary btn-sm" @onclick="Sim.Start">Start</button>
         }
-        <button class="btn btn-ghost btn-sm" @onclick="Sim.Reset">? Reset</button>
+        <button class="btn btn-ghost btn-sm" @onclick="Sim.Reset">Reset</button>
 
         <div class="topbar-sep"></div>
 
         <input class="topbar-count" type="number" min="1" max="50" @bind="_generateCount" />
-        <button class="btn btn-ghost btn-sm" @onclick="GenerateDevices">? Generate</button>
+        <button class="btn btn-ghost btn-sm" @onclick="GenerateDevices">Generate</button>
 
-        <button class="btn btn-ghost btn-sm" @onclick="OpenSettings">? Settings</button>
-        <button class="btn btn-ghost btn-sm" @onclick="() => _showStats = !_showStats">?? Stats</button>
+        <button class="btn btn-ghost btn-sm" @onclick="OpenSettings">Settings</button>
+        <button class="btn btn-ghost btn-sm" @onclick="() => _showStats = !_showStats">Stats</button>
     </header>
 
-    @* ?? Main layout ???????????????????????????????????????????????????? *@
+    @* -- Main layout ---------------------------------------------------- *@
     <main class="main-grid">
 
         <section class="col-left">
@@ -63,7 +63,7 @@
                      OnResetStats="Sim.Statistics.Reset" />
 </div>
 
-@* ?? Modals ????????????????????????????????????????????????????????????? *@
+@* -- Modals ------------------------------------------------------------- *@
 
 @if (_showDeviceModal)
 {

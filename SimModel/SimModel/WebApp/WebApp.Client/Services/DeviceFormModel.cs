@@ -1,4 +1,4 @@
-namespace WebApp.Services;
+namespace WebApp.Client.Services;
 
 public enum DeviceType { Hub, Generator, Emitter }
 

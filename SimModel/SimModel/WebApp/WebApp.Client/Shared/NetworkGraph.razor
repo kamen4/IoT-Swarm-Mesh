@@ -2,9 +2,6 @@
 @using Engine.Devices
 @using System.Globalization
 
-@* SVG graph showing devices, their visibility radii, and connections between
-   devices that are within VISIBILITY_DISTANCE of each other. *@
-
 <div class="panel network-graph-panel">
     <div class="panel-header">
         <h2>Network graph</h2>
@@ -44,8 +41,8 @@
 </div>
 
 @code {
-    [Parameter, EditorRequired] public IReadOnlyList<Device> Devices          { get; set; } = [];
-    [Parameter]                 public int                   VisibilityDistance { get; set; } = Engine.Core.SimulationEngine.VISIBILITY_DISTANCE;
+    [Parameter, EditorRequired] public IReadOnlyList<Device> Devices           { get; set; } = [];
+    [Parameter]                 public int                   VisibilityDistance { get; set; } = SimulationEngine.VISIBILITY_DISTANCE;
 
     private bool _showRadii = true;
 

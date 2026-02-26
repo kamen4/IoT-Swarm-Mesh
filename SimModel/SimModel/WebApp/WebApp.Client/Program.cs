@@ -1,14 +1,12 @@
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using WebApp.Client;
+using WebApp.Client.Services;
 
-namespace WebApp.Client
-{
-    internal class Program
-    {
-        static async Task Main(string[] args)
-        {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            await builder.Build().RunAsync();
-        }
-    }
-}
+builder.Services.AddSingleton<SimulationService>();
+
+await builder.Build().RunAsync();

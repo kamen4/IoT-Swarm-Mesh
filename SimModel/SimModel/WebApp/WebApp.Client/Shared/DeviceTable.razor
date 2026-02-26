@@ -1,7 +1,5 @@
 @using Engine.Devices
-@using WebApp.Services
-
-@* Displays the registered devices with actions to edit, delete, and inspect. *@
+@using WebApp.Client.Services
 
 <div class="panel">
     <div class="panel-header">
@@ -30,7 +28,7 @@
                         <td class="mono">@ExtraInfo(device)</td>
                         <td class="row-actions">
                             <button class="btn btn-ghost btn-sm" @onclick="() => OnEditClicked(device)">Edit</button>
-                            <button class="btn btn-danger btn-sm" @onclick="() => OnDeleteClicked(device)">?</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => OnDeleteClicked(device)">??</button>
                         </td>
                     </tr>
                 }

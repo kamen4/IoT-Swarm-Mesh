@@ -4,18 +4,15 @@ using Engine.Statistics;
 using System.Diagnostics;
 using System.Numerics;
 
-namespace WebApp.Services;
+namespace WebApp.Client.Services;
 
 public class SimulationService : IDisposable
 {
-    public SimulationEngine    Engine     { get; } = SimulationEngine.Instance;
+    public SimulationEngine     Engine     { get; } = SimulationEngine.Instance;
     public SimulationStatistics Statistics { get; } = SimulationStatistics.Instance;
-    public SimulationConfig    Config     { get; } = new();
+    public SimulationConfig     Config     { get; } = new();
 
-    /// <summary>Whether the tick loop is currently running.</summary>
-    public bool IsRunning { get; private set; }
-
-    /// <summary>Wall-clock milliseconds spent inside the last <see cref="SimulationEngine.Tick"/> call.</summary>
+    public bool   IsRunning  { get; private set; }
     public double LastTickMs { get; private set; }
 
     public event Action? StateChanged;
@@ -26,8 +23,6 @@ public class SimulationService : IDisposable
     {
         SeedDefaultDevices();
     }
-
-    // ?? Tick loop ????????????????????????????????????????????????????????????
 
     public void Start()
     {
@@ -68,8 +63,6 @@ public class SimulationService : IDisposable
         }
     }
 
-    // ?? Device CRUD ??????????????????????????????????????????????????????????
-
     public void AddDevice(DeviceFormModel form)
     {
         var device = CreateDevice(form);
@@ -90,8 +83,6 @@ public class SimulationService : IDisposable
 
     public void RemoveDevice(Guid id) => Engine.RemoveDevice(id);
 
-    // ?? Seed ?????????????????????????????????????????????????????????????????
-
     private void SeedDefaultDevices()
     {
         Engine.RegisterDevice(new HubDevice            { Name = "Hub",      Position = new Vector2(  0,   0) });
@@ -104,15 +95,12 @@ public class SimulationService : IDisposable
 
     private static Device CreateDevice(DeviceFormModel form) => form.DeviceType switch
     {
-        DeviceType.Hub       => new HubDevice            { Name = form.Name, Position = new Vector2(form.X, form.Y) },
+        DeviceType.Hub       => new HubDevice           { Name = form.Name, Position = new Vector2(form.X, form.Y) },
         DeviceType.Generator => new GeneratorDevice(form.GenFrequencyTicks) { Name = form.Name, Position = new Vector2(form.X, form.Y) },
-        DeviceType.Emitter   => new EmitterDevice        { Name = form.Name, Position = new Vector2(form.X, form.Y) },
+        DeviceType.Emitter   => new EmitterDevice       { Name = form.Name, Position = new Vector2(form.X, form.Y) },
         _                    => throw new ArgumentOutOfRangeException()
     };
 
-    // ?? Reset / Generate ?????????????????????????????????????????????????????
-
-    /// <summary>Stops the simulation, clears all devices and seeds the defaults again.</summary>
     public void Reset()
     {
         Stop();
@@ -122,11 +110,6 @@ public class SimulationService : IDisposable
         StateChanged?.Invoke();
     }
 
-    /// <summary>
-    /// Stops the simulation, removes all existing devices and creates
-    /// <paramref name="count"/> randomly placed devices around a central hub.
-    /// Roughly half are generators and half are emitters.
-    /// </summary>
     public void GenerateRandom(int count)
     {
         Stop();

@@ -2,15 +2,9 @@
 @using System.Globalization
 @implements IDisposable
 
-@* Full-screen detailed statistics view.
-   Summary cards + a pure-SVG time-series chart.
-   To add a new plottable metric: set isPlottable: true on its StatMetric in
-   SimulationStatistics — no other changes needed here. *@
-
 <div class="modal-backdrop detail-backdrop" @onclick="Close">
     <div class="detail-modal" @onclick:stopPropagation>
 
-        @* ?? Header ??????????????????????????????????????????????????? *@
         <div class="detail-header">
             <span>?? Detailed statistics</span>
             <div class="stats-drawer-actions">
@@ -21,7 +15,6 @@
 
         <div class="detail-body">
 
-            @* ?? Summary cards ????????????????????????????????????????? *@
             <div class="detail-cards">
                 @foreach (var m in Stats.Metrics)
                 {
@@ -32,7 +25,6 @@
                 }
             </div>
 
-            @* ?? Chart ????????????????????????????????????????????????? *@
             <div class="chart-panel">
                 <div class="chart-toolbar">
                     <span class="chart-title">Per-tick history</span>
@@ -51,7 +43,6 @@
                 <svg class="chart-svg" viewBox="0 0 @W @H" xmlns="http://www.w3.org/2000/svg"
                      preserveAspectRatio="none">
 
-                    @* Grid lines — @for gives stable sequence numbers for Blazor's differ *@
                     @for (int gi = 0; gi < _axes.GridYs.Count; gi++)
                     {
                         var yStr = _axes.GridYs[gi].ToString("F2", CultureInfo.InvariantCulture);
@@ -59,7 +50,6 @@
                               stroke="#e2e8f0" stroke-width="1" />
                     }
 
-                    @* Y-axis labels *@
                     @for (int yi = 0; yi < _axes.YLabels.Count; yi++)
                     {
                         var (yv, ylabel) = _axes.YLabels[yi];
@@ -67,7 +57,6 @@
                         @((MarkupString)$"<text x=\"{(Pad - 4).ToString("F0", CultureInfo.InvariantCulture)}\" y=\"{yStr}\" text-anchor=\"end\" font-size=\"9\" fill=\"#94a3b8\">{ylabel}</text>")
                     }
 
-                    @* X-axis labels *@
                     @for (int xi = 0; xi < _axes.XLabels.Count; xi++)
                     {
                         var (xv, xlabel) = _axes.XLabels[xi];
@@ -75,13 +64,11 @@
                         @((MarkupString)$"<text x=\"{xStr}\" y=\"{(H - Pad / 4).ToString("F0", CultureInfo.InvariantCulture)}\" text-anchor=\"middle\" font-size=\"9\" fill=\"#94a3b8\">{xlabel}</text>")
                     }
 
-                    @* Axes *@
                     <line x1="@Pad" y1="@PadT" x2="@Pad" y2="@(H - PadB)"
                           stroke="#cbd5e1" stroke-width="1.5" />
                     <line x1="@Pad" y1="@(H - PadB)" x2="@(W - Pad / 2)" y2="@(H - PadB)"
                           stroke="#cbd5e1" stroke-width="1.5" />
 
-                    @* Series polyline *@
                     @if (_pts.Count >= 2)
                     {
                         <polyline points="@PointsAttr(_pts)"
@@ -101,11 +88,10 @@
 </div>
 
 @code {
-    [Parameter, EditorRequired] public SimulationStatistics Stats    { get; set; } = null!;
-    [Parameter]                 public EventCallback        OnClose  { get; set; }
+    [Parameter, EditorRequired] public SimulationStatistics Stats        { get; set; } = null!;
+    [Parameter]                 public EventCallback        OnClose      { get; set; }
     [Parameter]                 public EventCallback        OnResetStats { get; set; }
 
-    // SVG viewport
     private const double W    = 700;
     private const double H    = 260;
     private const double Pad  = 42;
@@ -137,9 +123,6 @@
 
     private void Recompute()
     {
-        // Take a stable snapshot of the live list once so both methods
-        // iterate the same immutable array — prevents "collection was modified"
-        // if the engine thread appends a snapshot concurrently.
         var history = Stats.History.ToArray();
         _pts  = BuildPoints(history);
         _axes = BuildAxes(history);
@@ -176,9 +159,9 @@
     }
 
     private record AxisInfo(
-        IReadOnlyList<double>        GridYs,
-        IReadOnlyList<(double Y, string Label)> YLabels,
-        IReadOnlyList<(double X, string Label)> XLabels
+        IReadOnlyList<double>                    GridYs,
+        IReadOnlyList<(double Y, string Label)>  YLabels,
+        IReadOnlyList<(double X, string Label)>  XLabels
     );
 
     private AxisInfo BuildAxes(TickSnapshot[] history)
@@ -195,10 +178,9 @@
         }
         if (minV == maxV) { minV -= 1; maxV += 1; }
 
-        // Y grid — 4 lines
         const int gridLines = 4;
-        var gridYs   = new List<double>();
-        var yLabels  = new List<(double, string)>();
+        var gridYs  = new List<double>();
+        var yLabels = new List<(double, string)>();
         for (int i = 0; i <= gridLines; i++)
         {
             var frac  = (double)i / gridLines;
@@ -208,7 +190,6 @@
             yLabels.Add((svgY, _selectedSeries.IsDecimal ? value.ToString("F1") : ((long)value).ToString()));
         }
 
-        // X labels — 5 tick labels
         const int xCount = 5;
         var xLabels = new List<(double, string)>();
         int n = history.Length;

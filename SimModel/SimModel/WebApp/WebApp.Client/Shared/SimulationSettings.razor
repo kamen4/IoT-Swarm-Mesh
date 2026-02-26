@@ -1,6 +1,4 @@
-@using WebApp.Services
-
-@* Modal panel for tweaking simulation parameters. *@
+@using WebApp.Client.Services
 
 <div class="modal-backdrop" @onclick="OnBackdropClick">
     <div class="modal-box" @onclick:stopPropagation>
@@ -37,10 +35,10 @@
 </div>
 
 @code {
-    [Parameter, EditorRequired] public SimulationConfig Config    { get; set; } = new();
+    [Parameter, EditorRequired] public SimulationConfig Config     { get; set; } = new();
     [Parameter, EditorRequired] public double           LastTickMs { get; set; }
-    [Parameter]                 public EventCallback    OnApply   { get; set; }
-    [Parameter]                 public EventCallback    OnClose   { get; set; }
+    [Parameter]                 public EventCallback    OnApply    { get; set; }
+    [Parameter]                 public EventCallback    OnClose    { get; set; }
 
     private async Task Apply()
     {

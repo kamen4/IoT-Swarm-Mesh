@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_PATH: "SimModel/SimModel/WebApp/WebApp/WebApp.csproj"
+  PROJECT_PATH: "SimModel/SimModel/WebApp/WebApp.Client/WebApp.Client.csproj"
   CONFIGURATION: "Release"
   PUBLISH_DIR: "publish_output"
   CUSTOM_DOMAIN: "iotswarmsim.gorbach.site"

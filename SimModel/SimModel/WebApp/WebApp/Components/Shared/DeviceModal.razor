@@ -1,0 +1,61 @@
+@using WebApp.Services
+
+@* Modal for creating or editing a device. *@
+
+<div class="modal-backdrop" @onclick="OnBackdropClick">
+    <div class="modal-box" @onclick:stopPropagation>
+        <h3>@(IsEdit ? "Edit device" : "Add device")</h3>
+
+        <label>
+            Name
+            <input class="form-input" @bind="Model.Name" placeholder="Device name" />
+        </label>
+
+        @if (!IsEdit)
+        {
+            <label>
+                Type
+                <select class="form-input" @bind="Model.DeviceType">
+                    @foreach (var t in Enum.GetValues<DeviceType>())
+                    {
+                        <option value="@t">@t</option>
+                    }
+                </select>
+            </label>
+        }
+
+        <label>
+            Position X
+            <input class="form-input" type="number" @bind="Model.X" />
+        </label>
+
+        <label>
+            Position Y
+            <input class="form-input" type="number" @bind="Model.Y" />
+        </label>
+
+        @if (Model.DeviceType == DeviceType.Generator)
+        {
+            <label>
+                Gen frequency (ticks)
+                <input class="form-input" type="number" min="1" @bind="Model.GenFrequencyTicks" />
+            </label>
+        }
+
+        <div class="modal-actions">
+            <button class="btn btn-primary" @onclick="Submit">@(IsEdit ? "Save" : "Add")</button>
+            <button class="btn btn-ghost" @onclick="Cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public DeviceFormModel Model { get; set; } = new();
+    [Parameter] public bool IsEdit { get; set; }
+    [Parameter] public EventCallback OnSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    private async Task Submit() => await OnSubmit.InvokeAsync();
+    private async Task Cancel() => await OnCancel.InvokeAsync();
+    private async Task OnBackdropClick() => await OnCancel.InvokeAsync();
+}

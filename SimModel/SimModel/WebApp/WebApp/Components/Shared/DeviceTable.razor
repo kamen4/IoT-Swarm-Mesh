@@ -1,0 +1,73 @@
+@using Engine.Devices
+@using WebApp.Services
+
+@* Displays the registered devices with actions to edit, delete, and inspect. *@
+
+<div class="panel">
+    <div class="panel-header">
+        <h2>Devices <span class="badge">@Devices.Count</span></h2>
+        <button class="btn btn-primary btn-sm" @onclick="OnAddClicked">+ Add</button>
+    </div>
+
+    <div class="data-table-scroll">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Position</th>
+                    <th>Extra</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var device in Devices)
+                {
+                    <tr>
+                        <td>@device.Name</td>
+                        <td><span class="tag @TagClass(device)">@TypeLabel(device)</span></td>
+                        <td class="mono">(@device.Position.X.ToString("F0"), @device.Position.Y.ToString("F0"))</td>
+                        <td class="mono">@ExtraInfo(device)</td>
+                        <td class="row-actions">
+                            <button class="btn btn-ghost btn-sm" @onclick="() => OnEditClicked(device)">Edit</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => OnDeleteClicked(device)">?</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<Device> Devices { get; set; } = [];
+    [Parameter] public EventCallback OnAddClicked { get; set; }
+    [Parameter] public EventCallback<Device> OnEditDevice { get; set; }
+    [Parameter] public EventCallback<Device> OnDeleteDevice { get; set; }
+
+    private async Task OnEditClicked(Device d) => await OnEditDevice.InvokeAsync(d);
+    private async Task OnDeleteClicked(Device d) => await OnDeleteDevice.InvokeAsync(d);
+
+    private static string TypeLabel(Device d) => d switch
+    {
+        HubDevice       => "Hub",
+        GeneratorDevice => "Generator",
+        EmitterDevice   => "Emitter",
+        _               => d.GetType().Name
+    };
+
+    private static string TagClass(Device d) => d switch
+    {
+        HubDevice       => "tag-hub",
+        GeneratorDevice => "tag-generator",
+        EmitterDevice   => "tag-emitter",
+        _               => ""
+    };
+
+    private static string ExtraInfo(Device d) => d switch
+    {
+        GeneratorDevice g => $"tick {g.CurrentTickCount}/{g.GenFrequencyTicks}",
+        EmitterDevice   e => $"state={e.State}",
+        _                 => "—"
+    };
+}

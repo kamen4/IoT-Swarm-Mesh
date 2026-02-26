@@ -5,11 +5,11 @@ permissions:
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 
 env:
-  PROJECT_PATH: "BlazorSimulation/Simulation/BlazorApp/BlazorApp.csproj"
+  PROJECT_PATH: "SimModel/SimModel/WebApp/WebApp/WebApp.csproj"
   CONFIGURATION: "Release"
   PUBLISH_DIR: "publish_output"
   CUSTOM_DOMAIN: "iotswarmsim.gorbach.site"
@@ -26,7 +26,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: "9.0.x"
 
       - name: Restore dependencies
         run: dotnet restore "${{ env.PROJECT_PATH }}"
@@ -38,7 +38,7 @@ jobs:
         run: |
           dotnet publish "${{ env.PROJECT_PATH }}" -c ${{ env.CONFIGURATION }} -o "${{ env.PUBLISH_DIR }}" --no-build
           echo "Publish output -> ${{ env.PUBLISH_DIR }}"
-      
+
       - name: Normalize publish folder (move wwwroot contents up if needed)
         run: |
           if [ -d "${{ env.PUBLISH_DIR }}/wwwroot" ]; then

@@ -1,7 +1,158 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+@using Engine.Devices
+@using WebApp.Services
+@using WebApp.Components.Shared
+@inject SimulationService Sim
 
-<PageTitle>Home</PageTitle>
+<PageTitle>IoT Swarm Mesh</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="app-shell">
 
-Welcome to your new app.
+    @* ── Top bar ──────────────────────────────────────────────────────── *@
+    <header class="topbar">
+        <span class="topbar-title">IoT Swarm Mesh</span>
+        <span class="topbar-stat">Tick <strong>@Sim.Engine.TickCount</strong></span>
+        <span class="topbar-stat">Devices <strong>@Sim.Engine.Devices.Count</strong></span>
+        <span class="topbar-stat">Packets <strong>@Sim.Engine.ActivePackets.Count</strong></span>
+        <span class="topbar-stat">dt <strong>@Sim.LastTickMs.ToString("F2") ms</strong></span>
+
+        <div class="topbar-sep"></div>
+
+        @if (Sim.IsRunning)
+        {
+            <button class="btn btn-danger btn-sm" @onclick="Sim.Stop">⏹ Stop</button>
+        }
+        else
+        {
+            <button class="btn btn-primary btn-sm" @onclick="Sim.Start">▶ Start</button>
+        }
+        <button class="btn btn-ghost btn-sm" @onclick="Sim.Reset">↺ Reset</button>
+
+        <div class="topbar-sep"></div>
+
+        <input class="topbar-count" type="number" min="1" max="50" @bind="_generateCount" />
+        <button class="btn btn-ghost btn-sm" @onclick="GenerateDevices">⚡ Generate</button>
+
+        <button class="btn btn-ghost btn-sm" @onclick="OpenSettings">⚙ Settings</button>
+        <button class="btn btn-ghost btn-sm" @onclick="() => _showStats = !_showStats">📊 Stats</button>
+    </header>
+
+    @* ── Main layout ──────────────────────────────────────────────────── *@
+    <main class="main-grid">
+
+        <section class="col-left">
+            <DeviceTable Devices="Sim.Engine.Devices"
+                         OnAddClicked="OpenAddModal"
+                         OnEditDevice="OpenEditModal"
+                         OnDeleteDevice="DeleteDevice" />
+
+            <PacketTable Packets="Sim.Engine.ActivePackets" />
+        </section>
+
+        <section class="col-right">
+            <NetworkGraph Devices="Sim.Engine.Devices"
+                          VisibilityDistance="Sim.Engine.VisibilityDistance" />
+        </section>
+
+    </main>
+
+    <StatisticsPanel Stats="Sim.Statistics"
+                     Visible="_showStats"
+                     OnClose="() => _showStats = false"
+                     OnResetStats="Sim.Statistics.Reset" />
+</div>
+
+@* ── Modals ───────────────────────────────────────────────────────────── *@
+
+@if (_showDeviceModal)
+{
+    <DeviceModal Model="_deviceForm"
+                 IsEdit="_isEditMode"
+                 OnSubmit="SubmitDeviceModal"
+                 OnCancel="CloseDeviceModal" />
+}
+
+@if (_showSettings)
+{
+    <SimulationSettings Config="Sim.Config"
+                        LastTickMs="Sim.LastTickMs"
+                        OnApply="ApplySettings"
+                        OnClose="() => _showSettings = false" />
+}
+
+@code {
+    private bool _showDeviceModal;
+    private bool _showSettings;
+    private bool _showStats;
+    private bool _isEditMode;
+    private Guid _editingId;
+    private DeviceFormModel _deviceForm = new();
+    private int _generateCount = 6;
+
+    protected override void OnInitialized()
+    {
+        Sim.StateChanged += OnEngineStateChanged;
+    }
+
+    private void OnEngineStateChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    // ── Device modal ──────────────────────────────────────────────────────
+
+    private void OpenAddModal()
+    {
+        _deviceForm = new DeviceFormModel();
+        _isEditMode = false;
+        _showDeviceModal = true;
+    }
+
+    private void OpenEditModal(Device device)
+    {
+        _editingId = device.Id;
+        _deviceForm = new DeviceFormModel
+        {
+            Name = device.Name,
+            DeviceType = device switch
+            {
+                HubDevice       => DeviceType.Hub,
+                GeneratorDevice => DeviceType.Generator,
+                _               => DeviceType.Emitter
+            },
+            X = device.Position.X,
+            Y = device.Position.Y,
+            GenFrequencyTicks = device is GeneratorDevice g ? g.GenFrequencyTicks : 40
+        };
+        _isEditMode = true;
+        _showDeviceModal = true;
+    }
+
+    private void SubmitDeviceModal()
+    {
+        if (_isEditMode)
+            Sim.UpdateDevice(_editingId, _deviceForm);
+        else
+            Sim.AddDevice(_deviceForm);
+
+        CloseDeviceModal();
+    }
+
+    private void CloseDeviceModal() => _showDeviceModal = false;
+
+    private void DeleteDevice(Device device) => Sim.RemoveDevice(device.Id);
+
+    // ── Settings ──────────────────────────────────────────────────────────
+
+    private void OpenSettings() => _showSettings = true;
+
+    private void ApplySettings() => Sim.ApplyConfig();
+
+    private void GenerateDevices() => Sim.GenerateRandom(_generateCount);
+
+    public void Dispose()
+    {
+        Sim.StateChanged -= OnEngineStateChanged;
+    }
+}

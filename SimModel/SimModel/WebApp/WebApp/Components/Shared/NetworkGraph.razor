@@ -1,0 +1,126 @@
+@using Engine.Core
+@using Engine.Devices
+@using System.Globalization
+
+@* SVG graph showing devices, their visibility radii, and connections between
+   devices that are within VISIBILITY_DISTANCE of each other. *@
+
+<div class="panel network-graph-panel">
+    <div class="panel-header">
+        <h2>Network graph</h2>
+        <label class="toggle-label">
+            <input type="checkbox" @bind="_showRadii" /> Show radii
+        </label>
+    </div>
+
+    <svg class="network-svg" viewBox="@ViewBox" xmlns="http://www.w3.org/2000/svg">
+
+        @if (_showRadii)
+        {
+            @foreach (var d in Devices)
+            {
+                <circle cx="@F(Sx(d.Position.X))" cy="@F(Sy(d.Position.Y))"
+                        r="@F(Scale(VisibilityDistance))"
+                        fill="none" stroke="#3b82f6" stroke-width="0.5"
+                        stroke-dasharray="4 4" opacity="0.35" />
+            }
+        }
+
+        @foreach (var edge in VisiblePairs())
+        {
+            <line x1="@F(Sx(edge.A.Position.X))" y1="@F(Sy(edge.A.Position.Y))"
+                  x2="@F(Sx(edge.B.Position.X))" y2="@F(Sy(edge.B.Position.Y))"
+                  stroke="#94a3b8" stroke-width="1" opacity="0.6" />
+        }
+
+        @foreach (var node in DeviceNodes())
+        {
+            <circle cx="@node.Cx" cy="@node.Cy" r="@node.R"
+                    fill="@node.Fill" stroke="white" stroke-width="1.5" />
+            @((MarkupString)node.LabelMarkup)
+        }
+
+    </svg>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<Device> Devices          { get; set; } = [];
+    [Parameter]                 public int                   VisibilityDistance { get; set; } = Engine.Core.SimulationEngine.VISIBILITY_DISTANCE;
+
+    private bool _showRadii = true;
+
+    private const double CanvasW = 600;
+    private const double CanvasH = 450;
+    private const double Pad     = 60;
+
+    private string ViewBox => $"0 0 {CanvasW} {CanvasH}";
+
+    private static string F(double v) => v.ToString("F2", CultureInfo.InvariantCulture);
+
+    private (double minX, double maxX, double minY, double maxY) Bounds()
+    {
+        if (Devices.Count == 0) return (-300, 300, -300, 300);
+        var xs = Devices.Select(d => (double)d.Position.X);
+        var ys = Devices.Select(d => (double)d.Position.Y);
+        return (xs.Min() - 50, xs.Max() + 50, ys.Min() - 50, ys.Max() + 50);
+    }
+
+    private double UniformScale()
+    {
+        var (minX, maxX, minY, maxY) = Bounds();
+        var sx = (CanvasW - Pad * 2) / Math.Max(1, maxX - minX);
+        var sy = (CanvasH - Pad * 2) / Math.Max(1, maxY - minY);
+        return Math.Min(sx, sy);
+    }
+
+    private double Sx(double x)
+    {
+        var (minX, maxX, _, _) = Bounds();
+        return CanvasW / 2 + (x - (minX + maxX) / 2) * UniformScale();
+    }
+
+    private double Sy(double y)
+    {
+        var (_, _, minY, maxY) = Bounds();
+        return CanvasH / 2 + (y - (minY + maxY) / 2) * UniformScale();
+    }
+
+    private double Scale(double v) => v * UniformScale();
+
+    private record EdgePair(Device A, Device B);
+
+    private IEnumerable<EdgePair> VisiblePairs()
+    {
+        var seen = new HashSet<(Guid, Guid)>();
+        foreach (var a in Devices)
+        foreach (var b in Devices)
+        {
+            if (a.Id == b.Id) continue;
+            if (System.Numerics.Vector2.Distance(a.Position, b.Position) > VisibilityDistance) continue;
+            var key = a.Id.CompareTo(b.Id) < 0 ? (a.Id, b.Id) : (b.Id, a.Id);
+            if (seen.Add(key)) yield return new EdgePair(a, b);
+        }
+    }
+
+    private record DeviceNode(string Cx, string Cy, double R, string Fill, string LabelMarkup);
+
+    private IEnumerable<DeviceNode> DeviceNodes()
+    {
+        foreach (var d in Devices)
+        {
+            var cx   = F(Sx(d.Position.X));
+            var cy   = F(Sy(d.Position.Y));
+            var r    = d is HubDevice ? 12.0 : 8.0;
+            var fill = d switch
+            {
+                HubDevice       => "#7c3aed",
+                GeneratorDevice => "#0ea5e9",
+                EmitterDevice   => "#10b981",
+                _               => "#64748b"
+            };
+            var ly = F(Sy(d.Position.Y) + r + 10);
+            var label = $"<text x=\"{cx}\" y=\"{ly}\" text-anchor=\"middle\" font-size=\"10\" fill=\"#1e293b\">{d.Name}</text>";
+            yield return new DeviceNode(cx, cy, r, fill, label);
+        }
+    }
+}

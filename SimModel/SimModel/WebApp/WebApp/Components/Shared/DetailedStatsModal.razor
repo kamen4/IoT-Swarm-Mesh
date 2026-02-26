@@ -1,0 +1,251 @@
+@using Engine.Statistics
+@using System.Globalization
+@implements IDisposable
+
+@* Full-screen detailed statistics view.
+   Summary cards + a pure-SVG time-series chart.
+   To add a new plottable metric: set isPlottable: true on its StatMetric in
+   SimulationStatistics — no other changes needed here. *@
+
+<div class="modal-backdrop detail-backdrop" @onclick="Close">
+    <div class="detail-modal" @onclick:stopPropagation>
+
+        @* ?? Header ??????????????????????????????????????????????????? *@
+        <div class="detail-header">
+            <span>?? Detailed statistics</span>
+            <div class="stats-drawer-actions">
+                <button class="btn btn-ghost btn-sm" @onclick="ResetStats">? Reset</button>
+                <button class="btn btn-ghost btn-sm" @onclick="Close">?</button>
+            </div>
+        </div>
+
+        <div class="detail-body">
+
+            @* ?? Summary cards ????????????????????????????????????????? *@
+            <div class="detail-cards">
+                @foreach (var m in Stats.Metrics)
+                {
+                    <div class="stat-card" title="@m.Description">
+                        <span class="stat-label">@m.Label</span>
+                        <span class="stat-value">@m.DisplayValue</span>
+                    </div>
+                }
+            </div>
+
+            @* ?? Chart ????????????????????????????????????????????????? *@
+            <div class="chart-panel">
+                <div class="chart-toolbar">
+                    <span class="chart-title">Per-tick history</span>
+                    <div class="chart-series-selector">
+                        @foreach (var m in Stats.PlottableMetrics)
+                        {
+                            <button class="series-btn @(m == _selectedSeries ? "series-btn--active" : "")"
+                                    @onclick="() => SelectSeries(m)">
+                                @m.Label
+                            </button>
+                        }
+                    </div>
+                    <span class="chart-hint">Last @Stats.History.Count / @SimulationStatistics.MaxHistoryLength ticks</span>
+                </div>
+
+                <svg class="chart-svg" viewBox="0 0 @W @H" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="none">
+
+                    @* Grid lines — @for gives stable sequence numbers for Blazor's differ *@
+                    @for (int gi = 0; gi < _axes.GridYs.Count; gi++)
+                    {
+                        var yStr = _axes.GridYs[gi].ToString("F2", CultureInfo.InvariantCulture);
+                        <line x1="@Pad" y1="@yStr" x2="@(W - Pad / 2)" y2="@yStr"
+                              stroke="#e2e8f0" stroke-width="1" />
+                    }
+
+                    @* Y-axis labels *@
+                    @for (int yi = 0; yi < _axes.YLabels.Count; yi++)
+                    {
+                        var (yv, ylabel) = _axes.YLabels[yi];
+                        var yStr = yv.ToString("F2", CultureInfo.InvariantCulture);
+                        @((MarkupString)$"<text x=\"{(Pad - 4).ToString("F0", CultureInfo.InvariantCulture)}\" y=\"{yStr}\" text-anchor=\"end\" font-size=\"9\" fill=\"#94a3b8\">{ylabel}</text>")
+                    }
+
+                    @* X-axis labels *@
+                    @for (int xi = 0; xi < _axes.XLabels.Count; xi++)
+                    {
+                        var (xv, xlabel) = _axes.XLabels[xi];
+                        var xStr = xv.ToString("F2", CultureInfo.InvariantCulture);
+                        @((MarkupString)$"<text x=\"{xStr}\" y=\"{(H - Pad / 4).ToString("F0", CultureInfo.InvariantCulture)}\" text-anchor=\"middle\" font-size=\"9\" fill=\"#94a3b8\">{xlabel}</text>")
+                    }
+
+                    @* Axes *@
+                    <line x1="@Pad" y1="@PadT" x2="@Pad" y2="@(H - PadB)"
+                          stroke="#cbd5e1" stroke-width="1.5" />
+                    <line x1="@Pad" y1="@(H - PadB)" x2="@(W - Pad / 2)" y2="@(H - PadB)"
+                          stroke="#cbd5e1" stroke-width="1.5" />
+
+                    @* Series polyline *@
+                    @if (_pts.Count >= 2)
+                    {
+                        <polyline points="@PointsAttr(_pts)"
+                                  fill="none" stroke="#3b82f6" stroke-width="2"
+                                  stroke-linejoin="round" stroke-linecap="round" />
+                        <circle cx="@F(_pts[^1].X)" cy="@F(_pts[^1].Y)" r="3.5" fill="#3b82f6" />
+                    }
+                    else
+                    {
+                        @((MarkupString)NoDataMarkup())
+                    }
+                </svg>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public SimulationStatistics Stats    { get; set; } = null!;
+    [Parameter]                 public EventCallback        OnClose  { get; set; }
+    [Parameter]                 public EventCallback        OnResetStats { get; set; }
+
+    // SVG viewport
+    private const double W    = 700;
+    private const double H    = 260;
+    private const double Pad  = 42;
+    private const double PadT = 12;
+    private const double PadB = 22;
+
+    private StatMetric? _selectedSeries;
+    private List<SvgPoint> _pts  = [];
+    private AxisInfo       _axes = new([], [], []);
+
+    protected override void OnInitialized()
+    {
+        Stats.Updated    += Refresh;
+        _selectedSeries ??= Stats.PlottableMetrics.FirstOrDefault();
+        Recompute();
+    }
+
+    protected override void OnParametersSet()
+    {
+        _selectedSeries ??= Stats.PlottableMetrics.FirstOrDefault();
+        Recompute();
+    }
+
+    private void Refresh()
+    {
+        Recompute();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void Recompute()
+    {
+        // Take a stable snapshot of the live list once so both methods
+        // iterate the same immutable array — prevents "collection was modified"
+        // if the engine thread appends a snapshot concurrently.
+        var history = Stats.History.ToArray();
+        _pts  = BuildPoints(history);
+        _axes = BuildAxes(history);
+    }
+
+    private record SvgPoint(double X, double Y);
+
+    private List<SvgPoint> BuildPoints(TickSnapshot[] history)
+    {
+        if (history.Length < 2 || _selectedSeries is null) return [];
+
+        double minV = double.MaxValue, maxV = double.MinValue;
+        foreach (var s in history)
+        {
+            var v = SimulationStatistics.GetSnapshotValue(s, _selectedSeries, Stats.PlottableMetrics);
+            if (v < minV) minV = v;
+            if (v > maxV) maxV = v;
+        }
+        if (minV == maxV) { minV -= 1; maxV += 1; }
+
+        double xMin = Pad, xMax = W - Pad / 2;
+        double yMin = H - PadB, yMax = PadT;
+        int    n    = history.Length;
+
+        var pts = new List<SvgPoint>(n);
+        for (int i = 0; i < n; i++)
+        {
+            var v  = SimulationStatistics.GetSnapshotValue(history[i], _selectedSeries, Stats.PlottableMetrics);
+            var px = xMin + (xMax - xMin) * i / (n - 1);
+            var py = yMin + (yMax - yMin) * (v - minV) / (maxV - minV);
+            pts.Add(new SvgPoint(px, py));
+        }
+        return pts;
+    }
+
+    private record AxisInfo(
+        IReadOnlyList<double>        GridYs,
+        IReadOnlyList<(double Y, string Label)> YLabels,
+        IReadOnlyList<(double X, string Label)> XLabels
+    );
+
+    private AxisInfo BuildAxes(TickSnapshot[] history)
+    {
+        if (history.Length < 2 || _selectedSeries is null)
+            return new AxisInfo([], [], []);
+
+        double minV = double.MaxValue, maxV = double.MinValue;
+        foreach (var s in history)
+        {
+            var v = SimulationStatistics.GetSnapshotValue(s, _selectedSeries, Stats.PlottableMetrics);
+            if (v < minV) minV = v;
+            if (v > maxV) maxV = v;
+        }
+        if (minV == maxV) { minV -= 1; maxV += 1; }
+
+        // Y grid — 4 lines
+        const int gridLines = 4;
+        var gridYs   = new List<double>();
+        var yLabels  = new List<(double, string)>();
+        for (int i = 0; i <= gridLines; i++)
+        {
+            var frac  = (double)i / gridLines;
+            var value = minV + (maxV - minV) * frac;
+            var svgY  = (H - PadB) + (PadT - (H - PadB)) * frac;
+            gridYs.Add(svgY);
+            yLabels.Add((svgY, _selectedSeries.IsDecimal ? value.ToString("F1") : ((long)value).ToString()));
+        }
+
+        // X labels — 5 tick labels
+        const int xCount = 5;
+        var xLabels = new List<(double, string)>();
+        int n = history.Length;
+        for (int i = 0; i < xCount; i++)
+        {
+            var idx  = (int)Math.Round((double)i / (xCount - 1) * (n - 1));
+            var svgX = Pad + (W - Pad * 1.5) * i / (xCount - 1);
+            xLabels.Add((svgX, history[idx].Tick.ToString()));
+        }
+
+        return new AxisInfo(gridYs, yLabels, xLabels);
+    }
+
+    private static string PointsAttr(List<SvgPoint> pts)
+    {
+        var sb = new System.Text.StringBuilder(pts.Count * 12);
+        foreach (var p in pts)
+        {
+            sb.Append(p.X.ToString("F2", CultureInfo.InvariantCulture));
+            sb.Append(',');
+            sb.Append(p.Y.ToString("F2", CultureInfo.InvariantCulture));
+            sb.Append(' ');
+        }
+        return sb.ToString().TrimEnd();
+    }
+
+    private async Task Close()      => await OnClose.InvokeAsync();
+    private async Task ResetStats() => await OnResetStats.InvokeAsync();
+
+    public void Dispose() => Stats.Updated -= Refresh;
+
+    private static string F(double v) => v.ToString("F2", CultureInfo.InvariantCulture);
+
+    private string NoDataMarkup() =>
+        $"<text x=\"{((int)(W / 2))}\" y=\"{((int)(H / 2))}\" " +
+        "text-anchor=\"middle\" font-size=\"12\" fill=\"#94a3b8\">" +
+        "No data yet — start the simulation</text>";
+
+    private void SelectSeries(StatMetric m) { _selectedSeries = m; Recompute(); }
+}

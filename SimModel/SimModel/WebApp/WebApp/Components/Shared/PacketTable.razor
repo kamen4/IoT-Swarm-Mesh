@@ -1,0 +1,63 @@
+@using Engine.Packets
+
+@* Displays in-flight packets sorted by TTL ascending (closest to expiry first). *@
+
+<div class="panel">
+    <div class="panel-header">
+        <h2>In-flight packets <span class="badge">@Packets.Count</span></h2>
+    </div>
+
+    @if (Packets.Count == 0)
+    {
+        <p class="empty-hint">No packets in flight.</p>
+    }
+    else
+    {
+        <div class="data-table-scroll">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Next hop</th>
+                        <th>TTL</th>
+                        <th>Arrives</th>
+                        <th>Payload</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Packets.OrderBy(p => p.TTL).ThenBy(p => p.ArrivalTick).Take(20))
+                    {
+                        <tr class="@(p.TTL <= 2 ? "row-danger" : "")">
+                            <td class="mono">@p.Id.ToString()[..8]</td>
+                            <td>@p.From.Name</td>
+                            <td>@p.To.Name</td>
+                            <td>@(p.NextHop?.Name ?? "—")</td>
+                            <td class="@TtlClass(p.TTL)">@p.TTL</td>
+                            <td class="mono">@p.ArrivalTick</td>
+                            <td class="mono">@PayloadText(p)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Packets.Count > 20)
+        {
+            <p class="empty-hint">…and @(Packets.Count - 20) more</p>
+        }
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<Packet> Packets { get; set; } = [];
+
+    private static string TtlClass(int ttl) => ttl <= 2 ? "text-danger" : ttl <= 5 ? "text-warn" : "";
+
+    private static string PayloadText(Packet p)
+    {
+        var text = p.Payload.Data?.ToString() ?? "—";
+        return text.Length > 10 ? text[..10] : text;
+    }
+}

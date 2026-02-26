@@ -1,0 +1,53 @@
+@using WebApp.Services
+
+@* Modal panel for tweaking simulation parameters. *@
+
+<div class="modal-backdrop" @onclick="OnBackdropClick">
+    <div class="modal-box" @onclick:stopPropagation>
+        <h3>Simulation settings</h3>
+
+        <div class="settings-stat">
+            <span>Last tick work</span>
+            <strong>@LastTickMs.ToString("F2") ms</strong>
+        </div>
+
+        <label>
+            Visibility distance (units)
+            <input class="form-input" type="number" min="50" max="1000"
+                   @bind="Config.VisibilityDistance" />
+        </label>
+
+        <label>
+            Default TTL
+            <input class="form-input" type="number" min="1" max="64"
+                   @bind="Config.DefaultTTL" />
+        </label>
+
+        <label>
+            Ticks to travel
+            <input class="form-input" type="number" min="1" max="20"
+                   @bind="Config.TicksToTravel" />
+        </label>
+
+        <div class="modal-actions">
+            <button class="btn btn-primary" @onclick="Apply">Apply</button>
+            <button class="btn btn-ghost" @onclick="Close">Close</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public SimulationConfig Config    { get; set; } = new();
+    [Parameter, EditorRequired] public double           LastTickMs { get; set; }
+    [Parameter]                 public EventCallback    OnApply   { get; set; }
+    [Parameter]                 public EventCallback    OnClose   { get; set; }
+
+    private async Task Apply()
+    {
+        await OnApply.InvokeAsync();
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task Close()           => await OnClose.InvokeAsync();
+    private async Task OnBackdropClick() => await OnClose.InvokeAsync();
+}

@@ -2,8 +2,6 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    // docfx is used to build the Engine API documentation.
-    // Pin to a specific version so the CI build is reproducible.
     "docfx": {
       "version": "2.78.3",
       "commands": [

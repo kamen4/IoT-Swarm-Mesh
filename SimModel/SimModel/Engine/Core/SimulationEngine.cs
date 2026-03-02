@@ -317,6 +317,8 @@ public class SimulationEngine
         _topology.ClearConnections();
         Hub = null;
         TickCount = 0;
+        // Re-stamp so the next Tick() doesn't inherit stale wall-clock time.
+        _lastTickTime = DateTime.Now;
     }
 
     // -------------------------------------------------------------------------

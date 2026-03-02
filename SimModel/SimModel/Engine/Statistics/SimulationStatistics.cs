@@ -74,6 +74,11 @@ public sealed class SimulationStatistics
     private readonly SimulationEngine   _engine  = SimulationEngine.Instance;
     private double _tickMsAccumulator;
     private long   _tickMsSamples;
+    // The very first dt sample is unreliable: SimulationEngine stamps _lastTickTime
+    // at construction, not at the first Tick() call, so the gap can be arbitrarily
+    // large (however long the user spends before pressing Start).
+    // We discard tick 1 from the average by only accumulating from tick 2 onward.
+    private bool _firstTickSeen;
 
     private SimulationStatistics()
     {
@@ -99,9 +104,19 @@ public sealed class SimulationStatistics
         {
             TotalTicks.Set(e.TickCount);
 
-            _tickMsAccumulator += e.DtMs;
-            _tickMsSamples++;
-            AvgTickMs.Set(_tickMsAccumulator / _tickMsSamples);
+            // Skip the first dt sample: the engine timestamps _lastTickTime at
+            // construction, so tick-1's dt includes all idle time before Start().
+            // From tick 2 onward the delta reflects only the actual tick interval.
+            if (_firstTickSeen)
+            {
+                _tickMsAccumulator += e.DtMs;
+                _tickMsSamples++;
+                AvgTickMs.Set(_tickMsAccumulator / _tickMsSamples);
+            }
+            else
+            {
+                _firstTickSeen = true;
+            }
 
             // ActivePacketsCount is O(1); avoids allocating a list every tick.
             ActivePackets.Set(_engine.ActivePacketsCount);
@@ -160,6 +175,7 @@ public sealed class SimulationStatistics
         _history.Clear();
         _tickMsAccumulator = 0;
         _tickMsSamples     = 0;
+        _firstTickSeen     = false;
         Notify();
     }
 

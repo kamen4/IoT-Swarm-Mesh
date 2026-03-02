@@ -43,6 +43,19 @@ body {
 }
 .topbar-count:focus { outline: none; border-color: #3b82f6; }
 
+.topbar-preset-select {
+    padding: .2rem .4rem;
+    border: 1px solid #475569;
+    border-radius: .375rem;
+    background: #0f172a;
+    color: #f8fafc;
+    font-size: .82rem;
+    max-width: 12rem;
+    cursor: pointer;
+}
+.topbar-preset-select:focus { outline: none; border-color: #3b82f6; }
+.topbar-preset-select option { background: #1e293b; }
+
 .main-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

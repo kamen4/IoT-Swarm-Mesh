@@ -27,12 +27,25 @@
         {
             <button class="btn btn-primary btn-sm" @onclick="Sim.Start">Start</button>
         }
-        <button class="btn btn-ghost btn-sm" @onclick="Sim.Reset">Reset</button>
+        <button class="btn btn-ghost btn-sm" @onclick="Sim.Reset"
+                title="Restore layout: @Sim.ActivePresetName">Reset</button>
 
         <div class="topbar-sep"></div>
 
-        <input class="topbar-count" type="number" min="1" max="50" @bind="_generateCount" />
-        <button class="btn btn-ghost btn-sm" @onclick="GenerateDevices">Generate</button>
+        @* Preset selector *@
+        <select class="topbar-preset-select" @bind="_selectedPresetIndex" title="Choose a network preset">
+            @for (int i = 0; i < SimulationPresets.All.Count; i++)
+            {
+                <option value="@i">@SimulationPresets.All[i].Name</option>
+            }
+        </select>
+        <button class="btn btn-ghost btn-sm" @onclick="LoadSelectedPreset" title="@SelectedPresetDescription">Load</button>
+
+        <div class="topbar-sep"></div>
+
+        @* Random generation *@
+        <input class="topbar-count" type="number" min="1" max="50" @bind="_generateCount" title="Device count for random generation" />
+        <button class="btn btn-ghost btn-sm" @onclick="GenerateDevices">Random</button>
 
         <button class="btn btn-ghost btn-sm" @onclick="OpenSettings">Settings</button>
         <button class="btn btn-ghost btn-sm" @onclick="() => _showStats = !_showStats">Stats</button>
@@ -103,6 +116,10 @@
     private Guid _editingId;
     private DeviceFormModel _deviceForm = new();
     private int _generateCount = 6;
+    private int _selectedPresetIndex = 0;
+
+    private string SelectedPresetDescription =>
+        SimulationPresets.All[_selectedPresetIndex].Description;
 
     protected override void OnInitialized()
     {
@@ -112,6 +129,11 @@
     private void OnEngineStateChanged()
     {
         InvokeAsync(StateHasChanged);
+    }
+
+    private void LoadSelectedPreset()
+    {
+        Sim.LoadPreset(SimulationPresets.All[_selectedPresetIndex]);
     }
 
     private void OpenAddModal()

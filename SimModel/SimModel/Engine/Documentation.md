@@ -16,7 +16,7 @@ graph TD
     subgraph "Routing abstractions (Engine/Routers/)"
         IR["IPacketRouter\n«interface»\nName · Route(packet, sender, topology)"]
         IT["INetworkTopology\n«interface»\nGetVisibleDevices · GetConnectedDevices\nAreVisible · AreConnected"]
-        IMT["IMutableNetworkTopology\n«interface»\nextends INetworkTopology\nConnect · Disconnect\nRemoveDevice · ClearConnections"]
+        IMT["IMutableNetworkTopology\n«interface»\nnextends INetworkTopology\nConnect · Disconnect\nRemoveDevice · ClearConnections"]
         IB["INetworkBuilder\n«interface»\nName · Build(devices, topology)"]
 
         FPR["FloodingPacketRouter\nimplements IPacketRouter\nbroadcast to all visible neighbours"]
@@ -125,7 +125,10 @@ Devices never reference a router directly — they call `SimulationEngine.Instan
 
 | Class | Strategy |
 |---|---|
-| [`FloodingPacketRouter`](Routers/PacketRouter.cs) | Broadcast clone to every **visible** neighbour (original behaviour) |
+| [`SmartFloodingPacketRouter`](Routers/SmartFloodingPacketRouter.cs) | Default. Sends directly to destination if visible; otherwise floods all neighbours except `From` and `PreviousHop` |
+| [`FloodingPacketRouter`](Routers/PacketRouter.cs) | Naive broadcast clone to every **visible** neighbour |
+
+`Packet.PreviousHop` is set by `Device.Recieve` just before re-routing so the smart router knows which device the packet came from and can avoid sending it back.
 
 ---
 

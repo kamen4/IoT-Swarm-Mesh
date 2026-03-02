@@ -25,6 +25,22 @@ public class SimulationService : IDisposable
 
     private CancellationTokenSource? _cts;
 
+    /// <summary>
+    /// The preset that was last loaded with <see cref="LoadPreset"/>, or
+    /// <c>null</c> if the current layout was built by <see cref="SeedDefaultDevices"/>
+    /// or <see cref="GenerateRandom"/>.
+    /// Used by <see cref="Reset"/> so it restores the same topology instead of
+    /// always falling back to the hard-coded default.
+    /// </summary>
+    private SimulationPreset? _activePreset;
+
+    /// <summary>
+    /// The name of the preset that was last loaded with <see cref="LoadPreset"/>,
+    /// or <c>"Default"</c> if no preset has been loaded yet.
+    /// Shown in the UI so the user knows what <see cref="Reset"/> will restore.
+    /// </summary>
+    public string ActivePresetName => _activePreset?.Name ?? "Default";
+
     public SimulationService()
     {
         // Apply the default router from config before seeding devices.
@@ -133,12 +149,35 @@ public class SimulationService : IDisposable
         Engine.Reset();
         Statistics.Reset();
         PacketLimitError = null;
-        SeedDefaultDevices();
+
+        // Restore the last-loaded preset, or fall back to the built-in default.
+        if (_activePreset is not null)
+            _activePreset.Build(this);
+        else
+            SeedDefaultDevices();
+
+        StateChanged?.Invoke();
+    }
+
+    /// <summary>
+    /// Stops the simulation, clears all devices and in-flight packets, then
+    /// applies the device layout defined by <paramref name="preset"/>.
+    /// The preset is remembered and will be restored by subsequent <see cref="Reset"/> calls.
+    /// </summary>
+    public void LoadPreset(SimulationPreset preset)
+    {
+        _activePreset    = preset;
+        Stop();
+        Engine.Reset();
+        Statistics.Reset();
+        PacketLimitError = null;
+        preset.Build(this);
         StateChanged?.Invoke();
     }
 
     public void GenerateRandom(int count)
     {
+        _activePreset    = null;   // random layout has no preset to restore
         Stop();
         Engine.Reset();
         Statistics.Reset();

@@ -1,6 +1,5 @@
 ﻿using Engine.Core;
 using Engine.Packets;
-using Engine.Routers;
 using System.Numerics;
 
 namespace Engine.Devices;
@@ -10,6 +9,11 @@ namespace Engine.Devices;
 /// A device has a unique identity and a position in 2D space.
 /// When it receives a packet it either forwards it (if it is not the
 /// intended recipient) or accepts and processes it.
+/// <para>
+/// Forwarding is delegated to <see cref="SimulationEngine.RoutePacket"/> so that
+/// the active <see cref="Engine.Routers.IPacketRouter"/> is always consulted.
+/// Devices never reference a concrete router directly.
+/// </para>
 /// </summary>
 public abstract class Device
 {
@@ -24,24 +28,26 @@ public abstract class Device
 
     /// <summary>
     /// Called when a packet arrives at this device.
-    /// If the packet is addressed to another device the router broadcasts it
-    /// to all visible neighbours. If the packet is addressed to this device
-    /// and delivery confirmation was requested, a <see cref="ConfirmationPacket"/>
-    /// is sent back to the originator before <see cref="Accept"/> is invoked.
+    /// If the packet is addressed to another device, routing is delegated to
+    /// <see cref="SimulationEngine.RoutePacket"/> which uses the currently
+    /// configured <see cref="Engine.Routers.IPacketRouter"/>.
+    /// If the packet is addressed to this device and delivery confirmation was
+    /// requested, a <see cref="ConfirmationPacket"/> is routed back to the
+    /// originator before <see cref="Accept"/> is invoked.
     /// </summary>
     /// <param name="packet">The packet that has arrived at this device.</param>
     public void Recieve(Packet packet)
     {
         if (!packet.To.Equals(this))
         {
-            PacketRouter.Instance.Route(packet, this);
+            SimulationEngine.Instance.RoutePacket(packet, this);
             return;
         }
 
         if (packet.NeedConfirmation)
         {
             var confirmationPacket = new ConfirmationPacket(packet);
-            PacketRouter.Instance.Route(confirmationPacket, this);
+            SimulationEngine.Instance.RoutePacket(confirmationPacket, this);
         }
         Accept(packet);
     }

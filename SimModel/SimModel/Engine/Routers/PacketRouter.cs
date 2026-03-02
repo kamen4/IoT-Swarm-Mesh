@@ -6,28 +6,39 @@ namespace Engine.Routers;
 
 /// <summary>
 /// Implements a flooding broadcast routing strategy.
-/// When asked to route a packet from a given device, the router queries
-/// <see cref="SimulationEngine"/> for all devices visible to that device and
-/// enqueues a cloned copy of the packet addressed to each of them.
-/// This is the sole routing mechanism currently used by the engine.
+/// <para>
+/// When asked to route a packet the router queries the supplied
+/// <see cref="INetworkTopology"/> for all devices <em>visible</em> to the
+/// sender and enqueues a cloned copy addressed to each of them.
+/// Flooding uses <em>visibility</em> — not established connections — because
+/// it is inherently a broadcast mechanism that needs no prior topology
+/// knowledge.
+/// </para>
+/// <para>
+/// This class is no longer a singleton. The active router instance is stored
+/// on <see cref="SimulationEngine.Router"/> and is injected into every routing
+/// call automatically by <see cref="Device.Recieve"/>.
+/// To change the routing strategy at runtime replace
+/// <see cref="SimulationEngine.Router"/> with a different
+/// <see cref="IPacketRouter"/> implementation.
+/// </para>
 /// </summary>
-public class PacketRouter
+public class FloodingPacketRouter : IPacketRouter
 {
-    /// <summary>Gets the singleton instance of <see cref="PacketRouter"/>.</summary>
-    public static PacketRouter Instance { get; } = new();
+    /// <inheritdoc/>
+    public string Name => "Flooding Broadcast";
 
-    /// <summary>
+    /// <inheritdoc/>
+    /// <remarks>
     /// Broadcasts <paramref name="packet"/> to every device that is within
-    /// <see cref="SimulationEngine.VisibilityDistance"/> of <paramref name="device"/>.
-    /// Each neighbour receives its own shallow clone so that per-hop fields
-    /// (such as <see cref="Packet.NextHop"/> and <see cref="Packet.ArrivalTick"/>)
+    /// <see cref="SimulationEngine.VisibilityDistance"/> of <paramref name="sender"/>.
+    /// Each visible neighbour receives its own shallow clone so that per-hop
+    /// fields (<see cref="Packet.NextHop"/>, <see cref="Packet.ArrivalTick"/>)
     /// can be set independently.
-    /// </summary>
-    /// <param name="packet">The packet to broadcast.</param>
-    /// <param name="device">The device that is currently holding the packet.</param>
-    public void Route(Packet packet, Device device)
+    /// </remarks>
+    public void Route(Packet packet, Device sender, INetworkTopology topology)
     {
-        foreach (var d in SimulationEngine.Instance.GetVisibleDevicesFor(device))
+        foreach (var d in topology.GetVisibleDevices(sender))
         {
             var p = packet.Clone();
             p.NextHop = d;

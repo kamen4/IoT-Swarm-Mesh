@@ -27,7 +27,7 @@
     ],
     "dest": "_site",
     "globalMetadata": {
-      "_appTitle": "IoT Swarm Mesh — Engine Docs",
+      "_appTitle": "IoT Swarm Mesh - Engine Docs",
       "_appName": "IoT Swarm Mesh",
       "_appFooter": "IoT Swarm Mesh Simulation Engine",
       "_enableSearch": true

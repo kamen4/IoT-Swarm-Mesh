@@ -34,6 +34,18 @@ public class Packet(Device from, Device to, PacketData payload)
     public Device NextHop { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets the device that forwarded this packet to <see cref="NextHop"/>
+    /// on the previous hop.
+    /// <para>
+    /// Set by <see cref="Engine.Devices.Device.Recieve"/> just before the packet is
+    /// re-routed, so that the active <see cref="Engine.Routers.IPacketRouter"/> can
+    /// skip sending the packet back to the node it just came from.
+    /// <c>null</c> on the first hop (packet originates directly from <see cref="From"/>).
+    /// </para>
+    /// </summary>
+    public Device? PreviousHop { get; set; } = null;
+
+    /// <summary>
     /// Gets or sets the time-to-live counter. Decremented on every hop;
     /// the packet is dropped when it reaches zero.
     /// </summary>

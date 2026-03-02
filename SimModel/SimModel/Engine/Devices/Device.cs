@@ -40,6 +40,9 @@ public abstract class Device
     {
         if (!packet.To.Equals(this))
         {
+            // Record where the packet came from before handing it to the router,
+            // so the router can skip sending it back to the previous hop.
+            packet.PreviousHop = packet.NextHop;
             SimulationEngine.Instance.RoutePacket(packet, this);
             return;
         }

@@ -67,9 +67,10 @@ public sealed class SimulationStatistics
     /// Per-tick snapshots in chronological order, capped at
     /// <see cref="MaxHistoryLength"/>.
     /// </summary>
-    public IReadOnlyList<TickSnapshot> History => _history;
+    public IReadOnlyCollection<TickSnapshot> History => _history;
 
-    private readonly List<TickSnapshot> _history = [];
+    // Queue gives O(1) Enqueue and Dequeue (vs List.RemoveAt(0) which is O(N)).
+    private readonly Queue<TickSnapshot> _history = new();
     private readonly SimulationEngine   _engine  = SimulationEngine.Instance;
     private double _tickMsAccumulator;
     private long   _tickMsSamples;
@@ -102,7 +103,8 @@ public sealed class SimulationStatistics
             _tickMsSamples++;
             AvgTickMs.Set(_tickMsAccumulator / _tickMsSamples);
 
-            ActivePackets.Set(_engine.ActivePackets.Count);
+            // ActivePacketsCount is O(1); avoids allocating a list every tick.
+            ActivePackets.Set(_engine.ActivePacketsCount);
             RefreshDerived();
             AppendSnapshot(e.TickCount);
             Notify();
@@ -117,10 +119,11 @@ public sealed class SimulationStatistics
 
     private void AppendSnapshot(long tick)
     {
+        // Queue.Dequeue is O(1); replaces the old List.RemoveAt(0) which was O(N).
         if (_history.Count >= MaxHistoryLength)
-            _history.RemoveAt(0);
+            _history.Dequeue();
 
-        _history.Add(new TickSnapshot(
+        _history.Enqueue(new TickSnapshot(
             Tick:           tick,
             ActivePackets:  ActivePackets.Value,
             TotalDelivered: TotalPacketsDelivered.Value,

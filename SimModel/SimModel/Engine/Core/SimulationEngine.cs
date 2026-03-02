@@ -58,7 +58,18 @@ public class SimulationEngine
     public IReadOnlyList<Device> Devices => _devices;
 
     /// <summary>Gets a read-only snapshot of all packets currently in-flight.</summary>
+    /// <remarks>
+    /// This allocates a new <see cref="List{T}"/> on every call.
+    /// Use <see cref="ActivePacketsCount"/> when only the count is needed.
+    /// </remarks>
     public IReadOnlyList<Packet> ActivePackets => _packets.UnorderedItems.Select(x => x.Element).ToList();
+
+    /// <summary>
+    /// Gets the number of packets currently in-flight without allocating a list.
+    /// Prefer this over <c>ActivePackets.Count</c> in hot paths such as
+    /// statistics collection.
+    /// </summary>
+    public int ActivePacketsCount => _packets.Count;
 
     // -------------------------------------------------------------------------
     // Pluggable strategies
@@ -156,9 +167,20 @@ public class SimulationEngine
 
     private void TickPackets()
     {
+        // Snapshot the set of packets due this tick before iterating.
+        // Recieve() → RoutePacket() → RegisterPacket() adds new packets into
+        // _packets while we process; those are scheduled for FUTURE ticks
+        // (ArrivalTick = TickCount + TicksToTravel, and TicksToTravel >= 1),
+        // so they will never satisfy ArrivalTick <= TickCount for the current
+        // tick. However, collecting upfront keeps the loop bounds predictable
+        // and prevents any edge-case where a packet with TicksToTravel == 0
+        // could be dispatched in the same tick it was enqueued.
+        var due = new List<Packet>();
         while (_packets.Count > 0 && _packets.Peek().ArrivalTick <= TickCount)
+            due.Add(_packets.Dequeue());
+
+        foreach (var p in due)
         {
-            var p = _packets.Dequeue();
             if (--p.TTL > 0)
             {
                 if (p.To.Equals(p.NextHop))
@@ -236,7 +258,8 @@ public class SimulationEngine
     /// </exception>
     public void RegisterPacket(Packet packet)
     {
-        var currentCount = _packets.Count;
+        // Use ActivePacketsCount (O(1)) instead of ActivePackets.Count (O(N) alloc).
+        var currentCount = ActivePacketsCount;
         var limit        = EffectivePacketLimit;
 
         if (currentCount >= limit)

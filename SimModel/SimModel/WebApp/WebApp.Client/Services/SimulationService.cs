@@ -27,6 +27,8 @@ public class SimulationService : IDisposable
 
     public SimulationService()
     {
+        // Apply the default router from config before seeding devices.
+        Engine.Router = Config.SelectedRouter;
         SeedDefaultDevices();
     }
 
@@ -75,6 +77,7 @@ public class SimulationService : IDisposable
     {
         Engine.VisibilityDistance = Config.VisibilityDistance;
         Engine.MaxActivePackets   = Config.MaxActivePackets;
+        Engine.Router             = Config.SelectedRouter;
 
         if (IsRunning)
         {

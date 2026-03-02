@@ -105,6 +105,19 @@ transmission.</p>
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a></dt>
+      <dd><p>A command packet sent from the <a class="xref" href="Engine.Devices.HubDevice.html">HubDevice</a> to a specific
+<a class="xref" href="Engine.Devices.EmitterDevice.html">EmitterDevice</a> to set its on/off state.</p>
+<p>
+The hub generates <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> instances automatically at
+the interval configured on each <a class="xref" href="Engine.Devices.EmitterDevice.html">EmitterDevice</a> via
+<a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a>.
+When an <a class="xref" href="Engine.Devices.EmitterDevice.html">EmitterDevice</a> receives this packet it toggles its
+<a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_State">State</a> to <a class="xref" href="Engine.Packets.ControlPacket.html#Engine_Packets_ControlPacket_Command">Command</a>.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Engine.Packets.Packet.html">Packet</a></dt>
       <dd><p>Represents a unit of data travelling through the simulation network.
 A packet knows its originator (<a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_From">From</a>), its intended

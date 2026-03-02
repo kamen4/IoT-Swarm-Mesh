@@ -127,6 +127,7 @@ reaches zero TTL is silently dropped.</p>
     <dt>Derived</dt>
     <dd>
       <div><a class="xref" href="Engine.Packets.ConfirmationPacket.html">ConfirmationPacket</a></div>
+      <div><a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a></div>
     </dd>
   </dl>
 
@@ -244,7 +245,7 @@ is enqueued.</p>
 
   <h3 id="Engine_Packets_Packet_From" data-uid="Engine.Packets.Packet.From">
   From
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L55"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the device that originally sent this packet.</p>
@@ -308,7 +309,7 @@ is enqueued.</p>
 
   <h3 id="Engine_Packets_Packet_NeedConfirmation" data-uid="Engine.Packets.Packet.NeedConfirmation">
   NeedConfirmation
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the destination device should
@@ -374,7 +375,7 @@ upon successful delivery.</p>
 
   <h3 id="Engine_Packets_Packet_Payload" data-uid="Engine.Packets.Packet.Payload">
   Payload
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the data payload carried by this packet.</p>
@@ -402,11 +403,50 @@ upon successful delivery.</p>
 
 
 
+  <a id="Engine_Packets_Packet_PreviousHop_" data-uid="Engine.Packets.Packet.PreviousHop*"></a>
+
+  <h3 id="Engine_Packets_Packet_PreviousHop" data-uid="Engine.Packets.Packet.PreviousHop">
+  PreviousHop
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the device that forwarded this packet to <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_NextHop">NextHop</a>
+on the previous hop.</p>
+<p>
+Set by <a class="xref" href="Engine.Devices.Device.html#Engine_Devices_Device_Recieve_Engine_Packets_Packet_">Recieve(Packet)</a> just before the packet is
+re-routed, so that the active <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a> can
+skip sending the packet back to the node it just came from.
+<code>null</code> on the first hop (packet originates directly from <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_From">From</a>).
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device? PreviousHop { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Engine_Packets_Packet_TTL_" data-uid="Engine.Packets.Packet.TTL*"></a>
 
   <h3 id="Engine_Packets_Packet_TTL" data-uid="Engine.Packets.Packet.TTL">
   TTL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the time-to-live counter. Decremented on every hop;
@@ -472,7 +512,7 @@ between two adjacent devices.</p>
 
   <h3 id="Engine_Packets_Packet_To" data-uid="Engine.Packets.Packet.To">
   To
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the intended destination device for this packet.</p>
@@ -508,7 +548,7 @@ between two adjacent devices.</p>
 
   <h3 id="Engine_Packets_Packet_Clone" data-uid="Engine.Packets.Packet.Clone">
   Clone()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a shallow copy of this packet, suitable for broadcasting the
@@ -542,7 +582,7 @@ same packet to multiple next-hop neighbours.</p>
 
   <h3 id="Engine_Packets_Packet_Equals_System_Object_" data-uid="Engine.Packets.Packet.Equals(System.Object)">
   Equals(object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the specified object is equal to the current object.</p>
@@ -581,7 +621,7 @@ same packet to multiple next-hop neighbours.</p>
 
   <h3 id="Engine_Packets_Packet_GetHashCode" data-uid="Engine.Packets.Packet.GetHashCode">
   GetHashCode()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Serves as the default hash function.</p>

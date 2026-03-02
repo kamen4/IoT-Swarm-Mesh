@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class Device | IoT Swarm Mesh - Engine Docs ">
       
-      <meta name="description" content="Abstract base class for all devices in the simulation network. A device has a unique identity and a position in 2D space. When it receives a packet it either forwards it (if it is not the intended recipient) or accepts and processes it.">
+      <meta name="description" content="Abstract base class for all devices in the simulation network. A device has a unique identity and a position in 2D space. When it receives a packet it either forwards it (if it is not the intended recipient) or accepts and processes it.  Forwarding is delegated to  so that the active  is always consulted. Devices never reference a concrete router directly.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="Engine_Devices_Device" data-uid="Engine.Devices.Device" class="text-break">
-Class Device  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class Device  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -101,6 +101,11 @@ Class Device  <a class="header-action link-secondary" title="View source" href="
 A device has a unique identity and a position in 2D space.
 When it receives a packet it either forwards it (if it is not the
 intended recipient) or accepts and processes it.</p>
+<p>
+Forwarding is delegated to <a class="xref" href="Engine.Packets.Packet.html">RoutePacket(Packet, Device)</a> so that
+the active <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a> is always consulted.
+Devices never reference a concrete router directly.
+</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -168,7 +173,7 @@ intended recipient) or accepts and processes it.</p>
 
   <h3 id="Engine_Devices_Device_Id" data-uid="Engine.Devices.Device.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the unique identifier of this device.</p>
@@ -200,7 +205,7 @@ intended recipient) or accepts and processes it.</p>
 
   <h3 id="Engine_Devices_Device_Name" data-uid="Engine.Devices.Device.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the human-readable name of this device.</p>
@@ -232,7 +237,7 @@ intended recipient) or accepts and processes it.</p>
 
   <h3 id="Engine_Devices_Device_Position" data-uid="Engine.Devices.Device.Position">
   Position
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the 2D position of this device in the simulation world.</p>
@@ -268,7 +273,7 @@ intended recipient) or accepts and processes it.</p>
 
   <h3 id="Engine_Devices_Device_Accept_Engine_Packets_Packet_" data-uid="Engine.Devices.Device.Accept(Engine.Packets.Packet)">
   Accept(Packet)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Processes a packet that is addressed to and has been delivered to this device.
@@ -302,14 +307,16 @@ Derived classes implement the specific handling logic here.</p>
 
   <h3 id="Engine_Devices_Device_Recieve_Engine_Packets_Packet_" data-uid="Engine.Devices.Device.Recieve(Engine.Packets.Packet)">
   Recieve(Packet)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when a packet arrives at this device.
-If the packet is addressed to another device the router broadcasts it
-to all visible neighbours. If the packet is addressed to this device
-and delivery confirmation was requested, a <a class="xref" href="Engine.Packets.ConfirmationPacket.html">ConfirmationPacket</a>
-is sent back to the originator before <a class="xref" href="Engine.Devices.Device.html#Engine_Devices_Device_Accept_Engine_Packets_Packet_">Accept(Packet)</a> is invoked.</p>
+If the packet is addressed to another device, routing is delegated to
+<a class="xref" href="Engine.Packets.Packet.html">RoutePacket(Packet, Device)</a> which uses the currently
+configured <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a>.
+If the packet is addressed to this device and delivery confirmation was
+requested, a <a class="xref" href="Engine.Packets.ConfirmationPacket.html">ConfirmationPacket</a> is routed back to the
+originator before <a class="xref" href="Engine.Devices.Device.html#Engine_Devices_Device_Accept_Engine_Packets_Packet_">Accept(Packet)</a> is invoked.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -339,7 +346,7 @@ is sent back to the originator before <a class="xref" href="Engine.Devices.Devic
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L18" class="edit-link">Edit this page</a>
         </div>
 
 

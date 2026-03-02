@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class EmitterDevice | IoT Swarm Mesh - Engine Docs ">
       
-      <meta name="description" content="A device that receives command packets from the hub and applies a boolean state to itself (e.g. turning an actuator on or off). When an accepted packet carries a bool payload the device updates its  accordingly.">
+      <meta name="description" content="A device that receives command packets from the hub and applies a boolean state to itself (e.g. turning an actuator on or off).  When  is greater than zero the hub automatically sends a  to this device every  ticks, toggling its state from on to off and back. Set  to 0 to disable automatic control signals.   Flooding note: with  a unicast  is re-broadcast at every intermediate hop, creating an exponential number of clones (approximately neighbours^TTL in the worst case). The TTL is therefore capped at  rather than the default packet TTL. When a unicast router is active this has no extra cost because the packet follows a single path.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="Engine_Devices_EmitterDevice" data-uid="Engine.Devices.EmitterDevice" class="text-break">
-Class EmitterDevice  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L11"><i class="bi bi-code-slash"></i></a>
+Class EmitterDevice  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -98,9 +98,22 @@ Class EmitterDevice  <a class="header-action link-secondary" title="View source"
   </div>
 
   <div class="markdown summary"><p>A device that receives command packets from the hub and applies a boolean
-state to itself (e.g. turning an actuator on or off).
-When an accepted packet carries a <code>bool</code> payload the device updates
-its <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_State">State</a> accordingly.</p>
+state to itself (e.g. turning an actuator on or off).</p>
+<p>
+When <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a> is greater than zero the hub
+automatically sends a <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> to this device every
+<a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a> ticks, toggling its state from on to
+off and back. Set <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a> to <code>0</code> to
+disable automatic control signals.
+</p>
+<p>
+<b>Flooding note</b>: with <a class="xref" href="Engine.Routers.FloodingPacketRouter.html">FloodingPacketRouter</a> a
+unicast <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> is re-broadcast at every intermediate hop,
+creating an exponential number of clones (approximately neighbours^TTL in the
+worst case). The TTL is therefore capped at <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_CONTROL_PACKET_TTL">CONTROL_PACKET_TTL</a>
+rather than the default packet TTL. When a unicast router is active this has
+no extra cost because the packet follows a single path.
+</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -165,15 +178,159 @@ its <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_Emitt
 
 
 
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Engine_Devices_EmitterDevice__ctor_" data-uid="Engine.Devices.EmitterDevice.#ctor*"></a>
+
+  <h3 id="Engine_Devices_EmitterDevice__ctor_System_Int64_" data-uid="Engine.Devices.EmitterDevice.#ctor(System.Int64)">
+  EmitterDevice(long)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initialises the emitter and subscribes to the engine tick event so that
+automatic hub-to-device control signals can be sent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EmitterDevice(long controlFrequencyTicks = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlFrequencyTicks</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>Interval in ticks between automatic control packets from the hub.
+Pass <code>0</code> to start with automatic control disabled.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Engine_Devices_EmitterDevice_CONTROL_PACKET_TTL" data-uid="Engine.Devices.EmitterDevice.CONTROL_PACKET_TTL">
+  CONTROL_PACKET_TTL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>TTL assigned to outgoing <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> instances.
+Lower than the default packet TTL to limit flooding clone counts.
+Sufficient for networks with up to <code>CONTROL_PACKET_TTL - 1</code> hops.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int CONTROL_PACKET_TTL = 5</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="properties">Properties
 </h2>
+
+
+  <a id="Engine_Devices_EmitterDevice_ControlFrequencyTicks_" data-uid="Engine.Devices.EmitterDevice.ControlFrequencyTicks*"></a>
+
+  <h3 id="Engine_Devices_EmitterDevice_ControlFrequencyTicks" data-uid="Engine.Devices.EmitterDevice.ControlFrequencyTicks">
+  ControlFrequencyTicks
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the interval in engine ticks at which the hub sends a
+<a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> that toggles this device's state.
+Set to <code>0</code> to disable automatic control signals.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long ControlFrequencyTicks { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_EmitterDevice_CurrentControlTickCount_" data-uid="Engine.Devices.EmitterDevice.CurrentControlTickCount*"></a>
+
+  <h3 id="Engine_Devices_EmitterDevice_CurrentControlTickCount" data-uid="Engine.Devices.EmitterDevice.CurrentControlTickCount">
+  CurrentControlTickCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of ticks that have elapsed since the last control
+packet was sent. Resets to zero after it reaches
+<a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long CurrentControlTickCount { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
 
 
   <a id="Engine_Devices_EmitterDevice_State_" data-uid="Engine.Devices.EmitterDevice.State*"></a>
 
   <h3 id="Engine_Devices_EmitterDevice_State" data-uid="Engine.Devices.EmitterDevice.State">
   State
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the current on/off state of this emitter device.</p>
@@ -209,11 +366,17 @@ its <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_Emitt
 
   <h3 id="Engine_Devices_EmitterDevice_Accept_Engine_Packets_Packet_" data-uid="Engine.Devices.EmitterDevice.Accept(Engine.Packets.Packet)">
   Accept(Packet)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L103"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Accepts a packet and, if the payload is a <code>bool</code> value, updates
-<a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_State">State</a> to that value.</p>
+  <div class="markdown level1 summary"><p>Accepts a packet addressed to this device.</p>
+<ul><li>
+    <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> - applies <a class="xref" href="Engine.Packets.ControlPacket.html#Engine_Packets_ControlPacket_Command">Command</a>
+    directly to <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_State">State</a>.
+  </li><li>
+    Any packet whose <a class="xref" href="Engine.Packets.PacketData.html#Engine_Packets_PacketData_Data">Data</a> is a
+    <code>bool</code> - updates <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_State">State</a> to that value (legacy path).
+  </li></ul>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -243,7 +406,7 @@ its <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_Emitt
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L11" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/EmitterDevice.cs/#L25" class="edit-link">Edit this page</a>
         </div>
 
 

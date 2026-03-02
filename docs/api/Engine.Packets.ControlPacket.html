@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class ConfirmationPacket | IoT Swarm Mesh - Engine Docs </title>
+      <title>Class ControlPacket | IoT Swarm Mesh - Engine Docs </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class ConfirmationPacket | IoT Swarm Mesh - Engine Docs ">
+      <meta name="title" content="Class ControlPacket | IoT Swarm Mesh - Engine Docs ">
       
-      <meta name="description" content="A special packet that is automatically generated and sent back to the original sender when a packet with  set to true is successfully delivered. The payload contains the  bytes of the confirmed packet, allowing the sender to correlate the acknowledgement with the original transmission.">
+      <meta name="description" content="A command packet sent from the  to a specific  to set its on/off state.  The hub generates  instances automatically at the interval configured on each  via . When an  receives this packet it toggles its  to .">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/new/master/apiSpec/new?filename=Engine_Packets_ConfirmationPacket.md&amp;value=---%0Auid%3A%20Engine.Packets.ConfirmationPacket%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/new/master/apiSpec/new?filename=Engine_Packets_ControlPacket.md&amp;value=---%0Auid%3A%20Engine.Packets.ControlPacket%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,12 +84,12 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Engine.Packets.ConfirmationPacket">
+        <article data-uid="Engine.Packets.ControlPacket">
 
 
 
-  <h1 id="Engine_Packets_ConfirmationPacket" data-uid="Engine.Packets.ConfirmationPacket" class="text-break">
-Class ConfirmationPacket  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/ConfirmationPacket.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <h1 id="Engine_Packets_ControlPacket" data-uid="Engine.Packets.ControlPacket" class="text-break">
+Class ControlPacket  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/ControlPacket.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,17 +97,20 @@ Class ConfirmationPacket  <a class="header-action link-secondary" title="View so
   <dl><dt>Assembly</dt><dd>Engine.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>A special packet that is automatically generated and sent back to the
-original sender when a packet with <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_NeedConfirmation">NeedConfirmation</a>
-set to <code>true</code> is successfully delivered.
-The payload contains the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> bytes of the confirmed packet,
-allowing the sender to correlate the acknowledgement with the original
-transmission.</p>
+  <div class="markdown summary"><p>A command packet sent from the <a class="xref" href="Engine.Devices.HubDevice.html">HubDevice</a> to a specific
+<a class="xref" href="Engine.Devices.EmitterDevice.html">EmitterDevice</a> to set its on/off state.</p>
+<p>
+The hub generates <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> instances automatically at
+the interval configured on each <a class="xref" href="Engine.Devices.EmitterDevice.html">EmitterDevice</a> via
+<a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a>.
+When an <a class="xref" href="Engine.Devices.EmitterDevice.html">EmitterDevice</a> receives this packet it toggles its
+<a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_State">State</a> to <a class="xref" href="Engine.Packets.ControlPacket.html#Engine_Packets_ControlPacket_Command">Command</a>.
+</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ConfirmationPacket : Packet</code></pre>
+    <pre><code class="lang-csharp hljs">public class ControlPacket : Packet</code></pre>
   </div>
 
 
@@ -118,7 +121,7 @@ transmission.</p>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
       <div><a class="xref" href="Engine.Packets.Packet.html">Packet</a></div>
-      <div><span class="xref">ConfirmationPacket</span></div>
+      <div><span class="xref">ControlPacket</span></div>
     </dd>
   </dl>
 
@@ -192,27 +195,32 @@ transmission.</p>
 </h2>
 
 
-  <a id="Engine_Packets_ConfirmationPacket__ctor_" data-uid="Engine.Packets.ConfirmationPacket.#ctor*"></a>
+  <a id="Engine_Packets_ControlPacket__ctor_" data-uid="Engine.Packets.ControlPacket.#ctor*"></a>
 
-  <h3 id="Engine_Packets_ConfirmationPacket__ctor_Engine_Packets_Packet_" data-uid="Engine.Packets.ConfirmationPacket.#ctor(Engine.Packets.Packet)">
-  ConfirmationPacket(Packet)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/ConfirmationPacket.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Engine_Packets_ControlPacket__ctor_Engine_Devices_Device_Engine_Devices_Device_System_Boolean_" data-uid="Engine.Packets.ControlPacket.#ctor(Engine.Devices.Device,Engine.Devices.Device,System.Boolean)">
+  ControlPacket(Device, Device, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/ControlPacket.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Initialises a new confirmation packet as a reply to <code class="paramref">original</code>.
-The source and destination are swapped — the confirmation travels from
-the original destination back to the original sender.</p>
+  <div class="markdown level1 summary"><p>Initialises a new <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> addressed to
+<code class="paramref">target</code> with the given <code class="paramref">command</code> value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ConfirmationPacket(Packet original)</code></pre>
+    <pre><code class="lang-csharp hljs">public ControlPacket(Device hub, Device target, bool command)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>original</code> <a class="xref" href="Engine.Packets.Packet.html">Packet</a></dt>
-    <dd><p>The packet whose delivery is being acknowledged.</p>
+    <dt><code>hub</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd><p>The hub device that originates this command.</p>
+</dd>
+    <dt><code>target</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd><p>The emitter device that should receive the command.</p>
+</dd>
+    <dt><code>command</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> to turn the emitter on; <code>false</code> to turn it off.</p>
 </dd>
   </dl>
 
@@ -227,11 +235,47 @@ the original destination back to the original sender.</p>
 
 
 
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Engine_Packets_ControlPacket_Command_" data-uid="Engine.Packets.ControlPacket.Command*"></a>
+
+  <h3 id="Engine_Packets_ControlPacket_Command" data-uid="Engine.Packets.ControlPacket.Command">
+  Command
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/ControlPacket.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the boolean command value � <code>true</code> = on, <code>false</code> = off.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Command { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/ConfirmationPacket.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/ControlPacket.cs/#L16" class="edit-link">Edit this page</a>
         </div>
 
 

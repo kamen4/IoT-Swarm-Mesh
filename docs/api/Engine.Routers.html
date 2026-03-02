@@ -95,12 +95,159 @@
 Classes
 </h3>
     <dl class="jumplist">
-      <dt><a class="xref" href="Engine.Routers.PacketRouter.html">PacketRouter</a></dt>
-      <dd><p>Implements a flooding broadcast routing strategy.
-When asked to route a packet from a given device, the router queries
-<a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> for all devices visible to that device and
-enqueues a cloned copy of the packet addressed to each of them.
-This is the sole routing mechanism currently used by the engine.</p>
+      <dt><a class="xref" href="Engine.Routers.FloodingPacketRouter.html">FloodingPacketRouter</a></dt>
+      <dd><p>Implements a flooding broadcast routing strategy.</p>
+<p>
+When asked to route a packet the router queries the supplied
+<a class="xref" href="Engine.Routers.INetworkTopology.html">INetworkTopology</a> for all devices <em>visible</em> to the
+sender and enqueues a cloned copy addressed to each of them.
+Flooding uses <em>visibility</em> — not established connections — because
+it is inherently a broadcast mechanism that needs no prior topology
+knowledge.
+</p>
+<p>
+This class is no longer a singleton. The active router instance is stored
+on <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Router">Router</a> and is injected into every routing
+call automatically by <a class="xref" href="Engine.Devices.Device.html#Engine_Devices_Device_Recieve_Engine_Packets_Packet_">Recieve(Packet)</a>.
+To change the routing strategy at runtime replace
+<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Router">Router</a> with a different
+<a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a> implementation.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.FullMeshNetworkBuilder.html">FullMeshNetworkBuilder</a></dt>
+      <dd><p>A network-formation strategy that connects every pair of mutually visible
+devices, producing a full-visibility mesh.</p>
+<p>
+This mirrors the original implicit behaviour of the engine where visibility
+and connectivity were equivalent: if two devices can see each other they
+are considered connected.
+</p>
+<p>
+Note: as the number of devices grows, the number of edges grows as O(n?).
+For large networks consider a limited-degree or spanning-tree builder instead.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.NetworkTopology.html">NetworkTopology</a></dt>
+      <dd><p>Default in-memory implementation of <a class="xref" href="Engine.Routers.IMutableNetworkTopology.html">IMutableNetworkTopology</a>.</p>
+<p>
+Visibility is computed on-the-fly from device positions and
+<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_VisibilityDistance">VisibilityDistance</a>; it is never cached
+so it always reflects the current layout.
+</p>
+<p>
+Connections are stored as an adjacency set (both directions) and are
+managed exclusively by the active <a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a>.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.SmartFloodingPacketRouter.html">SmartFloodingPacketRouter</a></dt>
+      <dd><p>An improved flooding router that reduces redundant packet copies by applying
+three optimisations over the naive <a class="xref" href="Engine.Routers.FloodingPacketRouter.html">FloodingPacketRouter</a>:</p>
+<ol><li><span class="term">Direct delivery</span>
+      If the intended destination (<a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_To">To</a>) is directly
+      visible from <code class="paramref">sender</code>, the packet is sent
+      <em>only</em> to that device � no unnecessary flood copies are made.
+    </li><li><span class="term">No reverse path</span>
+      The packet is never forwarded back to <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_PreviousHop">PreviousHop</a>
+      (the device that just sent it here). This eliminates the most common
+      source of duplicate copies in bidirectional flooding.
+    </li><li><span class="term">No source echo</span>
+      The packet is never forwarded back to <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_From">From</a>
+      (the original source device), preventing useless round-trips.
+    </li></ol>
+<p>
+Together these rules drastically shrink the clone fan-out compared to the
+naive flood, especially for unicast packets such as
+<a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a>, while still guaranteeing delivery
+in any connected topology with sufficient TTL.
+</p>
+</dd>
+    </dl>
+    <h3 id="interfaces">
+Interfaces
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.IMutableNetworkTopology.html">IMutableNetworkTopology</a></dt>
+      <dd><p>Extends <a class="xref" href="Engine.Routers.INetworkTopology.html">INetworkTopology</a> with mutation methods so that an
+<a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a> can update the connection graph without
+exposing mutation to routers or other consumers.</p>
+<p>
+Only <a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a> implementations and
+<a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> should hold a reference to
+<a class="xref" href="Engine.Routers.IMutableNetworkTopology.html">IMutableNetworkTopology</a>. All other code (routers, statistics,
+UI) works through the read-only <a class="xref" href="Engine.Routers.INetworkTopology.html">INetworkTopology</a> projection.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a></dt>
+      <dd><p>Defines the contract for a network-formation (mesh-building) strategy.</p>
+<p>
+A network builder is responsible for deciding which devices establish
+explicit connections with each other, forming the logical mesh topology.
+It operates on top of raw visibility data and produces an
+<a class="xref" href="Engine.Routers.INetworkTopology.html">INetworkTopology</a> that the active <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a>
+then uses for forwarding decisions.
+</p>
+<p>
+Examples of algorithms that implement this interface:
+<ul><li>Full-mesh � every visible pair is connected (current implicit behaviour).</li><li>Limited-degree mesh � each device connects to at most <code>K</code> neighbours.</li><li>Minimum spanning tree � minimises total edge weight.</li><li>Cluster-head / LEACH-style hierarchy.</li></ul>
+
+<p>
+Like <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a>, the active builder is stored on
+<a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> and can be swapped at runtime from the
+UI to compare how different formation strategies affect routing statistics.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.INetworkTopology.html">INetworkTopology</a></dt>
+      <dd><p>Represents the logical topology of the network at a given point in time.</p>
+<p>
+The topology separates two concepts that are intentionally kept distinct:
+<ul><li><span class="term">Visibility</span>
+      Whether two devices are within radio range of each other.
+      Used for broadcast/discovery and as a precondition for establishing a
+      connection. Determined purely by Euclidean distance and
+      <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_VisibilityDistance">VisibilityDistance</a>.
+    </li><li><span class="term">Connection</span>
+      An explicit, mutually agreed logical link between two devices.
+      A connection can only exist between mutually visible devices, but not
+      every visible device is necessarily connected (subject to per-device
+      connection limits, protocol decisions, etc.).
+      Unicast routing and network-topology algorithms operate on connections,
+      not on raw visibility.
+    </li></ul>
+
+<p>
+Implementations are owned and updated by the active
+<a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a> and are passed to <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a>
+on every routing call so that routers never need to touch
+<a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> directly.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a></dt>
+      <dd><p>Defines the contract for a packet routing strategy.</p>
+<p>
+A router receives a packet from a forwarding device and is responsible for
+deciding which device(s) the packet should be sent to next.
+Implementations may use different strategies: flooding broadcast,
+shortest-path unicast, gradient routing, etc.
+</p>
+<p>
+The active router is set on <a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> and is
+consulted by every device whenever it needs to forward a packet.
+Swapping the router at runtime (e.g. from UI) immediately changes routing
+behaviour for all subsequent packets, which enables side-by-side protocol
+comparison on the same network.
+</p>
 </dd>
     </dl>
 

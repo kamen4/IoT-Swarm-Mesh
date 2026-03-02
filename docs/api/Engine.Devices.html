@@ -100,23 +100,42 @@ Classes
 A device has a unique identity and a position in 2D space.
 When it receives a packet it either forwards it (if it is not the
 intended recipient) or accepts and processes it.</p>
+<p>
+Forwarding is delegated to <a class="xref" href="Engine.Packets.Packet.html">RoutePacket(Packet, Device)</a> so that
+the active <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a> is always consulted.
+Devices never reference a concrete router directly.
+</p>
 </dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="Engine.Devices.EmitterDevice.html">EmitterDevice</a></dt>
       <dd><p>A device that receives command packets from the hub and applies a boolean
-state to itself (e.g. turning an actuator on or off).
-When an accepted packet carries a <code>bool</code> payload the device updates
-its <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_State">State</a> accordingly.</p>
+state to itself (e.g. turning an actuator on or off).</p>
+<p>
+When <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a> is greater than zero the hub
+automatically sends a <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> to this device every
+<a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a> ticks, toggling its state from on to
+off and back. Set <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks">ControlFrequencyTicks</a> to <code>0</code> to
+disable automatic control signals.
+</p>
+<p>
+<b>Flooding note</b>: with <a class="xref" href="Engine.Routers.FloodingPacketRouter.html">FloodingPacketRouter</a> a
+unicast <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a> is re-broadcast at every intermediate hop,
+creating an exponential number of clones (approximately neighbours^TTL in the
+worst case). The TTL is therefore capped at <a class="xref" href="Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_CONTROL_PACKET_TTL">CONTROL_PACKET_TTL</a>
+rather than the default packet TTL. When a unicast router is active this has
+no extra cost because the packet follows a single path.
+</p>
 </dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="Engine.Devices.GeneratorDevice.html">GeneratorDevice</a></dt>
       <dd><p>A device that periodically generates sensor-like data packets and routes
-them toward the hub. An internal tick counter increments on every engine
-tick and resets to zero after it reaches <a class="xref" href="Engine.Devices.GeneratorDevice.html#Engine_Devices_GeneratorDevice_GenFrequencyTicks">GenFrequencyTicks</a>;
-a packet is emitted only at that reset moment, so exactly one packet is
-sent per <a class="xref" href="Engine.Devices.GeneratorDevice.html#Engine_Devices_GeneratorDevice_GenFrequencyTicks">GenFrequencyTicks</a> ticks.</p>
+them toward the hub.</p>
+<p>
+Routing is delegated to <a class="xref" href="Engine.Packets.Packet.html">RoutePacket(Packet, Device)</a> so the
+active <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a> strategy is always used.
+</p>
 </dd>
     </dl>
     <dl class="jumplist">

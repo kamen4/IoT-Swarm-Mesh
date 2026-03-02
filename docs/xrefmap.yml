@@ -159,6 +159,70 @@ references:
   isSpec: "True"
   fullName: Engine.Core.PacketExpiredEventArgs.Packet
   nameWithType: PacketExpiredEventArgs.Packet
+- uid: Engine.Core.PacketLimitExceededException
+  name: PacketLimitExceededException
+  href: api/Engine.Core.PacketLimitExceededException.html
+  commentId: T:Engine.Core.PacketLimitExceededException
+  fullName: Engine.Core.PacketLimitExceededException
+  nameWithType: PacketLimitExceededException
+- uid: Engine.Core.PacketLimitExceededException.#ctor(System.Int32,System.Int32,System.Int64)
+  name: PacketLimitExceededException(int, int, long)
+  href: api/Engine.Core.PacketLimitExceededException.html#Engine_Core_PacketLimitExceededException__ctor_System_Int32_System_Int32_System_Int64_
+  commentId: M:Engine.Core.PacketLimitExceededException.#ctor(System.Int32,System.Int32,System.Int64)
+  name.vb: New(Integer, Integer, Long)
+  fullName: Engine.Core.PacketLimitExceededException.PacketLimitExceededException(int, int, long)
+  fullName.vb: Engine.Core.PacketLimitExceededException.New(Integer, Integer, Long)
+  nameWithType: PacketLimitExceededException.PacketLimitExceededException(int, int, long)
+  nameWithType.vb: PacketLimitExceededException.New(Integer, Integer, Long)
+- uid: Engine.Core.PacketLimitExceededException.#ctor*
+  name: PacketLimitExceededException
+  href: api/Engine.Core.PacketLimitExceededException.html#Engine_Core_PacketLimitExceededException__ctor_
+  commentId: Overload:Engine.Core.PacketLimitExceededException.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Core.PacketLimitExceededException.PacketLimitExceededException
+  fullName.vb: Engine.Core.PacketLimitExceededException.New
+  nameWithType: PacketLimitExceededException.PacketLimitExceededException
+  nameWithType.vb: PacketLimitExceededException.New
+- uid: Engine.Core.PacketLimitExceededException.Actual
+  name: Actual
+  href: api/Engine.Core.PacketLimitExceededException.html#Engine_Core_PacketLimitExceededException_Actual
+  commentId: P:Engine.Core.PacketLimitExceededException.Actual
+  fullName: Engine.Core.PacketLimitExceededException.Actual
+  nameWithType: PacketLimitExceededException.Actual
+- uid: Engine.Core.PacketLimitExceededException.Actual*
+  name: Actual
+  href: api/Engine.Core.PacketLimitExceededException.html#Engine_Core_PacketLimitExceededException_Actual_
+  commentId: Overload:Engine.Core.PacketLimitExceededException.Actual
+  isSpec: "True"
+  fullName: Engine.Core.PacketLimitExceededException.Actual
+  nameWithType: PacketLimitExceededException.Actual
+- uid: Engine.Core.PacketLimitExceededException.Limit
+  name: Limit
+  href: api/Engine.Core.PacketLimitExceededException.html#Engine_Core_PacketLimitExceededException_Limit
+  commentId: P:Engine.Core.PacketLimitExceededException.Limit
+  fullName: Engine.Core.PacketLimitExceededException.Limit
+  nameWithType: PacketLimitExceededException.Limit
+- uid: Engine.Core.PacketLimitExceededException.Limit*
+  name: Limit
+  href: api/Engine.Core.PacketLimitExceededException.html#Engine_Core_PacketLimitExceededException_Limit_
+  commentId: Overload:Engine.Core.PacketLimitExceededException.Limit
+  isSpec: "True"
+  fullName: Engine.Core.PacketLimitExceededException.Limit
+  nameWithType: PacketLimitExceededException.Limit
+- uid: Engine.Core.PacketLimitExceededException.TickCount
+  name: TickCount
+  href: api/Engine.Core.PacketLimitExceededException.html#Engine_Core_PacketLimitExceededException_TickCount
+  commentId: P:Engine.Core.PacketLimitExceededException.TickCount
+  fullName: Engine.Core.PacketLimitExceededException.TickCount
+  nameWithType: PacketLimitExceededException.TickCount
+- uid: Engine.Core.PacketLimitExceededException.TickCount*
+  name: TickCount
+  href: api/Engine.Core.PacketLimitExceededException.html#Engine_Core_PacketLimitExceededException_TickCount_
+  commentId: Overload:Engine.Core.PacketLimitExceededException.TickCount
+  isSpec: "True"
+  fullName: Engine.Core.PacketLimitExceededException.TickCount
+  nameWithType: PacketLimitExceededException.TickCount
 - uid: Engine.Core.PacketRegisteredEventArgs
   name: PacketRegisteredEventArgs
   href: api/Engine.Core.PacketRegisteredEventArgs.html
@@ -203,6 +267,12 @@ references:
   commentId: T:Engine.Core.SimulationEngine
   fullName: Engine.Core.SimulationEngine
   nameWithType: SimulationEngine
+- uid: Engine.Core.SimulationEngine.AUTO_PACKET_LIMIT_PER_DEVICE
+  name: AUTO_PACKET_LIMIT_PER_DEVICE
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_AUTO_PACKET_LIMIT_PER_DEVICE
+  commentId: F:Engine.Core.SimulationEngine.AUTO_PACKET_LIMIT_PER_DEVICE
+  fullName: Engine.Core.SimulationEngine.AUTO_PACKET_LIMIT_PER_DEVICE
+  nameWithType: SimulationEngine.AUTO_PACKET_LIMIT_PER_DEVICE
 - uid: Engine.Core.SimulationEngine.ActivePackets
   name: ActivePackets
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_ActivePackets
@@ -216,6 +286,19 @@ references:
   isSpec: "True"
   fullName: Engine.Core.SimulationEngine.ActivePackets
   nameWithType: SimulationEngine.ActivePackets
+- uid: Engine.Core.SimulationEngine.ActivePacketsCount
+  name: ActivePacketsCount
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_ActivePacketsCount
+  commentId: P:Engine.Core.SimulationEngine.ActivePacketsCount
+  fullName: Engine.Core.SimulationEngine.ActivePacketsCount
+  nameWithType: SimulationEngine.ActivePacketsCount
+- uid: Engine.Core.SimulationEngine.ActivePacketsCount*
+  name: ActivePacketsCount
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_ActivePacketsCount_
+  commentId: Overload:Engine.Core.SimulationEngine.ActivePacketsCount
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.ActivePacketsCount
+  nameWithType: SimulationEngine.ActivePacketsCount
 - uid: Engine.Core.SimulationEngine.DeviceRegistered
   name: DeviceRegistered
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_DeviceRegistered
@@ -241,19 +324,19 @@ references:
   isSpec: "True"
   fullName: Engine.Core.SimulationEngine.Devices
   nameWithType: SimulationEngine.Devices
-- uid: Engine.Core.SimulationEngine.GetVisibleDevicesFor(Engine.Devices.Device)
-  name: GetVisibleDevicesFor(Device)
-  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_GetVisibleDevicesFor_Engine_Devices_Device_
-  commentId: M:Engine.Core.SimulationEngine.GetVisibleDevicesFor(Engine.Devices.Device)
-  fullName: Engine.Core.SimulationEngine.GetVisibleDevicesFor(Engine.Devices.Device)
-  nameWithType: SimulationEngine.GetVisibleDevicesFor(Device)
-- uid: Engine.Core.SimulationEngine.GetVisibleDevicesFor*
-  name: GetVisibleDevicesFor
-  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_GetVisibleDevicesFor_
-  commentId: Overload:Engine.Core.SimulationEngine.GetVisibleDevicesFor
+- uid: Engine.Core.SimulationEngine.EffectivePacketLimit
+  name: EffectivePacketLimit
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_EffectivePacketLimit
+  commentId: P:Engine.Core.SimulationEngine.EffectivePacketLimit
+  fullName: Engine.Core.SimulationEngine.EffectivePacketLimit
+  nameWithType: SimulationEngine.EffectivePacketLimit
+- uid: Engine.Core.SimulationEngine.EffectivePacketLimit*
+  name: EffectivePacketLimit
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_EffectivePacketLimit_
+  commentId: Overload:Engine.Core.SimulationEngine.EffectivePacketLimit
   isSpec: "True"
-  fullName: Engine.Core.SimulationEngine.GetVisibleDevicesFor
-  nameWithType: SimulationEngine.GetVisibleDevicesFor
+  fullName: Engine.Core.SimulationEngine.EffectivePacketLimit
+  nameWithType: SimulationEngine.EffectivePacketLimit
 - uid: Engine.Core.SimulationEngine.Hub
   name: Hub
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Hub
@@ -280,6 +363,32 @@ references:
   isSpec: "True"
   fullName: Engine.Core.SimulationEngine.Instance
   nameWithType: SimulationEngine.Instance
+- uid: Engine.Core.SimulationEngine.MaxActivePackets
+  name: MaxActivePackets
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_MaxActivePackets
+  commentId: P:Engine.Core.SimulationEngine.MaxActivePackets
+  fullName: Engine.Core.SimulationEngine.MaxActivePackets
+  nameWithType: SimulationEngine.MaxActivePackets
+- uid: Engine.Core.SimulationEngine.MaxActivePackets*
+  name: MaxActivePackets
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_MaxActivePackets_
+  commentId: Overload:Engine.Core.SimulationEngine.MaxActivePackets
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.MaxActivePackets
+  nameWithType: SimulationEngine.MaxActivePackets
+- uid: Engine.Core.SimulationEngine.NetworkBuilder
+  name: NetworkBuilder
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_NetworkBuilder
+  commentId: P:Engine.Core.SimulationEngine.NetworkBuilder
+  fullName: Engine.Core.SimulationEngine.NetworkBuilder
+  nameWithType: SimulationEngine.NetworkBuilder
+- uid: Engine.Core.SimulationEngine.NetworkBuilder*
+  name: NetworkBuilder
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_NetworkBuilder_
+  commentId: Overload:Engine.Core.SimulationEngine.NetworkBuilder
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.NetworkBuilder
+  nameWithType: SimulationEngine.NetworkBuilder
 - uid: Engine.Core.SimulationEngine.PacketDelivered
   name: PacketDelivered
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_PacketDelivered
@@ -298,6 +407,19 @@ references:
   commentId: E:Engine.Core.SimulationEngine.PacketRegistered
   fullName: Engine.Core.SimulationEngine.PacketRegistered
   nameWithType: SimulationEngine.PacketRegistered
+- uid: Engine.Core.SimulationEngine.RebuildTopology
+  name: RebuildTopology()
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RebuildTopology
+  commentId: M:Engine.Core.SimulationEngine.RebuildTopology
+  fullName: Engine.Core.SimulationEngine.RebuildTopology()
+  nameWithType: SimulationEngine.RebuildTopology()
+- uid: Engine.Core.SimulationEngine.RebuildTopology*
+  name: RebuildTopology
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RebuildTopology_
+  commentId: Overload:Engine.Core.SimulationEngine.RebuildTopology
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.RebuildTopology
+  nameWithType: SimulationEngine.RebuildTopology
 - uid: Engine.Core.SimulationEngine.RegisterDevice(Engine.Devices.Device)
   name: RegisterDevice(Device)
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RegisterDevice_Engine_Devices_Device_
@@ -350,6 +472,19 @@ references:
   isSpec: "True"
   fullName: Engine.Core.SimulationEngine.Reset
   nameWithType: SimulationEngine.Reset
+- uid: Engine.Core.SimulationEngine.Router
+  name: Router
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Router
+  commentId: P:Engine.Core.SimulationEngine.Router
+  fullName: Engine.Core.SimulationEngine.Router
+  nameWithType: SimulationEngine.Router
+- uid: Engine.Core.SimulationEngine.Router*
+  name: Router
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Router_
+  commentId: Overload:Engine.Core.SimulationEngine.Router
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.Router
+  nameWithType: SimulationEngine.Router
 - uid: Engine.Core.SimulationEngine.Tick
   name: Tick()
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Tick
@@ -388,6 +523,19 @@ references:
   commentId: E:Engine.Core.SimulationEngine.Ticked
   fullName: Engine.Core.SimulationEngine.Ticked
   nameWithType: SimulationEngine.Ticked
+- uid: Engine.Core.SimulationEngine.Topology
+  name: Topology
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Topology
+  commentId: P:Engine.Core.SimulationEngine.Topology
+  fullName: Engine.Core.SimulationEngine.Topology
+  nameWithType: SimulationEngine.Topology
+- uid: Engine.Core.SimulationEngine.Topology*
+  name: Topology
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Topology_
+  commentId: Overload:Engine.Core.SimulationEngine.Topology
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.Topology
+  nameWithType: SimulationEngine.Topology
 - uid: Engine.Core.SimulationEngine.VISIBILITY_DISTANCE
   name: VISIBILITY_DISTANCE
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_VISIBILITY_DISTANCE
@@ -541,6 +689,25 @@ references:
   commentId: T:Engine.Devices.EmitterDevice
   fullName: Engine.Devices.EmitterDevice
   nameWithType: EmitterDevice
+- uid: Engine.Devices.EmitterDevice.#ctor(System.Int64)
+  name: EmitterDevice(long)
+  href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice__ctor_System_Int64_
+  commentId: M:Engine.Devices.EmitterDevice.#ctor(System.Int64)
+  name.vb: New(Long)
+  fullName: Engine.Devices.EmitterDevice.EmitterDevice(long)
+  fullName.vb: Engine.Devices.EmitterDevice.New(Long)
+  nameWithType: EmitterDevice.EmitterDevice(long)
+  nameWithType.vb: EmitterDevice.New(Long)
+- uid: Engine.Devices.EmitterDevice.#ctor*
+  name: EmitterDevice
+  href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice__ctor_
+  commentId: Overload:Engine.Devices.EmitterDevice.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Devices.EmitterDevice.EmitterDevice
+  fullName.vb: Engine.Devices.EmitterDevice.New
+  nameWithType: EmitterDevice.EmitterDevice
+  nameWithType.vb: EmitterDevice.New
 - uid: Engine.Devices.EmitterDevice.Accept(Engine.Packets.Packet)
   name: Accept(Packet)
   href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_Accept_Engine_Packets_Packet_
@@ -554,6 +721,38 @@ references:
   isSpec: "True"
   fullName: Engine.Devices.EmitterDevice.Accept
   nameWithType: EmitterDevice.Accept
+- uid: Engine.Devices.EmitterDevice.CONTROL_PACKET_TTL
+  name: CONTROL_PACKET_TTL
+  href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_CONTROL_PACKET_TTL
+  commentId: F:Engine.Devices.EmitterDevice.CONTROL_PACKET_TTL
+  fullName: Engine.Devices.EmitterDevice.CONTROL_PACKET_TTL
+  nameWithType: EmitterDevice.CONTROL_PACKET_TTL
+- uid: Engine.Devices.EmitterDevice.ControlFrequencyTicks
+  name: ControlFrequencyTicks
+  href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks
+  commentId: P:Engine.Devices.EmitterDevice.ControlFrequencyTicks
+  fullName: Engine.Devices.EmitterDevice.ControlFrequencyTicks
+  nameWithType: EmitterDevice.ControlFrequencyTicks
+- uid: Engine.Devices.EmitterDevice.ControlFrequencyTicks*
+  name: ControlFrequencyTicks
+  href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_ControlFrequencyTicks_
+  commentId: Overload:Engine.Devices.EmitterDevice.ControlFrequencyTicks
+  isSpec: "True"
+  fullName: Engine.Devices.EmitterDevice.ControlFrequencyTicks
+  nameWithType: EmitterDevice.ControlFrequencyTicks
+- uid: Engine.Devices.EmitterDevice.CurrentControlTickCount
+  name: CurrentControlTickCount
+  href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_CurrentControlTickCount
+  commentId: P:Engine.Devices.EmitterDevice.CurrentControlTickCount
+  fullName: Engine.Devices.EmitterDevice.CurrentControlTickCount
+  nameWithType: EmitterDevice.CurrentControlTickCount
+- uid: Engine.Devices.EmitterDevice.CurrentControlTickCount*
+  name: CurrentControlTickCount
+  href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_CurrentControlTickCount_
+  commentId: Overload:Engine.Devices.EmitterDevice.CurrentControlTickCount
+  isSpec: "True"
+  fullName: Engine.Devices.EmitterDevice.CurrentControlTickCount
+  nameWithType: EmitterDevice.CurrentControlTickCount
 - uid: Engine.Devices.EmitterDevice.State
   name: State
   href: api/Engine.Devices.EmitterDevice.html#Engine_Devices_EmitterDevice_State
@@ -681,6 +880,44 @@ references:
   fullName.vb: Engine.Packets.ConfirmationPacket.New
   nameWithType: ConfirmationPacket.ConfirmationPacket
   nameWithType.vb: ConfirmationPacket.New
+- uid: Engine.Packets.ControlPacket
+  name: ControlPacket
+  href: api/Engine.Packets.ControlPacket.html
+  commentId: T:Engine.Packets.ControlPacket
+  fullName: Engine.Packets.ControlPacket
+  nameWithType: ControlPacket
+- uid: Engine.Packets.ControlPacket.#ctor(Engine.Devices.Device,Engine.Devices.Device,System.Boolean)
+  name: ControlPacket(Device, Device, bool)
+  href: api/Engine.Packets.ControlPacket.html#Engine_Packets_ControlPacket__ctor_Engine_Devices_Device_Engine_Devices_Device_System_Boolean_
+  commentId: M:Engine.Packets.ControlPacket.#ctor(Engine.Devices.Device,Engine.Devices.Device,System.Boolean)
+  name.vb: New(Device, Device, Boolean)
+  fullName: Engine.Packets.ControlPacket.ControlPacket(Engine.Devices.Device, Engine.Devices.Device, bool)
+  fullName.vb: Engine.Packets.ControlPacket.New(Engine.Devices.Device, Engine.Devices.Device, Boolean)
+  nameWithType: ControlPacket.ControlPacket(Device, Device, bool)
+  nameWithType.vb: ControlPacket.New(Device, Device, Boolean)
+- uid: Engine.Packets.ControlPacket.#ctor*
+  name: ControlPacket
+  href: api/Engine.Packets.ControlPacket.html#Engine_Packets_ControlPacket__ctor_
+  commentId: Overload:Engine.Packets.ControlPacket.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Packets.ControlPacket.ControlPacket
+  fullName.vb: Engine.Packets.ControlPacket.New
+  nameWithType: ControlPacket.ControlPacket
+  nameWithType.vb: ControlPacket.New
+- uid: Engine.Packets.ControlPacket.Command
+  name: Command
+  href: api/Engine.Packets.ControlPacket.html#Engine_Packets_ControlPacket_Command
+  commentId: P:Engine.Packets.ControlPacket.Command
+  fullName: Engine.Packets.ControlPacket.Command
+  nameWithType: ControlPacket.Command
+- uid: Engine.Packets.ControlPacket.Command*
+  name: Command
+  href: api/Engine.Packets.ControlPacket.html#Engine_Packets_ControlPacket_Command_
+  commentId: Overload:Engine.Packets.ControlPacket.Command
+  isSpec: "True"
+  fullName: Engine.Packets.ControlPacket.Command
+  nameWithType: ControlPacket.Command
 - uid: Engine.Packets.Packet
   name: Packet
   href: api/Engine.Packets.Packet.html
@@ -826,6 +1063,19 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.Payload
   nameWithType: Packet.Payload
+- uid: Engine.Packets.Packet.PreviousHop
+  name: PreviousHop
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_PreviousHop
+  commentId: P:Engine.Packets.Packet.PreviousHop
+  fullName: Engine.Packets.Packet.PreviousHop
+  nameWithType: Packet.PreviousHop
+- uid: Engine.Packets.Packet.PreviousHop*
+  name: PreviousHop
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_PreviousHop_
+  commentId: Overload:Engine.Packets.Packet.PreviousHop
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.PreviousHop
+  nameWithType: Packet.PreviousHop
 - uid: Engine.Packets.Packet.TTL
   name: TTL
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_TTL
@@ -890,38 +1140,417 @@ references:
   commentId: N:Engine.Routers
   fullName: Engine.Routers
   nameWithType: Engine.Routers
-- uid: Engine.Routers.PacketRouter
-  name: PacketRouter
-  href: api/Engine.Routers.PacketRouter.html
-  commentId: T:Engine.Routers.PacketRouter
-  fullName: Engine.Routers.PacketRouter
-  nameWithType: PacketRouter
-- uid: Engine.Routers.PacketRouter.Instance
-  name: Instance
-  href: api/Engine.Routers.PacketRouter.html#Engine_Routers_PacketRouter_Instance
-  commentId: P:Engine.Routers.PacketRouter.Instance
-  fullName: Engine.Routers.PacketRouter.Instance
-  nameWithType: PacketRouter.Instance
-- uid: Engine.Routers.PacketRouter.Instance*
-  name: Instance
-  href: api/Engine.Routers.PacketRouter.html#Engine_Routers_PacketRouter_Instance_
-  commentId: Overload:Engine.Routers.PacketRouter.Instance
+- uid: Engine.Routers.FloodingPacketRouter
+  name: FloodingPacketRouter
+  href: api/Engine.Routers.FloodingPacketRouter.html
+  commentId: T:Engine.Routers.FloodingPacketRouter
+  fullName: Engine.Routers.FloodingPacketRouter
+  nameWithType: FloodingPacketRouter
+- uid: Engine.Routers.FloodingPacketRouter.Name
+  name: Name
+  href: api/Engine.Routers.FloodingPacketRouter.html#Engine_Routers_FloodingPacketRouter_Name
+  commentId: P:Engine.Routers.FloodingPacketRouter.Name
+  fullName: Engine.Routers.FloodingPacketRouter.Name
+  nameWithType: FloodingPacketRouter.Name
+- uid: Engine.Routers.FloodingPacketRouter.Name*
+  name: Name
+  href: api/Engine.Routers.FloodingPacketRouter.html#Engine_Routers_FloodingPacketRouter_Name_
+  commentId: Overload:Engine.Routers.FloodingPacketRouter.Name
   isSpec: "True"
-  fullName: Engine.Routers.PacketRouter.Instance
-  nameWithType: PacketRouter.Instance
-- uid: Engine.Routers.PacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device)
-  name: Route(Packet, Device)
-  href: api/Engine.Routers.PacketRouter.html#Engine_Routers_PacketRouter_Route_Engine_Packets_Packet_Engine_Devices_Device_
-  commentId: M:Engine.Routers.PacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device)
-  fullName: Engine.Routers.PacketRouter.Route(Engine.Packets.Packet, Engine.Devices.Device)
-  nameWithType: PacketRouter.Route(Packet, Device)
-- uid: Engine.Routers.PacketRouter.Route*
+  fullName: Engine.Routers.FloodingPacketRouter.Name
+  nameWithType: FloodingPacketRouter.Name
+- uid: Engine.Routers.FloodingPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)
+  name: Route(Packet, Device, INetworkTopology)
+  href: api/Engine.Routers.FloodingPacketRouter.html#Engine_Routers_FloodingPacketRouter_Route_Engine_Packets_Packet_Engine_Devices_Device_Engine_Routers_INetworkTopology_
+  commentId: M:Engine.Routers.FloodingPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)
+  fullName: Engine.Routers.FloodingPacketRouter.Route(Engine.Packets.Packet, Engine.Devices.Device, Engine.Routers.INetworkTopology)
+  nameWithType: FloodingPacketRouter.Route(Packet, Device, INetworkTopology)
+- uid: Engine.Routers.FloodingPacketRouter.Route*
   name: Route
-  href: api/Engine.Routers.PacketRouter.html#Engine_Routers_PacketRouter_Route_
-  commentId: Overload:Engine.Routers.PacketRouter.Route
+  href: api/Engine.Routers.FloodingPacketRouter.html#Engine_Routers_FloodingPacketRouter_Route_
+  commentId: Overload:Engine.Routers.FloodingPacketRouter.Route
   isSpec: "True"
-  fullName: Engine.Routers.PacketRouter.Route
-  nameWithType: PacketRouter.Route
+  fullName: Engine.Routers.FloodingPacketRouter.Route
+  nameWithType: FloodingPacketRouter.Route
+- uid: Engine.Routers.FullMeshNetworkBuilder
+  name: FullMeshNetworkBuilder
+  href: api/Engine.Routers.FullMeshNetworkBuilder.html
+  commentId: T:Engine.Routers.FullMeshNetworkBuilder
+  fullName: Engine.Routers.FullMeshNetworkBuilder
+  nameWithType: FullMeshNetworkBuilder
+- uid: Engine.Routers.FullMeshNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList{Engine.Devices.Device},Engine.Routers.IMutableNetworkTopology)
+  name: Build(IReadOnlyList<Device>, IMutableNetworkTopology)
+  href: api/Engine.Routers.FullMeshNetworkBuilder.html#Engine_Routers_FullMeshNetworkBuilder_Build_System_Collections_Generic_IReadOnlyList_Engine_Devices_Device__Engine_Routers_IMutableNetworkTopology_
+  commentId: M:Engine.Routers.FullMeshNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList{Engine.Devices.Device},Engine.Routers.IMutableNetworkTopology)
+  name.vb: Build(IReadOnlyList(Of Device), IMutableNetworkTopology)
+  fullName: Engine.Routers.FullMeshNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList<Engine.Devices.Device>, Engine.Routers.IMutableNetworkTopology)
+  fullName.vb: Engine.Routers.FullMeshNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList(Of Engine.Devices.Device), Engine.Routers.IMutableNetworkTopology)
+  nameWithType: FullMeshNetworkBuilder.Build(IReadOnlyList<Device>, IMutableNetworkTopology)
+  nameWithType.vb: FullMeshNetworkBuilder.Build(IReadOnlyList(Of Device), IMutableNetworkTopology)
+- uid: Engine.Routers.FullMeshNetworkBuilder.Build*
+  name: Build
+  href: api/Engine.Routers.FullMeshNetworkBuilder.html#Engine_Routers_FullMeshNetworkBuilder_Build_
+  commentId: Overload:Engine.Routers.FullMeshNetworkBuilder.Build
+  isSpec: "True"
+  fullName: Engine.Routers.FullMeshNetworkBuilder.Build
+  nameWithType: FullMeshNetworkBuilder.Build
+- uid: Engine.Routers.FullMeshNetworkBuilder.Name
+  name: Name
+  href: api/Engine.Routers.FullMeshNetworkBuilder.html#Engine_Routers_FullMeshNetworkBuilder_Name
+  commentId: P:Engine.Routers.FullMeshNetworkBuilder.Name
+  fullName: Engine.Routers.FullMeshNetworkBuilder.Name
+  nameWithType: FullMeshNetworkBuilder.Name
+- uid: Engine.Routers.FullMeshNetworkBuilder.Name*
+  name: Name
+  href: api/Engine.Routers.FullMeshNetworkBuilder.html#Engine_Routers_FullMeshNetworkBuilder_Name_
+  commentId: Overload:Engine.Routers.FullMeshNetworkBuilder.Name
+  isSpec: "True"
+  fullName: Engine.Routers.FullMeshNetworkBuilder.Name
+  nameWithType: FullMeshNetworkBuilder.Name
+- uid: Engine.Routers.IMutableNetworkTopology
+  name: IMutableNetworkTopology
+  href: api/Engine.Routers.IMutableNetworkTopology.html
+  commentId: T:Engine.Routers.IMutableNetworkTopology
+  fullName: Engine.Routers.IMutableNetworkTopology
+  nameWithType: IMutableNetworkTopology
+- uid: Engine.Routers.IMutableNetworkTopology.ClearConnections
+  name: ClearConnections()
+  href: api/Engine.Routers.IMutableNetworkTopology.html#Engine_Routers_IMutableNetworkTopology_ClearConnections
+  commentId: M:Engine.Routers.IMutableNetworkTopology.ClearConnections
+  fullName: Engine.Routers.IMutableNetworkTopology.ClearConnections()
+  nameWithType: IMutableNetworkTopology.ClearConnections()
+- uid: Engine.Routers.IMutableNetworkTopology.ClearConnections*
+  name: ClearConnections
+  href: api/Engine.Routers.IMutableNetworkTopology.html#Engine_Routers_IMutableNetworkTopology_ClearConnections_
+  commentId: Overload:Engine.Routers.IMutableNetworkTopology.ClearConnections
+  isSpec: "True"
+  fullName: Engine.Routers.IMutableNetworkTopology.ClearConnections
+  nameWithType: IMutableNetworkTopology.ClearConnections
+- uid: Engine.Routers.IMutableNetworkTopology.Connect(Engine.Devices.Device,Engine.Devices.Device)
+  name: Connect(Device, Device)
+  href: api/Engine.Routers.IMutableNetworkTopology.html#Engine_Routers_IMutableNetworkTopology_Connect_Engine_Devices_Device_Engine_Devices_Device_
+  commentId: M:Engine.Routers.IMutableNetworkTopology.Connect(Engine.Devices.Device,Engine.Devices.Device)
+  fullName: Engine.Routers.IMutableNetworkTopology.Connect(Engine.Devices.Device, Engine.Devices.Device)
+  nameWithType: IMutableNetworkTopology.Connect(Device, Device)
+- uid: Engine.Routers.IMutableNetworkTopology.Connect*
+  name: Connect
+  href: api/Engine.Routers.IMutableNetworkTopology.html#Engine_Routers_IMutableNetworkTopology_Connect_
+  commentId: Overload:Engine.Routers.IMutableNetworkTopology.Connect
+  isSpec: "True"
+  fullName: Engine.Routers.IMutableNetworkTopology.Connect
+  nameWithType: IMutableNetworkTopology.Connect
+- uid: Engine.Routers.IMutableNetworkTopology.Disconnect(Engine.Devices.Device,Engine.Devices.Device)
+  name: Disconnect(Device, Device)
+  href: api/Engine.Routers.IMutableNetworkTopology.html#Engine_Routers_IMutableNetworkTopology_Disconnect_Engine_Devices_Device_Engine_Devices_Device_
+  commentId: M:Engine.Routers.IMutableNetworkTopology.Disconnect(Engine.Devices.Device,Engine.Devices.Device)
+  fullName: Engine.Routers.IMutableNetworkTopology.Disconnect(Engine.Devices.Device, Engine.Devices.Device)
+  nameWithType: IMutableNetworkTopology.Disconnect(Device, Device)
+- uid: Engine.Routers.IMutableNetworkTopology.Disconnect*
+  name: Disconnect
+  href: api/Engine.Routers.IMutableNetworkTopology.html#Engine_Routers_IMutableNetworkTopology_Disconnect_
+  commentId: Overload:Engine.Routers.IMutableNetworkTopology.Disconnect
+  isSpec: "True"
+  fullName: Engine.Routers.IMutableNetworkTopology.Disconnect
+  nameWithType: IMutableNetworkTopology.Disconnect
+- uid: Engine.Routers.IMutableNetworkTopology.RemoveDevice(Engine.Devices.Device)
+  name: RemoveDevice(Device)
+  href: api/Engine.Routers.IMutableNetworkTopology.html#Engine_Routers_IMutableNetworkTopology_RemoveDevice_Engine_Devices_Device_
+  commentId: M:Engine.Routers.IMutableNetworkTopology.RemoveDevice(Engine.Devices.Device)
+  fullName: Engine.Routers.IMutableNetworkTopology.RemoveDevice(Engine.Devices.Device)
+  nameWithType: IMutableNetworkTopology.RemoveDevice(Device)
+- uid: Engine.Routers.IMutableNetworkTopology.RemoveDevice*
+  name: RemoveDevice
+  href: api/Engine.Routers.IMutableNetworkTopology.html#Engine_Routers_IMutableNetworkTopology_RemoveDevice_
+  commentId: Overload:Engine.Routers.IMutableNetworkTopology.RemoveDevice
+  isSpec: "True"
+  fullName: Engine.Routers.IMutableNetworkTopology.RemoveDevice
+  nameWithType: IMutableNetworkTopology.RemoveDevice
+- uid: Engine.Routers.INetworkBuilder
+  name: INetworkBuilder
+  href: api/Engine.Routers.INetworkBuilder.html
+  commentId: T:Engine.Routers.INetworkBuilder
+  fullName: Engine.Routers.INetworkBuilder
+  nameWithType: INetworkBuilder
+- uid: Engine.Routers.INetworkBuilder.Build(System.Collections.Generic.IReadOnlyList{Engine.Devices.Device},Engine.Routers.IMutableNetworkTopology)
+  name: Build(IReadOnlyList<Device>, IMutableNetworkTopology)
+  href: api/Engine.Routers.INetworkBuilder.html#Engine_Routers_INetworkBuilder_Build_System_Collections_Generic_IReadOnlyList_Engine_Devices_Device__Engine_Routers_IMutableNetworkTopology_
+  commentId: M:Engine.Routers.INetworkBuilder.Build(System.Collections.Generic.IReadOnlyList{Engine.Devices.Device},Engine.Routers.IMutableNetworkTopology)
+  name.vb: Build(IReadOnlyList(Of Device), IMutableNetworkTopology)
+  fullName: Engine.Routers.INetworkBuilder.Build(System.Collections.Generic.IReadOnlyList<Engine.Devices.Device>, Engine.Routers.IMutableNetworkTopology)
+  fullName.vb: Engine.Routers.INetworkBuilder.Build(System.Collections.Generic.IReadOnlyList(Of Engine.Devices.Device), Engine.Routers.IMutableNetworkTopology)
+  nameWithType: INetworkBuilder.Build(IReadOnlyList<Device>, IMutableNetworkTopology)
+  nameWithType.vb: INetworkBuilder.Build(IReadOnlyList(Of Device), IMutableNetworkTopology)
+- uid: Engine.Routers.INetworkBuilder.Build*
+  name: Build
+  href: api/Engine.Routers.INetworkBuilder.html#Engine_Routers_INetworkBuilder_Build_
+  commentId: Overload:Engine.Routers.INetworkBuilder.Build
+  isSpec: "True"
+  fullName: Engine.Routers.INetworkBuilder.Build
+  nameWithType: INetworkBuilder.Build
+- uid: Engine.Routers.INetworkBuilder.Name
+  name: Name
+  href: api/Engine.Routers.INetworkBuilder.html#Engine_Routers_INetworkBuilder_Name
+  commentId: P:Engine.Routers.INetworkBuilder.Name
+  fullName: Engine.Routers.INetworkBuilder.Name
+  nameWithType: INetworkBuilder.Name
+- uid: Engine.Routers.INetworkBuilder.Name*
+  name: Name
+  href: api/Engine.Routers.INetworkBuilder.html#Engine_Routers_INetworkBuilder_Name_
+  commentId: Overload:Engine.Routers.INetworkBuilder.Name
+  isSpec: "True"
+  fullName: Engine.Routers.INetworkBuilder.Name
+  nameWithType: INetworkBuilder.Name
+- uid: Engine.Routers.INetworkTopology
+  name: INetworkTopology
+  href: api/Engine.Routers.INetworkTopology.html
+  commentId: T:Engine.Routers.INetworkTopology
+  fullName: Engine.Routers.INetworkTopology
+  nameWithType: INetworkTopology
+- uid: Engine.Routers.INetworkTopology.AreConnected(Engine.Devices.Device,Engine.Devices.Device)
+  name: AreConnected(Device, Device)
+  href: api/Engine.Routers.INetworkTopology.html#Engine_Routers_INetworkTopology_AreConnected_Engine_Devices_Device_Engine_Devices_Device_
+  commentId: M:Engine.Routers.INetworkTopology.AreConnected(Engine.Devices.Device,Engine.Devices.Device)
+  fullName: Engine.Routers.INetworkTopology.AreConnected(Engine.Devices.Device, Engine.Devices.Device)
+  nameWithType: INetworkTopology.AreConnected(Device, Device)
+- uid: Engine.Routers.INetworkTopology.AreConnected*
+  name: AreConnected
+  href: api/Engine.Routers.INetworkTopology.html#Engine_Routers_INetworkTopology_AreConnected_
+  commentId: Overload:Engine.Routers.INetworkTopology.AreConnected
+  isSpec: "True"
+  fullName: Engine.Routers.INetworkTopology.AreConnected
+  nameWithType: INetworkTopology.AreConnected
+- uid: Engine.Routers.INetworkTopology.AreVisible(Engine.Devices.Device,Engine.Devices.Device)
+  name: AreVisible(Device, Device)
+  href: api/Engine.Routers.INetworkTopology.html#Engine_Routers_INetworkTopology_AreVisible_Engine_Devices_Device_Engine_Devices_Device_
+  commentId: M:Engine.Routers.INetworkTopology.AreVisible(Engine.Devices.Device,Engine.Devices.Device)
+  fullName: Engine.Routers.INetworkTopology.AreVisible(Engine.Devices.Device, Engine.Devices.Device)
+  nameWithType: INetworkTopology.AreVisible(Device, Device)
+- uid: Engine.Routers.INetworkTopology.AreVisible*
+  name: AreVisible
+  href: api/Engine.Routers.INetworkTopology.html#Engine_Routers_INetworkTopology_AreVisible_
+  commentId: Overload:Engine.Routers.INetworkTopology.AreVisible
+  isSpec: "True"
+  fullName: Engine.Routers.INetworkTopology.AreVisible
+  nameWithType: INetworkTopology.AreVisible
+- uid: Engine.Routers.INetworkTopology.GetConnectedDevices(Engine.Devices.Device)
+  name: GetConnectedDevices(Device)
+  href: api/Engine.Routers.INetworkTopology.html#Engine_Routers_INetworkTopology_GetConnectedDevices_Engine_Devices_Device_
+  commentId: M:Engine.Routers.INetworkTopology.GetConnectedDevices(Engine.Devices.Device)
+  fullName: Engine.Routers.INetworkTopology.GetConnectedDevices(Engine.Devices.Device)
+  nameWithType: INetworkTopology.GetConnectedDevices(Device)
+- uid: Engine.Routers.INetworkTopology.GetConnectedDevices*
+  name: GetConnectedDevices
+  href: api/Engine.Routers.INetworkTopology.html#Engine_Routers_INetworkTopology_GetConnectedDevices_
+  commentId: Overload:Engine.Routers.INetworkTopology.GetConnectedDevices
+  isSpec: "True"
+  fullName: Engine.Routers.INetworkTopology.GetConnectedDevices
+  nameWithType: INetworkTopology.GetConnectedDevices
+- uid: Engine.Routers.INetworkTopology.GetVisibleDevices(Engine.Devices.Device)
+  name: GetVisibleDevices(Device)
+  href: api/Engine.Routers.INetworkTopology.html#Engine_Routers_INetworkTopology_GetVisibleDevices_Engine_Devices_Device_
+  commentId: M:Engine.Routers.INetworkTopology.GetVisibleDevices(Engine.Devices.Device)
+  fullName: Engine.Routers.INetworkTopology.GetVisibleDevices(Engine.Devices.Device)
+  nameWithType: INetworkTopology.GetVisibleDevices(Device)
+- uid: Engine.Routers.INetworkTopology.GetVisibleDevices*
+  name: GetVisibleDevices
+  href: api/Engine.Routers.INetworkTopology.html#Engine_Routers_INetworkTopology_GetVisibleDevices_
+  commentId: Overload:Engine.Routers.INetworkTopology.GetVisibleDevices
+  isSpec: "True"
+  fullName: Engine.Routers.INetworkTopology.GetVisibleDevices
+  nameWithType: INetworkTopology.GetVisibleDevices
+- uid: Engine.Routers.IPacketRouter
+  name: IPacketRouter
+  href: api/Engine.Routers.IPacketRouter.html
+  commentId: T:Engine.Routers.IPacketRouter
+  fullName: Engine.Routers.IPacketRouter
+  nameWithType: IPacketRouter
+- uid: Engine.Routers.IPacketRouter.Name
+  name: Name
+  href: api/Engine.Routers.IPacketRouter.html#Engine_Routers_IPacketRouter_Name
+  commentId: P:Engine.Routers.IPacketRouter.Name
+  fullName: Engine.Routers.IPacketRouter.Name
+  nameWithType: IPacketRouter.Name
+- uid: Engine.Routers.IPacketRouter.Name*
+  name: Name
+  href: api/Engine.Routers.IPacketRouter.html#Engine_Routers_IPacketRouter_Name_
+  commentId: Overload:Engine.Routers.IPacketRouter.Name
+  isSpec: "True"
+  fullName: Engine.Routers.IPacketRouter.Name
+  nameWithType: IPacketRouter.Name
+- uid: Engine.Routers.IPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)
+  name: Route(Packet, Device, INetworkTopology)
+  href: api/Engine.Routers.IPacketRouter.html#Engine_Routers_IPacketRouter_Route_Engine_Packets_Packet_Engine_Devices_Device_Engine_Routers_INetworkTopology_
+  commentId: M:Engine.Routers.IPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)
+  fullName: Engine.Routers.IPacketRouter.Route(Engine.Packets.Packet, Engine.Devices.Device, Engine.Routers.INetworkTopology)
+  nameWithType: IPacketRouter.Route(Packet, Device, INetworkTopology)
+- uid: Engine.Routers.IPacketRouter.Route*
+  name: Route
+  href: api/Engine.Routers.IPacketRouter.html#Engine_Routers_IPacketRouter_Route_
+  commentId: Overload:Engine.Routers.IPacketRouter.Route
+  isSpec: "True"
+  fullName: Engine.Routers.IPacketRouter.Route
+  nameWithType: IPacketRouter.Route
+- uid: Engine.Routers.NetworkTopology
+  name: NetworkTopology
+  href: api/Engine.Routers.NetworkTopology.html
+  commentId: T:Engine.Routers.NetworkTopology
+  fullName: Engine.Routers.NetworkTopology
+  nameWithType: NetworkTopology
+- uid: Engine.Routers.NetworkTopology.#ctor(Engine.Core.SimulationEngine)
+  name: NetworkTopology(SimulationEngine)
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology__ctor_Engine_Core_SimulationEngine_
+  commentId: M:Engine.Routers.NetworkTopology.#ctor(Engine.Core.SimulationEngine)
+  name.vb: New(SimulationEngine)
+  fullName: Engine.Routers.NetworkTopology.NetworkTopology(Engine.Core.SimulationEngine)
+  fullName.vb: Engine.Routers.NetworkTopology.New(Engine.Core.SimulationEngine)
+  nameWithType: NetworkTopology.NetworkTopology(SimulationEngine)
+  nameWithType.vb: NetworkTopology.New(SimulationEngine)
+- uid: Engine.Routers.NetworkTopology.#ctor*
+  name: NetworkTopology
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology__ctor_
+  commentId: Overload:Engine.Routers.NetworkTopology.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Routers.NetworkTopology.NetworkTopology
+  fullName.vb: Engine.Routers.NetworkTopology.New
+  nameWithType: NetworkTopology.NetworkTopology
+  nameWithType.vb: NetworkTopology.New
+- uid: Engine.Routers.NetworkTopology.AreConnected(Engine.Devices.Device,Engine.Devices.Device)
+  name: AreConnected(Device, Device)
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_AreConnected_Engine_Devices_Device_Engine_Devices_Device_
+  commentId: M:Engine.Routers.NetworkTopology.AreConnected(Engine.Devices.Device,Engine.Devices.Device)
+  fullName: Engine.Routers.NetworkTopology.AreConnected(Engine.Devices.Device, Engine.Devices.Device)
+  nameWithType: NetworkTopology.AreConnected(Device, Device)
+- uid: Engine.Routers.NetworkTopology.AreConnected*
+  name: AreConnected
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_AreConnected_
+  commentId: Overload:Engine.Routers.NetworkTopology.AreConnected
+  isSpec: "True"
+  fullName: Engine.Routers.NetworkTopology.AreConnected
+  nameWithType: NetworkTopology.AreConnected
+- uid: Engine.Routers.NetworkTopology.AreVisible(Engine.Devices.Device,Engine.Devices.Device)
+  name: AreVisible(Device, Device)
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_AreVisible_Engine_Devices_Device_Engine_Devices_Device_
+  commentId: M:Engine.Routers.NetworkTopology.AreVisible(Engine.Devices.Device,Engine.Devices.Device)
+  fullName: Engine.Routers.NetworkTopology.AreVisible(Engine.Devices.Device, Engine.Devices.Device)
+  nameWithType: NetworkTopology.AreVisible(Device, Device)
+- uid: Engine.Routers.NetworkTopology.AreVisible*
+  name: AreVisible
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_AreVisible_
+  commentId: Overload:Engine.Routers.NetworkTopology.AreVisible
+  isSpec: "True"
+  fullName: Engine.Routers.NetworkTopology.AreVisible
+  nameWithType: NetworkTopology.AreVisible
+- uid: Engine.Routers.NetworkTopology.ClearConnections
+  name: ClearConnections()
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_ClearConnections
+  commentId: M:Engine.Routers.NetworkTopology.ClearConnections
+  fullName: Engine.Routers.NetworkTopology.ClearConnections()
+  nameWithType: NetworkTopology.ClearConnections()
+- uid: Engine.Routers.NetworkTopology.ClearConnections*
+  name: ClearConnections
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_ClearConnections_
+  commentId: Overload:Engine.Routers.NetworkTopology.ClearConnections
+  isSpec: "True"
+  fullName: Engine.Routers.NetworkTopology.ClearConnections
+  nameWithType: NetworkTopology.ClearConnections
+- uid: Engine.Routers.NetworkTopology.Connect(Engine.Devices.Device,Engine.Devices.Device)
+  name: Connect(Device, Device)
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_Connect_Engine_Devices_Device_Engine_Devices_Device_
+  commentId: M:Engine.Routers.NetworkTopology.Connect(Engine.Devices.Device,Engine.Devices.Device)
+  fullName: Engine.Routers.NetworkTopology.Connect(Engine.Devices.Device, Engine.Devices.Device)
+  nameWithType: NetworkTopology.Connect(Device, Device)
+- uid: Engine.Routers.NetworkTopology.Connect*
+  name: Connect
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_Connect_
+  commentId: Overload:Engine.Routers.NetworkTopology.Connect
+  isSpec: "True"
+  fullName: Engine.Routers.NetworkTopology.Connect
+  nameWithType: NetworkTopology.Connect
+- uid: Engine.Routers.NetworkTopology.Disconnect(Engine.Devices.Device,Engine.Devices.Device)
+  name: Disconnect(Device, Device)
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_Disconnect_Engine_Devices_Device_Engine_Devices_Device_
+  commentId: M:Engine.Routers.NetworkTopology.Disconnect(Engine.Devices.Device,Engine.Devices.Device)
+  fullName: Engine.Routers.NetworkTopology.Disconnect(Engine.Devices.Device, Engine.Devices.Device)
+  nameWithType: NetworkTopology.Disconnect(Device, Device)
+- uid: Engine.Routers.NetworkTopology.Disconnect*
+  name: Disconnect
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_Disconnect_
+  commentId: Overload:Engine.Routers.NetworkTopology.Disconnect
+  isSpec: "True"
+  fullName: Engine.Routers.NetworkTopology.Disconnect
+  nameWithType: NetworkTopology.Disconnect
+- uid: Engine.Routers.NetworkTopology.GetConnectedDevices(Engine.Devices.Device)
+  name: GetConnectedDevices(Device)
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_GetConnectedDevices_Engine_Devices_Device_
+  commentId: M:Engine.Routers.NetworkTopology.GetConnectedDevices(Engine.Devices.Device)
+  fullName: Engine.Routers.NetworkTopology.GetConnectedDevices(Engine.Devices.Device)
+  nameWithType: NetworkTopology.GetConnectedDevices(Device)
+- uid: Engine.Routers.NetworkTopology.GetConnectedDevices*
+  name: GetConnectedDevices
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_GetConnectedDevices_
+  commentId: Overload:Engine.Routers.NetworkTopology.GetConnectedDevices
+  isSpec: "True"
+  fullName: Engine.Routers.NetworkTopology.GetConnectedDevices
+  nameWithType: NetworkTopology.GetConnectedDevices
+- uid: Engine.Routers.NetworkTopology.GetVisibleDevices(Engine.Devices.Device)
+  name: GetVisibleDevices(Device)
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_GetVisibleDevices_Engine_Devices_Device_
+  commentId: M:Engine.Routers.NetworkTopology.GetVisibleDevices(Engine.Devices.Device)
+  fullName: Engine.Routers.NetworkTopology.GetVisibleDevices(Engine.Devices.Device)
+  nameWithType: NetworkTopology.GetVisibleDevices(Device)
+- uid: Engine.Routers.NetworkTopology.GetVisibleDevices*
+  name: GetVisibleDevices
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_GetVisibleDevices_
+  commentId: Overload:Engine.Routers.NetworkTopology.GetVisibleDevices
+  isSpec: "True"
+  fullName: Engine.Routers.NetworkTopology.GetVisibleDevices
+  nameWithType: NetworkTopology.GetVisibleDevices
+- uid: Engine.Routers.NetworkTopology.RemoveDevice(Engine.Devices.Device)
+  name: RemoveDevice(Device)
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_RemoveDevice_Engine_Devices_Device_
+  commentId: M:Engine.Routers.NetworkTopology.RemoveDevice(Engine.Devices.Device)
+  fullName: Engine.Routers.NetworkTopology.RemoveDevice(Engine.Devices.Device)
+  nameWithType: NetworkTopology.RemoveDevice(Device)
+- uid: Engine.Routers.NetworkTopology.RemoveDevice*
+  name: RemoveDevice
+  href: api/Engine.Routers.NetworkTopology.html#Engine_Routers_NetworkTopology_RemoveDevice_
+  commentId: Overload:Engine.Routers.NetworkTopology.RemoveDevice
+  isSpec: "True"
+  fullName: Engine.Routers.NetworkTopology.RemoveDevice
+  nameWithType: NetworkTopology.RemoveDevice
+- uid: Engine.Routers.SmartFloodingPacketRouter
+  name: SmartFloodingPacketRouter
+  href: api/Engine.Routers.SmartFloodingPacketRouter.html
+  commentId: T:Engine.Routers.SmartFloodingPacketRouter
+  fullName: Engine.Routers.SmartFloodingPacketRouter
+  nameWithType: SmartFloodingPacketRouter
+- uid: Engine.Routers.SmartFloodingPacketRouter.Name
+  name: Name
+  href: api/Engine.Routers.SmartFloodingPacketRouter.html#Engine_Routers_SmartFloodingPacketRouter_Name
+  commentId: P:Engine.Routers.SmartFloodingPacketRouter.Name
+  fullName: Engine.Routers.SmartFloodingPacketRouter.Name
+  nameWithType: SmartFloodingPacketRouter.Name
+- uid: Engine.Routers.SmartFloodingPacketRouter.Name*
+  name: Name
+  href: api/Engine.Routers.SmartFloodingPacketRouter.html#Engine_Routers_SmartFloodingPacketRouter_Name_
+  commentId: Overload:Engine.Routers.SmartFloodingPacketRouter.Name
+  isSpec: "True"
+  fullName: Engine.Routers.SmartFloodingPacketRouter.Name
+  nameWithType: SmartFloodingPacketRouter.Name
+- uid: Engine.Routers.SmartFloodingPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)
+  name: Route(Packet, Device, INetworkTopology)
+  href: api/Engine.Routers.SmartFloodingPacketRouter.html#Engine_Routers_SmartFloodingPacketRouter_Route_Engine_Packets_Packet_Engine_Devices_Device_Engine_Routers_INetworkTopology_
+  commentId: M:Engine.Routers.SmartFloodingPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)
+  fullName: Engine.Routers.SmartFloodingPacketRouter.Route(Engine.Packets.Packet, Engine.Devices.Device, Engine.Routers.INetworkTopology)
+  nameWithType: SmartFloodingPacketRouter.Route(Packet, Device, INetworkTopology)
+- uid: Engine.Routers.SmartFloodingPacketRouter.Route*
+  name: Route
+  href: api/Engine.Routers.SmartFloodingPacketRouter.html#Engine_Routers_SmartFloodingPacketRouter_Route_
+  commentId: Overload:Engine.Routers.SmartFloodingPacketRouter.Route
+  isSpec: "True"
+  fullName: Engine.Routers.SmartFloodingPacketRouter.Route
+  nameWithType: SmartFloodingPacketRouter.Route
 - uid: Engine.Statistics
   name: Engine.Statistics
   href: api/Engine.Statistics.html

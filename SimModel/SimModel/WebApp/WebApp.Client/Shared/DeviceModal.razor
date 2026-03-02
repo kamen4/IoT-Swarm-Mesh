@@ -40,6 +40,14 @@
             </label>
         }
 
+        @if (Model.DeviceType == DeviceType.Emitter)
+        {
+            <label>
+                Control frequency (ticks, 0 = manual only)
+                <input class="form-input" type="number" min="0" @bind="Model.ControlFrequencyTicks" />
+            </label>
+        }
+
         <div class="modal-actions">
             <button class="btn btn-primary" @onclick="Submit">@(IsEdit ? "Save" : "Add")</button>
             <button class="btn btn-ghost" @onclick="Cancel">Cancel</button>

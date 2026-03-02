@@ -177,24 +177,35 @@ If `NeedConfirmation` is set, the destination automatically routes a [`Confirmat
 
 ---
 
-### GeneratorDevice send cadence
+### Active-packet limit
 
-[`GeneratorDevice`](Devices/GeneratorDevice.cs) maintains an internal counter (`CurrentTickCount`) incremented on every `TickEvent`.  
-When it reaches `GenFrequencyTicks` it resets to zero and one packet is emitted via `SimulationEngine.RoutePacket`:
+`SimulationEngine` enforces a configurable upper bound on the number of simultaneously in-flight packets to prevent packet storms (e.g. routing loops in flooding networks) from growing unbounded.
+
+| Property | Default | Meaning |
+|---|---|---|
+| `MaxActivePackets` | `0` | `0` = automatic limit |
+| `EffectivePacketLimit` | `devices × 2000` | The limit actually enforced on each `RegisterPacket` call |
+| `AUTO_PACKET_LIMIT_PER_DEVICE` | `2000` | Multiplier for the automatic calculation |
+
+**Automatic mode (`MaxActivePackets = 0`):**  
+The limit is recomputed on every `RegisterPacket` call as `Devices.Count × AUTO_PACKET_LIMIT_PER_DEVICE`.  
+This means the limit automatically scales up as more devices are added to the simulation.
+
+**Manual override:**  
+Set `MaxActivePackets` to any positive integer to fix the limit regardless of device count.  
+The UI settings panel exposes this value and shows the current automatic limit as a hint.
+
+**Violation behaviour:**  
+When `_packets.Count >= EffectivePacketLimit`, `RegisterPacket` throws [`PacketLimitExceededException`](Core/PacketLimitExceededException.cs) containing the limit, actual count, and the tick at which the violation occurred.  
+`SimulationService` in the Blazor client catches this exception, stops the tick loop, and stores the message in `PacketLimitError` which is rendered as a red error banner.
 
 ```
-tick 1 … tick N-1  →  counter increments, no packet
-tick N             →  counter resets to 0, RoutePacket(packet, this) called
-tick N+1 …         →  cycle repeats
+active packets  limit not reached → packet enqueued normally
+active packets ≥ limit            → PacketLimitExceededException thrown
+                                    → RunLoopAsync catches it
+                                    → IsRunning = false, PacketLimitError set
+                                    → error banner shown in UI
 ```
-
----
-
-### Event-driven statistics
-
-[`SimulationStatistics`](Statistics/SimulationStatistics.cs) subscribes to the typed events raised by `SimulationEngine` and maintains eight cumulative metrics.  
-On every tick it appends a [`TickSnapshot`](Statistics/TickSnapshot.cs) to a ring-buffer (capped at 300 entries) for time-series charting.  
-Observers subscribe to `SimulationStatistics.Updated` to react to metric changes without polling.
 
 ---
 
@@ -202,15 +213,17 @@ Observers subscribe to `SimulationStatistics.Updated` to react to metric changes
 
 | Path | Responsibility |
 |---|---|
-| [`Core/SimulationEngine.cs`](Core/SimulationEngine.cs) | Singleton engine: tick loop, device registry, packet queue, typed events, `Router` + `NetworkBuilder` + `Topology` |
+| [`Core/SimulationEngine.cs`](Core/SimulationEngine.cs) | Singleton engine: tick loop, device registry, packet queue, typed events, `Router` + `NetworkBuilder` + `Topology`, packet-limit guard |
 | [`Core/SimulationEvents.cs`](Core/SimulationEvents.cs) | Strongly-typed `EventArgs` for all engine events |
+| [`Core/PacketLimitExceededException.cs`](Core/PacketLimitExceededException.cs) | Exception thrown when the in-flight packet count exceeds `MaxActivePackets` |
 | [`Devices/Device.cs`](Devices/Device.cs) | Abstract base: identity, 2D position, receive / forward via `SimulationEngine.RoutePacket` |
 | [`Devices/HubDevice.cs`](Devices/HubDevice.cs) | Central gateway; destination for all `GeneratorDevice` packets |
 | [`Devices/GeneratorDevice.cs`](Devices/GeneratorDevice.cs) | Emits one packet per `GenFrequencyTicks` ticks via `RoutePacket` |
-| [`Devices/EmitterDevice.cs`](Devices/EmitterDevice.cs) | Receives command packets and applies a boolean state |
+| [`Devices/EmitterDevice.cs`](Devices/EmitterDevice.cs) | Receives `ControlPacket` and toggles boolean state; auto-sends control packets at `ControlFrequencyTicks` interval |
 | [`Packets/Packet.cs`](Packets/Packet.cs) | Core transmission unit: routing metadata, TTL, payload |
 | [`Packets/PacketData.cs`](Packets/PacketData.cs) | Untyped application-level payload wrapper |
 | [`Packets/ConfirmationPacket.cs`](Packets/ConfirmationPacket.cs) | Delivery acknowledgement routed back to the originator |
+| [`Packets/ControlPacket.cs`](Packets/ControlPacket.cs) | Hub→Emitter command packet carrying a `bool Command` (on/off) |
 | [`Routers/IPacketRouter.cs`](Routers/IPacketRouter.cs) | **«interface»** routing strategy contract |
 | [`Routers/INetworkTopology.cs`](Routers/INetworkTopology.cs) | **«interface»** read-only topology: visibility + connections |
 | [`Routers/IMutableNetworkTopology.cs`](Routers/IMutableNetworkTopology.cs) | **«interface»** topology mutations (builder-only) |

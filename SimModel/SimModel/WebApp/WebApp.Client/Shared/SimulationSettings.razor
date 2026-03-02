@@ -1,4 +1,5 @@
 @using WebApp.Client.Services
+@using Engine.Core
 
 <div class="modal-backdrop" @onclick="OnBackdropClick">
     <div class="modal-box" @onclick:stopPropagation>
@@ -27,6 +28,12 @@
                    @bind="Config.TicksToTravel" />
         </label>
 
+        <label>
+            Max active packets <span class="settings-hint">(0 = auto: devices ? @Engine.Core.SimulationEngine.AUTO_PACKET_LIMIT_PER_DEVICE, now @_autoLimit)</span>
+            <input class="form-input" type="number" min="0"
+                   @bind="Config.MaxActivePackets" />
+        </label>
+
         <div class="modal-actions">
             <button class="btn btn-primary" @onclick="Apply">Apply</button>
             <button class="btn btn-ghost" @onclick="Close">Close</button>
@@ -37,8 +44,15 @@
 @code {
     [Parameter, EditorRequired] public SimulationConfig Config     { get; set; } = new();
     [Parameter, EditorRequired] public double           LastTickMs { get; set; }
+    [Parameter, EditorRequired] public int              DeviceCount { get; set; }
     [Parameter]                 public EventCallback    OnApply    { get; set; }
     [Parameter]                 public EventCallback    OnClose    { get; set; }
+
+    /// <summary>
+    /// The auto-computed limit shown in the hint next to the input field.
+    /// Updates reactively whenever <see cref="DeviceCount"/> changes.
+    /// </summary>
+    private int _autoLimit => DeviceCount * SimulationEngine.AUTO_PACKET_LIMIT_PER_DEVICE;
 
     private async Task Apply()
     {

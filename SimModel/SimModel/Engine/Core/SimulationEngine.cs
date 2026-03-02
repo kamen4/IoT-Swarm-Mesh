@@ -174,6 +174,52 @@ public class SimulationEngine
     }
 
     // -------------------------------------------------------------------------
+    // Packet limit
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// The multiplier used to compute the automatic packet limit when
+    /// <see cref="MaxActivePackets"/> is set to <c>0</c>.
+    /// Default: <c>2000</c> packets per registered device.
+    /// </summary>
+    public const int AUTO_PACKET_LIMIT_PER_DEVICE = 2000;
+
+    /// <summary>
+    /// Gets or sets the maximum number of packets that may be simultaneously
+    /// in-flight in the simulation.
+    /// <para>
+    /// When set to <c>0</c> (the default) the limit is computed automatically
+    /// as <c>Devices.Count × <see cref="AUTO_PACKET_LIMIT_PER_DEVICE"/></c>
+    /// each time a packet is enqueued, so it scales with the network size.
+    /// </para>
+    /// <para>
+    /// When the in-flight count reaches or exceeds the effective limit,
+    /// <see cref="RegisterPacket"/> throws
+    /// <see cref="PacketLimitExceededException"/> and the tick loop must be
+    /// stopped by the caller.
+    /// Set to a positive value to override the automatic limit.
+    /// </para>
+    /// </summary>
+    public int MaxActivePackets { get; set; } = 0;
+
+    /// <summary>
+    /// Returns the effective packet limit that will be enforced on the next
+    /// <see cref="RegisterPacket"/> call.
+    /// <list type="bullet">
+    ///   <item>If <see cref="MaxActivePackets"/> &gt; 0 — returns that value.</item>
+    ///   <item>Otherwise — returns <c>Devices.Count × <see cref="AUTO_PACKET_LIMIT_PER_DEVICE"/></c>.</item>
+    /// </list>
+    /// Returns <see cref="int.MaxValue"/> when there are no devices yet so that
+    /// early registration during setup never triggers the guard.
+    /// </summary>
+    public int EffectivePacketLimit =>
+        MaxActivePackets > 0
+            ? MaxActivePackets
+            : _devices.Count > 0
+                ? _devices.Count * AUTO_PACKET_LIMIT_PER_DEVICE
+                : int.MaxValue;
+
+    // -------------------------------------------------------------------------
     // Packet scheduling
     // -------------------------------------------------------------------------
 
@@ -182,8 +228,20 @@ public class SimulationEngine
     /// The absolute arrival tick is computed as
     /// <c>TickCount + packet.TicksToTravel</c> and stored on the packet.
     /// </summary>
+    /// <exception cref="PacketLimitExceededException">
+    /// Thrown when the number of in-flight packets is already at or above
+    /// <see cref="EffectivePacketLimit"/> before the new packet is added.
+    /// The caller (typically the simulation tick loop) must stop the simulation
+    /// and surface this error to the user.
+    /// </exception>
     public void RegisterPacket(Packet packet)
     {
+        var currentCount = _packets.Count;
+        var limit        = EffectivePacketLimit;
+
+        if (currentCount >= limit)
+            throw new PacketLimitExceededException(limit, currentCount, TickCount);
+
         var arivalTick = TickCount + packet.TicksToTravel;
         packet.ArrivalTick = arivalTick;
         _packets.Enqueue(packet, arivalTick);

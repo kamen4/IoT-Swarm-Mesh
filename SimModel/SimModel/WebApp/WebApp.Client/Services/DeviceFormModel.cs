@@ -9,4 +9,5 @@ public class DeviceFormModel
     public float X { get; set; }
     public float Y { get; set; }
     public long GenFrequencyTicks { get; set; } = 40;
+    public long ControlFrequencyTicks { get; set; } = 0;
 }

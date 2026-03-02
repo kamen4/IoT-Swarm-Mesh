@@ -65,7 +65,9 @@
     private static string ExtraInfo(Device d) => d switch
     {
         GeneratorDevice g => $"tick {g.CurrentTickCount}/{g.GenFrequencyTicks}",
-        EmitterDevice   e => $"state={e.State}",
+        EmitterDevice   e => e.ControlFrequencyTicks > 0
+                                ? $"state={e.State}  ctrl {e.CurrentControlTickCount}/{e.ControlFrequencyTicks}"
+                                : $"state={e.State}",
         _                 => "\u2014"
     };
 }

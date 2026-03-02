@@ -14,7 +14,7 @@
         <span class="topbar-title">IoT Swarm Mesh</span>
         <span class="topbar-stat">Tick <strong>@Sim.Engine.TickCount</strong></span>
         <span class="topbar-stat">Devices <strong>@Sim.Engine.Devices.Count</strong></span>
-        <span class="topbar-stat">Packets <strong>@Sim.Engine.ActivePackets.Count</strong></span>
+        <span class="topbar-stat">Packets <strong>@Sim.Engine.ActivePackets.Count / @Sim.Engine.EffectivePacketLimit</strong></span>
         <span class="topbar-stat">dt <strong>@Sim.LastTickMs.ToString("F2") ms</strong></span>
 
         <div class="topbar-sep"></div>
@@ -40,6 +40,16 @@
         <a class="btn btn-docs btn-sm" href="docs/index.html" target="_blank" rel="noopener">Docs</a>
 
     </header>
+
+    @* -- Packet limit error banner -------------------------------------- *@
+    @if (Sim.PacketLimitError is not null)
+    {
+        <div class="error-banner">
+            <span class="error-banner-icon">⚠</span>
+            <span class="error-banner-text">@Sim.PacketLimitError</span>
+            <button class="btn btn-ghost btn-sm" @onclick="Sim.Reset">Reset</button>
+        </div>
+    }
 
     @* -- Main layout ---------------------------------------------------- *@
     <main class="main-grid">
@@ -80,6 +90,7 @@
 {
     <SimulationSettings Config="Sim.Config"
                         LastTickMs="Sim.LastTickMs"
+                        DeviceCount="Sim.Engine.Devices.Count"
                         OnApply="ApplySettings"
                         OnClose="() => _showSettings = false" />
 }
@@ -124,7 +135,8 @@
             },
             X = device.Position.X,
             Y = device.Position.Y,
-            GenFrequencyTicks = device is GeneratorDevice g ? g.GenFrequencyTicks : 40
+            GenFrequencyTicks     = device is GeneratorDevice g ? g.GenFrequencyTicks : 40,
+            ControlFrequencyTicks = device is EmitterDevice   e ? e.ControlFrequencyTicks : 0
         };
         _isEditMode = true;
         _showDeviceModal = true;

@@ -32,8 +32,13 @@
 
         @foreach (var node in DeviceNodes())
         {
+            @if (node.IsEmitterOn)
+            {
+                <circle cx="@node.Cx" cy="@node.Cy" r="@F(node.R + 4)"
+                        fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.5" />
+            }
             <circle cx="@node.Cx" cy="@node.Cy" r="@node.R"
-                    fill="@node.Fill" stroke="white" stroke-width="1.5" />
+                    fill="@node.Fill" stroke="@node.StrokeColor" stroke-width="1.5" />
             @((MarkupString)node.LabelMarkup)
         }
 
@@ -99,25 +104,28 @@
         }
     }
 
-    private record DeviceNode(string Cx, string Cy, double R, string Fill, string LabelMarkup);
+    private record DeviceNode(string Cx, string Cy, double R, string Fill, string StrokeColor, bool IsEmitterOn, string LabelMarkup);
 
     private IEnumerable<DeviceNode> DeviceNodes()
     {
         foreach (var d in Devices)
         {
-            var cx   = F(Sx(d.Position.X));
-            var cy   = F(Sy(d.Position.Y));
-            var r    = d is HubDevice ? 12.0 : 8.0;
+            var cx          = F(Sx(d.Position.X));
+            var cy          = F(Sy(d.Position.Y));
+            var r           = d is HubDevice ? 12.0 : 8.0;
+            var isEmitterOn = d is EmitterDevice e && e.State;
             var fill = d switch
             {
-                HubDevice       => "#7c3aed",
-                GeneratorDevice => "#0ea5e9",
-                EmitterDevice   => "#10b981",
-                _               => "#64748b"
+                HubDevice                        => "#7c3aed",
+                GeneratorDevice                  => "#0ea5e9",
+                EmitterDevice em when em.State   => "#f59e0b",
+                EmitterDevice                    => "#475569",
+                _                                => "#64748b"
             };
-            var ly = F(Sy(d.Position.Y) + r + 10);
+            var stroke = isEmitterOn ? "#fbbf24" : "white";
+            var ly    = F(Sy(d.Position.Y) + r + 10);
             var label = $"<text x=\"{cx}\" y=\"{ly}\" text-anchor=\"middle\" font-size=\"10\" fill=\"#1e293b\">{d.Name}</text>";
-            yield return new DeviceNode(cx, cy, r, fill, label);
+            yield return new DeviceNode(cx, cy, r, fill, stroke, isEmitterOn, label);
         }
     }
 }

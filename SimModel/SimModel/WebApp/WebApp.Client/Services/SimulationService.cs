@@ -15,6 +15,12 @@ public class SimulationService : IDisposable
     public bool   IsRunning  { get; private set; }
     public double LastTickMs { get; private set; }
 
+    /// <summary>
+    /// Set when the simulation was stopped by a <see cref="PacketLimitExceededException"/>.
+    /// Cleared on the next <see cref="Start"/> or <see cref="Reset"/> call.
+    /// </summary>
+    public string? PacketLimitError { get; private set; }
+
     public event Action? StateChanged;
 
     private CancellationTokenSource? _cts;
@@ -27,6 +33,7 @@ public class SimulationService : IDisposable
     public void Start()
     {
         if (IsRunning) return;
+        PacketLimitError = null;
         IsRunning = true;
         _cts = new CancellationTokenSource();
         _ = RunLoopAsync(_cts.Token);
@@ -44,11 +51,22 @@ public class SimulationService : IDisposable
         using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(Config.TickIntervalMs));
         var sw = new Stopwatch();
 
-        while (!ct.IsCancellationRequested && await timer.WaitForNextTickAsync(ct).ConfigureAwait(false))
+        try
         {
-            sw.Restart();
-            Engine.Tick();
-            LastTickMs = sw.Elapsed.TotalMilliseconds;
+            while (!ct.IsCancellationRequested && await timer.WaitForNextTickAsync(ct).ConfigureAwait(false))
+            {
+                sw.Restart();
+                Engine.Tick();
+                LastTickMs = sw.Elapsed.TotalMilliseconds;
+                StateChanged?.Invoke();
+            }
+        }
+        catch (PacketLimitExceededException ex)
+        {
+            // Stop the simulation and surface the error to the UI.
+            IsRunning        = false;
+            _cts             = null;
+            PacketLimitError = ex.Message;
             StateChanged?.Invoke();
         }
     }
@@ -56,6 +74,8 @@ public class SimulationService : IDisposable
     public void ApplyConfig()
     {
         Engine.VisibilityDistance = Config.VisibilityDistance;
+        Engine.MaxActivePackets   = Config.MaxActivePackets;
+
         if (IsRunning)
         {
             Stop();
@@ -79,6 +99,9 @@ public class SimulationService : IDisposable
 
         if (device is GeneratorDevice gen)
             gen.GenFrequencyTicks = form.GenFrequencyTicks;
+
+        if (device is EmitterDevice emitter)
+            emitter.ControlFrequencyTicks = form.ControlFrequencyTicks;
     }
 
     public void RemoveDevice(Guid id) => Engine.RemoveDevice(id);
@@ -97,7 +120,7 @@ public class SimulationService : IDisposable
     {
         DeviceType.Hub       => new HubDevice           { Name = form.Name, Position = new Vector2(form.X, form.Y) },
         DeviceType.Generator => new GeneratorDevice(form.GenFrequencyTicks) { Name = form.Name, Position = new Vector2(form.X, form.Y) },
-        DeviceType.Emitter   => new EmitterDevice       { Name = form.Name, Position = new Vector2(form.X, form.Y) },
+        DeviceType.Emitter   => new EmitterDevice(form.ControlFrequencyTicks) { Name = form.Name, Position = new Vector2(form.X, form.Y) },
         _                    => throw new ArgumentOutOfRangeException()
     };
 
@@ -106,6 +129,7 @@ public class SimulationService : IDisposable
         Stop();
         Engine.Reset();
         Statistics.Reset();
+        PacketLimitError = null;
         SeedDefaultDevices();
         StateChanged?.Invoke();
     }
@@ -115,6 +139,7 @@ public class SimulationService : IDisposable
         Stop();
         Engine.Reset();
         Statistics.Reset();
+        PacketLimitError = null;
 
         var rng = Random.Shared;
         Engine.RegisterDevice(new HubDevice { Name = "Hub", Position = new Vector2(0, 0) });

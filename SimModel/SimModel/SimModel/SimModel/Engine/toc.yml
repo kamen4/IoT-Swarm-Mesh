@@ -1,0 +1,7 @@
+# Top-level table of contents for the DocFX documentation site.
+# "Overview" links to the hand-written conceptual documentation (Documentation.md
+# published as index.md).  "API Reference" links to the auto-generated API pages.
+- name: Overview
+  href: index.md
+- name: API Reference
+  href: api/

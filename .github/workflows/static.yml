@@ -10,6 +10,8 @@ on:
 
 env:
   PROJECT_PATH: "SimModel/SimModel/WebApp/WebApp.Client/WebApp.Client.csproj"
+  # docfx.json lives next to Engine.csproj
+  DOCFX_PROJECT: "SimModel/SimModel/Engine/docfx.json"
   CONFIGURATION: "Release"
   PUBLISH_DIR: "publish_output"
   CUSTOM_DOMAIN: "iotswarmsim.gorbach.site"
@@ -28,6 +30,10 @@ jobs:
         with:
           dotnet-version: "9.0.x"
 
+      # ------------------------------------------------------------------ #
+      #  Blazor WebAssembly build                                            #
+      # ------------------------------------------------------------------ #
+
       - name: Restore dependencies
         run: dotnet restore "${{ env.PROJECT_PATH }}"
 
@@ -42,27 +48,57 @@ jobs:
       - name: Normalize publish folder (move wwwroot contents up if needed)
         run: |
           if [ -d "${{ env.PUBLISH_DIR }}/wwwroot" ]; then
-            # move contents of wwwroot to publish dir root (for blazor wasm standalone)
+            # Move contents of wwwroot to publish dir root (for Blazor WASM standalone)
             shopt -s dotglob || true
             mv "${{ env.PUBLISH_DIR }}/wwwroot/"* "${{ env.PUBLISH_DIR }}/" || true
             rmdir "${{ env.PUBLISH_DIR }}/wwwroot" || true
           fi
           ls -la "${{ env.PUBLISH_DIR }}"
 
+      # ------------------------------------------------------------------ #
+      #  DocFX documentation build                                           #
+      # ------------------------------------------------------------------ #
+
+      - name: Restore dotnet local tools (includes docfx)
+        # dotnet-tools.json at the repo root pins the exact docfx version.
+        run: dotnet tool restore
+
+      - name: Build DocFX documentation
+        # docfx reads Engine source + Documentation.md and writes to _site/
+        run: dotnet tool run docfx "${{ env.DOCFX_PROJECT }}"
+
+      - name: Copy docs into publish directory
+        # The Blazor site will serve the docs under the /docs path.
+        run: |
+          DOCS_OUT="SimModel/SimModel/Engine/_site"
+          DOCS_DEST="${{ env.PUBLISH_DIR }}/docs"
+          mkdir -p "$DOCS_DEST"
+          cp -r "$DOCS_OUT"/. "$DOCS_DEST/"
+          echo "Documentation copied to $DOCS_DEST"
+          ls -la "$DOCS_DEST"
+
+      # ------------------------------------------------------------------ #
+      #  Housekeeping before deploy                                          #
+      # ------------------------------------------------------------------ #
+
       - name: Ensure CNAME in publish dir
         run: |
-          # if CUSTOM_DOMAIN is provided, create CNAME in publish dir
+          # If CUSTOM_DOMAIN is set, create CNAME so GitHub Pages preserves the
+          # custom domain on every deployment.
           if [ -n "${{ env.CUSTOM_DOMAIN }}" ] && [ "${{ env.CUSTOM_DOMAIN }}" != "your.domain.com" ]; then
             echo "${{ env.CUSTOM_DOMAIN }}" > "${{ env.PUBLISH_DIR }}/CNAME"
             echo "Created CNAME from CUSTOM_DOMAIN: ${{ env.CUSTOM_DOMAIN }}"
           elif [ -f CNAME ]; then
-            # if there's a CNAME in repo root (checked out), copy it
             cp CNAME "${{ env.PUBLISH_DIR }}/CNAME"
             echo "Copied CNAME from repo root to publish dir."
           else
-            echo "No CNAME set (set env CUSTOM_DOMAIN or add CNAME to repo root) — Pages custom domain will not be preserved."
+            echo "No CNAME set — Pages custom domain will not be preserved."
           fi
           ls -la "${{ env.PUBLISH_DIR }}"
+
+      # ------------------------------------------------------------------ #
+      #  Deploy to GitHub Pages                                              #
+      # ------------------------------------------------------------------ #
 
       - name: Deploy to GitHub Pages (gh-pages branch)
         uses: peaceiris/actions-gh-pages@v4

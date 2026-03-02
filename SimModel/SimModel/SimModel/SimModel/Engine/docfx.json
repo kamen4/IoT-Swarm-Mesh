@@ -1,0 +1,45 @@
+{
+  // DocFX configuration for the Engine library documentation.
+  // Output is placed in _site/ and will be copied into the Blazor publish
+  // directory under the /docs sub-path by the GitHub Actions workflow.
+  "metadata": [
+    {
+      // Generate API reference pages from the Engine project source.
+      "src": [
+        {
+          "files": [ "Engine.csproj" ],
+          "src": "."
+        }
+      ],
+      "dest": "api",
+      "allowCompilationErrors": true
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        // Include the hand-written conceptual docs.
+        "files": [ "toc.yml", "index.md", "Documentation.md" ]
+      },
+      {
+        // Include all generated API reference pages.
+        "files": [ "api/**.yml", "api/index.md" ]
+      }
+    ],
+    "resource": [
+      {
+        // Copy images referenced from the docs (if any are added later).
+        "files": [ "images/**" ]
+      }
+    ],
+    // Output directory — the workflow copies this to publish_output/docs/.
+    "dest": "_site",
+    "globalMetadata": {
+      "_appTitle": "IoT Swarm Mesh — Engine Docs",
+      "_appName": "IoT Swarm Mesh",
+      "_appFooter": "IoT Swarm Mesh Simulation Engine",
+      "_enableSearch": true
+    },
+    "template": [ "default", "modern" ]
+  }
+}

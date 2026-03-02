@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Engine — IoT Swarm Mesh Simulation Engine | IoT Swarm Mesh - Engine Docs </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Engine — IoT Swarm Mesh Simulation Engine | IoT Swarm Mesh - Engine Docs ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Documentation.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="engine--iot-swarm-mesh-simulation-engine">Engine — IoT Swarm Mesh Simulation Engine</h1>
+
+<p>The <strong>Engine</strong> library is the self-contained simulation core of the IoT Swarm Mesh project.<br>
+It models a wireless IoT network on a 2D plane: devices are placed at arbitrary positions, data packets flow between them tick-by-tick, and a flooding broadcast algorithm propagates data toward the central hub.</p>
+<p>The library has <strong>no UI dependencies</strong> and can be driven by any host (console, Blazor server, test harness) that calls <code>SimulationEngine.Instance.Tick()</code>.</p>
+<hr>
+<h2 id="architecture-overview">Architecture overview</h2>
+<pre><code class="lang-mermaid">graph TD
+    SE[&quot;SimulationEngine\n(singleton)\ntick loop · device registry\npacket priority queue · typed events&quot;]
+    PR[&quot;PacketRouter\n(singleton)\nflooding broadcast&quot;]
+    SS[&quot;SimulationStatistics\n(singleton)\nevent-driven metric collector\nhistory ring-buffer&quot;]
+
+    subgraph Devices
+        D[&quot;Device (abstract)\nidentity · position\nreceive / forward logic&quot;]
+        Hub[&quot;HubDevice\nnetwork gateway&quot;]
+        Gen[&quot;GeneratorDevice\nperiodic data source&quot;]
+        Emit[&quot;EmitterDevice\ncommand actuator&quot;]
+    end
+
+    subgraph Packets
+        P[&quot;Packet\nrouting metadata + TTL&quot;]
+        PD[&quot;PacketData\nuntyped payload&quot;]
+        CP[&quot;ConfirmationPacket\ndelivery ACK&quot;]
+    end
+
+    subgraph Events[&quot;Core/SimulationEvents.cs&quot;]
+        EV[&quot;PacketRegistered\nPacketDelivered\nPacketExpired\nDeviceRegistered\nDeviceRemoved\nTicked&quot;]
+    end
+
+    SE -- raises --&gt; EV
+    EV -- consumed by --&gt; SS
+
+    SE --&gt;|TickEvent| Gen
+    SE --&gt;|GetVisibleDevicesFor| PR
+
+    PR --&gt;|RegisterPacket| SE
+
+    D --&gt;|Recieve → Route| PR
+    Hub &amp; Gen &amp; Emit --&gt;|extend| D
+
+    Gen --&gt;|creates| P
+    CP --&gt;|extends| P
+    P --&gt;|carries| PD
+</code></pre>
+<hr>
+<h2 id="key-concepts">Key concepts</h2>
+<h3 id="tick-based-time-model">Tick-based time model</h3>
+<p><a href="Core/SimulationEngine.cs"><code>SimulationEngine</code></a> is the singleton clock.<br>
+Each call to <code>Tick()</code> represents one simulation step:</p>
+<ol>
+<li><code>TickCount</code> is incremented.</li>
+<li>Wall-clock delta time (<code>dt</code>) is measured.</li>
+<li><code>TickEvent</code> is raised — subscribed devices perform periodic work (e.g. <code>GeneratorDevice</code> emitting a packet).</li>
+<li>All packets whose <code>ArrivalTick ≤ TickCount</code> are dequeued and dispatched to their <code>NextHop</code> device.</li>
+<li><code>Ticked</code> is raised with the final tick count and <code>dt</code> for observers such as <code>SimulationStatistics</code>.</li>
+</ol>
+<h3 id="visibility--routing">Visibility &amp; routing</h3>
+<p>Two devices can communicate only when their Euclidean distance is within <code>SimulationEngine.VisibilityDistance</code> (default 200 units, configurable at runtime).<br>
+<a href="Routers/PacketRouter.cs"><code>PacketRouter</code></a> implements a <strong>flooding broadcast</strong>: every packet is cloned and forwarded to <em>all</em> visible neighbours of the forwarding device.</p>
+<h3 id="packet-lifetime">Packet lifetime</h3>
+<p>A <a href="Packets/Packet.cs"><code>Packet</code></a> carries a source (<code>From</code>), destination (<code>To</code>), next-hop device, arrival tick, and a TTL counter.<br>
+Each hop decrements TTL; a packet reaching zero is silently dropped (raises <code>PacketExpired</code>).<br>
+If <code>NeedConfirmation</code> is set, the destination automatically sends a <a href="Packets/ConfirmationPacket.cs"><code>ConfirmationPacket</code></a> back to the originator.</p>
+<h3 id="generatordevice-send-cadence">GeneratorDevice send cadence</h3>
+<p><a href="Devices/GeneratorDevice.cs"><code>GeneratorDevice</code></a> maintains an internal counter (<code>CurrentTickCount</code>) incremented on every <code>TickEvent</code>.<br>
+When it reaches <code>GenFrequencyTicks</code> it resets to zero and one packet is emitted — so <strong>exactly one packet is sent every <code>GenFrequencyTicks</code> ticks</strong>.</p>
+<pre><code>tick 1 … tick N-1  →  counter increments, no packet
+tick N             →  counter resets to 0, packet sent to Hub
+tick N+1 …         →  cycle repeats
+</code></pre>
+<h3 id="event-driven-statistics">Event-driven statistics</h3>
+<p><a href="Statistics/SimulationStatistics.cs"><code>SimulationStatistics</code></a> subscribes to the typed events raised by <code>SimulationEngine</code> and maintains eight cumulative metrics.<br>
+On every tick it appends a <a href="Statistics/TickSnapshot.cs"><code>TickSnapshot</code></a> to a ring-buffer (capped at 300 entries) for time-series charting.<br>
+Observers subscribe to <code>SimulationStatistics.Updated</code> to react to metric changes without polling.</p>
+<hr>
+<h2 id="project-structure">Project structure</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="Core/SimulationEngine.cs"><code>Core/SimulationEngine.cs</code></a></td>
+<td>Singleton engine: tick loop, device registry, packet priority queue, all typed events</td>
+</tr>
+<tr>
+<td><a href="Core/SimulationEvents.cs"><code>Core/SimulationEvents.cs</code></a></td>
+<td>Strongly-typed <code>EventArgs</code> classes for all engine events</td>
+</tr>
+<tr>
+<td><a href="Devices/Device.cs"><code>Devices/Device.cs</code></a></td>
+<td>Abstract base: identity, 2D position, receive / forward logic</td>
+</tr>
+<tr>
+<td><a href="Devices/HubDevice.cs"><code>Devices/HubDevice.cs</code></a></td>
+<td>Central gateway; destination for all <code>GeneratorDevice</code> packets</td>
+</tr>
+<tr>
+<td><a href="Devices/GeneratorDevice.cs"><code>Devices/GeneratorDevice.cs</code></a></td>
+<td>Emits one packet per <code>GenFrequencyTicks</code> ticks</td>
+</tr>
+<tr>
+<td><a href="Devices/EmitterDevice.cs"><code>Devices/EmitterDevice.cs</code></a></td>
+<td>Receives command packets and applies a boolean state</td>
+</tr>
+<tr>
+<td><a href="Packets/Packet.cs"><code>Packets/Packet.cs</code></a></td>
+<td>Core transmission unit: routing metadata, TTL, payload</td>
+</tr>
+<tr>
+<td><a href="Packets/PacketData.cs"><code>Packets/PacketData.cs</code></a></td>
+<td>Untyped application-level payload wrapper</td>
+</tr>
+<tr>
+<td><a href="Packets/ConfirmationPacket.cs"><code>Packets/ConfirmationPacket.cs</code></a></td>
+<td>Delivery acknowledgement routed back to the originator</td>
+</tr>
+<tr>
+<td><a href="Routers/PacketRouter.cs"><code>Routers/PacketRouter.cs</code></a></td>
+<td>Flooding broadcast router</td>
+</tr>
+<tr>
+<td><a href="Statistics/SimulationStatistics.cs"><code>Statistics/SimulationStatistics.cs</code></a></td>
+<td>Event-driven singleton: eight metrics + history ring-buffer</td>
+</tr>
+<tr>
+<td><a href="Statistics/StatMetric.cs"><code>Statistics/StatMetric.cs</code></a></td>
+<td>Single observable metric with display formatting and plottable flag</td>
+</tr>
+<tr>
+<td><a href="Statistics/TickSnapshot.cs"><code>Statistics/TickSnapshot.cs</code></a></td>
+<td>Immutable per-tick value record for time-series charting</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="packet-flow">Packet flow</h2>
+<pre><code class="lang-mermaid">sequenceDiagram
+    participant G as GeneratorDevice
+    participant PR as PacketRouter
+    participant SE as SimulationEngine
+    participant N as Neighbour Device
+    participant H as HubDevice
+    participant SS as SimulationStatistics
+
+    Note over G: every GenFrequencyTicks ticks
+    G-&gt;&gt;PR: Route(packet, self)
+    PR-&gt;&gt;SE: GetVisibleDevicesFor(G)
+    SE--&gt;&gt;PR: [N, ...]
+    PR-&gt;&gt;SE: RegisterPacket(clone → NextHop=N)
+    SE--&gt;&gt;SS: PacketRegistered
+    Note over SE: tick advances
+    SE-&gt;&gt;N: NextHop.Recieve(packet)
+    alt packet.To ≠ N  (intermediate hop)
+        N-&gt;&gt;PR: Route(packet, N)
+        PR-&gt;&gt;SE: RegisterPacket(clone → NextHop=next)
+    else packet.To = H  (final delivery)
+        SE--&gt;&gt;SS: PacketDelivered
+        N-&gt;&gt;H: Accept(packet)
+    else TTL = 0  (dropped)
+        SE--&gt;&gt;SS: PacketExpired
+    end
+    SE--&gt;&gt;SS: Ticked
+    SS-&gt;&gt;SS: AppendSnapshot → History
+</code></pre>
+<hr>
+<h2 id="statistics-extensibility">Statistics extensibility</h2>
+<p>To add a new tracked metric:</p>
+<ol>
+<li>Add a <code>public StatMetric MyMetric { get; }</code> property in <a href="Statistics/SimulationStatistics.cs"><code>SimulationStatistics</code></a> and include it in the <code>Metrics</code> array.</li>
+<li>Subscribe to the relevant <code>SimulationEngine</code> event in the constructor and call <code>MyMetric.Increment()</code> or <code>MyMetric.Set(value)</code>.</li>
+<li>If the metric should appear as a selectable chart series, pass <code>isPlottable: true</code> to the <code>StatMetric</code> constructor and add the corresponding <code>TickSnapshot</code> field with a mapping case in <code>GetSnapshotValue</code>.</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Documentation.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

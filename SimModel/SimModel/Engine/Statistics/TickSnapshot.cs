@@ -11,5 +11,7 @@ public sealed record TickSnapshot(
     double TotalDelivered,
     double TotalExpired,
     double DeliveryRate,
-    double TickMs
+    double TickMs,
+    double DuplicateDeliveries,
+    double AvgHopCount
 );

@@ -71,7 +71,7 @@
 
                     @if (_pts.Count >= 2)
                     {
-                        <polyline points="@PointsAttr(_pts)"
+                        <polyline points="@_pointsAttr"
                                   fill="none" stroke="#3b82f6" stroke-width="2"
                                   stroke-linejoin="round" stroke-linecap="round" />
                         <circle cx="@F(_pts[^1].X)" cy="@F(_pts[^1].Y)" r="3.5" fill="#3b82f6" />
@@ -98,34 +98,51 @@
     private const double PadT = 12;
     private const double PadB = 22;
 
-    private StatMetric? _selectedSeries;
-    private List<SvgPoint> _pts  = [];
-    private AxisInfo       _axes = new([], [], []);
+    private StatMetric?    _selectedSeries;
+    private List<SvgPoint> _pts        = [];
+    private string         _pointsAttr = "";
+    private AxisInfo       _axes       = new([], [], []);
+
+    // Render at most once every 100 ms (~10 fps) to avoid flooding the DOM
+    // with recomputes while hundreds of packets are delivered per tick.
+    private const int RenderIntervalMs = 100;
+    private CancellationTokenSource _cts = new();
 
     protected override void OnInitialized()
     {
-        Stats.Updated    += Refresh;
         _selectedSeries ??= Stats.PlottableMetrics.FirstOrDefault();
         Recompute();
+        _ = RenderLoopAsync(_cts.Token);
     }
 
     protected override void OnParametersSet()
     {
         _selectedSeries ??= Stats.PlottableMetrics.FirstOrDefault();
-        Recompute();
     }
 
-    private void Refresh()
+    // Periodic render loop: wakes up every RenderIntervalMs, recomputes from
+    // current snapshot data, and triggers a single StateHasChanged.
+    // This completely decouples the render rate from the statistics event rate.
+    private async Task RenderLoopAsync(CancellationToken ct)
     {
-        Recompute();
-        InvokeAsync(StateHasChanged);
+        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(RenderIntervalMs));
+        try
+        {
+            while (await timer.WaitForNextTickAsync(ct))
+            {
+                Recompute();
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (OperationCanceledException) { }
     }
 
     private void Recompute()
     {
         var history = Stats.History.ToArray();
-        _pts  = BuildPoints(history);
-        _axes = BuildAxes(history);
+        _pts        = BuildPoints(history);
+        _pointsAttr = PointsAttr(_pts);
+        _axes       = BuildAxes(history);
     }
 
     private record SvgPoint(double X, double Y);
@@ -205,6 +222,7 @@
 
     private static string PointsAttr(List<SvgPoint> pts)
     {
+        if (pts.Count == 0) return "";
         var sb = new System.Text.StringBuilder(pts.Count * 12);
         foreach (var p in pts)
         {
@@ -219,7 +237,11 @@
     private async Task Close()      => await OnClose.InvokeAsync();
     private async Task ResetStats() => await OnResetStats.InvokeAsync();
 
-    public void Dispose() => Stats.Updated -= Refresh;
+    public void Dispose()
+    {
+        _cts.Cancel();
+        _cts.Dispose();
+    }
 
     private static string F(double v) => v.ToString("F2", CultureInfo.InvariantCulture);
 

@@ -265,6 +265,11 @@ public class SimulationEngine
         if (currentCount >= limit)
             throw new PacketLimitExceededException(limit, currentCount, TickCount);
 
+        // Record the starting TTL once — clones inherit it; we only stamp when
+        // it has not been set yet (InitialTtl == 0 means "not yet recorded").
+        if (packet.InitialTtl == 0)
+            packet.InitialTtl = packet.TTL;
+
         var arivalTick = TickCount + packet.TicksToTravel;
         packet.ArrivalTick = arivalTick;
         _packets.Enqueue(packet, arivalTick);

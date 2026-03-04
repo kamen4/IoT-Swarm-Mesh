@@ -42,10 +42,34 @@
     private bool _visible;
     private bool _showDetail;
 
-    protected override void OnParametersSet() => _visible = Visible;
-    protected override void OnInitialized()   => Stats.Updated += OnStatsUpdated;
+    // Render the metric cards at most once every 200 ms to stay smooth even
+    // when hundreds of packets are delivered per tick.
+    private const int RenderIntervalMs = 200;
+    private CancellationTokenSource _cts = new();
 
-    private void OnStatsUpdated() => InvokeAsync(StateHasChanged);
+    protected override void OnParametersSet() => _visible = Visible;
+
+    protected override void OnInitialized()
+    {
+        // Listen for non-tick updates (e.g. device registration, reset) that
+        // must be reflected immediately outside the periodic render cycle.
+        Stats.Updated += OnImmediate;
+        _ = RenderLoopAsync(_cts.Token);
+    }
+
+    // Called only for immediate out-of-band changes (Reset, DeviceRegistered).
+    private void OnImmediate() => InvokeAsync(StateHasChanged);
+
+    private async Task RenderLoopAsync(CancellationToken ct)
+    {
+        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(RenderIntervalMs));
+        try
+        {
+            while (await timer.WaitForNextTickAsync(ct))
+                await InvokeAsync(StateHasChanged);
+        }
+        catch (OperationCanceledException) { }
+    }
 
     private async Task Close()    => await OnClose.InvokeAsync();
     private async Task OnReset()
@@ -54,5 +78,10 @@
         await OnResetStats.InvokeAsync();
     }
 
-    public void Dispose() => Stats.Updated -= OnStatsUpdated;
+    public void Dispose()
+    {
+        Stats.Updated -= OnImmediate;
+        _cts.Cancel();
+        _cts.Dispose();
+    }
 }

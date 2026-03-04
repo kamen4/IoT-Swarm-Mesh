@@ -22,6 +22,14 @@ public sealed class PacketDeliveredEventArgs(Packet packet) : EventArgs
 {
     /// <summary>Gets the packet that was successfully delivered to its destination device.</summary>
     public Packet Packet { get; } = packet;
+
+    /// <summary>
+    /// Gets the number of hops the packet travelled before reaching its destination.
+    /// Computed as <c>InitialTtl ? TTL</c> at the moment of delivery.
+    /// Valid only when <see cref="Packet.InitialTtl"/> is non-zero (i.e. the packet
+    /// was registered through <see cref="SimulationEngine.RegisterPacket"/>).
+    /// </summary>
+    public int HopCount => packet.InitialTtl > 0 ? packet.InitialTtl - packet.TTL : 0;
 }
 
 /// <summary>Event args for <see cref="SimulationEngine.DeviceRegistered"/>.</summary>

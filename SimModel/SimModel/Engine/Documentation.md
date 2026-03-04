@@ -178,6 +178,17 @@ A [`Packet`](Packets/Packet.cs) carries a source (`From`), destination (`To`), n
 Each hop decrements TTL; a packet reaching zero is silently dropped (raises `PacketExpired`).  
 If `NeedConfirmation` is set, the destination automatically routes a [`ConfirmationPacket`](Packets/ConfirmationPacket.cs) back to the originator.
 
+**Flood-clone identity fields**
+
+Because flooding broadcasts cloned copies of a packet to every visible neighbour, two extra fields are stamped on `Packet` to make statistical analysis of these copies possible:
+
+| Field | Set when | Preserved by `Clone()` | Purpose |
+|---|---|---|---|
+| `OriginId` | Constructor — equals `Id` on original | ✓ (MemberwiseClone) | Groups all clones of one logical message |
+| `InitialTtl` | First `RegisterPacket` call (when `InitialTtl == 0`) | ✓ | Enables hop-count calculation: `hops = InitialTtl − TTL` |
+
+These fields drive the two new statistics metrics (see below).
+
 ---
 
 ### Active-packet limit
@@ -234,9 +245,9 @@ active packets ≥ limit            → PacketLimitExceededException thrown
 | [`Routers/NetworkTopology.cs`](Routers/NetworkTopology.cs) | Concrete topology: on-the-fly visibility + adjacency-set connections |
 | [`Routers/PacketRouter.cs`](Routers/PacketRouter.cs) | `FloodingPacketRouter` — broadcast to all visible neighbours |
 | [`Routers/FullMeshNetworkBuilder.cs`](Routers/FullMeshNetworkBuilder.cs) | `FullMeshNetworkBuilder` — connect every visible pair |
-| [`Statistics/SimulationStatistics.cs`](Statistics/SimulationStatistics.cs) | Event-driven singleton: eight metrics + history ring-buffer |
+| [`Statistics/SimulationStatistics.cs`](Statistics/SimulationStatistics.cs) | Event-driven singleton: ten metrics + history ring-buffer |
 | [`Statistics/StatMetric.cs`](Statistics/StatMetric.cs) | Single observable metric with display formatting and plottable flag |
-| [`Statistics/TickSnapshot.cs`](Statistics/TickSnapshot.cs) | Immutable per-tick value record for time-series charting |
+| [`Statistics/TickSnapshot.cs`](Statistics/TickSnapshot.cs) | Immutable per-tick value record for time-series charting (8 plottable fields) |
 
 ---
 
@@ -304,19 +315,19 @@ Because both `Router` and `NetworkBuilder` are hot-swappable properties on the s
 
 1. Add a `public StatMetric MyMetric { get; }` property in [`SimulationStatistics`](Statistics/SimulationStatistics.cs) and include it in the `Metrics` array.
 2. Subscribe to the relevant `SimulationEngine` event in the constructor and call `MyMetric.Increment()` or `MyMetric.Set(value)`.
-3. If the metric should appear as a selectable chart series, pass `isPlottable: true` to the `StatMetric` constructor and add the corresponding `TickSnapshot` field with a mapping case in `GetSnapshotValue`.
+3. If the metric should appear as a selectable chart series, pass `isPlottable: true` to the `StatMetric` constructor, add the corresponding `TickSnapshot` field, and add a mapping case in `GetSnapshotValue` (cases are matched by position in `PlottableMetrics`).
 
----
+**Currently tracked metrics**
 
-## Future-proofing notes
-
-The architecture is designed to accommodate the following planned features without breaking changes:
-
-| Planned feature | Extension point |
-|---|---|
-| Visibility ≠ connection (broadcast uses range, unicast uses links) | Already separated: `GetVisibleDevices` vs `GetConnectedDevices` in `INetworkTopology` |
-| Per-device connection limit (max K neighbours) | Implement `INetworkBuilder` that enforces degree constraints |
-| Dynamic mesh rebuild on movement / link loss | Call `SimulationEngine.RebuildTopology()` from a tick subscriber or movement handler |
-| New routing protocols (AODV, DSR, gradient…) | Implement `IPacketRouter`, swap via `SimulationEngine.Router` |
-| Protocol selection in UI | Bind a `<select>` to a list of named `IPacketRouter` / `INetworkBuilder` instances on the engine |
-| Per-protocol statistics comparison | Each protocol run produces an independent `SimulationStatistics` snapshot |
+| Metric | Type | Plottable | Description |
+|---|---|---|---|
+| `TotalPacketsRegistered` | Counter | — | All enqueued packets including flood clones |
+| `TotalPacketsDelivered` | Counter | ✓ | Clones that reached their destination |
+| `TotalPacketsExpired` | Counter | ✓ | Clones dropped by TTL expiry |
+| `TotalDevicesAdded` | Counter | — | Cumulative device registrations |
+| `TotalTicks` | Gauge | — | Engine ticks since last reset |
+| `AvgTickMs` | Average | ✓ | Wall-clock ms per tick (skips tick 1) |
+| `ActivePackets` | Gauge | ✓ | In-flight packet count |
+| `DeliveryRate` | Derived | ✓ | Delivered / (Delivered + Expired) × 100 |
+| `DuplicateDeliveries` | Counter | ✓ | Extra clones arriving at destination after the first |
+| `AvgHopCount` | Average | ✓ | Mean hops per unique logical packet delivery |

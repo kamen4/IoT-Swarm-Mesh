@@ -55,7 +55,23 @@ public sealed class SimulationStatistics
     /// Ratio of delivered packets to the total of delivered and expired packets, expressed as a percentage.
     /// Computed as <c>TotalPacketsDelivered / (TotalPacketsDelivered + TotalPacketsExpired) ? 100</c>.
     /// </summary>
-    public StatMetric DeliveryRate           { get; } = new("Delivery rate (%)",  "Delivered / (Delivered + Expired) ? 100",        isDecimal: true, isPlottable: true);
+    public StatMetric DeliveryRate { get; } = new("Delivery rate (%)", "Delivered / (Delivered + Expired) ? 100", isDecimal: true, isPlottable: true);
+
+    /// <summary>
+    /// Number of duplicate deliveries: packets whose <see cref="Engine.Packets.Packet.OriginId"/>
+    /// had already been delivered before via a different flood clone.
+    /// High values indicate that the active routing strategy produces excessive
+    /// redundant paths, or that TTL is set too high for the current topology.
+    /// </summary>
+    public StatMetric DuplicateDeliveries { get; } = new("Duplicate deliveries", "Packets delivered more than once (different flood clones of the same origin)", isPlottable: true);
+
+    /// <summary>
+    /// Running arithmetic mean of the number of hops a packet travels from its
+    /// originating device to the destination.
+    /// Computed as <c>InitialTtl ? TTL</c> at the moment of delivery and averaged
+    /// over all unique (first-arrival) deliveries.
+    /// </summary>
+    public StatMetric AvgHopCount { get; } = new("Avg hop count", "Average number of hops per delivered packet (first delivery only)", isDecimal: true, isPlottable: true);
 
     /// <summary>All metrics in declaration order — drives the summary card grid.</summary>
     public IReadOnlyList<StatMetric> Metrics { get; }
@@ -80,6 +96,14 @@ public sealed class SimulationStatistics
     // We discard tick 1 from the average by only accumulating from tick 2 onward.
     private bool _firstTickSeen;
 
+    // Tracks OriginIds that have already been delivered at least once.
+    // Used to detect duplicate deliveries from flood clones.
+    private readonly HashSet<Guid> _deliveredOrigins = new();
+
+    // Accumulator for average hop count — only first-delivery hops are counted.
+    private double _hopAccumulator;
+    private long   _hopSamples;
+
     private SimulationStatistics()
     {
         Metrics =
@@ -92,14 +116,48 @@ public sealed class SimulationStatistics
             AvgTickMs,
             ActivePackets,
             DeliveryRate,
+            DuplicateDeliveries,
+            AvgHopCount,
         ];
 
         PlottableMetrics = Metrics.Where(m => m.IsPlottable).ToList();
 
-        _engine.PacketRegistered += (_, _) => { TotalPacketsRegistered.Increment(); RefreshDerived(); Notify(); };
-        _engine.PacketDelivered  += (_, _) => { TotalPacketsDelivered.Increment();  RefreshDerived(); Notify(); };
-        _engine.PacketExpired    += (_, _) => { TotalPacketsExpired.Increment();    RefreshDerived(); Notify(); };
-        _engine.DeviceRegistered += (_, _) => { TotalDevicesAdded.Increment();      Notify(); };
+        _engine.PacketRegistered += (_, _)  =>
+        {
+            TotalPacketsRegistered.Increment();
+            RefreshDerived();
+            // No Notify() here — UI is refreshed once per tick via the Ticked handler.
+        };
+        _engine.PacketDelivered  += (_, e)  =>
+        {
+            TotalPacketsDelivered.Increment();
+
+            if (!_deliveredOrigins.Add(e.Packet.OriginId))
+            {
+                // OriginId already seen — this is a duplicate delivery from a different flood clone.
+                DuplicateDeliveries.Increment();
+            }
+            else
+            {
+                // First delivery of this logical packet — record its hop count.
+                if (e.HopCount > 0)
+                {
+                    _hopAccumulator += e.HopCount;
+                    _hopSamples++;
+                    AvgHopCount.Set(_hopAccumulator / _hopSamples);
+                }
+            }
+
+            RefreshDerived();
+            // No Notify() here — UI is refreshed once per tick via the Ticked handler.
+        };
+        _engine.PacketExpired    += (_, _) =>
+        {
+            TotalPacketsExpired.Increment();
+            RefreshDerived();
+            // No Notify() here — UI is refreshed once per tick via the Ticked handler.
+        };
+        _engine.DeviceRegistered += (_, _) => { TotalDevicesAdded.Increment(); Notify(); };
         _engine.Ticked           += (_, e) =>
         {
             TotalTicks.Set(e.TickCount);
@@ -139,12 +197,14 @@ public sealed class SimulationStatistics
             _history.Dequeue();
 
         _history.Enqueue(new TickSnapshot(
-            Tick:           tick,
-            ActivePackets:  ActivePackets.Value,
-            TotalDelivered: TotalPacketsDelivered.Value,
-            TotalExpired:   TotalPacketsExpired.Value,
-            DeliveryRate:   DeliveryRate.Value,
-            TickMs:         AvgTickMs.Value
+            Tick:               tick,
+            ActivePackets:      ActivePackets.Value,
+            TotalDelivered:     TotalPacketsDelivered.Value,
+            TotalExpired:       TotalPacketsExpired.Value,
+            DeliveryRate:       DeliveryRate.Value,
+            TickMs:             AvgTickMs.Value,
+            DuplicateDeliveries: DuplicateDeliveries.Value,
+            AvgHopCount:        AvgHopCount.Value
         ));
     }
 
@@ -163,6 +223,8 @@ public sealed class SimulationStatistics
                     2 => snapshot.TickMs,
                     3 => snapshot.ActivePackets,
                     4 => snapshot.DeliveryRate,
+                    5 => snapshot.DuplicateDeliveries,
+                    6 => snapshot.AvgHopCount,
                     _ => 0
                 };
         return 0;
@@ -176,6 +238,9 @@ public sealed class SimulationStatistics
         _tickMsAccumulator = 0;
         _tickMsSamples     = 0;
         _firstTickSeen     = false;
+        _deliveredOrigins.Clear();
+        _hopAccumulator    = 0;
+        _hopSamples        = 0;
         Notify();
     }
 

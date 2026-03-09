@@ -1,0 +1,415 @@
+@using Engine.Benchmark
+@using WebApp.Client.Services
+@using System.Numerics
+
+@* -----------------------------------------------------------------------
+   BenchmarkConfigModal — create or edit a BenchmarkConfig.
+
+   Layout:
+     • Header with name field
+     • Tab bar: Devices | Events | Settings | Routers
+     • Footer: Cancel / Run
+   ----------------------------------------------------------------------- *@
+
+<div class="modal-backdrop" @onclick="Cancel">
+<div class="bm-modal" @onclick:stopPropagation>
+
+    @* ?? Header ??????????????????????????????????????????????????????? *@
+    <div class="detail-header">
+        <input class="bm-name-input" placeholder="Benchmark name"
+               @bind="Config.Name" @bind:event="oninput" />
+        <button class="btn btn-ghost btn-sm" @onclick="Cancel">?</button>
+    </div>
+
+    @* ?? Tab bar ??????????????????????????????????????????????????????? *@
+    <div class="bm-tabs">
+        @foreach (var tab in _tabs)
+        {
+            <button class="bm-tab @(_activeTab == tab ? "bm-tab--active" : "")"
+                    @onclick="() => _activeTab = tab">@tab</button>
+        }
+    </div>
+
+    @* ?? Tab body ?????????????????????????????????????????????????????? *@
+    <div class="bm-body">
+
+        @* ?? DEVICES ?? *@
+        @if (_activeTab == "Devices")
+        {
+            <div class="bm-section-header">
+                <span>Initial network layout</span>
+                <button class="btn btn-primary btn-sm" @onclick="AddDevice">+ Device</button>
+            </div>
+
+            @if (Config.Devices.Count == 0)
+            {
+                <p class="empty-hint">No devices yet. Add at least one Hub.</p>
+            }
+            else
+            {
+                <table class="data-table">
+                    <thead><tr>
+                        <th>Name</th><th>Kind</th><th>X</th><th>Y</th>
+                        <th>Freq (ticks)</th><th></th>
+                    </tr></thead>
+                    <tbody>
+                    @foreach (var d in Config.Devices)
+                    {
+                        <tr>
+                            <td><input class="bm-inline-input" @bind="d.Name" /></td>
+                            <td>
+                                <select class="bm-inline-select"
+                                        value="@d.Kind"
+                                        @onchange="e => d.Kind = Enum.Parse<BenchmarkDeviceKind>(e.Value!.ToString()!)">
+                                    @foreach (var k in Enum.GetValues<BenchmarkDeviceKind>())
+                                    { <option value="@k">@k</option> }
+                                </select>
+                            </td>
+                            <td><input class="bm-inline-input bm-num" type="number" @bind="d.X" /></td>
+                            <td><input class="bm-inline-input bm-num" type="number" @bind="d.Y" /></td>
+                            <td>
+                                @if (d.Kind == BenchmarkDeviceKind.Generator)
+                                {
+                                    <input class="bm-inline-input bm-num" type="number" min="1"
+                                           @bind="d.GenFrequencyTicks" />
+                                }
+                                else if (d.Kind == BenchmarkDeviceKind.Emitter)
+                                {
+                                    <input class="bm-inline-input bm-num" type="number" min="0"
+                                           title="Control freq (0 = manual only)"
+                                           @bind="d.ControlFrequencyTicks" />
+                                }
+                                else { <span class="empty-hint">—</span> }
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm"
+                                        @onclick="() => Config.Devices.Remove(d)">?</button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+
+            @* Quick-fill from current simulation layout *@
+            <div style="margin-top:.75rem">
+                <button class="btn btn-ghost btn-sm" @onclick="ImportCurrentLayout"
+                        title="Replace device list with the current simulation layout">
+                    ? Import from current simulation
+                </button>
+            </div>
+        }
+
+        @* ?? EVENTS ?? *@
+        else if (_activeTab == "Events")
+        {
+            <div class="bm-section-header">
+                <span>Scheduled events</span>
+                <div style="display:flex;gap:.4rem">
+                    <button class="btn btn-ghost btn-sm" @onclick="() => AddEvent(EventKind.Toggle)">+ Toggle</button>
+                    <button class="btn btn-ghost btn-sm" @onclick="() => AddEvent(EventKind.Remove)">+ Remove</button>
+                    <button class="btn btn-ghost btn-sm" @onclick="() => AddEvent(EventKind.Add)">+ Add device</button>
+                </div>
+            </div>
+
+            @if (Config.Events.Count == 0)
+            {
+                <p class="empty-hint">No events scheduled. Events modify the network at a specific tick.</p>
+            }
+            else
+            {
+                <table class="data-table">
+                    <thead><tr>
+                        <th style="width:90px">At tick</th>
+                        <th style="width:110px">Type</th>
+                        <th>Parameters</th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody>
+                    @foreach (var entry in Config.Events.OrderBy(e => e.AtTick).ToList())
+                    {
+                        <tr>
+                            <td>
+                                <input class="bm-inline-input bm-num" type="number" min="1"
+                                       value="@entry.AtTick"
+                                       @onchange="e => ReplaceEntry(entry, long.Parse(e.Value!.ToString()!), entry.Event)" />
+                            </td>
+                            <td><span class="tag @EventTagClass(entry.Event)">@EventTypeName(entry.Event)</span></td>
+                            <td>@RenderEventParams(entry)</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm"
+                                        @onclick="() => Config.Events.Remove(entry)">?</button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+        }
+
+        @* ?? SETTINGS ?? *@
+        else if (_activeTab == "Settings")
+        {
+            <div class="bm-settings-grid">
+                <label>
+                    Name
+                    <input class="form-input" @bind="Config.Name" />
+                </label>
+                <label>
+                    Description
+                    <input class="form-input" @bind="Config.Description" />
+                </label>
+                <label>
+                    Duration (ticks)
+                    <input class="form-input" type="number" min="1" @bind="Config.DurationTicks" />
+                </label>
+                <label>
+                    Visibility distance
+                    <input class="form-input" type="number" min="50" max="1000"
+                           @bind="Config.VisibilityDistance" />
+                </label>
+                <label>
+                    Default TTL
+                    <input class="form-input" type="number" min="1" max="64"
+                           @bind="Config.DefaultTtl" />
+                </label>
+                <label>
+                    Ticks to travel
+                    <input class="form-input" type="number" min="1" max="20"
+                           @bind="Config.TicksToTravel" />
+                </label>
+                <label>
+                    Max active packets <span class="settings-hint">(0 = auto)</span>
+                    <input class="form-input" type="number" min="0"
+                           @bind="Config.MaxActivePackets" />
+                </label>
+            </div>
+        }
+
+        @* ?? ROUTERS ?? *@
+        else if (_activeTab == "Routers")
+        {
+            <p class="bm-hint">Select one or more routing protocols to test. A separate simulation run
+               will be executed for each, producing comparable results.</p>
+
+            <div class="bm-router-list">
+                @foreach (var r in BenchmarkService.AvailableRouters.Values)
+                {
+                    var isSelected = Config.RouterNames.Contains(r.Name);
+                    <label class="bm-router-item @(isSelected ? "bm-router-item--selected" : "")">
+                        <input type="checkbox" checked="@isSelected"
+                               @onchange="e => ToggleRouter(r.Name, (bool)e.Value!)" />
+                        <strong>@r.Name</strong>
+                    </label>
+                }
+            </div>
+
+            @if (Config.RouterNames.Count == 0)
+            {
+                <p class="text-danger" style="margin-top:.5rem;font-size:.82rem">
+                    ? Select at least one router to run the benchmark.
+                </p>
+            }
+        }
+
+    </div>
+
+    @* ?? Footer ???????????????????????????????????????????????????????? *@
+    <div class="modal-actions">
+        <button class="btn btn-ghost" @onclick="Cancel">Cancel</button>
+        <button class="btn btn-primary"
+                disabled="@(!CanRun)"
+                @onclick="Run">
+            ? Run (@Config.RouterNames.Count router@(Config.RouterNames.Count == 1 ? "" : "s"),
+            @Config.DurationTicks ticks)
+        </button>
+    </div>
+
+</div>
+</div>
+
+@code {
+    // ?? Parameters ????????????????????????????????????????????????????
+
+    /// <summary>The configuration being edited. Caller owns the instance.</summary>
+    [Parameter, EditorRequired] public BenchmarkConfig        Config     { get; set; } = new();
+
+    /// <summary>
+    /// Called when the user clicks "Run". The config is already mutated in-place.
+    /// </summary>
+    [Parameter]                 public EventCallback          OnRun      { get; set; }
+    [Parameter]                 public EventCallback          OnCancel   { get; set; }
+
+    /// <summary>
+    /// Current simulation devices, used by "Import from current simulation".
+    /// </summary>
+    [Parameter]                 public IReadOnlyList<Engine.Devices.Device>? SimDevices { get; set; }
+
+    // ?? Internal state ?????????????????????????????????????????????????
+
+    private static readonly string[] _tabs = ["Devices", "Events", "Settings", "Routers"];
+    private string _activeTab = "Devices";
+
+    private bool CanRun => Config.RouterNames.Count > 0 && Config.DurationTicks > 0;
+
+    // ?? Device management ?????????????????????????????????????????????
+
+    private void AddDevice()
+    {
+        Config.Devices.Add(new DeviceBenchmarkDto
+        {
+            Name = $"Device-{Config.Devices.Count + 1}",
+            Kind = BenchmarkDeviceKind.Generator,
+        });
+    }
+
+    /// <summary>
+    /// Replaces the device list with the current simulation layout so the user
+    /// doesn't have to re-enter positions manually.
+    /// </summary>
+    private void ImportCurrentLayout()
+    {
+        if (SimDevices is null) return;
+        Config.Devices.Clear();
+        foreach (var d in SimDevices)
+        {
+            var dto = new DeviceBenchmarkDto
+            {
+                Name = d.Name,
+                X    = d.Position.X,
+                Y    = d.Position.Y,
+            };
+            switch (d)
+            {
+                case Engine.Devices.HubDevice:
+                    dto.Kind = BenchmarkDeviceKind.Hub;
+                    break;
+                case Engine.Devices.GeneratorDevice gen:
+                    dto.Kind              = BenchmarkDeviceKind.Generator;
+                    dto.GenFrequencyTicks = gen.GenFrequencyTicks;
+                    break;
+                case Engine.Devices.EmitterDevice em:
+                    dto.Kind                   = BenchmarkDeviceKind.Emitter;
+                    dto.ControlFrequencyTicks  = em.ControlFrequencyTicks;
+                    break;
+            }
+            Config.Devices.Add(dto);
+        }
+    }
+
+    // ?? Event management ??????????????????????????????????????????????
+
+    private enum EventKind { Toggle, Remove, Add }
+
+    private void AddEvent(EventKind kind)
+    {
+        BenchmarkEvent evt = kind switch
+        {
+            EventKind.Toggle => new ToggleBenchmarkEvent(
+                Config.Devices.FirstOrDefault(d => d.Kind == BenchmarkDeviceKind.Emitter)?.Name ?? ""),
+            EventKind.Remove => new RemoveDeviceBenchmarkEvent(
+                Config.Devices.FirstOrDefault()?.Name ?? ""),
+            EventKind.Add    => new AddDeviceBenchmarkEvent(new DeviceBenchmarkDto
+            {
+                Name = "New-Device",
+                Kind = BenchmarkDeviceKind.Generator,
+            }),
+            _                => throw new ArgumentOutOfRangeException()
+        };
+
+        // Default at-tick: halfway through duration.
+        Config.Events.Add(new BenchmarkEventEntry(Config.DurationTicks / 2, evt));
+    }
+
+    /// <summary>Replaces an event entry — necessary because record is immutable.</summary>
+    private void ReplaceEntry(BenchmarkEventEntry old, long newTick, BenchmarkEvent newEvt)
+    {
+        var idx = Config.Events.IndexOf(old);
+        if (idx < 0) return;
+        Config.Events[idx] = new BenchmarkEventEntry(newTick, newEvt);
+    }
+
+    // ?? Event rendering helpers ????????????????????????????????????????
+
+    private static string EventTypeName(BenchmarkEvent e) => e switch
+    {
+        ToggleBenchmarkEvent      => "Toggle",
+        RemoveDeviceBenchmarkEvent => "Remove",
+        AddDeviceBenchmarkEvent    => "Add",
+        _                          => "?"
+    };
+
+    private static string EventTagClass(BenchmarkEvent e) => e switch
+    {
+        ToggleBenchmarkEvent       => "tag-emitter",
+        RemoveDeviceBenchmarkEvent => "tag-hub",
+        AddDeviceBenchmarkEvent    => "tag-generator",
+        _                          => ""
+    };
+
+    /// <summary>Renders the parameter cell inline — device-name inputs for toggle/remove.</summary>
+    private RenderFragment RenderEventParams(BenchmarkEventEntry entry) => entry.Event switch
+    {
+        ToggleBenchmarkEvent t => @<span>
+            device: <select class="bm-inline-select"
+                            value="@t.DeviceName"
+                            @onchange="e => ReplaceEntry(entry, entry.AtTick,
+                                new ToggleBenchmarkEvent(e.Value!.ToString()!))">
+                @foreach (var d in Config.Devices.Where(d => d.Kind == BenchmarkDeviceKind.Emitter))
+                { <option value="@d.Name">@d.Name</option> }
+            </select>
+        </span>,
+
+        RemoveDeviceBenchmarkEvent r => @<span>
+            device: <select class="bm-inline-select"
+                            value="@r.DeviceName"
+                            @onchange="e => ReplaceEntry(entry, entry.AtTick,
+                                new RemoveDeviceBenchmarkEvent(e.Value!.ToString()!))">
+                @foreach (var d in Config.Devices)
+                { <option value="@d.Name">@d.Name</option> }
+            </select>
+        </span>,
+
+        AddDeviceBenchmarkEvent a => @<span>
+            <input class="bm-inline-input" placeholder="Name"
+                   value="@a.Device.Name"
+                   @onchange="e => ReplaceEntry(entry, entry.AtTick,
+                       new AddDeviceBenchmarkEvent(a.Device with { Name = e.Value!.ToString()! }))" />
+            <select class="bm-inline-select"
+                    value="@a.Device.Kind"
+                    @onchange="e => ReplaceEntry(entry, entry.AtTick,
+                        new AddDeviceBenchmarkEvent(a.Device with {
+                            Kind = Enum.Parse<BenchmarkDeviceKind>(e.Value!.ToString()!) }))">
+                @foreach (var k in Enum.GetValues<BenchmarkDeviceKind>())
+                { <option value="@k">@k</option> }
+            </select>
+            x:<input class="bm-inline-input bm-num" type="number"
+                     value="@a.Device.X"
+                     @onchange="e => ReplaceEntry(entry, entry.AtTick,
+                         new AddDeviceBenchmarkEvent(a.Device with {
+                             X = float.Parse(e.Value!.ToString()!) }))" />
+            y:<input class="bm-inline-input bm-num" type="number"
+                     value="@a.Device.Y"
+                     @onchange="e => ReplaceEntry(entry, entry.AtTick,
+                         new AddDeviceBenchmarkEvent(a.Device with {
+                             Y = float.Parse(e.Value!.ToString()!) }))" />
+        </span>,
+
+        _ => @<span>—</span>
+    };
+
+    // ?? Router selection ??????????????????????????????????????????????
+
+    private void ToggleRouter(string name, bool add)
+    {
+        if (add && !Config.RouterNames.Contains(name))
+            Config.RouterNames.Add(name);
+        else if (!add)
+            Config.RouterNames.Remove(name);
+    }
+
+    // ?? Footer actions ?????????????????????????????????????????????????
+
+    private async Task Run()    => await OnRun.InvokeAsync();
+    private async Task Cancel() => await OnCancel.InvokeAsync();
+}

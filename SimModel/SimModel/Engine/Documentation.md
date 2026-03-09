@@ -234,7 +234,7 @@ active packets ≥ limit            → PacketLimitExceededException thrown
 | [`Devices/HubDevice.cs`](Devices/HubDevice.cs) | Central gateway; destination for all `GeneratorDevice` packets |
 | [`Devices/GeneratorDevice.cs`](Devices/GeneratorDevice.cs) | Emits one packet per `GenFrequencyTicks` ticks via `RoutePacket` |
 | [`Devices/EmitterDevice.cs`](Devices/EmitterDevice.cs) | Receives `ControlPacket` and toggles boolean state; auto-sends control packets at `ControlFrequencyTicks` interval |
-| [`Packets/Packet.cs`](Packets/Packet.cs) | Core transmission unit: routing metadata, TTL, payload |
+| [`Packets/Packet.cs`](Packets/Packet.cs) | Core transmission unit: routing metadata, TTL, `OriginId`, `InitialTtl`, payload |
 | [`Packets/PacketData.cs`](Packets/PacketData.cs) | Untyped application-level payload wrapper |
 | [`Packets/ConfirmationPacket.cs`](Packets/ConfirmationPacket.cs) | Delivery acknowledgement routed back to the originator |
 | [`Packets/ControlPacket.cs`](Packets/ControlPacket.cs) | Hub→Emitter command packet carrying a `bool Command` (on/off) |
@@ -248,62 +248,16 @@ active packets ≥ limit            → PacketLimitExceededException thrown
 | [`Statistics/SimulationStatistics.cs`](Statistics/SimulationStatistics.cs) | Event-driven singleton: ten metrics + history ring-buffer |
 | [`Statistics/StatMetric.cs`](Statistics/StatMetric.cs) | Single observable metric with display formatting and plottable flag |
 | [`Statistics/TickSnapshot.cs`](Statistics/TickSnapshot.cs) | Immutable per-tick value record for time-series charting (8 plottable fields) |
+| [`Benchmark/BenchmarkConfig.cs`](Benchmark/BenchmarkConfig.cs) | Fully serialisable scenario: devices + events + settings + router list |
+| [`Benchmark/BenchmarkEventEntry.cs`](Benchmark/BenchmarkEventEntry.cs) | Tick-stamped event union: Toggle / RemoveDevice / AddDevice |
+| [`Benchmark/DeviceBenchmarkDto.cs`](Benchmark/DeviceBenchmarkDto.cs) | Serialisable device description (record, supports `with`) |
+| [`Benchmark/BenchmarkResult.cs`](Benchmark/BenchmarkResult.cs) | Per-router final metrics + full `TickSnapshot[]` history |
+| [`Benchmark/BenchmarkSession.cs`](Benchmark/BenchmarkSession.cs) | Root JSON document: config + list of results, self-contained for sharing |
+| [`Benchmark/BenchmarkRunner.cs`](Benchmark/BenchmarkRunner.cs) | Headless tick loop: resets engine, applies events, runs N routers, returns session |
 
 ---
 
-## Packet flow
-
-```mermaid
-sequenceDiagram
-    participant G as GeneratorDevice
-    participant SE as SimulationEngine
-    participant IR as IPacketRouter
-    participant IT as INetworkTopology
-    participant N as Neighbour Device
-    participant H as HubDevice
-    participant SS as SimulationStatistics
-
-    Note over G: every GenFrequencyTicks ticks
-    G->>SE: RoutePacket(packet, self)
-    SE->>IR: Route(packet, G, topology)
-    IR->>IT: GetVisibleDevices(G)
-    IT-->>IR: [N, ...]
-    IR->>SE: RegisterPacket(clone → NextHop=N)
-    SE-->>SS: PacketRegistered
-    Note over SE: tick advances
-    SE->>N: NextHop.Recieve(packet)
-    alt packet.To ≠ N  (intermediate hop)
-        N->>SE: RoutePacket(packet, N)
-        SE->>IR: Route(packet, N, topology)
-    else packet.To = H  (final delivery)
-        SE-->>SS: PacketDelivered
-        N->>H: Accept(packet)
-    else TTL = 0  (dropped)
-        SE-->>SS: PacketExpired
-    end
-    SE-->>SS: Ticked
-    SS->>SS: AppendSnapshot → History
-```
-
----
-
-## Extensibility guide
-
-### Adding a new routing protocol
-
-1. Create a class in `Engine/Routers/` that implements `IPacketRouter`.
-2. Use `topology.GetConnectedDevices(sender)` for unicast forwarding, or `topology.GetVisibleDevices(sender)` for broadcast.
-3. Enqueue forwarded packets via `SimulationEngine.Instance.RegisterPacket(clone)`.
-4. Assign it at runtime: `SimulationEngine.Instance.Router = new MyRouter();`
-5. Optionally expose the choice in the Blazor UI (e.g. a `<select>` bound to a list of named `IPacketRouter` instances).
-
-### Adding a new network-formation algorithm
-
-1. Create a class in `Engine/Routers/` that implements `INetworkBuilder`.
-2. Call `topology.Connect(a, b)` / `topology.Disconnect(a, b)` to build the desired graph. Always start with `topology.ClearConnections()` unless doing an incremental update.
-3. Assign and apply: `SimulationEngine.Instance.NetworkBuilder = new MyBuilder(); SimulationEngine.Instance.RebuildTopology();`
-
-### Comparing protocols on the same network
+## Comparing protocols on the same network
 
 Because both `Router` and `NetworkBuilder` are hot-swappable properties on the singleton engine, you can:
 
@@ -311,23 +265,31 @@ Because both `Router` and `NetworkBuilder` are hot-swappable properties on the s
 - Call `SimulationEngine.Instance.Router = protocolB; SimulationEngine.Instance.Reset()` → run again.
 - Compare the two `SimulationStatistics` snapshots side-by-side in the UI.
 
-### Adding a new tracked metric
+The **Benchmark subsystem** (`Engine/Benchmark/`) automates this workflow end-to-end:
 
-1. Add a `public StatMetric MyMetric { get; }` property in [`SimulationStatistics`](Statistics/SimulationStatistics.cs) and include it in the `Metrics` array.
-2. Subscribe to the relevant `SimulationEngine` event in the constructor and call `MyMetric.Increment()` or `MyMetric.Set(value)`.
-3. If the metric should appear as a selectable chart series, pass `isPlottable: true` to the `StatMetric` constructor, add the corresponding `TickSnapshot` field, and add a mapping case in `GetSnapshotValue` (cases are matched by position in `PlottableMetrics`).
+```
+BenchmarkConfig          ← user defines: devices, events, settings, router names
+    │
+    ▼
+BenchmarkRunner.Run()    ← headless loop; one full reset+run per router
+    │  for each router:
+    │    1. engine.Reset() + stats.Reset()
+    │    2. apply engine settings + register initial devices
+    │    3. tick loop (0..DurationTicks):
+    │         - fire scheduled BenchmarkEvents at matching ticks
+    │         - engine.Tick()
+    │    4. capture BenchmarkResult (final metrics + TickSnapshot[])
+    │
+    ▼
+BenchmarkSession         ← { Config, Results[] } — JSON-serialisable
+```
 
-**Currently tracked metrics**
+**Scheduled events** (`BenchmarkEventEntry`) supported:
 
-| Metric | Type | Plottable | Description |
-|---|---|---|---|
-| `TotalPacketsRegistered` | Counter | — | All enqueued packets including flood clones |
-| `TotalPacketsDelivered` | Counter | ✓ | Clones that reached their destination |
-| `TotalPacketsExpired` | Counter | ✓ | Clones dropped by TTL expiry |
-| `TotalDevicesAdded` | Counter | — | Cumulative device registrations |
-| `TotalTicks` | Gauge | — | Engine ticks since last reset |
-| `AvgTickMs` | Average | ✓ | Wall-clock ms per tick (skips tick 1) |
-| `ActivePackets` | Gauge | ✓ | In-flight packet count |
-| `DeliveryRate` | Derived | ✓ | Delivered / (Delivered + Expired) × 100 |
-| `DuplicateDeliveries` | Counter | ✓ | Extra clones arriving at destination after the first |
-| `AvgHopCount` | Average | ✓ | Mean hops per unique logical packet delivery |
+| Type | Effect |
+|---|---|
+| `ToggleBenchmarkEvent(deviceName)` | Hub sends a `ControlPacket` toggle to the named emitter |
+| `RemoveDeviceBenchmarkEvent(deviceName)` | Device is removed from the engine (simulates node failure) |
+| `AddDeviceBenchmarkEvent(dto)` | New device is registered (simulates node joining) |
+
+**Save / Load:** `BenchmarkSession` serialises to compact JSON via `System.Text.Json` with polymorphic `$type` discriminators on `BenchmarkEvent`.  The Blazor `BenchmarkService` exposes `Serialize` / `Deserialize` and triggers a browser file download via `downloadTextFile` JS interop.

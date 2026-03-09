@@ -1,0 +1,125 @@
+@using Engine.Benchmark
+@using WebApp.Client.Services
+
+@* -----------------------------------------------------------------------
+   BenchmarkLibraryModal — shows all saved BenchmarkSessions.
+   Users can view, delete, or re-export each session.
+   ----------------------------------------------------------------------- *@
+
+<div class="modal-backdrop" @onclick="Close">
+<div class="bm-library-modal" @onclick:stopPropagation>
+
+    <div class="detail-header">
+        <span>Benchmark library</span>
+        <div class="stats-drawer-actions">
+            <label class="btn btn-ghost btn-sm" title="Load session from JSON file">
+                ? Import
+                <InputFile OnChange="ImportFile" accept=".json" style="display:none" />
+            </label>
+            <button class="btn btn-ghost btn-sm" @onclick="Close">?</button>
+        </div>
+    </div>
+
+    <div class="detail-body">
+
+        @if (Svc.SavedSessions.Count == 0)
+        {
+            <p class="empty-hint">
+                No saved sessions yet. Run a benchmark and click ?? Save.
+            </p>
+        }
+        else
+        {
+            <table class="data-table">
+                <thead><tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Routers</th>
+                    <th>Ticks</th>
+                    <th>Devices</th>
+                    <th></th>
+                </tr></thead>
+                <tbody>
+                @foreach (var s in Svc.SavedSessions)
+                {
+                    <tr>
+                        <td><strong>@s.Config.Name</strong></td>
+                        <td class="mono">@s.CreatedAt.ToLocalTime().ToString("dd MMM HH:mm")</td>
+                        <td>@string.Join(", ", s.Results.Select(r => r.RouterName))</td>
+                        <td>@s.Config.DurationTicks</td>
+                        <td>@s.Config.Devices.Count</td>
+                        <td class="row-actions">
+                            <button class="btn btn-ghost btn-sm"
+                                    @onclick="() => ViewSession(s)">View</button>
+                            <button class="btn btn-ghost btn-sm"
+                                    @onclick="() => DownloadSession(s)"
+                                    title="Export as JSON">?</button>
+                            <button class="btn btn-danger btn-sm"
+                                    @onclick="() => Svc.DeleteFromLibrary(s)">?</button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+
+        @if (_importError is not null)
+        {
+            <p class="text-danger" style="margin-top:.5rem;font-size:.82rem">? @_importError</p>
+        }
+
+    </div>
+
+</div>
+</div>
+
+@* Nested result viewer for "View" action *@
+@if (_viewSession is not null)
+{
+    <BenchmarkResultModal Session="_viewSession"
+                          OnClose="() => _viewSession = null"
+                          OnSaved="() => {}" />
+}
+
+@inject BenchmarkService Svc
+@inject Microsoft.JSInterop.IJSRuntime JS
+
+@code {
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    private BenchmarkSession? _viewSession;
+    private string?           _importError;
+
+    private void ViewSession(BenchmarkSession s) => _viewSession = s;
+
+    private async Task DownloadSession(BenchmarkSession s)
+    {
+        var json     = Svc.Serialize(s);
+        var fileName = $"benchmark_{s.Config.Name.Replace(" ", "_")}_{s.CreatedAt:yyyyMMdd_HHmmss}.json";
+        await JS.InvokeVoidAsync("downloadTextFile", fileName, json);
+    }
+
+    private async Task ImportFile(InputFileChangeEventArgs e)
+    {
+        _importError = null;
+        try
+        {
+            using var stream = e.File.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024); // 5 MB max
+            using var reader = new StreamReader(stream);
+            var json    = await reader.ReadToEndAsync();
+            var session = Svc.Deserialize(json);
+            if (session is null)
+            {
+                _importError = "Invalid JSON — could not parse benchmark session.";
+                return;
+            }
+            Svc.SaveToLibrary(session);
+        }
+        catch (Exception ex)
+        {
+            _importError = $"Import failed: {ex.Message}";
+        }
+    }
+
+    private async Task Close() => await OnClose.InvokeAsync();
+}

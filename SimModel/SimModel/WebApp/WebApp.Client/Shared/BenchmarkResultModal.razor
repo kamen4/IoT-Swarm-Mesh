@@ -1,0 +1,410 @@
+@using Engine.Benchmark
+@using Engine.Statistics
+@using System.Globalization
+
+@* -----------------------------------------------------------------------
+   BenchmarkResultModal — displays a BenchmarkSession after a run.
+
+   Layout:
+     • Header with session name + save / download / close buttons
+     • Per-router summary metric cards
+     • Comparison bar chart (final metrics)
+     • Per-router time-series chart (history)
+   ----------------------------------------------------------------------- *@
+
+<div class="modal-backdrop detail-backdrop" @onclick="Close">
+<div class="detail-modal bm-result-modal" @onclick:stopPropagation>
+
+    @* ?? Header ??????????????????????????????????????????????????????? *@
+    <div class="detail-header">
+        <span>Results — @Session.Config.Name</span>
+        <div class="stats-drawer-actions">
+            <button class="btn btn-ghost btn-sm" @onclick="SaveToLibrary"
+                    title="Save to in-memory library">?? Save</button>
+            <button class="btn btn-ghost btn-sm" @onclick="DownloadJson"
+                    title="Download as JSON">? Export</button>
+            <button class="btn btn-ghost btn-sm" @onclick="Close">?</button>
+        </div>
+    </div>
+
+    <div class="detail-body">
+
+        @* ?? Per-router metric cards ???????????????????????????????????? *@
+        @foreach (var result in Session.Results)
+        {
+            <div class="bm-result-router-block">
+                <div class="bm-result-router-title" style="color:@RouterColor(result.RouterName)">
+                    ? @result.RouterName
+                </div>
+                <div class="detail-cards">
+                    @foreach (var (label, value, desc) in FinalMetrics(result))
+                    {
+                        <div class="stat-card" title="@desc">
+                            <span class="stat-label">@label</span>
+                            <span class="stat-value">@value</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        @* ?? Comparison bar chart ??????????????????????????????????????? *@
+        @if (Session.Results.Count > 1)
+        {
+            <div class="chart-panel">
+                <div class="chart-toolbar">
+                    <span class="chart-title">Comparison</span>
+                    <div class="chart-series-selector">
+                        @foreach (var m in _compMetrics)
+                        {
+                            <button class="series-btn @(_compMetric == m ? "series-btn--active" : "")"
+                                    @onclick="() => _compMetric = m">@m</button>
+                        }
+                    </div>
+                </div>
+                <svg class="chart-svg" viewBox="0 0 @CW @CH"
+                     xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    @RenderBarChart()
+                </svg>
+            </div>
+        }
+
+        @* ?? Time-series chart ?????????????????????????????????????????? *@
+        <div class="chart-panel">
+            <div class="chart-toolbar">
+                <span class="chart-title">Per-tick history</span>
+                <div class="chart-series-selector">
+                    @foreach (var m in _historyMetrics)
+                    {
+                        <button class="series-btn @(_historyMetric == m ? "series-btn--active" : "")"
+                                @onclick="() => { _historyMetric = m; BuildLineChart(); }">@m</button>
+                    }
+                </div>
+                <span class="chart-hint">
+                    Up to @SimulationStatistics.MaxHistoryLength ticks per router
+                </span>
+            </div>
+
+            <svg class="chart-svg" viewBox="0 0 @LW @LH"
+                 xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+
+                @* Grid lines *@
+                @foreach (var (y, label) in _lineGrid)
+                {
+                    var ys = y.ToString("F2", CultureInfo.InvariantCulture);
+                    <line x1="@LP" y1="@ys" x2="@(LW - LP / 2)" y2="@ys"
+                          stroke="#e2e8f0" stroke-width="1" />
+                    @((MarkupString)$"<text x=\"{(LP-4).ToString("F0",CultureInfo.InvariantCulture)}\" " +
+                      $"y=\"{ys}\" text-anchor=\"end\" font-size=\"9\" fill=\"#94a3b8\">{label}</text>")
+                }
+
+                @* Axes *@
+                <line x1="@LP" y1="@LPadT" x2="@LP" y2="@(LH - LPadB)"
+                      stroke="#cbd5e1" stroke-width="1.5" />
+                <line x1="@LP" y1="@(LH - LPadB)" x2="@(LW - LP / 2)" y2="@(LH - LPadB)"
+                      stroke="#cbd5e1" stroke-width="1.5" />
+
+                @* Lines per router *@
+                @for (int ri = 0; ri < Session.Results.Count; ri++)
+                {
+                    var pts = _linePoints[ri];
+                    if (pts.Count < 2) continue;
+                    var color = RouterColor(Session.Results[ri].RouterName);
+                    <polyline points="@PointsAttr(pts)"
+                              fill="none" stroke="@color" stroke-width="2"
+                              stroke-linejoin="round" stroke-linecap="round" />
+                    <circle cx="@F(pts[^1].X)" cy="@F(pts[^1].Y)" r="3" fill="@color" />
+                }
+
+                @* Legend *@
+                @for (int ri = 0; ri < Session.Results.Count; ri++)
+                {
+                    var lx = LP + 8;
+                    var ly = LPadT + 14 + ri * 16;
+                    var color = RouterColor(Session.Results[ri].RouterName);
+                    @((MarkupString)$"<circle cx=\"{lx}\" cy=\"{ly-4}\" r=\"4\" fill=\"{color}\" />")
+                    @((MarkupString)$"<text x=\"{lx + 8}\" y=\"{ly}\" font-size=\"9\" fill=\"#475569\">" +
+                      $"{Session.Results[ri].RouterName}</text>")
+                }
+
+                @* X-axis labels *@
+                @foreach (var (x, label) in _lineXLabels)
+                {
+                    var xs = x.ToString("F2", CultureInfo.InvariantCulture);
+                    @((MarkupString)$"<text x=\"{xs}\" y=\"{(LH - LPadB / 4).ToString("F0",CultureInfo.InvariantCulture)}\" " +
+                      $"text-anchor=\"middle\" font-size=\"9\" fill=\"#94a3b8\">{label}</text>")
+                }
+
+            </svg>
+        </div>
+
+    </div>
+</div>
+</div>
+
+@inject BenchmarkService Svc
+@inject Microsoft.JSInterop.IJSRuntime JS
+
+@code {
+    [Parameter, EditorRequired] public BenchmarkSession Session  { get; set; } = null!;
+    [Parameter]                 public EventCallback    OnClose  { get; set; }
+    [Parameter]                 public EventCallback    OnSaved  { get; set; }
+
+    // ?? Comparison bar chart ???????????????????????????????????????????
+
+    private const double CW = 600, CH = 180;
+    private static readonly string[] _compMetrics =
+        ["Delivered", "Expired", "Delivery rate %", "Duplicates", "Avg hops"];
+    private string _compMetric = "Delivered";
+
+    // ?? Line chart ?????????????????????????????????????????????????????
+
+    private const double LW = 700, LH = 240, LP = 46, LPadT = 12, LPadB = 22;
+    private static readonly string[] _historyMetrics =
+        ["Delivered", "Expired", "Active packets", "Delivery rate", "Duplicates", "Avg hops", "Avg tick ms"];
+    private string _historyMetric = "Delivered";
+
+    private record SvgPt(double X, double Y);
+    private List<List<SvgPt>> _linePoints  = [];
+    private List<(double Y, string Label)> _lineGrid    = [];
+    private List<(double X, string Label)> _lineXLabels = [];
+
+    protected override void OnParametersSet()
+    {
+        // Default comparison metric to something interesting
+        _compMetric    = "Delivery rate %";
+        _historyMetric = "Delivered";
+        BuildLineChart();
+    }
+
+    // ?? Colour palette for routers ?????????????????????????????????????
+
+    private static readonly string[] _palette =
+        ["#3b82f6","#ef4444","#22c55e","#f59e0b","#a855f7","#06b6d4"];
+
+    private string RouterColor(string name)
+    {
+        var idx = Session.Results.FindIndex(r => r.RouterName == name);
+        return _palette[idx % _palette.Length];
+    }
+
+    // ?? Final metric display helpers ???????????????????????????????????
+
+    private static IEnumerable<(string Label, string Value, string Desc)> FinalMetrics(BenchmarkResult r)
+    {
+        yield return ("Packets registered", r.TotalPacketsRegistered.ToString("N0"), "All enqueued packets");
+        yield return ("Delivered",          r.TotalPacketsDelivered.ToString("N0"),  "Reached destination");
+        yield return ("Expired",            r.TotalPacketsExpired.ToString("N0"),    "Dropped by TTL");
+        yield return ("Delivery rate",      r.DeliveryRate.ToString("F1") + " %",    "Delivered / (D+E) ? 100");
+        yield return ("Duplicates",         r.DuplicateDeliveries.ToString("N0"),    "Extra flood copies delivered");
+        yield return ("Avg hops",           r.AvgHopCount.ToString("F2"),            "Mean hops per unique delivery");
+        yield return ("Avg tick ms",        r.AvgTickMs.ToString("F2"),              "Wall-clock ms per tick");
+    }
+
+    // ?? Bar chart rendering ????????????????????????????????????????????
+
+    private MarkupString RenderBarChart()
+    {
+        var values = Session.Results
+            .Select(r => CompMetricValue(r, _compMetric))
+            .ToArray();
+
+        double maxVal = values.Max();
+        if (maxVal <= 0) maxVal = 1;
+
+        const double padL = 46, padR = 10, padT = 14, padB = 28;
+        double bw      = (CW - padL - padR) / (Session.Results.Count + 1);
+        double gap     = bw * 0.25;
+        double barW    = bw - gap;
+        double chartH  = CH - padT - padB;
+
+        var sb = new System.Text.StringBuilder();
+
+        // Axis
+        sb.Append($"<line x1='{padL}' y1='{padT}' x2='{padL}' y2='{CH - padB}' stroke='#cbd5e1' stroke-width='1.5'/>");
+        sb.Append($"<line x1='{padL}' y1='{CH - padB}' x2='{CW - padR}' y2='{CH - padB}' stroke='#cbd5e1' stroke-width='1.5'/>");
+
+        for (int i = 0; i < Session.Results.Count; i++)
+        {
+            double x      = padL + gap / 2 + i * bw;
+            double barH   = chartH * (values[i] / maxVal);
+            double y      = padT + chartH - barH;
+            string color  = RouterColor(Session.Results[i].RouterName);
+            string label  = Session.Results[i].RouterName;
+            string valStr = _compMetric.Contains('%') || _compMetric.Contains("hops")
+                ? values[i].ToString("F1")
+                : values[i].ToString("N0");
+
+            sb.Append($"<rect x='{x.ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"y='{y.ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"width='{barW.ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"height='{barH.ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"fill='{color}' rx='3' />");
+
+            // Value label on bar
+            double midX = x + barW / 2;
+            sb.Append($"<text x='{midX.ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"y='{(y - 3).ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"text-anchor='middle' font-size='9' fill='{color}'>{valStr}</text>");
+
+            // Router name below axis
+            sb.Append($"<text x='{midX.ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"y='{(CH - padB + 14).ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"text-anchor='middle' font-size='9' fill='#475569'>{label}</text>");
+        }
+
+        // Y-axis labels (4 lines)
+        for (int i = 0; i <= 4; i++)
+        {
+            double frac  = (double)i / 4;
+            double val   = maxVal * frac;
+            double svgY  = padT + chartH - chartH * frac;
+            string lbl   = _compMetric.Contains('%') ? val.ToString("F1") : ((long)val).ToString("N0");
+            sb.Append($"<text x='{(padL - 3).ToString("F0", CultureInfo.InvariantCulture)}' " +
+                      $"y='{svgY.ToString("F1", CultureInfo.InvariantCulture)}' " +
+                      $"text-anchor='end' font-size='8' fill='#94a3b8'>{lbl}</text>");
+        }
+
+        return new MarkupString(sb.ToString());
+    }
+
+    private static double CompMetricValue(BenchmarkResult r, string metric) => metric switch
+    {
+        "Delivered"       => r.TotalPacketsDelivered,
+        "Expired"         => r.TotalPacketsExpired,
+        "Delivery rate %" => r.DeliveryRate,
+        "Duplicates"      => r.DuplicateDeliveries,
+        "Avg hops"        => r.AvgHopCount,
+        _                 => 0
+    };
+
+    // ?? Line chart building ????????????????????????????????????????????
+
+    /// <summary>Recomputes SVG point lists for all routers for the selected metric.</summary>
+    private void BuildLineChart()
+    {
+        _linePoints = Session.Results
+            .Select(r => BuildLine(r.History, _historyMetric))
+            .ToList();
+
+        // Shared Y range across all routers for fair comparison.
+        double minV = double.MaxValue, maxV = double.MinValue;
+        foreach (var pts in _linePoints)
+        foreach (var pt in pts)
+        {
+            // We stored raw values before converting to SVG — need to recover them.
+            // Simpler: recompute range from history directly.
+        }
+        // Recompute range from raw history values.
+        minV = double.MaxValue; maxV = double.MinValue;
+        foreach (var r in Session.Results)
+        foreach (var s in r.History)
+        {
+            var v = HistoryValue(s, _historyMetric);
+            if (v < minV) minV = v;
+            if (v > maxV) maxV = v;
+        }
+        if (minV == maxV) { minV -= 1; maxV += 1; }
+
+        // Rebuild points with shared scale.
+        _linePoints = Session.Results
+            .Select(r => BuildLineScaled(r.History, _historyMetric, minV, maxV))
+            .ToList();
+
+        // Grid
+        _lineGrid = [];
+        for (int i = 0; i <= 4; i++)
+        {
+            double frac = (double)i / 4;
+            double val  = minV + (maxV - minV) * frac;
+            double svgY = (LH - LPadB) + (LPadT - (LH - LPadB)) * frac;
+            bool isDecimal = _historyMetric is "Delivery rate" or "Avg hops" or "Avg tick ms";
+            _lineGrid.Add((svgY, isDecimal ? val.ToString("F1") : ((long)val).ToString()));
+        }
+
+        // X labels (max 5 tick labels based on longest history).
+        _lineXLabels = [];
+        var maxLen = Session.Results.Max(r => r.History.Length);
+        if (maxLen >= 2)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                var idx  = (int)Math.Round((double)i / 4 * (maxLen - 1));
+                var svgX = LP + (LW - LP * 1.5) * i / 4;
+                // Find actual tick value from the longest history.
+                var hist = Session.Results
+                    .OrderByDescending(r => r.History.Length)
+                    .First().History;
+                _lineXLabels.Add((svgX, hist[Math.Min(idx, hist.Length - 1)].Tick.ToString()));
+            }
+        }
+    }
+
+    private List<SvgPt> BuildLine(TickSnapshot[] history, string metric)
+    {
+        // Dummy — replaced by BuildLineScaled after computing shared range.
+        return [];
+    }
+
+    private List<SvgPt> BuildLineScaled(
+        TickSnapshot[] history, string metric,
+        double minV, double maxV)
+    {
+        if (history.Length < 2) return [];
+        int n = history.Length;
+        var pts = new List<SvgPt>(n);
+        for (int i = 0; i < n; i++)
+        {
+            var v  = HistoryValue(history[i], metric);
+            var px = LP + (LW - LP * 1.5) * i / (n - 1);
+            var py = (LH - LPadB) + (LPadT - (LH - LPadB)) * (v - minV) / (maxV - minV);
+            pts.Add(new SvgPt(px, py));
+        }
+        return pts;
+    }
+
+    private static double HistoryValue(TickSnapshot s, string metric) => metric switch
+    {
+        "Delivered"      => s.TotalDelivered,
+        "Expired"        => s.TotalExpired,
+        "Active packets" => s.ActivePackets,
+        "Delivery rate"  => s.DeliveryRate,
+        "Duplicates"     => s.DuplicateDeliveries,
+        "Avg hops"       => s.AvgHopCount,
+        "Avg tick ms"    => s.TickMs,
+        _                => 0
+    };
+
+    // ?? SVG helpers ????????????????????????????????????????????????????
+
+    private static string PointsAttr(List<SvgPt> pts)
+    {
+        var sb = new System.Text.StringBuilder(pts.Count * 12);
+        foreach (var p in pts)
+        {
+            sb.Append(p.X.ToString("F2", CultureInfo.InvariantCulture));
+            sb.Append(',');
+            sb.Append(p.Y.ToString("F2", CultureInfo.InvariantCulture));
+            sb.Append(' ');
+        }
+        return sb.ToString().TrimEnd();
+    }
+    private static string F(double v) => v.ToString("F2", CultureInfo.InvariantCulture);
+
+    // ?? Actions ????????????????????????????????????????????????????????
+
+    private async Task SaveToLibrary()
+    {
+        Svc.SaveToLibrary(Session);
+        await OnSaved.InvokeAsync();
+    }
+
+    private async Task DownloadJson()
+    {
+        var json     = Svc.Serialize(Session);
+        var fileName = $"benchmark_{Session.Config.Name.Replace(" ", "_")}_{Session.CreatedAt:yyyyMMdd_HHmmss}.json";
+        await JS.InvokeVoidAsync("downloadTextFile", fileName, json);
+    }
+
+    private async Task Close() => await OnClose.InvokeAsync();
+}

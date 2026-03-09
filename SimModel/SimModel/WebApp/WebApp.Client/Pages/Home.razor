@@ -2,7 +2,9 @@
 @using Engine.Devices
 @using WebApp.Client.Services
 @using WebApp.Client.Shared
+@using Engine.Benchmark
 @inject SimulationService Sim
+@inject BenchmarkService  BenchSvc
 @implements IDisposable
 
 <PageTitle>IoT Swarm Mesh</PageTitle>
@@ -49,6 +51,8 @@
 
         <button class="btn btn-ghost btn-sm" @onclick="OpenSettings">Settings</button>
         <button class="btn btn-ghost btn-sm" @onclick="() => _showStats = !_showStats">Stats</button>
+        <button class="btn btn-ghost btn-sm" @onclick="OpenBenchmark">Benchmark</button>
+        <button class="btn btn-ghost btn-sm" @onclick="() => _showBenchLibrary = true">⊞ Library</button>
         @* Link to the DocFX documentation site deployed under /docs *@
         <a class="btn btn-docs btn-sm" href="docs/index.html" target="_blank" rel="noopener">Docs</a>
 
@@ -108,6 +112,44 @@
                         OnClose="() => _showSettings = false" />
 }
 
+@* -- Benchmark config modal ----------------------------------------- *@
+@if (_showBenchConfig)
+{
+    <BenchmarkConfigModal Config="_benchConfig"
+                          SimDevices="Sim.Engine.Devices"
+                          OnRun="RunBenchmark"
+                          OnCancel="() => _showBenchConfig = false" />
+}
+
+@* -- Benchmark loading overlay -------------------------------------- *@
+@if (BenchSvc.IsRunning)
+{
+    <div class="bm-loading-overlay">
+        <div class="bm-loading-box">
+            <div class="bm-spinner"></div>
+            <p class="bm-loading-title">Running benchmark…</p>
+            <p class="bm-loading-sub">@_benchProgressLabel</p>
+            <div class="bm-progress-bar">
+                <div class="bm-progress-fill"
+                     style="width:@((BenchSvc.Progress * 100).ToString("F0"))%"></div>
+            </div>
+        </div>
+    </div>
+}
+
+@* -- Benchmark result modal ----------------------------------------- *@
+@if (_showBenchResult && BenchSvc.LastSession is not null)
+{
+    <BenchmarkResultModal Session="BenchSvc.LastSession"
+                          OnClose="() => _showBenchResult = false"
+                          OnSaved="() => {}" />
+}
+
+@if (_showBenchLibrary)
+{
+    <BenchmarkLibraryModal OnClose="() => _showBenchLibrary = false" />
+}
+
 @code {
     private bool _showDeviceModal;
     private bool _showSettings;
@@ -118,16 +160,41 @@
     private int _generateCount = 6;
     private int _selectedPresetIndex = 0;
 
+    // -- Benchmark state ------------------------------------------------
+    private bool            _showBenchConfig  = false;
+    private bool            _showBenchResult  = false;
+    private bool            _showBenchLibrary = false;
+    private BenchmarkConfig _benchConfig      = new();
+    private string          _benchProgressLabel = "";
+    private CancellationTokenSource _benchUiCts = new();
+
     private string SelectedPresetDescription =>
         SimulationPresets.All[_selectedPresetIndex].Description;
 
     protected override void OnInitialized()
     {
-        Sim.StateChanged += OnEngineStateChanged;
+        Sim.StateChanged       += OnEngineStateChanged;
+        BenchSvc.StateChanged  += OnBenchStateChanged;
     }
 
-    private void OnEngineStateChanged()
+    private void OnEngineStateChanged() => InvokeAsync(StateHasChanged);
+
+    private void OnBenchStateChanged()
     {
+        // Update progress label while running.
+        var done  = (int)Math.Round(BenchSvc.Progress * _benchConfig.RouterNames.Count);
+        var total = _benchConfig.RouterNames.Count;
+        _benchProgressLabel = BenchSvc.IsRunning
+            ? $"Router {done} / {total}"
+            : "Done";
+
+        // When run finishes, hide config modal and show result.
+        if (!BenchSvc.IsRunning && BenchSvc.LastSession is not null)
+        {
+            _showBenchConfig = false;
+            _showBenchResult = true;
+        }
+
         InvokeAsync(StateHasChanged);
     }
 
@@ -184,8 +251,51 @@
 
     private void GenerateDevices() => Sim.GenerateRandom(_generateCount);
 
+    private void OpenBenchmark()
+    {
+        // Pre-fill with a fresh config seeded from the current simulation layout.
+        _benchConfig = new BenchmarkConfig
+        {
+            Name              = "Benchmark",
+            DurationTicks     = 300,
+            VisibilityDistance = Sim.Engine.VisibilityDistance,
+            MaxActivePackets  = Sim.Config.MaxActivePackets,
+            RouterNames       = [Sim.Config.SelectedRouter.Name],
+        };
+        // Import current device layout automatically.
+        foreach (var d in Sim.Engine.Devices)
+        {
+            var dto = new DeviceBenchmarkDto { Name = d.Name, X = d.Position.X, Y = d.Position.Y };
+            switch (d)
+            {
+                case HubDevice:
+                    dto.Kind = BenchmarkDeviceKind.Hub; break;
+                case GeneratorDevice g:
+                    dto.Kind = BenchmarkDeviceKind.Generator;
+                    dto.GenFrequencyTicks = g.GenFrequencyTicks; break;
+                case EmitterDevice e:
+                    dto.Kind = BenchmarkDeviceKind.Emitter;
+                    dto.ControlFrequencyTicks = e.ControlFrequencyTicks; break;
+            }
+            _benchConfig.Devices.Add(dto);
+        }
+        _showBenchConfig = true;
+    }
+
+    private async Task RunBenchmark()
+    {
+        _showBenchConfig = false;
+        // Stop the live simulation so the engine singleton is free for the runner.
+        Sim.Stop();
+        await BenchSvc.RunAsync(_benchConfig);
+        // Restore the live simulation state after the benchmark resets the engine.
+        Sim.Reset();
+    }
+
     public void Dispose()
     {
-        Sim.StateChanged -= OnEngineStateChanged;
+        Sim.StateChanged      -= OnEngineStateChanged;
+        BenchSvc.StateChanged -= OnBenchStateChanged;
+        _benchUiCts.Dispose();
     }
 }

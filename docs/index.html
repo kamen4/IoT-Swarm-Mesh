@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>IoT Swarm Mesh - Engine Documentation | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="IoT Swarm Mesh - Engine Documentation | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/index.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="iot-swarm-mesh---engine-documentation">IoT Swarm Mesh - Engine Documentation</h1>
+
+<p>Welcome to the <strong>IoT Swarm Mesh</strong> simulation engine documentation.</p>
+<p>This site is generated from source XML comments and hand-written conceptual guides
+using <a href="https://dotnet.github.io/docfx/">DocFX</a>.</p>
+<p>The <strong>Engine</strong> library is the self-contained simulation core of the IoT Swarm Mesh
+project. It models a wireless IoT network on a 2D plane: devices are placed at
+arbitrary positions, data packets flow between them tick-by-tick, and a pluggable
+routing algorithm propagates data toward the central hub.</p>
+<p>No UI dependencies - any host that calls <code>SimulationEngine.Instance.Tick()</code> can
+drive the simulation (console, Blazor WASM, test harness).</p>
+<blockquote>
+<p>Source: <a href="https://github.com/kamen4/IoT-Swarm-Mesh">github.com/kamen4/IoT-Swarm-Mesh</a></p>
+</blockquote>
+<hr>
+<h2 id="conceptual-documentation">Conceptual documentation</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="Documentation.html">Engine</a></td>
+<td>Architecture overview, key concepts, tick model, packet lifetime</td>
+</tr>
+<tr>
+<td><a href="Core/Documentation.html">Core</a></td>
+<td><code>SimulationEngine</code> singleton, events, packet-limit guard</td>
+</tr>
+<tr>
+<td><a href="Devices/Documentation.html">Devices</a></td>
+<td>Device base class and all concrete types</td>
+</tr>
+<tr>
+<td><a href="Packets/Documentation.html">Packets</a></td>
+<td>Packet types, payload, TTL, flood-clone identity</td>
+</tr>
+<tr>
+<td><a href="Routers/Documentation.html">Routers</a></td>
+<td>Routing subsystem overview and design principles</td>
+</tr>
+<tr>
+<td><a href="Routers/Contracts/Documentation.html">Routers / Contracts</a></td>
+<td><code>IPacketRouter</code>, <code>INetworkBuilder</code>, topology interfaces</td>
+</tr>
+<tr>
+<td><a href="Routers/Topology/Documentation.html">Routers / Topology</a></td>
+<td><code>NetworkTopology</code> - adjacency set + on-the-fly visibility</td>
+</tr>
+<tr>
+<td><a href="Routers/Builders/Documentation.html">Routers / Builders</a></td>
+<td><code>FullMeshNetworkBuilder</code> and extension points</td>
+</tr>
+<tr>
+<td><a href="Routers/Flooding/Documentation.html">Routers / Flooding</a></td>
+<td><code>FloodingPacketRouter</code> - engine default</td>
+</tr>
+<tr>
+<td><a href="Routers/SmartFlooding/Documentation.html">Routers / Smart Flooding</a></td>
+<td><code>SmartFloodingPacketRouter</code> - WebApp default</td>
+</tr>
+<tr>
+<td><a href="Statistics/Documentation.html">Statistics</a></td>
+<td>Ten observable metrics + history ring buffer</td>
+</tr>
+<tr>
+<td><a href="Benchmark/Documentation.html">Benchmark</a></td>
+<td>Headless multi-router comparison runner</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="api-reference">API reference</h2>
+<p>Auto-generated from XML <code>&lt;summary&gt;</code> comments on every public type and member.</p>
+<ul>
+<li><a href="api/index.md">Browse API Reference</a></li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/index.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

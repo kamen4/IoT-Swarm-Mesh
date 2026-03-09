@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class BenchmarkConfig | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class BenchmarkConfig | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      <meta name="description" content="Fully serialisable description of a benchmark scenario.  A  defines everything needed to reproduce a headless simulation run deterministically: Simulation engine settings (visibility, TTL, packet travel time).The initial network layout as a list of .A timeline of  items that modify the         network at specific ticks (toggle, add, remove device).The total number of ticks to simulate.The list of router names to test;  will         run one full simulation per router and collect results for comparison.   Instances are stored as JSON together with their  results so a test can be replayed or shared.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/new/master/apiSpec/new?filename=Engine_Benchmark_BenchmarkConfig.md&amp;value=---%0Auid%3A%20Engine.Benchmark.BenchmarkConfig%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Engine.Benchmark.BenchmarkConfig">
+
+
+
+  <h1 id="Engine_Benchmark_BenchmarkConfig" data-uid="Engine.Benchmark.BenchmarkConfig" class="text-break">
+Class BenchmarkConfig  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Engine.html">Engine</a>.<a class="xref" href="Engine.Benchmark.html">Benchmark</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Engine.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Fully serialisable description of a benchmark scenario.</p>
+<p>
+A <a class="xref" href="Engine.Benchmark.BenchmarkConfig.html">BenchmarkConfig</a> defines everything needed to reproduce a
+headless simulation run deterministically:
+<ul><li>Simulation engine settings (visibility, TTL, packet travel time).</li><li>The initial network layout as a list of <a class="xref" href="Engine.Benchmark.DeviceBenchmarkDto.html">DeviceBenchmarkDto</a>.</li><li>A timeline of <a class="xref" href="Engine.Benchmark.BenchmarkEventEntry.html">BenchmarkEventEntry</a> items that modify the
+        network at specific ticks (toggle, add, remove device).</li><li>The total number of ticks to simulate.</li><li>The list of router names to test; <a class="xref" href="Engine.Benchmark.BenchmarkRunner.html">BenchmarkRunner</a> will
+        run one full simulation per router and collect results for comparison.</li></ul>
+
+<p>
+Instances are stored as JSON together with their <a class="xref" href="Engine.Benchmark.BenchmarkSession.html">BenchmarkSession</a>
+results so a test can be replayed or shared.
+</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class BenchmarkConfig</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">BenchmarkConfig</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_DefaultTtl_" data-uid="Engine.Benchmark.BenchmarkConfig.DefaultTtl*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_DefaultTtl" data-uid="Engine.Benchmark.BenchmarkConfig.DefaultTtl">
+  DefaultTtl
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Default TTL assigned to new packets.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int DefaultTtl { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_Description_" data-uid="Engine.Benchmark.BenchmarkConfig.Description*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_Description" data-uid="Engine.Benchmark.BenchmarkConfig.Description">
+  Description
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Optional free-text description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Description { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_Devices_" data-uid="Engine.Benchmark.BenchmarkConfig.Devices*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_Devices" data-uid="Engine.Benchmark.BenchmarkConfig.Devices">
+  Devices
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Devices present at the start of the simulation.
+Applied in declaration order via <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RegisterDevice_Engine_Devices_Device_">RegisterDevice(Device)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;DeviceBenchmarkDto&gt; Devices { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Engine.Benchmark.DeviceBenchmarkDto.html">DeviceBenchmarkDto</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_DurationTicks_" data-uid="Engine.Benchmark.BenchmarkConfig.DurationTicks*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_DurationTicks" data-uid="Engine.Benchmark.BenchmarkConfig.DurationTicks">
+  DurationTicks
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Total number of engine ticks to run per router.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long DurationTicks { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_Events_" data-uid="Engine.Benchmark.BenchmarkConfig.Events*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_Events" data-uid="Engine.Benchmark.BenchmarkConfig.Events">
+  Events
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ordered list of events to apply at specific ticks.
+Sorted by <a class="xref" href="Engine.Benchmark.BenchmarkEventEntry.html#Engine_Benchmark_BenchmarkEventEntry_AtTick">AtTick</a> before the run starts.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;BenchmarkEventEntry&gt; Events { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Engine.Benchmark.BenchmarkEventEntry.html">BenchmarkEventEntry</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_MaxActivePackets_" data-uid="Engine.Benchmark.BenchmarkConfig.MaxActivePackets*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_MaxActivePackets" data-uid="Engine.Benchmark.BenchmarkConfig.MaxActivePackets">
+  MaxActivePackets
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Maximum simultaneously in-flight packets (0 = auto: devices ? 2000).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MaxActivePackets { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_Name_" data-uid="Engine.Benchmark.BenchmarkConfig.Name*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_Name" data-uid="Engine.Benchmark.BenchmarkConfig.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>User-assigned name shown in the UI list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_RouterNames_" data-uid="Engine.Benchmark.BenchmarkConfig.RouterNames*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_RouterNames" data-uid="Engine.Benchmark.BenchmarkConfig.RouterNames">
+  RouterNames
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Names of routers to test, matched against
+<a class="xref" href="Engine.Routers.IPacketRouter.html#Engine_Routers_IPacketRouter_Name">Name</a>.
+The runner iterates this list and executes one full simulation per entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; RouterNames { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_TicksToTravel_" data-uid="Engine.Benchmark.BenchmarkConfig.TicksToTravel*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_TicksToTravel" data-uid="Engine.Benchmark.BenchmarkConfig.TicksToTravel">
+  TicksToTravel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ticks a packet spends in transit between adjacent nodes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TicksToTravel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Benchmark_BenchmarkConfig_VisibilityDistance_" data-uid="Engine.Benchmark.BenchmarkConfig.VisibilityDistance*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkConfig_VisibilityDistance" data-uid="Engine.Benchmark.BenchmarkConfig.VisibilityDistance">
+  VisibilityDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Visibility distance applied to the engine during the run.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int VisibilityDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkConfig.cs/#L23" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

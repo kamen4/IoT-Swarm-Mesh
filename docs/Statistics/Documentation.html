@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Engine/Statistics | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Engine/Statistics | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/Documentation.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="enginestatistics">Engine/Statistics</h1>
+
+<p>The <code>Statistics</code> folder contains the reactive simulation metrics subsystem. It listens to <code>SimulationEngine</code> events and accumulates observable metric values and a per-tick history ring buffer.</p>
+<hr>
+<h2 id="files">Files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SimulationStatistics.cs</code></td>
+<td>Singleton that subscribes to all <code>SimulationEngine</code> events and maintains ten <code>StatMetric</code> values. Appends a <code>TickSnapshot</code> to the history ring buffer on every tick. Raises <code>Updated</code> after each change so UI can re-render reactively.</td>
+</tr>
+<tr>
+<td><code>StatMetric.cs</code></td>
+<td>A single named metric with a <code>double Value</code>, display format flags (<code>isDecimal</code>, <code>isPlottable</code>), and an <code>Updated</code> event. <code>Increment()</code> and <code>Set(value)</code> update the value and notify subscribers.</td>
+</tr>
+<tr>
+<td><code>TickSnapshot.cs</code></td>
+<td>Immutable record capturing a point-in-time snapshot of the eight plottable metrics for one tick. Used for time-series chart rendering.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="metrics-tracked">Metrics tracked</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Packets registered</td>
+<td>All enqueued packets including flood clones.</td>
+</tr>
+<tr>
+<td>Packets delivered</td>
+<td>Packets that reached their destination.</td>
+</tr>
+<tr>
+<td>Packets expired</td>
+<td>Packets dropped because TTL hit zero.</td>
+</tr>
+<tr>
+<td>Devices added</td>
+<td>Cumulative device registrations since last reset.</td>
+</tr>
+<tr>
+<td>Total ticks</td>
+<td>Engine ticks elapsed since last reset.</td>
+</tr>
+<tr>
+<td>Avg tick (ms)</td>
+<td>Running mean of wall-clock time per tick.</td>
+</tr>
+<tr>
+<td>Active packets</td>
+<td>Packets currently in-flight.</td>
+</tr>
+<tr>
+<td>Delivery rate (%)</td>
+<td><code>Delivered / (Delivered + Expired) x 100</code>.</td>
+</tr>
+<tr>
+<td>Duplicate deliveries</td>
+<td>Flood clones that arrived after first delivery of the same logical packet.</td>
+</tr>
+<tr>
+<td>Avg hop count</td>
+<td>Mean <code>InitialTtl - TTL</code> at first delivery.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="extension-points">Extension points</h2>
+<p>Add a new <code>StatMetric</code> field to <code>SimulationStatistics</code>, subscribe to the relevant engine event, and set <code>isPlottable: true</code> to expose it as a chart series.</p>
+<hr>
+<h2 id="parent">Parent</h2>
+<p>See <code>Engine/Documentation.md</code> for the full engine architecture.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/Documentation.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

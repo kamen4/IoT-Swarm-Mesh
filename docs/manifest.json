@@ -1,0 +1,791 @@
+{
+  "source_base_path": "/home/runner/work/IoT-Swarm-Mesh/IoT-Swarm-Mesh/SimModel/SimModel/Engine",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Benchmark/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Benchmark/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Core/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Core/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Devices/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Devices/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Packets/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Packets/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Routers/Builders/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Routers/Builders/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Routers/Contracts/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Routers/Contracts/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Routers/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Routers/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Routers/Flooding/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Routers/Flooding/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Routers/SmartFlooding/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Routers/SmartFlooding/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Routers/Topology/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Routers/Topology/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Statistics/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Statistics/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.AddDeviceBenchmarkEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.AddDeviceBenchmarkEvent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.AddDeviceBenchmarkEvent",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.AddDeviceBenchmarkEvent.yml\" sourcestartlinenumber=\"1\">Adds a new device to the engine at the scheduled tick, simulating a node\njoining the network mid-simulation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.BenchmarkConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.BenchmarkConfig.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.BenchmarkConfig",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkConfig.yml\" sourcestartlinenumber=\"1\">Fully serialisable description of a benchmark scenario.</p>\n<p>\nA <xref href=\"Engine.Benchmark.BenchmarkConfig\" data-throw-if-not-resolved=\"false\"></xref> defines everything needed to reproduce a\nheadless simulation run deterministically:\n<ul><li>Simulation engine settings (visibility, TTL, packet travel time).</li><li>The initial network layout as a list of <xref href=\"Engine.Benchmark.DeviceBenchmarkDto\" data-throw-if-not-resolved=\"false\"></xref>.</li><li>A timeline of <xref href=\"Engine.Benchmark.BenchmarkEventEntry\" data-throw-if-not-resolved=\"false\"></xref> items that modify the\n        network at specific ticks (toggle, add, remove device).</li><li>The total number of ticks to simulate.</li><li>The list of router names to test; <xref href=\"Engine.Benchmark.BenchmarkRunner\" data-throw-if-not-resolved=\"false\"></xref> will\n        run one full simulation per router and collect results for comparison.</li></ul>\n\n<p>\nInstances are stored as JSON together with their <xref href=\"Engine.Benchmark.BenchmarkSession\" data-throw-if-not-resolved=\"false\"></xref>\nresults so a test can be replayed or shared.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.BenchmarkDeviceKind.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.BenchmarkDeviceKind.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.BenchmarkDeviceKind",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkDeviceKind.yml\" sourcestartlinenumber=\"1\">Discriminator for the device kind stored in a benchmark configuration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.BenchmarkEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.BenchmarkEvent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.BenchmarkEvent",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkEvent.yml\" sourcestartlinenumber=\"1\">Base type for all events that can be scheduled in a\n<xref href=\"Engine.Benchmark.BenchmarkConfig\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.BenchmarkEventEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.BenchmarkEventEntry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.BenchmarkEventEntry",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkEventEntry.yml\" sourcestartlinenumber=\"1\">Associates a <xref href=\"Engine.Benchmark.BenchmarkEvent\" data-throw-if-not-resolved=\"false\"></xref> with the engine tick at which it\nshould be fired during a benchmark run.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.BenchmarkResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.BenchmarkResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.BenchmarkResult",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkResult.yml\" sourcestartlinenumber=\"1\">The collected statistics from one headless simulation run for a single\nrouter protocol.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.BenchmarkRunner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.BenchmarkRunner.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.BenchmarkRunner",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkRunner.yml\" sourcestartlinenumber=\"1\">Executes a <xref href=\"Engine.Benchmark.BenchmarkConfig\" data-throw-if-not-resolved=\"false\"></xref> headlessly  -  without any UI  -  and\nproduces a <xref href=\"Engine.Benchmark.BenchmarkSession\" data-throw-if-not-resolved=\"false\"></xref> containing one\n<xref href=\"Engine.Benchmark.BenchmarkResult\" data-throw-if-not-resolved=\"false\"></xref> per configured router.</p>\n<p>\n<b>Threading:</b> designed to be called from <code>Task.Run</code> so that the\nBlazor UI thread stays responsive during the (potentially long) run.\nAll engine interaction happens through the singleton\n<xref href=\"Engine.Core.SimulationEngine.Instance\" data-throw-if-not-resolved=\"false\"></xref> which is fully reset between runs.\n</p>\n<p>\n<b>Progress reporting:</b> the optional <code class=\"paramref\">onProgress</code>\ncallback in <xref href=\"Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig%2cSystem.Collections.Generic.IReadOnlyDictionary%7bSystem.String%2cEngine.Routers.IPacketRouter%7d%2cSystem.Action%7bSystem.Int32%2cSystem.Int32%7d)\" data-throw-if-not-resolved=\"false\"></xref> is invoked after each completed router run\nwith <code>(routerIndex, totalRouters)</code> so callers can display a spinner.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.BenchmarkSession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.BenchmarkSession.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.BenchmarkSession",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkSession.yml\" sourcestartlinenumber=\"1\">The complete, serialisable record of one benchmark execution.\nStored as JSON so users can save, share, and reload results.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.DeviceBenchmarkDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.DeviceBenchmarkDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.DeviceBenchmarkDto",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.DeviceBenchmarkDto.yml\" sourcestartlinenumber=\"1\">Serialisable snapshot of a single device's configuration used inside\n<xref href=\"Engine.Benchmark.BenchmarkConfig\" data-throw-if-not-resolved=\"false\"></xref>.\nConverted to a live <xref href=\"Engine.Devices.Device\" data-throw-if-not-resolved=\"false\"></xref> by\n<xref href=\"Engine.Benchmark.BenchmarkRunner\" data-throw-if-not-resolved=\"false\"></xref> when it builds the engine state.\nDeclared as a <code>record</code> so Blazor event handlers can use <code>with</code>\nexpressions to create modified copies without mutating shared state.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.RemoveDeviceBenchmarkEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.RemoveDeviceBenchmarkEvent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.RemoveDeviceBenchmarkEvent",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.RemoveDeviceBenchmarkEvent.yml\" sourcestartlinenumber=\"1\">Removes the named device from the engine at the scheduled tick, simulating\na node failure or graceful leave.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.ToggleBenchmarkEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.ToggleBenchmarkEvent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.ToggleBenchmarkEvent",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.ToggleBenchmarkEvent.yml\" sourcestartlinenumber=\"1\">Hub sends a toggle (on/off) <xref href=\"Engine.Packets.ControlPacket\" data-throw-if-not-resolved=\"false\"></xref> to the\nnamed emitter device at the scheduled tick.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.DeviceRegisteredEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.DeviceRegisteredEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core.DeviceRegisteredEventArgs",
+      "Summary": "<p sourcefile=\"api/Engine.Core.DeviceRegisteredEventArgs.yml\" sourcestartlinenumber=\"1\">Event args for <xref href=\"Engine.Core.SimulationEngine.DeviceRegistered\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.DeviceRemovedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.DeviceRemovedEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core.DeviceRemovedEventArgs",
+      "Summary": "<p sourcefile=\"api/Engine.Core.DeviceRemovedEventArgs.yml\" sourcestartlinenumber=\"1\">Event args for <xref href=\"Engine.Core.SimulationEngine.DeviceRemoved\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.PacketDeliveredEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.PacketDeliveredEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core.PacketDeliveredEventArgs",
+      "Summary": "<p sourcefile=\"api/Engine.Core.PacketDeliveredEventArgs.yml\" sourcestartlinenumber=\"1\">Event args for <xref href=\"Engine.Core.SimulationEngine.PacketDelivered\" data-throw-if-not-resolved=\"false\"></xref> (reached its destination).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.PacketExpiredEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.PacketExpiredEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core.PacketExpiredEventArgs",
+      "Summary": "<p sourcefile=\"api/Engine.Core.PacketExpiredEventArgs.yml\" sourcestartlinenumber=\"1\">Event args for <xref href=\"Engine.Core.SimulationEngine.PacketExpired\" data-throw-if-not-resolved=\"false\"></xref> (TTL reached zero).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.PacketLimitExceededException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.PacketLimitExceededException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core.PacketLimitExceededException",
+      "Summary": "<p sourcefile=\"api/Engine.Core.PacketLimitExceededException.yml\" sourcestartlinenumber=\"1\">Thrown by <xref href=\"Engine.Core.SimulationEngine.RegisterPacket(Engine.Packets.Packet)\" data-throw-if-not-resolved=\"false\"></xref> when the number of\nin-flight packets in the priority queue reaches or exceeds\n<xref href=\"Engine.Core.SimulationEngine.MaxActivePackets\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n<p>\nThis exception signals that the simulation has entered an unstable state\n(packet storm / routing loop) where more packets are being generated than\nthe network can drain. The host should catch this exception, stop the tick\nloop, and surface the error to the user.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.PacketRegisteredEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.PacketRegisteredEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core.PacketRegisteredEventArgs",
+      "Summary": "<p sourcefile=\"api/Engine.Core.PacketRegisteredEventArgs.yml\" sourcestartlinenumber=\"1\">Event args for <xref href=\"Engine.Core.SimulationEngine.PacketRegistered\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.SimulationEngine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.SimulationEngine.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core.SimulationEngine",
+      "Summary": "<p sourcefile=\"api/Engine.Core.SimulationEngine.yml\" sourcestartlinenumber=\"1\">The central singleton that drives the entire simulation.\nIt maintains the device registry, owns the tick-based time model, and\nmanages the priority queue of in-flight packets.</p>\n<p>\nEvery call to <xref href=\"Engine.Core.SimulationEngine.Tick\" data-throw-if-not-resolved=\"false\"></xref> advances the simulation by one step:\nthe tick counter is incremented, wall-clock delta time is measured,\nall subscribers to <xref href=\"Engine.Core.SimulationEngine.TickEvent\" data-throw-if-not-resolved=\"false\"></xref> are notified, and any packets\nwhose <xref href=\"Engine.Packets.Packet.ArrivalTick\" data-throw-if-not-resolved=\"false\"></xref> has been reached are dequeued and\ndispatched to their <xref href=\"Engine.Packets.Packet.NextHop\" data-throw-if-not-resolved=\"false\"></xref> device.\n</p>\n<p>\nRouting strategy and network-formation strategy are fully replaceable at\nruntime via <xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Engine.Core.SimulationEngine.NetworkBuilder\" data-throw-if-not-resolved=\"false\"></xref>.\nThe read-only topology view is exposed through <xref href=\"Engine.Core.SimulationEngine.Topology\" data-throw-if-not-resolved=\"false\"></xref>.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.TickedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.TickedEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core.TickedEventArgs",
+      "Summary": "<p sourcefile=\"api/Engine.Core.TickedEventArgs.yml\" sourcestartlinenumber=\"1\">Event args for <xref href=\"Engine.Core.SimulationEngine.Ticked\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Core.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Core.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Core",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Devices.Device.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Devices.Device.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Devices.Device",
+      "Summary": "<p sourcefile=\"api/Engine.Devices.Device.yml\" sourcestartlinenumber=\"1\">Abstract base class for all devices in the simulation network.\nA device has a unique identity and a position in 2D space.\nWhen it receives a packet it either forwards it (if it is not the\nintended recipient) or accepts and processes it.</p>\n<p>\nForwarding is delegated to <xref href=\"Engine.Core.SimulationEngine.RoutePacket(Engine.Packets.Packet%2cEngine.Devices.Device)\" data-throw-if-not-resolved=\"false\"></xref> so that\nthe active <xref href=\"Engine.Routers.IPacketRouter\" data-throw-if-not-resolved=\"false\"></xref> is always consulted.\nDevices never reference a concrete router directly.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Devices.EmitterDevice.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Devices.EmitterDevice.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Devices.EmitterDevice",
+      "Summary": "<p sourcefile=\"api/Engine.Devices.EmitterDevice.yml\" sourcestartlinenumber=\"1\">A device that receives command packets from the hub and applies a boolean\nstate to itself (e.g. turning an actuator on or off).</p>\n<p>\nWhen <xref href=\"Engine.Devices.EmitterDevice.ControlFrequencyTicks\" data-throw-if-not-resolved=\"false\"></xref> is greater than zero the hub\nautomatically sends a <xref href=\"Engine.Packets.ControlPacket\" data-throw-if-not-resolved=\"false\"></xref> to this device every\n<xref href=\"Engine.Devices.EmitterDevice.ControlFrequencyTicks\" data-throw-if-not-resolved=\"false\"></xref> ticks, toggling its state from on to\noff and back. Set <xref href=\"Engine.Devices.EmitterDevice.ControlFrequencyTicks\" data-throw-if-not-resolved=\"false\"></xref> to <code>0</code> to\ndisable automatic control signals.\n</p>\n<p>\n<b>Flooding note</b>: with <xref href=\"Engine.Routers.FloodingPacketRouter\" data-throw-if-not-resolved=\"false\"></xref> a\nunicast <xref href=\"Engine.Packets.ControlPacket\" data-throw-if-not-resolved=\"false\"></xref> is re-broadcast at every intermediate hop,\ncreating an exponential number of clones (approximately neighbours^TTL in the\nworst case). The TTL is therefore capped at <xref href=\"Engine.Devices.EmitterDevice.CONTROL_PACKET_TTL\" data-throw-if-not-resolved=\"false\"></xref>\nrather than the default packet TTL. When a unicast router is active this has\nno extra cost because the packet follows a single path.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Devices.GeneratorDevice.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Devices.GeneratorDevice.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Devices.GeneratorDevice",
+      "Summary": "<p sourcefile=\"api/Engine.Devices.GeneratorDevice.yml\" sourcestartlinenumber=\"1\">A device that periodically generates sensor-like data packets and routes\nthem toward the hub.</p>\n<p>\nRouting is delegated to <xref href=\"Engine.Core.SimulationEngine.RoutePacket(Engine.Packets.Packet%2cEngine.Devices.Device)\" data-throw-if-not-resolved=\"false\"></xref> so the\nactive <xref href=\"Engine.Routers.IPacketRouter\" data-throw-if-not-resolved=\"false\"></xref> strategy is always used.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Devices.HubDevice.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Devices.HubDevice.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Devices.HubDevice",
+      "Summary": "<p sourcefile=\"api/Engine.Devices.HubDevice.yml\" sourcestartlinenumber=\"1\">Represents the central hub (gateway) device of the simulation network.\nThe hub is the designated destination for packets generated by\n<xref href=\"Engine.Devices.GeneratorDevice\" data-throw-if-not-resolved=\"false\"></xref> instances and the root of the network topology.\nIt is registered as the singleton hub inside <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref>\nwhen added to the simulation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Devices.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Devices.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Devices",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.ConfirmationPacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.ConfirmationPacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.ConfirmationPacket",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.ConfirmationPacket.yml\" sourcestartlinenumber=\"1\">A special packet that is automatically generated and sent back to the\noriginal sender when a packet with <xref href=\"Engine.Packets.Packet.NeedConfirmation\" data-throw-if-not-resolved=\"false\"></xref>\nset to <code>true</code> is successfully delivered.\nThe payload contains the <xref href=\"System.Guid\" data-throw-if-not-resolved=\"false\"></xref> bytes of the confirmed packet,\nallowing the sender to correlate the acknowledgement with the original\ntransmission.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.ControlPacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.ControlPacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.ControlPacket",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.ControlPacket.yml\" sourcestartlinenumber=\"1\">A command packet sent from the <xref href=\"Engine.Devices.HubDevice\" data-throw-if-not-resolved=\"false\"></xref> to a specific\n<xref href=\"Engine.Devices.EmitterDevice\" data-throw-if-not-resolved=\"false\"></xref> to set its on/off state.</p>\n<p>\nThe hub generates <xref href=\"Engine.Packets.ControlPacket\" data-throw-if-not-resolved=\"false\"></xref> instances automatically at\nthe interval configured on each <xref href=\"Engine.Devices.EmitterDevice\" data-throw-if-not-resolved=\"false\"></xref> via\n<xref href=\"Engine.Devices.EmitterDevice.ControlFrequencyTicks\" data-throw-if-not-resolved=\"false\"></xref>.\nWhen an <xref href=\"Engine.Devices.EmitterDevice\" data-throw-if-not-resolved=\"false\"></xref> receives this packet it toggles its\n<xref href=\"Engine.Devices.EmitterDevice.State\" data-throw-if-not-resolved=\"false\"></xref> to <xref href=\"Engine.Packets.ControlPacket.Command\" data-throw-if-not-resolved=\"false\"></xref>.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.Packet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.Packet.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.Packet",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.Packet.yml\" sourcestartlinenumber=\"1\">Represents a unit of data travelling through the simulation network.\nA packet knows its originator (<xref href=\"Engine.Packets.Packet.From\" data-throw-if-not-resolved=\"false\"></xref>), its intended\ndestination (<xref href=\"Engine.Packets.Packet.To\" data-throw-if-not-resolved=\"false\"></xref>), and the <xref href=\"Engine.Packets.Packet.NextHop\" data-throw-if-not-resolved=\"false\"></xref> device it\nwill be delivered to on the next simulation tick.\nTravel time is expressed in engine ticks via <xref href=\"Engine.Packets.Packet.TicksToTravel\" data-throw-if-not-resolved=\"false\"></xref>,\nand each hop decrements the <xref href=\"Engine.Packets.Packet.TTL\" data-throw-if-not-resolved=\"false\"></xref> counter  -  a packet that\nreaches zero TTL is silently dropped.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.PacketData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.PacketData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.PacketData",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.PacketData.yml\" sourcestartlinenumber=\"1\">Carries the application-level payload of a <xref href=\"Engine.Packets.Packet\" data-throw-if-not-resolved=\"false\"></xref>.\nThe <xref href=\"Engine.Packets.PacketData.Data\" data-throw-if-not-resolved=\"false\"></xref> property is intentionally untyped so that any\nvalue (sensor readings, command flags, raw bytes, etc.) can be transported\nwithout the engine imposing a schema.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.FloodingPacketRouter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.FloodingPacketRouter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.FloodingPacketRouter",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.FloodingPacketRouter.yml\" sourcestartlinenumber=\"1\">Implements a flooding broadcast routing strategy.</p>\n<p>\nWhen asked to route a packet the router queries the supplied\n<xref href=\"Engine.Routers.INetworkTopology\" data-throw-if-not-resolved=\"false\"></xref> for all devices <em>visible</em> to the\nsender and enqueues a cloned copy addressed to each of them.\nFlooding uses <em>visibility</em>  -  not established connections  -  because\nit is inherently a broadcast mechanism that needs no prior topology\nknowledge.\n</p>\n<p>\nThis class is no longer a singleton. The active router instance is stored\non <xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> and is injected into every routing\ncall automatically by <xref href=\"Engine.Devices.Device.Recieve(Engine.Packets.Packet)\" data-throw-if-not-resolved=\"false\"></xref>.\nTo change the routing strategy at runtime replace\n<xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> with a different\n<xref href=\"Engine.Routers.IPacketRouter\" data-throw-if-not-resolved=\"false\"></xref> implementation.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.FullMeshNetworkBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.FullMeshNetworkBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.FullMeshNetworkBuilder",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.FullMeshNetworkBuilder.yml\" sourcestartlinenumber=\"1\">A network-formation strategy that connects every pair of mutually visible\ndevices, producing a full-visibility mesh.</p>\n<p>\nThis mirrors the original implicit behaviour of the engine where visibility\nand connectivity were equivalent: if two devices can see each other they\nare considered connected.\n</p>\n<p>\nNote: as the number of devices grows, the number of edges grows as O(n?).\nFor large networks consider a limited-degree or spanning-tree builder instead.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.IMutableNetworkTopology.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.IMutableNetworkTopology.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.IMutableNetworkTopology",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.IMutableNetworkTopology.yml\" sourcestartlinenumber=\"1\">Extends <xref href=\"Engine.Routers.INetworkTopology\" data-throw-if-not-resolved=\"false\"></xref> with mutation methods so that an\n<xref href=\"Engine.Routers.INetworkBuilder\" data-throw-if-not-resolved=\"false\"></xref> can update the connection graph without\nexposing mutation to routers or other consumers.</p>\n<p>\nOnly <xref href=\"Engine.Routers.INetworkBuilder\" data-throw-if-not-resolved=\"false\"></xref> implementations and\n<xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> should hold a reference to\n<xref href=\"Engine.Routers.IMutableNetworkTopology\" data-throw-if-not-resolved=\"false\"></xref>. All other code (routers, statistics,\nUI) works through the read-only <xref href=\"Engine.Routers.INetworkTopology\" data-throw-if-not-resolved=\"false\"></xref> projection.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.INetworkBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.INetworkBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.INetworkBuilder",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.INetworkBuilder.yml\" sourcestartlinenumber=\"1\">Defines the contract for a network-formation (mesh-building) strategy.</p>\n<p>\nA network builder is responsible for deciding which devices establish\nexplicit connections with each other, forming the logical mesh topology.\nIt operates on top of raw visibility data and produces an\n<xref href=\"Engine.Routers.INetworkTopology\" data-throw-if-not-resolved=\"false\"></xref> that the active <xref href=\"Engine.Routers.IPacketRouter\" data-throw-if-not-resolved=\"false\"></xref>\nthen uses for forwarding decisions.\n</p>\n<p>\nExamples of algorithms that implement this interface:\n<ul><li>Full-mesh  -  every visible pair is connected (current implicit behaviour).</li><li>Limited-degree mesh  -  each device connects to at most <code>K</code> neighbours.</li><li>Minimum spanning tree  -  minimises total edge weight.</li><li>Cluster-head / LEACH-style hierarchy.</li></ul>\n\n<p>\nLike <xref href=\"Engine.Routers.IPacketRouter\" data-throw-if-not-resolved=\"false\"></xref>, the active builder is stored on\n<xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> and can be swapped at runtime from the\nUI to compare how different formation strategies affect routing statistics.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.INetworkTopology.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.INetworkTopology.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.INetworkTopology",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.INetworkTopology.yml\" sourcestartlinenumber=\"1\">Represents the logical topology of the network at a given point in time.</p>\n<p>\nThe topology separates two concepts that are intentionally kept distinct:\n<ul><li><span class=\"term\">Visibility</span>\n      Whether two devices are within radio range of each other.\n      Used for broadcast/discovery and as a precondition for establishing a\n      connection. Determined purely by Euclidean distance and\n      <xref href=\"Engine.Core.SimulationEngine.VisibilityDistance\" data-throw-if-not-resolved=\"false\"></xref>.\n    </li><li><span class=\"term\">Connection</span>\n      An explicit, mutually agreed logical link between two devices.\n      A connection can only exist between mutually visible devices, but not\n      every visible device is necessarily connected (subject to per-device\n      connection limits, protocol decisions, etc.).\n      Unicast routing and network-topology algorithms operate on connections,\n      not on raw visibility.\n    </li></ul>\n\n<p>\nImplementations are owned and updated by the active\n<xref href=\"Engine.Routers.INetworkBuilder\" data-throw-if-not-resolved=\"false\"></xref> and are passed to <xref href=\"Engine.Routers.IPacketRouter\" data-throw-if-not-resolved=\"false\"></xref>\non every routing call so that routers never need to touch\n<xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> directly.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.IPacketRouter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.IPacketRouter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.IPacketRouter",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.IPacketRouter.yml\" sourcestartlinenumber=\"1\">Defines the contract for a packet routing strategy.</p>\n<p>\nA router receives a packet from a forwarding device and is responsible for\ndeciding which device(s) the packet should be sent to next.\nImplementations may use different strategies: flooding broadcast,\nshortest-path unicast, gradient routing, etc.\n</p>\n<p>\nThe active router is set on <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> and is\nconsulted by every device whenever it needs to forward a packet.\nSwapping the router at runtime (e.g. from UI) immediately changes routing\nbehaviour for all subsequent packets, which enables side-by-side protocol\ncomparison on the same network.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.NetworkTopology.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.NetworkTopology.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.NetworkTopology",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.NetworkTopology.yml\" sourcestartlinenumber=\"1\">Default in-memory implementation of <xref href=\"Engine.Routers.IMutableNetworkTopology\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n<p>\nVisibility is computed on-the-fly from device positions and\n<xref href=\"Engine.Core.SimulationEngine.VisibilityDistance\" data-throw-if-not-resolved=\"false\"></xref>; it is never cached\nso it always reflects the current layout.\n</p>\n<p>\nConnections are stored as an adjacency set (both directions) and are\nmanaged exclusively by the active <xref href=\"Engine.Routers.INetworkBuilder\" data-throw-if-not-resolved=\"false\"></xref>.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.SmartFloodingPacketRouter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.SmartFloodingPacketRouter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.SmartFloodingPacketRouter",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.SmartFloodingPacketRouter.yml\" sourcestartlinenumber=\"1\">An improved flooding router that reduces redundant packet copies by applying\nthree optimisations over the naive <xref href=\"Engine.Routers.FloodingPacketRouter\" data-throw-if-not-resolved=\"false\"></xref>:</p>\n<ol><li><span class=\"term\">Direct delivery</span>\n      If the intended destination (<xref href=\"Engine.Packets.Packet.To\" data-throw-if-not-resolved=\"false\"></xref>) is directly\n      visible from <code class=\"paramref\">sender</code>, the packet is sent\n      <em>only</em> to that device  -  no unnecessary flood copies are made.\n    </li><li><span class=\"term\">No reverse path</span>\n      The packet is never forwarded back to <xref href=\"Engine.Packets.Packet.PreviousHop\" data-throw-if-not-resolved=\"false\"></xref>\n      (the device that just sent it here). This eliminates the most common\n      source of duplicate copies in bidirectional flooding.\n    </li><li><span class=\"term\">No source echo</span>\n      The packet is never forwarded back to <xref href=\"Engine.Packets.Packet.From\" data-throw-if-not-resolved=\"false\"></xref>\n      (the original source device), preventing useless round-trips.\n    </li></ol>\n<p>\nTogether these rules drastically shrink the clone fan-out compared to the\nnaive flood, especially for unicast packets such as\n<xref href=\"Engine.Packets.ControlPacket\" data-throw-if-not-resolved=\"false\"></xref>, while still guaranteeing delivery\nin any connected topology with sufficient TTL.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Statistics.SimulationStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Statistics.SimulationStatistics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Statistics.SimulationStatistics",
+      "Summary": "<p sourcefile=\"api/Engine.Statistics.SimulationStatistics.yml\" sourcestartlinenumber=\"1\">A singleton that listens to <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> events and\naccumulates simulation metrics.</p>\n<p>\nExtensibility: add a new <xref href=\"Engine.Statistics.StatMetric\" data-throw-if-not-resolved=\"false\"></xref> to <xref href=\"Engine.Statistics.SimulationStatistics.Metrics\" data-throw-if-not-resolved=\"false\"></xref>\nand subscribe to any <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> event to populate it.\nThe <xref href=\"Engine.Statistics.SimulationStatistics.Updated\" data-throw-if-not-resolved=\"false\"></xref> event is raised after every change so UI layers\ncan re-render reactively without polling.\n</p>\n<p>\nEvery tick a <xref href=\"Engine.Statistics.TickSnapshot\" data-throw-if-not-resolved=\"false\"></xref> is appended to <xref href=\"Engine.Statistics.SimulationStatistics.History\" data-throw-if-not-resolved=\"false\"></xref>\n(capped at <xref href=\"Engine.Statistics.SimulationStatistics.MaxHistoryLength\" data-throw-if-not-resolved=\"false\"></xref> entries) for time-series charts.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Statistics.StatMetric.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Statistics.StatMetric.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Statistics.StatMetric",
+      "Summary": "<p sourcefile=\"api/Engine.Statistics.StatMetric.yml\" sourcestartlinenumber=\"1\">A single observable metric tracked by <xref href=\"Engine.Statistics.SimulationStatistics\" data-throw-if-not-resolved=\"false\"></xref>.\nUI layers bind to <xref href=\"Engine.Statistics.StatMetric.DisplayValue\" data-throw-if-not-resolved=\"false\"></xref> and listen to\n<xref href=\"Engine.Statistics.SimulationStatistics.Updated\" data-throw-if-not-resolved=\"false\"></xref> for re-renders.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Statistics.TickSnapshot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Statistics.TickSnapshot.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Statistics.TickSnapshot",
+      "Summary": "<p sourcefile=\"api/Engine.Statistics.TickSnapshot.yml\" sourcestartlinenumber=\"1\">An immutable snapshot of all plottable metric values captured at the end\nof a single engine tick. Stored in the <xref href=\"Engine.Statistics.SimulationStatistics\" data-throw-if-not-resolved=\"false\"></xref>\nhistory ring-buffer and consumed by the chart UI.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Statistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Statistics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Statistics",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

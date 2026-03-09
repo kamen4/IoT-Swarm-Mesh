@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Engine/Devices | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Engine/Devices | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Documentation.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="enginedevices">Engine/Devices</h1>
+
+<p>The <code>Devices</code> folder contains the abstract base class and all concrete device types that participate in the simulation.</p>
+<hr>
+<h2 id="files">Files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Device.cs</code></td>
+<td>Abstract base for all devices. Holds a unique <code>Id</code> (GUID), a mutable <code>Name</code>, and a 2D <code>Position</code> (<code>Vector2</code>). Defines <code>Recieve(Packet)</code> which stamps <code>PreviousHop</code>, sends a <code>ConfirmationPacket</code> if requested, and delegates re-routing to <code>SimulationEngine.RoutePacket</code>.</td>
+</tr>
+<tr>
+<td><code>HubDevice.cs</code></td>
+<td>Central gateway device; the intended destination for all packets from <code>GeneratorDevice</code>. Overrides <code>Recieve</code> to also send queued <code>ControlPacket</code> commands to <code>EmitterDevice</code> instances on each tick at <code>ControlFrequencyTicks</code> (delegated via <code>SimulationEngine.TickEvent</code>).</td>
+</tr>
+<tr>
+<td><code>GeneratorDevice.cs</code></td>
+<td>Sensor-like device that self-emits one data packet toward the <code>Hub</code> every <code>GenFrequencyTicks</code> ticks. Subscribes to <code>SimulationEngine.TickEvent</code> on construction.</td>
+</tr>
+<tr>
+<td><code>EmitterDevice.cs</code></td>
+<td>Actuator-like device that accepts <code>ControlPacket</code> commands from the <code>Hub</code>. Maintains a boolean <code>State</code> (on/off). The Hub drives it by sending <code>ControlPacket</code> at <code>ControlFrequencyTicks</code> intervals.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="inheritance">Inheritance</h2>
+<pre><code>Device (abstract)
++-- HubDevice
++-- GeneratorDevice
++-- EmitterDevice
+</code></pre>
+<hr>
+<h2 id="extension-points">Extension points</h2>
+<p>Add new device types by subclassing <code>Device</code> and optionally subscribing to <code>SimulationEngine.TickEvent</code> for periodic behavior.</p>
+<hr>
+<h2 id="parent">Parent</h2>
+<p>See <code>Engine/Documentation.md</code> for full engine architecture.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Documentation.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

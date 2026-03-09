@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Engine/Packets | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Engine/Packets | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Documentation.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="enginepackets">Engine/Packets</h1>
+
+<p>The <code>Packets</code> folder contains all packet types that travel through the simulation network, along with the untyped payload wrapper.</p>
+<hr>
+<h2 id="files">Files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Packet.cs</code></td>
+<td>Core transmission unit. Carries <code>From</code>, <code>To</code>, <code>NextHop</code>, <code>ArrivalTick</code>, <code>TTL</code>, <code>OriginId</code>, <code>InitialTtl</code>, and a <code>PacketData</code> payload. <code>Clone()</code> creates a shallow copy preserving <code>OriginId</code> for flood-clone tracking by <code>SimulationStatistics</code>.</td>
+</tr>
+<tr>
+<td><code>PacketData.cs</code></td>
+<td>Untyped payload wrapper. The <code>Data</code> property holds any application-level value (sensor reading, command flag, raw bytes). The receiving device is responsible for casting to the expected type.</td>
+</tr>
+<tr>
+<td><code>ConfirmationPacket.cs</code></td>
+<td>Acknowledgement packet routed back to the original sender when <code>Packet.NeedConfirmation</code> is true. Swaps <code>From</code> and <code>To</code> of the original packet and carries the original <code>Id</code> encoded as bytes.</td>
+</tr>
+<tr>
+<td><code>ControlPacket.cs</code></td>
+<td>Command packet sent by <code>HubDevice</code> to a specific <code>EmitterDevice</code>. Carries a <code>bool Command</code> (true = on, false = off) that the emitter applies to its <code>State</code> on receipt.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="key-concepts">Key concepts</h2>
+<ul>
+<li><strong>TTL</strong>  -  decremented on every hop; packet is dropped and <code>PacketExpired</code> is raised when TTL reaches zero.</li>
+<li><strong>OriginId</strong>  -  equals <code>Id</code> on the original; preserved through <code>Clone()</code> so statistics can detect duplicate flood-clone deliveries.</li>
+<li><strong>InitialTtl</strong>  -  stamped once by <code>SimulationEngine.RegisterPacket</code> on first enqueue; enables hop-count calculation as <code>InitialTtl - TTL</code> at delivery.</li>
+</ul>
+<hr>
+<h2 id="parent">Parent</h2>
+<p>See <code>Engine/Documentation.md</code> for the full engine architecture.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Documentation.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

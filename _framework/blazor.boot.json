@@ -1,9 +1,9 @@
 {
   "mainAssemblyName": "WebApp.Client",
   "resources": {
-    "hash": "sha256-rVpDUSQSqJMiAOgoOAQIloi6LuE0T14rycjpSpxLZQc=",
+    "hash": "sha256-rc+rf24zLpMllnSkrIkHW062ucFyofu0P81j/j0u3J0=",
     "fingerprinting": {
-      "Engine.v2o5g4su6y.wasm": "Engine.wasm",
+      "Engine.mgephos68f.wasm": "Engine.wasm",
       "Microsoft.AspNetCore.Components.iqs9jl5cm7.wasm": "Microsoft.AspNetCore.Components.wasm",
       "Microsoft.AspNetCore.Components.Web.2c9mnk4ksv.wasm": "Microsoft.AspNetCore.Components.Web.wasm",
       "Microsoft.AspNetCore.Components.WebAssembly.pqsjzn6i0a.wasm": "Microsoft.AspNetCore.Components.WebAssembly.wasm",
@@ -42,7 +42,7 @@
       "System.Text.Json.kdhegkptaj.wasm": "System.Text.Json.wasm",
       "System.Text.RegularExpressions.vbr1gezq3a.wasm": "System.Text.RegularExpressions.wasm",
       "System.Threading.n5ppejuuhz.wasm": "System.Threading.wasm",
-      "WebApp.Client.bchjca9i2r.wasm": "WebApp.Client.wasm",
+      "WebApp.Client.52nvre9z3z.wasm": "WebApp.Client.wasm",
       "dotnet.js": "dotnet.js",
       "dotnet.native.xidrk0eo52.js": "dotnet.native.js",
       "dotnet.native.y68cfu4kuf.wasm": "dotnet.native.wasm",
@@ -70,7 +70,7 @@
       "System.Runtime.InteropServices.JavaScript.h48ngg49jo.wasm": "sha256-4ViELjYjmHFXeufjSKi9w6LE2MIOfmii3tm+YdyLbvc="
     },
     "assembly": {
-      "Engine.v2o5g4su6y.wasm": "sha256-J+mnTkYFFAI7apRrrKZquFBL9eOIDfqMm91f4NwiiWU=",
+      "Engine.mgephos68f.wasm": "sha256-ipmLiJS+2WLvuEbTlaHW5jLrzqZGdeoiUxYZLeB9n8A=",
       "Microsoft.AspNetCore.Components.iqs9jl5cm7.wasm": "sha256-urClioMETSUNckTCAVJVfKX+lY68ko72mXuB0r2sykg=",
       "Microsoft.AspNetCore.Components.Web.2c9mnk4ksv.wasm": "sha256-PqC8F+ZiwmL1I//NmvzuE7MoWEpD/YHn71hUz1s2PtE=",
       "Microsoft.AspNetCore.Components.WebAssembly.pqsjzn6i0a.wasm": "sha256-v0jJutN8FSy9Ri54qiLqaEYviuwh33P71basXMNhNCE=",
@@ -107,7 +107,7 @@
       "System.Text.Json.kdhegkptaj.wasm": "sha256-iAB75Myc/fHI9SxTFVSl1bNZZIGpXEhhDXRLC470we4=",
       "System.Text.RegularExpressions.vbr1gezq3a.wasm": "sha256-ZQejR0x7+S2JJA2Z1IkLWqWXukLRjL/c/zguib2fpHo=",
       "System.Threading.n5ppejuuhz.wasm": "sha256-ZVqAdmVQkqedPOVid8yORJq6/P4I+NlvR19QR4PIQfY=",
-      "WebApp.Client.bchjca9i2r.wasm": "sha256-i+JBgk4fyIceF1xGP/oqfyr9cD5+icQHkuoT+jjr5Bc="
+      "WebApp.Client.52nvre9z3z.wasm": "sha256-gzYXLL/aFz7nxMl+mvuXvDGS5HlUWRRa+XV9dYI+w7s="
     }
   },
   "cacheBootResources": true,

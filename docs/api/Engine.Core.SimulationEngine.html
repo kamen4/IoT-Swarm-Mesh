@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class SimulationEngine | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class SimulationEngine | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      <meta name="description" content="The central singleton that drives the entire simulation. It maintains the device registry, owns the tick-based time model, and manages the priority queue of in-flight packets.  Every call to  advances the simulation by one step: the tick counter is incremented, wall-clock delta time is measured, all subscribers to  are notified, and any packets whose  has been reached are dequeued and dispatched to their  device.   Routing strategy and network-formation strategy are fully replaceable at runtime via  and . The read-only topology view is exposed through .">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/new/master/apiSpec/new?filename=Engine_Core_SimulationEngine.md&amp;value=---%0Auid%3A%20Engine.Core.SimulationEngine%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Engine.Core.SimulationEngine">
+
+
+
+  <h1 id="Engine_Core_SimulationEngine" data-uid="Engine.Core.SimulationEngine" class="text-break">
+Class SimulationEngine  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Engine.html">Engine</a>.<a class="xref" href="Engine.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Engine.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>The central singleton that drives the entire simulation.
+It maintains the device registry, owns the tick-based time model, and
+manages the priority queue of in-flight packets.</p>
+<p>
+Every call to <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Tick">Tick()</a> advances the simulation by one step:
+the tick counter is incremented, wall-clock delta time is measured,
+all subscribers to <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_TickEvent">TickEvent</a> are notified, and any packets
+whose <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_ArrivalTick">ArrivalTick</a> has been reached are dequeued and
+dispatched to their <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_NextHop">NextHop</a> device.
+</p>
+<p>
+Routing strategy and network-formation strategy are fully replaceable at
+runtime via <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Router">Router</a> and <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_NetworkBuilder">NetworkBuilder</a>.
+The read-only topology view is exposed through <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Topology">Topology</a>.
+</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SimulationEngine</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">SimulationEngine</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_AUTO_PACKET_LIMIT_PER_DEVICE" data-uid="Engine.Core.SimulationEngine.AUTO_PACKET_LIMIT_PER_DEVICE">
+  AUTO_PACKET_LIMIT_PER_DEVICE
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The multiplier used to compute the automatic packet limit when
+<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_MaxActivePackets">MaxActivePackets</a> is set to <code>0</code>.
+Default: <code>2000</code> packets per registered device.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int AUTO_PACKET_LIMIT_PER_DEVICE = 2000</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_VISIBILITY_DISTANCE" data-uid="Engine.Core.SimulationEngine.VISIBILITY_DISTANCE">
+  VISIBILITY_DISTANCE
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The default visibility distance used when none is configured explicitly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int VISIBILITY_DISTANCE = 200</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Engine_Core_SimulationEngine_ActivePackets_" data-uid="Engine.Core.SimulationEngine.ActivePackets*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_ActivePackets" data-uid="Engine.Core.SimulationEngine.ActivePackets">
+  ActivePackets
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a read-only snapshot of all packets currently in-flight.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Packet&gt; ActivePackets { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Engine.Packets.Packet.html">Packet</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Engine_Core_SimulationEngine_ActivePackets_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This allocates a new <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> on every call.
+Use <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_ActivePacketsCount">ActivePacketsCount</a> when only the count is needed.</p>
+</div>
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_ActivePacketsCount_" data-uid="Engine.Core.SimulationEngine.ActivePacketsCount*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_ActivePacketsCount" data-uid="Engine.Core.SimulationEngine.ActivePacketsCount">
+  ActivePacketsCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of packets currently in-flight without allocating a list.
+Prefer this over <code>ActivePackets.Count</code> in hot paths such as
+statistics collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ActivePacketsCount { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_Devices_" data-uid="Engine.Core.SimulationEngine.Devices*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_Devices" data-uid="Engine.Core.SimulationEngine.Devices">
+  Devices
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a read-only snapshot of all devices registered in the simulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Device&gt; Devices { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Engine.Devices.Device.html">Device</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_EffectivePacketLimit_" data-uid="Engine.Core.SimulationEngine.EffectivePacketLimit*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_EffectivePacketLimit" data-uid="Engine.Core.SimulationEngine.EffectivePacketLimit">
+  EffectivePacketLimit
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L237"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the effective packet limit that will be enforced on the next
+<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RegisterPacket_Engine_Packets_Packet_">RegisterPacket(Packet)</a> call.</p>
+<ul><li>If <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_MaxActivePackets">MaxActivePackets</a> &gt; 0  -  returns that value.</li><li>Otherwise  -  returns <code>Devices.Count x <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_AUTO_PACKET_LIMIT_PER_DEVICE">AUTO_PACKET_LIMIT_PER_DEVICE</a></code>.</li></ul>
+Returns <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32.maxvalue">MaxValue</a> when there are no devices yet so that
+early registration during setup never triggers the guard.
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int EffectivePacketLimit { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_Hub_" data-uid="Engine.Core.SimulationEngine.Hub*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_Hub" data-uid="Engine.Core.SimulationEngine.Hub">
+  Hub
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the hub device registered in this simulation, or <code>null</code> if no
+<a class="xref" href="Engine.Devices.HubDevice.html">HubDevice</a> has been added yet.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Device? Hub { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_Instance_" data-uid="Engine.Core.SimulationEngine.Instance*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_Instance" data-uid="Engine.Core.SimulationEngine.Instance">
+  Instance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the singleton instance of <a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SimulationEngine Instance { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_MaxActivePackets_" data-uid="Engine.Core.SimulationEngine.MaxActivePackets*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_MaxActivePackets" data-uid="Engine.Core.SimulationEngine.MaxActivePackets">
+  MaxActivePackets
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L225"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum number of packets that may be simultaneously
+in-flight in the simulation.</p>
+<p>
+When set to <code>0</code> (the default) the limit is computed automatically
+as <code>Devices.Count x <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_AUTO_PACKET_LIMIT_PER_DEVICE">AUTO_PACKET_LIMIT_PER_DEVICE</a></code>
+each time a packet is enqueued, so it scales with the network size.
+</p>
+<p>
+When the in-flight count reaches or exceeds the effective limit,
+<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RegisterPacket_Engine_Packets_Packet_">RegisterPacket(Packet)</a> throws
+<a class="xref" href="Engine.Core.PacketLimitExceededException.html">PacketLimitExceededException</a> and the tick loop must be
+stopped by the caller.
+Set to a positive value to override the automatic limit.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MaxActivePackets { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_NetworkBuilder_" data-uid="Engine.Core.SimulationEngine.NetworkBuilder*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_NetworkBuilder" data-uid="Engine.Core.SimulationEngine.NetworkBuilder">
+  NetworkBuilder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the active network-formation strategy.
+Defaults to <a class="xref" href="Engine.Routers.FullMeshNetworkBuilder.html">FullMeshNetworkBuilder</a>.
+Changing this property does <em>not</em> automatically rebuild the
+topology; call <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RebuildTopology">RebuildTopology()</a> to apply the new builder
+to the current device set.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INetworkBuilder NetworkBuilder { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_Router_" data-uid="Engine.Core.SimulationEngine.Router*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_Router" data-uid="Engine.Core.SimulationEngine.Router">
+  Router
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the active packet-routing strategy.
+Defaults to <a class="xref" href="Engine.Routers.FloodingPacketRouter.html">FloodingPacketRouter</a>.
+Can be swapped at runtime (e.g. from the UI) to compare different
+routing protocols on the same network without restarting the simulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPacketRouter Router { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_TickCount_" data-uid="Engine.Core.SimulationEngine.TickCount*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_TickCount" data-uid="Engine.Core.SimulationEngine.TickCount">
+  TickCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the total number of ticks that have elapsed since the simulation started.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long TickCount { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_Topology_" data-uid="Engine.Core.SimulationEngine.Topology*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_Topology" data-uid="Engine.Core.SimulationEngine.Topology">
+  Topology
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the read-only view of the current network topology (visibility and
+established connections).
+Always up-to-date: visibility is computed on-the-fly, connections are
+rebuilt by <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_NetworkBuilder">NetworkBuilder</a> on every device-registry change.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INetworkTopology Topology { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Routers.INetworkTopology.html">INetworkTopology</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_VisibilityDistance_" data-uid="Engine.Core.SimulationEngine.VisibilityDistance*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_VisibilityDistance" data-uid="Engine.Core.SimulationEngine.VisibilityDistance">
+  VisibilityDistance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The effective visibility distance for this simulation instance.
+Defaults to <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_VISIBILITY_DISTANCE">VISIBILITY_DISTANCE</a>; can be changed at runtime.
+Changing this value does <em>not</em> automatically rebuild the topology  -
+call <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RebuildTopology">RebuildTopology()</a> explicitly if needed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int VisibilityDistance { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Engine_Core_SimulationEngine_RebuildTopology_" data-uid="Engine.Core.SimulationEngine.RebuildTopology*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_RebuildTopology" data-uid="Engine.Core.SimulationEngine.RebuildTopology">
+  RebuildTopology()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L344"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Triggers the active <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_NetworkBuilder">NetworkBuilder</a> to recompute the logical
+connection graph for the current device set.</p>
+<p>
+Called automatically on every device-registry change
+(<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RegisterDevice_Engine_Devices_Device_">RegisterDevice(Device)</a>, <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RemoveDevice_System_Guid_">RemoveDevice(Guid)</a>).
+Can also be called manually  -  for example after moving a device or after
+replacing <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_NetworkBuilder">NetworkBuilder</a>  -  to immediately reflect the new
+topology without waiting for the next device change.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RebuildTopology()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_RegisterDevice_" data-uid="Engine.Core.SimulationEngine.RegisterDevice*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_RegisterDevice_Engine_Devices_Device_" data-uid="Engine.Core.SimulationEngine.RegisterDevice(Engine.Devices.Device)">
+  RegisterDevice(Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L289"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds a device to the simulation. If the device is a <a class="xref" href="Engine.Devices.HubDevice.html">HubDevice</a>
+it is also stored in <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Hub">Hub</a>.
+The topology is rebuilt via <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RebuildTopology">RebuildTopology()</a> after the device
+is added.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RegisterDevice(Device device)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_RegisterPacket_" data-uid="Engine.Core.SimulationEngine.RegisterPacket*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_RegisterPacket_Engine_Packets_Packet_" data-uid="Engine.Core.SimulationEngine.RegisterPacket(Engine.Packets.Packet)">
+  RegisterPacket(Packet)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Enqueues a packet into the in-flight priority queue.
+The absolute arrival tick is computed as
+<code>TickCount + packet.TicksToTravel</code> and stored on the packet.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RegisterPacket(Packet packet)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>packet</code> <a class="xref" href="Engine.Packets.Packet.html">Packet</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Core.PacketLimitExceededException.html">PacketLimitExceededException</a></dt>
+    <dd><p>Thrown when the number of in-flight packets is already at or above
+<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_EffectivePacketLimit">EffectivePacketLimit</a> before the new packet is added.
+The caller (typically the simulation tick loop) must stop the simulation
+and surface this error to the user.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Engine_Core_SimulationEngine_RemoveDevice_" data-uid="Engine.Core.SimulationEngine.RemoveDevice*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_RemoveDevice_System_Guid_" data-uid="Engine.Core.SimulationEngine.RemoveDevice(System.Guid)">
+  RemoveDevice(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L303"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes a previously registered device by its <a class="xref" href="Engine.Devices.Device.html#Engine_Devices_Device_Id">Id</a>.
+The topology is updated (device connections removed) and then rebuilt.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveDevice(Guid id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_Reset_" data-uid="Engine.Core.SimulationEngine.Reset*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_Reset" data-uid="Engine.Core.SimulationEngine.Reset">
+  Reset()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L318"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes all registered devices and discards all in-flight packets,
+resetting the engine to its initial empty state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Core_SimulationEngine_Tick_" data-uid="Engine.Core.SimulationEngine.Tick*"></a>
+
+  <h3 id="Engine_Core_SimulationEngine_Tick" data-uid="Engine.Core.SimulationEngine.Tick">
+  Tick()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Advances the simulation by one tick.</p>
+<ol><li>Increments <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_TickCount">TickCount</a>.</li><li>Measures wall-clock delta time since the last tick.</li><li>Fires <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_TickEvent">TickEvent</a> so that subscribed devices can act.</li><li>Dispatches all packets that are due to arrive this tick.</li><li>Raises <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Ticked">Ticked</a>.</li></ol>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public (long tick, double dt) Tick()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int64,system.double-.tick">tick</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int64,system.double-.dt">dt</a>)</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_DeviceRegistered" data-uid="Engine.Core.SimulationEngine.DeviceRegistered">
+  DeviceRegistered
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised after a new device is added to the simulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DeviceRegisteredEventArgs&gt;? DeviceRegistered</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Engine.Core.DeviceRegisteredEventArgs.html">DeviceRegisteredEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_DeviceRemoved" data-uid="Engine.Core.SimulationEngine.DeviceRemoved">
+  DeviceRemoved
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised after a device is removed from the simulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DeviceRemovedEventArgs&gt;? DeviceRemoved</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Engine.Core.DeviceRemovedEventArgs.html">DeviceRemovedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_PacketDelivered" data-uid="Engine.Core.SimulationEngine.PacketDelivered">
+  PacketDelivered
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised when a packet reaches its intended destination device.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PacketDeliveredEventArgs&gt;? PacketDelivered</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Engine.Core.PacketDeliveredEventArgs.html">PacketDeliveredEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_PacketExpired" data-uid="Engine.Core.SimulationEngine.PacketExpired">
+  PacketExpired
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised when a packet's TTL reaches zero and it is silently dropped.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PacketExpiredEventArgs&gt;? PacketExpired</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Engine.Core.PacketExpiredEventArgs.html">PacketExpiredEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_PacketRegistered" data-uid="Engine.Core.SimulationEngine.PacketRegistered">
+  PacketRegistered
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised every time a packet is enqueued (including flood clones).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;PacketRegisteredEventArgs&gt;? PacketRegistered</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Engine.Core.PacketRegisteredEventArgs.html">PacketRegisteredEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_TickEvent" data-uid="Engine.Core.SimulationEngine.TickEvent">
+  TickEvent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised once per call to <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Tick">Tick()</a>, after the tick counter has
+been incremented but before in-flight packets are dispatched.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler? TickEvent</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Core_SimulationEngine_Ticked" data-uid="Engine.Core.SimulationEngine.Ticked">
+  Ticked
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Raised once per <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Tick">Tick()</a> call after all packets are dispatched.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;TickedEventArgs&gt;? Ticked</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Engine.Core.TickedEventArgs.html">TickedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Core/SimulationEngine.cs/#L25" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

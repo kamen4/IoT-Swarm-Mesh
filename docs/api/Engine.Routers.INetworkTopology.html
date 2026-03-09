@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Interface INetworkTopology | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Interface INetworkTopology | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      <meta name="description" content="Represents the logical topology of the network at a given point in time.  The topology separates two concepts that are intentionally kept distinct: Visibility       Whether two devices are within radio range of each other.       Used for broadcast/discovery and as a precondition for establishing a       connection. Determined purely by Euclidean distance and       .     Connection       An explicit, mutually agreed logical link between two devices.       A connection can only exist between mutually visible devices, but not       every visible device is necessarily connected (subject to per-device       connection limits, protocol decisions, etc.).       Unicast routing and network-topology algorithms operate on connections,       not on raw visibility.        Implementations are owned and updated by the active  and are passed to  on every routing call so that routers never need to touch  directly.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/new/master/apiSpec/new?filename=Engine_Routers_INetworkTopology.md&amp;value=---%0Auid%3A%20Engine.Routers.INetworkTopology%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Engine.Routers.INetworkTopology">
+
+
+
+  <h1 id="Engine_Routers_INetworkTopology" data-uid="Engine.Routers.INetworkTopology" class="text-break">
+Interface INetworkTopology  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Contracts/INetworkTopology.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Engine.html">Engine</a>.<a class="xref" href="Engine.Routers.html">Routers</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Engine.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents the logical topology of the network at a given point in time.</p>
+<p>
+The topology separates two concepts that are intentionally kept distinct:
+<ul><li><span class="term">Visibility</span>
+      Whether two devices are within radio range of each other.
+      Used for broadcast/discovery and as a precondition for establishing a
+      connection. Determined purely by Euclidean distance and
+      <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_VisibilityDistance">VisibilityDistance</a>.
+    </li><li><span class="term">Connection</span>
+      An explicit, mutually agreed logical link between two devices.
+      A connection can only exist between mutually visible devices, but not
+      every visible device is necessarily connected (subject to per-device
+      connection limits, protocol decisions, etc.).
+      Unicast routing and network-topology algorithms operate on connections,
+      not on raw visibility.
+    </li></ul>
+
+<p>
+Implementations are owned and updated by the active
+<a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a> and are passed to <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a>
+on every routing call so that routers never need to touch
+<a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> directly.
+</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface INetworkTopology</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Engine_Routers_INetworkTopology_AreConnected_" data-uid="Engine.Routers.INetworkTopology.AreConnected*"></a>
+
+  <h3 id="Engine_Routers_INetworkTopology_AreConnected_Engine_Devices_Device_Engine_Devices_Device_" data-uid="Engine.Routers.INetworkTopology.AreConnected(Engine.Devices.Device,Engine.Devices.Device)">
+  AreConnected(Device, Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Contracts/INetworkTopology.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns <code>true</code> when <code class="paramref">a</code> and <code class="paramref">b</code> have
+an established logical connection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool AreConnected(Device a, Device b)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>a</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd></dd>
+    <dt><code>b</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_INetworkTopology_AreVisible_" data-uid="Engine.Routers.INetworkTopology.AreVisible*"></a>
+
+  <h3 id="Engine_Routers_INetworkTopology_AreVisible_Engine_Devices_Device_Engine_Devices_Device_" data-uid="Engine.Routers.INetworkTopology.AreVisible(Engine.Devices.Device,Engine.Devices.Device)">
+  AreVisible(Device, Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Contracts/INetworkTopology.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns <code>true</code> when <code class="paramref">a</code> and <code class="paramref">b</code> are
+within radio range of each other.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool AreVisible(Device a, Device b)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>a</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd></dd>
+    <dt><code>b</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_INetworkTopology_GetConnectedDevices_" data-uid="Engine.Routers.INetworkTopology.GetConnectedDevices*"></a>
+
+  <h3 id="Engine_Routers_INetworkTopology_GetConnectedDevices_Engine_Devices_Device_" data-uid="Engine.Routers.INetworkTopology.GetConnectedDevices(Engine.Devices.Device)">
+  GetConnectedDevices(Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Contracts/INetworkTopology.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the devices that are logically connected to <code class="paramref">device</code>.</p>
+<p>
+A connection is a persistent, established link managed by the active
+<a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a>. Only connected neighbours are eligible for
+unicast forwarding; broadcast may use visible neighbours instead.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;Device&gt; GetConnectedDevices(Device device)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd><p>The device whose connected neighbours are requested.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Engine.Devices.Device.html">Device</a>&gt;</dt>
+    <dd><p>Devices that have an established connection to <code class="paramref">device</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_INetworkTopology_GetVisibleDevices_" data-uid="Engine.Routers.INetworkTopology.GetVisibleDevices*"></a>
+
+  <h3 id="Engine_Routers_INetworkTopology_GetVisibleDevices_Engine_Devices_Device_" data-uid="Engine.Routers.INetworkTopology.GetVisibleDevices(Engine.Devices.Device)">
+  GetVisibleDevices(Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Contracts/INetworkTopology.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns all devices that are within radio range of <code class="paramref">device</code>,
+excluding <code class="paramref">device</code> itself.
+Visibility is a symmetric, distance-based relation and does not imply an
+established connection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;Device&gt; GetVisibleDevices(Device device)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd><p>The device whose visible neighbours are requested.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Engine.Devices.Device.html">Device</a>&gt;</dt>
+    <dd><p>Devices within visibility range of <code class="paramref">device</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Contracts/INetworkTopology.cs/#L39" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

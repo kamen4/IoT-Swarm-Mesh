@@ -25,6 +25,16 @@
         <span class="dismiss">&#x1F5D9;</span>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        // Triggers a browser file download from a string (used for JSON export).
+        window.downloadTextFile = function (filename, content) {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([content], { type: 'application/json' }));
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        };
+    </script>
 </body>
 
 </html>

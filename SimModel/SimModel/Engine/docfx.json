@@ -37,6 +37,6 @@
       "_enableSearch": true,
       "_noContribution": true
     },
-    "template": ["modern"]
+    "template": ["default", "modern"]
   }
 }

@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# DocFX build output
+# _site/ is the generated static documentation site (HTML, JS, CSS).
+# api/ is auto-generated YAML metadata extracted from the C# project.
+# Both are produced on every build and must not be committed.
+*/_site/
+Engine/_site/
+Engine/api/
+_site
+api

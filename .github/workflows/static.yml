@@ -69,11 +69,11 @@ jobs:
 
       - name: Copy docs into publish directory
         # The Blazor site will serve the docs under the /docs path.
-        # The docfx modern template outputs the HTML site into _site/public/,
-        # so copy that subdirectory's contents directly to avoid the extra
-        # /public/ path segment in the deployed URL.
+        # The docfx default+modern stack places all HTML directly in _site/,
+        # with static CSS/JS assets in _site/public/. Copy _site/ root so that
+        # docs/index.html exists at the expected URL.
         run: |
-          DOCS_OUT="SimModel/SimModel/Engine/_site/public"
+          DOCS_OUT="SimModel/SimModel/Engine/_site"
           DOCS_DEST="${{ env.PUBLISH_DIR }}/docs"
           mkdir -p "$DOCS_DEST"
           cp -r "$DOCS_OUT/." "$DOCS_DEST/"

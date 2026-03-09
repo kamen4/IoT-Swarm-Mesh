@@ -1,37 +1,42 @@
-{
+﻿{
   "metadata": [
     {
       "src": [
         {
-          "files": [ "Engine.csproj" ],
+          "files": ["Engine.csproj"],
           "src": "."
         }
       ],
       "dest": "api",
-      "allowCompilationErrors": true
+      "allowCompilationErrors": true,
+      "properties": {
+        "TargetFramework": "net9.0"
+      }
     }
   ],
   "build": {
     "content": [
       {
-        "files": [ "toc.yml", "index.md", "Documentation.md" ]
+        "files": ["toc.yml", "index.md", "**/Documentation.md"],
+        "exclude": ["obj/**", "bin/**"]
       },
       {
-        "files": [ "api/**.yml", "api/index.md" ]
+        "files": ["api/**.yml", "api/index.md"]
       }
     ],
     "resource": [
       {
-        "files": [ "images/**" ]
+        "files": ["images/**"]
       }
     ],
     "dest": "_site",
     "globalMetadata": {
-      "_appTitle": "IoT Swarm Mesh - Engine Docs",
+      "_appTitle": "IoT Swarm Mesh  -  Simulation Engine",
       "_appName": "IoT Swarm Mesh",
-      "_appFooter": "IoT Swarm Mesh Simulation Engine",
-      "_enableSearch": true
+      "_appFooter": "IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM",
+      "_enableSearch": true,
+      "_noContribution": true
     },
-    "template": [ "default", "modern" ]
+    "template": ["modern"]
   }
 }

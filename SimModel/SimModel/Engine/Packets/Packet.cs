@@ -8,7 +8,7 @@ namespace Engine.Packets;
 /// destination (<see cref="To"/>), and the <see cref="NextHop"/> device it
 /// will be delivered to on the next simulation tick.
 /// Travel time is expressed in engine ticks via <see cref="TicksToTravel"/>,
-/// and each hop decrements the <see cref="TTL"/> counter — a packet that
+/// and each hop decrements the <see cref="TTL"/> counter  -  a packet that
 /// reaches zero TTL is silently dropped.
 /// </summary>
 public class Packet
@@ -51,7 +51,7 @@ public class Packet
     /// Set once on the first enqueue; clones inherit it through
     /// <c>MemberwiseClone</c> so every clone knows the starting TTL.
     /// Used by <see cref="Statistics.SimulationStatistics"/> to compute
-    /// hop count at delivery: <c>hops = InitialTtl − TTL</c>.
+    /// hop count at delivery: <c>hops = InitialTtl - TTL</c>.
     /// </para>
     /// </summary>
     public int InitialTtl { get; internal set; }

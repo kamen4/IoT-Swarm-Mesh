@@ -6,13 +6,35 @@ using System.Numerics;
 
 namespace WebApp.Client.Services;
 
+/// <summary>
+/// Blazor client-side service that drives the simulation from the UI layer.
+/// <para>
+/// Owns the tick loop (<see cref="RunLoopAsync"/>), wraps <see cref="Engine.Core.SimulationEngine"/>
+/// and <see cref="Engine.Statistics.SimulationStatistics"/>, and provides high-level
+/// operations (start, stop, reset, add/remove devices, load presets, generate random
+/// layouts) consumed by the <c>Home.razor</c> page.
+/// </para>
+/// <para>
+/// A <see cref="PacketLimitError"/> string is set when a
+/// <see cref="Engine.Core.PacketLimitExceededException"/> is caught during a tick;
+/// the Blazor page renders this as a dismissible error banner.
+/// </para>
+/// </summary>
 public class SimulationService : IDisposable
 {
-    public SimulationEngine     Engine     { get; } = SimulationEngine.Instance;
-    public SimulationStatistics Statistics { get; } = SimulationStatistics.Instance;
-    public SimulationConfig     Config     { get; } = new();
+    /// <summary>The singleton simulation engine shared across the application.</summary>
+    public SimulationEngine Engine { get; } = SimulationEngine.Instance;
 
-    public bool   IsRunning  { get; private set; }
+    /// <summary>The singleton statistics collector; updated reactively with every tick.</summary>
+    public SimulationStatistics Statistics { get; } = SimulationStatistics.Instance;
+
+    /// <summary>User-configurable simulation settings; apply via <see cref="ApplyConfig"/>.</summary>
+    public SimulationConfig Config { get; } = new();
+
+    /// <summary><c>true</c> while the tick loop is running.</summary>
+    public bool IsRunning { get; private set; }
+
+    /// <summary>Wall-clock time in milliseconds spent on the last <see cref="Engine"/> tick.</summary>
     public double LastTickMs { get; private set; }
 
     /// <summary>
@@ -21,6 +43,11 @@ public class SimulationService : IDisposable
     /// </summary>
     public string? PacketLimitError { get; private set; }
 
+    /// <summary>
+    /// Raised after every engine tick or after any state-affecting operation
+    /// (start, stop, reset, device change). UI components subscribe to this
+    /// event and call <c>StateHasChanged()</c> to trigger a re-render.
+    /// </summary>
     public event Action? StateChanged;
 
     private CancellationTokenSource? _cts;
@@ -48,6 +75,7 @@ public class SimulationService : IDisposable
         SeedDefaultDevices();
     }
 
+    /// <summary>Starts the tick loop if it is not already running.</summary>
     public void Start()
     {
         if (IsRunning) return;
@@ -57,6 +85,7 @@ public class SimulationService : IDisposable
         _ = RunLoopAsync(_cts.Token);
     }
 
+    /// <summary>Stops the tick loop and cancels the periodic timer.</summary>
     public void Stop()
     {
         IsRunning = false;
@@ -82,18 +111,23 @@ public class SimulationService : IDisposable
         catch (PacketLimitExceededException ex)
         {
             // Stop the simulation and surface the error to the UI.
-            IsRunning        = false;
-            _cts             = null;
+            IsRunning = false;
+            _cts = null;
             PacketLimitError = ex.Message;
             StateChanged?.Invoke();
         }
     }
 
+    /// <summary>
+    /// Pushes all settings from <see cref="Config"/> to the engine.
+    /// If the simulation is running it is stopped and restarted so the new
+    /// tick interval takes effect immediately.
+    /// </summary>
     public void ApplyConfig()
     {
         Engine.VisibilityDistance = Config.VisibilityDistance;
-        Engine.MaxActivePackets   = Config.MaxActivePackets;
-        Engine.Router             = Config.SelectedRouter;
+        Engine.MaxActivePackets = Config.MaxActivePackets;
+        Engine.Router = Config.SelectedRouter;
 
         if (IsRunning)
         {
@@ -102,18 +136,23 @@ public class SimulationService : IDisposable
         }
     }
 
+    /// <summary>Creates a new device from <paramref name="form"/> and registers it with the engine.</summary>
     public void AddDevice(DeviceFormModel form)
     {
         var device = CreateDevice(form);
         Engine.RegisterDevice(device);
     }
 
+    /// <summary>
+    /// Applies the fields in <paramref name="form"/> to the existing device
+    /// identified by <paramref name="id"/>. No-op if the device is not found.
+    /// </summary>
     public void UpdateDevice(Guid id, DeviceFormModel form)
     {
         var device = Engine.Devices.FirstOrDefault(d => d.Id == id);
         if (device is null) return;
 
-        device.Name     = form.Name;
+        device.Name = form.Name;
         device.Position = new Vector2(form.X, form.Y);
 
         if (device is GeneratorDevice gen)
@@ -123,24 +162,25 @@ public class SimulationService : IDisposable
             emitter.ControlFrequencyTicks = form.ControlFrequencyTicks;
     }
 
+    /// <summary>Removes the device with the given <paramref name="id"/> from the engine.</summary>
     public void RemoveDevice(Guid id) => Engine.RemoveDevice(id);
 
     private void SeedDefaultDevices()
     {
-        Engine.RegisterDevice(new HubDevice            { Name = "Hub",      Position = new Vector2(  0,   0) });
-        Engine.RegisterDevice(new GeneratorDevice(40)  { Name = "Sensor-A", Position = new Vector2(150,   0) });
-        Engine.RegisterDevice(new GeneratorDevice(50)  { Name = "Sensor-B", Position = new Vector2(-150,  0) });
-        Engine.RegisterDevice(new GeneratorDevice(45)  { Name = "Sensor-C", Position = new Vector2(  0, 150) });
-        Engine.RegisterDevice(new EmitterDevice        { Name = "Lamp-1",   Position = new Vector2( 80, 120) });
-        Engine.RegisterDevice(new EmitterDevice        { Name = "Lamp-2",   Position = new Vector2(-80,-120) });
+        Engine.RegisterDevice(new HubDevice { Name = "Hub", Position = new Vector2(0, 0) });
+        Engine.RegisterDevice(new GeneratorDevice(40) { Name = "Sensor-A", Position = new Vector2(150, 0) });
+        Engine.RegisterDevice(new GeneratorDevice(50) { Name = "Sensor-B", Position = new Vector2(-150, 0) });
+        Engine.RegisterDevice(new GeneratorDevice(45) { Name = "Sensor-C", Position = new Vector2(0, 150) });
+        Engine.RegisterDevice(new EmitterDevice { Name = "Lamp-1", Position = new Vector2(80, 120) });
+        Engine.RegisterDevice(new EmitterDevice { Name = "Lamp-2", Position = new Vector2(-80, -120) });
     }
 
     private static Device CreateDevice(DeviceFormModel form) => form.DeviceType switch
     {
-        DeviceType.Hub       => new HubDevice           { Name = form.Name, Position = new Vector2(form.X, form.Y) },
+        DeviceType.Hub => new HubDevice { Name = form.Name, Position = new Vector2(form.X, form.Y) },
         DeviceType.Generator => new GeneratorDevice(form.GenFrequencyTicks) { Name = form.Name, Position = new Vector2(form.X, form.Y) },
-        DeviceType.Emitter   => new EmitterDevice(form.ControlFrequencyTicks) { Name = form.Name, Position = new Vector2(form.X, form.Y) },
-        _                    => throw new ArgumentOutOfRangeException()
+        DeviceType.Emitter => new EmitterDevice(form.ControlFrequencyTicks) { Name = form.Name, Position = new Vector2(form.X, form.Y) },
+        _ => throw new ArgumentOutOfRangeException()
     };
 
     public void Reset()
@@ -166,7 +206,7 @@ public class SimulationService : IDisposable
     /// </summary>
     public void LoadPreset(SimulationPreset preset)
     {
-        _activePreset    = preset;
+        _activePreset = preset;
         Stop();
         Engine.Reset();
         Statistics.Reset();
@@ -175,9 +215,15 @@ public class SimulationService : IDisposable
         StateChanged?.Invoke();
     }
 
+    /// <summary>
+    /// Places a random network of <paramref name="count"/> devices around the
+    /// hub, reset to an empty engine first.
+    /// <c>_activePreset</c> is cleared so <see cref="Reset"/> will fall back
+    /// to the built-in default rather than re-generating the random layout.
+    /// </summary>
     public void GenerateRandom(int count)
     {
-        _activePreset    = null;   // random layout has no preset to restore
+        _activePreset = null;   // random layout has no preset to restore
         Stop();
         Engine.Reset();
         Statistics.Reset();
@@ -188,7 +234,7 @@ public class SimulationService : IDisposable
 
         for (int i = 0; i < count; i++)
         {
-            double angle  = rng.NextDouble() * Math.PI * 2;
+            double angle = rng.NextDouble() * Math.PI * 2;
             double radius = rng.NextDouble() * Engine.VisibilityDistance * 2.5;
             var pos = new Vector2(
                 (float)(Math.Cos(angle) * radius),
@@ -196,7 +242,7 @@ public class SimulationService : IDisposable
 
             Device device = i % 2 == 0
                 ? new GeneratorDevice(rng.Next(20, 80)) { Name = $"Sensor-{i + 1}", Position = pos }
-                : new EmitterDevice                     { Name = $"Lamp-{i + 1}",   Position = pos };
+                : new EmitterDevice { Name = $"Lamp-{i + 1}", Position = pos };
 
             Engine.RegisterDevice(device);
         }
@@ -204,6 +250,7 @@ public class SimulationService : IDisposable
         StateChanged?.Invoke();
     }
 
+    /// <summary>Stops the tick loop and releases the cancellation-token source.</summary>
     public void Dispose()
     {
         Stop();

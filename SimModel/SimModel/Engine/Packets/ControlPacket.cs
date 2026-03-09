@@ -1,4 +1,4 @@
-using Engine.Devices;
+ï»¿using Engine.Devices;
 
 namespace Engine.Packets;
 
@@ -16,7 +16,7 @@ namespace Engine.Packets;
 public class ControlPacket : Packet
 {
     /// <summary>
-    /// Gets the boolean command value — <c>true</c> = on, <c>false</c> = off.
+    /// Gets the boolean command value  -  <c>true</c> = on, <c>false</c> = off.
     /// </summary>
     public bool Command { get; }
 

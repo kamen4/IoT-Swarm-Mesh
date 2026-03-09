@@ -1,4 +1,4 @@
-using Engine.Core;
+ï»¿using Engine.Core;
 using Engine.Devices;
 using Engine.Packets;
 using Engine.Routers;
@@ -8,7 +8,7 @@ using System.Numerics;
 namespace Engine.Benchmark;
 
 /// <summary>
-/// Executes a <see cref="BenchmarkConfig"/> headlessly — without any UI — and
+/// Executes a <see cref="BenchmarkConfig"/> headlessly  -  without any UI  -  and
 /// produces a <see cref="BenchmarkSession"/> containing one
 /// <see cref="BenchmarkResult"/> per configured router.
 /// <para>
@@ -114,7 +114,7 @@ public static class BenchmarkRunner
         // Process events in tick order; track index for efficient advance.
         int eventIdx = 0;
 
-        // Run the tick loop without any timer delay — as fast as possible.
+        // Run the tick loop without any timer delay  -  as fast as possible.
         for (long tick = 1; tick <= config.DurationTicks; tick++)
         {
             // Fire all events scheduled exactly at this tick before ticking.

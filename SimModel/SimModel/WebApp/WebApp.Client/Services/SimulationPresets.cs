@@ -1,4 +1,4 @@
-using Engine.Devices;
+ï»¿using Engine.Devices;
 using System.Numerics;
 
 namespace WebApp.Client.Services;
@@ -12,7 +12,7 @@ namespace WebApp.Client.Services;
 /// </para>
 /// <para>
 /// To add a new preset: append a new entry to <see cref="All"/> following the
-/// same pattern — create a static method that accepts a
+/// same pattern  -  create a static method that accepts a
 /// <see cref="SimulationService"/> and registers devices, then reference it as
 /// the <c>Build</c> delegate.
 /// </para>
@@ -25,13 +25,13 @@ public static class SimulationPresets
         new("Default",          "Hub in the centre with 3 sensors and 2 lamps",                         BuildDefault),
         new("Line",             "Hub + 5 devices in a centred chain; each node reaches only neighbours", BuildLine),
         new("Star",             "Hub at the centre, 8 nodes equally spaced on a ring",                  BuildStar),
-        new("Dense Cluster",    "Hub + 10 devices in a tight cluster — every node sees every other",    BuildDenseCluster),
+        new("Dense Cluster",    "Hub + 10 devices in a tight cluster  -  every node sees every other",    BuildDenseCluster),
         new("Two Clusters",     "Two groups bridged by a single relay node",                            BuildTwoClusters),
         new("Three Clusters",   "Three groups in a triangle bridged by relay nodes on each edge",       BuildThreeClusters),
-        new("Grid 3?3",         "3?3 grid — each node reaches its 4 cross-neighbours only",             BuildGrid3x3),
-        new("Long Chain",       "Hub + 8 nodes in a single line — hardest path for flooding",           BuildLongChain),
-        new("Random (small)",   "8 randomly placed devices — reproducible seed 1",                      s => BuildRandom(s,  8, seed: 1)),
-        new("Random (large)",   "20 randomly placed devices — reproducible seed 2",                     s => BuildRandom(s, 20, seed: 2)),
+        new("Grid 3x3",         "3x3 grid  -  each node reaches its 4 cross-neighbours only",             BuildGrid3x3),
+        new("Long Chain",       "Hub + 8 nodes in a single line  -  hardest path for flooding",           BuildLongChain),
+        new("Random (small)",   "8 randomly placed devices  -  reproducible seed 1",                      s => BuildRandom(s,  8, seed: 1)),
+        new("Random (large)",   "20 randomly placed devices  -  reproducible seed 2",                     s => BuildRandom(s, 20, seed: 2)),
     ];
 
     // -------------------------------------------------------------------------
@@ -41,12 +41,12 @@ public static class SimulationPresets
     /// <summary>Default starter layout: hub centre, 3 sensors, 2 lamps.</summary>
     private static void BuildDefault(SimulationService s)
     {
-        s.Engine.RegisterDevice(new HubDevice           { Name = "Hub",      Position = new Vector2(  0,   0) });
-        s.Engine.RegisterDevice(new GeneratorDevice(40) { Name = "Sensor-A", Position = new Vector2(150,   0) });
-        s.Engine.RegisterDevice(new GeneratorDevice(50) { Name = "Sensor-B", Position = new Vector2(-150,  0) });
-        s.Engine.RegisterDevice(new GeneratorDevice(45) { Name = "Sensor-C", Position = new Vector2(  0, 150) });
-        s.Engine.RegisterDevice(new EmitterDevice       { Name = "Lamp-1",   Position = new Vector2( 80, 120) });
-        s.Engine.RegisterDevice(new EmitterDevice       { Name = "Lamp-2",   Position = new Vector2(-80,-120) });
+        s.Engine.RegisterDevice(new HubDevice { Name = "Hub", Position = new Vector2(0, 0) });
+        s.Engine.RegisterDevice(new GeneratorDevice(40) { Name = "Sensor-A", Position = new Vector2(150, 0) });
+        s.Engine.RegisterDevice(new GeneratorDevice(50) { Name = "Sensor-B", Position = new Vector2(-150, 0) });
+        s.Engine.RegisterDevice(new GeneratorDevice(45) { Name = "Sensor-C", Position = new Vector2(0, 150) });
+        s.Engine.RegisterDevice(new EmitterDevice { Name = "Lamp-1", Position = new Vector2(80, 120) });
+        s.Engine.RegisterDevice(new EmitterDevice { Name = "Lamp-2", Position = new Vector2(-80, -120) });
     }
 
     /// <summary>
@@ -56,16 +56,16 @@ public static class SimulationPresets
     /// </summary>
     private static void BuildLine(SimulationService s)
     {
-        float step  = s.Engine.VisibilityDistance * 0.8f;
+        float step = s.Engine.VisibilityDistance * 0.8f;
         // 6 nodes: indices 0..5, centred so that the midpoint of the chain is at x=0
         float startX = -step * 2.5f;
 
-        s.Engine.RegisterDevice(new HubDevice           { Name = "Hub",    Position = new Vector2(startX,          0) });
-        s.Engine.RegisterDevice(new GeneratorDevice(30) { Name = "Node-1", Position = new Vector2(startX + step,   0) });
-        s.Engine.RegisterDevice(new GeneratorDevice(40) { Name = "Node-2", Position = new Vector2(startX + step*2, 0) });
-        s.Engine.RegisterDevice(new EmitterDevice       { Name = "Lamp-3", Position = new Vector2(startX + step*3, 0) });
-        s.Engine.RegisterDevice(new GeneratorDevice(35) { Name = "Node-4", Position = new Vector2(startX + step*4, 0) });
-        s.Engine.RegisterDevice(new EmitterDevice       { Name = "Lamp-5", Position = new Vector2(startX + step*5, 0) });
+        s.Engine.RegisterDevice(new HubDevice { Name = "Hub", Position = new Vector2(startX, 0) });
+        s.Engine.RegisterDevice(new GeneratorDevice(30) { Name = "Node-1", Position = new Vector2(startX + step, 0) });
+        s.Engine.RegisterDevice(new GeneratorDevice(40) { Name = "Node-2", Position = new Vector2(startX + step * 2, 0) });
+        s.Engine.RegisterDevice(new EmitterDevice { Name = "Lamp-3", Position = new Vector2(startX + step * 3, 0) });
+        s.Engine.RegisterDevice(new GeneratorDevice(35) { Name = "Node-4", Position = new Vector2(startX + step * 4, 0) });
+        s.Engine.RegisterDevice(new EmitterDevice { Name = "Lamp-5", Position = new Vector2(startX + step * 5, 0) });
     }
 
     /// <summary>
@@ -82,9 +82,9 @@ public static class SimulationPresets
         for (int i = 0; i < 8; i++)
         {
             double angle = i * Math.PI * 2 / 8;
-            var pos      = new Vector2((float)(Math.Cos(angle) * r), (float)(Math.Sin(angle) * r));
+            var pos = new Vector2((float)(Math.Cos(angle) * r), (float)(Math.Sin(angle) * r));
             if (i % 3 == 2)
-                s.Engine.RegisterDevice(new EmitterDevice       { Name = $"Lamp-{i + 1}",   Position = pos });
+                s.Engine.RegisterDevice(new EmitterDevice { Name = $"Lamp-{i + 1}", Position = pos });
             else
                 s.Engine.RegisterDevice(new GeneratorDevice(30 + i * 5) { Name = $"Sensor-{i + 1}", Position = pos });
         }
@@ -92,7 +92,7 @@ public static class SimulationPresets
 
     /// <summary>
     /// Hub and 10 devices packed in a tight cluster so that every node can
-    /// see every other node — maximum flooding load.
+    /// see every other node  -  maximum flooding load.
     /// Nodes are placed on two concentric rings so labels stay readable.
     /// </summary>
     private static void BuildDenseCluster(SimulationService s)
@@ -107,17 +107,17 @@ public static class SimulationPresets
 
         for (int i = 0; i < 4; i++)
         {
-            double a   = i * Math.PI * 2 / 4;
-            var pos    = new Vector2((float)(Math.Cos(a) * r1), (float)(Math.Sin(a) * r1));
+            double a = i * Math.PI * 2 / 4;
+            var pos = new Vector2((float)(Math.Cos(a) * r1), (float)(Math.Sin(a) * r1));
             s.Engine.RegisterDevice(new GeneratorDevice(25 + i * 10) { Name = $"S-In{i + 1}", Position = pos });
         }
 
         for (int i = 0; i < 6; i++)
         {
-            double a   = i * Math.PI * 2 / 6;
-            var pos    = new Vector2((float)(Math.Cos(a) * r2), (float)(Math.Sin(a) * r2));
+            double a = i * Math.PI * 2 / 6;
+            var pos = new Vector2((float)(Math.Cos(a) * r2), (float)(Math.Sin(a) * r2));
             if (i % 3 == 2)
-                s.Engine.RegisterDevice(new EmitterDevice       { Name = $"Lamp-{i + 1}",  Position = pos });
+                s.Engine.RegisterDevice(new EmitterDevice { Name = $"Lamp-{i + 1}", Position = pos });
             else
                 s.Engine.RegisterDevice(new GeneratorDevice(30 + i * 8) { Name = $"S-Out{i + 1}", Position = pos });
         }
@@ -136,34 +136,34 @@ public static class SimulationPresets
     /// </summary>
     private static void BuildTwoClusters(SimulationService s)
     {
-        float vis    = s.Engine.VisibilityDistance;
+        float vis = s.Engine.VisibilityDistance;
         // Each cluster centre is 'half' from the origin;
         // bridge at origin must be within vis of every cluster member.
         // cluster-centre distance from bridge = half;  members are ? clrR from centre.
         // Constraint: half + clrR ? vis  ?  use half=0.65*vis, clrR=0.28*vis (sum=0.93)
-        float half   = vis * 0.65f;
-        float clrR   = vis * 0.28f;
+        float half = vis * 0.65f;
+        float clrR = vis * 0.28f;
 
-        var leftCentre  = new Vector2(-half, 0);
-        var rightCentre = new Vector2( half, 0);
+        var leftCentre = new Vector2(-half, 0);
+        var rightCentre = new Vector2(half, 0);
 
-        // Left cluster — hub + 3 sensors on a small ring
+        // Left cluster  -  hub + 3 sensors on a small ring
         s.Engine.RegisterDevice(new HubDevice { Name = "Hub", Position = leftCentre });
         for (int i = 0; i < 3; i++)
         {
-            double a   = i * Math.PI * 2 / 3 + Math.PI / 6;
-            var pos    = leftCentre + new Vector2((float)(Math.Cos(a) * clrR), (float)(Math.Sin(a) * clrR));
+            double a = i * Math.PI * 2 / 3 + Math.PI / 6;
+            var pos = leftCentre + new Vector2((float)(Math.Cos(a) * clrR), (float)(Math.Sin(a) * clrR));
             s.Engine.RegisterDevice(new GeneratorDevice(30 + i * 10) { Name = $"S-L{i + 1}", Position = pos });
         }
 
         // Bridge node at the origin
         s.Engine.RegisterDevice(new GeneratorDevice(60) { Name = "Bridge", Position = Vector2.Zero });
 
-        // Right cluster — 3 sensors + 1 lamp on a small ring
+        // Right cluster  -  3 sensors + 1 lamp on a small ring
         for (int i = 0; i < 3; i++)
         {
-            double a   = i * Math.PI * 2 / 3 + Math.PI / 6;
-            var pos    = rightCentre + new Vector2((float)(Math.Cos(a) * clrR), (float)(Math.Sin(a) * clrR));
+            double a = i * Math.PI * 2 / 3 + Math.PI / 6;
+            var pos = rightCentre + new Vector2((float)(Math.Cos(a) * clrR), (float)(Math.Sin(a) * clrR));
             s.Engine.RegisterDevice(new GeneratorDevice(35 + i * 10) { Name = $"S-R{i + 1}", Position = pos });
         }
         s.Engine.RegisterDevice(new EmitterDevice { Name = "Lamp-R", Position = rightCentre });
@@ -180,9 +180,9 @@ public static class SimulationPresets
     /// </summary>
     private static void BuildThreeClusters(SimulationService s)
     {
-        float vis  = s.Engine.VisibilityDistance;
-        float side = vis * 1.2f;   // triangle side — bridge midpoint is 0.6*vis from each centre
-        float cr   = vis * 0.28f;  // intra-cluster ring radius
+        float vis = s.Engine.VisibilityDistance;
+        float side = vis * 1.2f;   // triangle side  -  bridge midpoint is 0.6*vis from each centre
+        float cr = vis * 0.28f;  // intra-cluster ring radius
 
         // Equilateral triangle, centred at origin, flat-bottom
         float h = side * (float)(Math.Sqrt(3) / 2);
@@ -206,11 +206,11 @@ public static class SimulationPresets
             // 3 sensors evenly spaced on a ring inside the cluster
             for (int i = 0; i < 3; i++)
             {
-                double a   = i * Math.PI * 2 / 3 + c * Math.PI / 4;
-                var pos    = centre + new Vector2((float)(Math.Cos(a) * cr), (float)(Math.Sin(a) * cr));
+                double a = i * Math.PI * 2 / 3 + c * Math.PI / 4;
+                var pos = centre + new Vector2((float)(Math.Cos(a) * cr), (float)(Math.Sin(a) * cr));
                 s.Engine.RegisterDevice(new GeneratorDevice(30 + c * 10 + i * 5)
                 {
-                    Name     = $"S-{labels[c]}{i + 1}",
+                    Name = $"S-{labels[c]}{i + 1}",
                     Position = pos
                 });
             }
@@ -241,19 +241,19 @@ public static class SimulationPresets
         };
 
         for (int row = 0; row < 3; row++)
-        for (int col = 0; col < 3; col++)
-        {
-            var pos  = new Vector2((col - 1) * spacing, (row - 1) * spacing);
-            string n = names[row, col];
-
-            Device device = n switch
+            for (int col = 0; col < 3; col++)
             {
-                "Hub"                              => new HubDevice     { Name = n, Position = pos },
-                var x when x.StartsWith("Lamp")    => new EmitterDevice { Name = n, Position = pos },
-                _                                  => new GeneratorDevice(30 + row * 10 + col * 5) { Name = n, Position = pos },
-            };
-            s.Engine.RegisterDevice(device);
-        }
+                var pos = new Vector2((col - 1) * spacing, (row - 1) * spacing);
+                string n = names[row, col];
+
+                Device device = n switch
+                {
+                    "Hub" => new HubDevice { Name = n, Position = pos },
+                    var x when x.StartsWith("Lamp") => new EmitterDevice { Name = n, Position = pos },
+                    _ => new GeneratorDevice(30 + row * 10 + col * 5) { Name = n, Position = pos },
+                };
+                s.Engine.RegisterDevice(device);
+            }
     }
 
     /// <summary>
@@ -262,7 +262,7 @@ public static class SimulationPresets
     /// </summary>
     private static void BuildLongChain(SimulationService s)
     {
-        float step   = s.Engine.VisibilityDistance * 0.75f;
+        float step = s.Engine.VisibilityDistance * 0.75f;
         // 9 nodes total: indices 0..8, centred
         float startX = -step * 4f;
 
@@ -271,7 +271,7 @@ public static class SimulationPresets
         for (int i = 1; i <= 8; i++)
         {
             Device device = i % 3 == 0
-                ? new EmitterDevice       { Name = $"Lamp-{i}", Position = new Vector2(startX + step * i, 0) }
+                ? new EmitterDevice { Name = $"Lamp-{i}", Position = new Vector2(startX + step * i, 0) }
                 : new GeneratorDevice(20 + i * 5) { Name = $"Node-{i}", Position = new Vector2(startX + step * i, 0) };
             s.Engine.RegisterDevice(device);
         }
@@ -288,7 +288,7 @@ public static class SimulationPresets
 
         for (int i = 0; i < count; i++)
         {
-            double angle  = rng.NextDouble() * Math.PI * 2;
+            double angle = rng.NextDouble() * Math.PI * 2;
             double radius = rng.NextDouble() * s.Engine.VisibilityDistance * 2.2;
             var pos = new Vector2(
                 (float)(Math.Cos(angle) * radius),
@@ -296,7 +296,7 @@ public static class SimulationPresets
 
             Device device = i % 2 == 0
                 ? new GeneratorDevice(rng.Next(20, 80)) { Name = $"Sensor-{i + 1}", Position = pos }
-                : new EmitterDevice                     { Name = $"Lamp-{i + 1}",   Position = pos };
+                : new EmitterDevice { Name = $"Lamp-{i + 1}", Position = pos };
 
             s.Engine.RegisterDevice(device);
         }

@@ -1,4 +1,4 @@
-using Engine.Benchmark;
+ï»¿using Engine.Benchmark;
 using Engine.Routers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,7 +9,7 @@ namespace WebApp.Client.Services;
 /// Blazor-side service that wraps <see cref="BenchmarkRunner"/> and adds:
 /// <list type="bullet">
 ///   <item>Async execution via <c>Task.Run</c> so the WASM UI stays responsive.</item>
-///   <item>Progress reporting as a 0–1 fraction for a loading-wheel overlay.</item>
+///   <item>Progress reporting as a 0-1 fraction for a loading-wheel overlay.</item>
 ///   <item>JSON serialisation / deserialisation of <see cref="BenchmarkSession"/>
 ///         objects so users can save and reload benchmark results.</item>
 ///   <item>An in-memory list of saved sessions shown in the benchmark library.</item>
@@ -18,7 +18,7 @@ namespace WebApp.Client.Services;
 public sealed class BenchmarkService
 {
     // ------------------------------------------------------------------
-    // Router registry — all routers the runner can use.
+    // Router registry  -  all routers the runner can use.
     // Matches the same set exposed in SimulationConfig.AvailableRouters.
     // ------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ public sealed class BenchmarkService
     public event Action? StateChanged;
 
     // ------------------------------------------------------------------
-    // JSON options — shared instance for serialise / deserialise
+    // JSON options  -  shared instance for serialise / deserialise
     // ------------------------------------------------------------------
 
     /// <summary>
@@ -68,7 +68,7 @@ public sealed class BenchmarkService
     /// </summary>
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
-        WriteIndented          = true,
+        WriteIndented = true,
         // Preserve polymorphic $type discriminators on BenchmarkEvent variants.
         // ReferenceHandler not needed since the object graph is a simple tree.
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
@@ -95,7 +95,7 @@ public sealed class BenchmarkService
         if (IsRunning) return;
 
         IsRunning = true;
-        Progress  = 0;
+        Progress = 0;
         LastSession = null;
         Notify();
 
@@ -122,7 +122,7 @@ public sealed class BenchmarkService
         finally
         {
             IsRunning = false;
-            Progress  = 1;
+            Progress = 1;
             Notify();
         }
     }
@@ -168,7 +168,7 @@ public sealed class BenchmarkService
     /// </summary>
     public BenchmarkSession? Deserialize(string json)
     {
-        try   { return JsonSerializer.Deserialize<BenchmarkSession>(json, JsonOptions); }
+        try { return JsonSerializer.Deserialize<BenchmarkSession>(json, JsonOptions); }
         catch { return null; }
     }
 

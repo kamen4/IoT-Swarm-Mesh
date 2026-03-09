@@ -32,7 +32,7 @@ public class SimulationEngine
     /// <summary>
     /// The effective visibility distance for this simulation instance.
     /// Defaults to <see cref="VISIBILITY_DISTANCE"/>; can be changed at runtime.
-    /// Changing this value does <em>not</em> automatically rebuild the topology —
+    /// Changing this value does <em>not</em> automatically rebuild the topology  - 
     /// call <see cref="RebuildTopology"/> explicitly if needed.
     /// </summary>
     public int VisibilityDistance { get; set; } = VISIBILITY_DISTANCE;
@@ -168,7 +168,7 @@ public class SimulationEngine
     private void TickPackets()
     {
         // Snapshot the set of packets due this tick before iterating.
-        // Recieve() → RoutePacket() → RegisterPacket() adds new packets into
+        // Recieve() -> RoutePacket() -> RegisterPacket() adds new packets into
         // _packets while we process; those are scheduled for FUTURE ticks
         // (ArrivalTick = TickCount + TicksToTravel, and TicksToTravel >= 1),
         // so they will never satisfy ArrivalTick <= TickCount for the current
@@ -211,7 +211,7 @@ public class SimulationEngine
     /// in-flight in the simulation.
     /// <para>
     /// When set to <c>0</c> (the default) the limit is computed automatically
-    /// as <c>Devices.Count × <see cref="AUTO_PACKET_LIMIT_PER_DEVICE"/></c>
+    /// as <c>Devices.Count x <see cref="AUTO_PACKET_LIMIT_PER_DEVICE"/></c>
     /// each time a packet is enqueued, so it scales with the network size.
     /// </para>
     /// <para>
@@ -228,8 +228,8 @@ public class SimulationEngine
     /// Returns the effective packet limit that will be enforced on the next
     /// <see cref="RegisterPacket"/> call.
     /// <list type="bullet">
-    ///   <item>If <see cref="MaxActivePackets"/> &gt; 0 — returns that value.</item>
-    ///   <item>Otherwise — returns <c>Devices.Count × <see cref="AUTO_PACKET_LIMIT_PER_DEVICE"/></c>.</item>
+    ///   <item>If <see cref="MaxActivePackets"/> &gt; 0  -  returns that value.</item>
+    ///   <item>Otherwise  -  returns <c>Devices.Count x <see cref="AUTO_PACKET_LIMIT_PER_DEVICE"/></c>.</item>
     /// </list>
     /// Returns <see cref="int.MaxValue"/> when there are no devices yet so that
     /// early registration during setup never triggers the guard.
@@ -265,7 +265,7 @@ public class SimulationEngine
         if (currentCount >= limit)
             throw new PacketLimitExceededException(limit, currentCount, TickCount);
 
-        // Record the starting TTL once — clones inherit it; we only stamp when
+        // Record the starting TTL once  -  clones inherit it; we only stamp when
         // it has not been set yet (InitialTtl == 0 means "not yet recorded").
         if (packet.InitialTtl == 0)
             packet.InitialTtl = packet.TTL;
@@ -336,8 +336,8 @@ public class SimulationEngine
     /// <para>
     /// Called automatically on every device-registry change
     /// (<see cref="RegisterDevice"/>, <see cref="RemoveDevice"/>).
-    /// Can also be called manually — for example after moving a device or after
-    /// replacing <see cref="NetworkBuilder"/> — to immediately reflect the new
+    /// Can also be called manually  -  for example after moving a device or after
+    /// replacing <see cref="NetworkBuilder"/>  -  to immediately reflect the new
     /// topology without waiting for the next device change.
     /// </para>
     /// </summary>

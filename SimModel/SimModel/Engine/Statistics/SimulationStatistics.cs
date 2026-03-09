@@ -1,4 +1,4 @@
-using Engine.Core;
+ï»¿using Engine.Core;
 
 namespace Engine.Statistics;
 
@@ -73,7 +73,7 @@ public sealed class SimulationStatistics
     /// </summary>
     public StatMetric AvgHopCount { get; } = new("Avg hop count", "Average number of hops per delivered packet (first delivery only)", isDecimal: true, isPlottable: true);
 
-    /// <summary>All metrics in declaration order — drives the summary card grid.</summary>
+    /// <summary>All metrics in declaration order  -  drives the summary card grid.</summary>
     public IReadOnlyList<StatMetric> Metrics { get; }
 
     /// <summary>Metrics that can be selected as a chart series.</summary>
@@ -100,7 +100,7 @@ public sealed class SimulationStatistics
     // Used to detect duplicate deliveries from flood clones.
     private readonly HashSet<Guid> _deliveredOrigins = new();
 
-    // Accumulator for average hop count — only first-delivery hops are counted.
+    // Accumulator for average hop count  -  only first-delivery hops are counted.
     private double _hopAccumulator;
     private long   _hopSamples;
 
@@ -126,7 +126,7 @@ public sealed class SimulationStatistics
         {
             TotalPacketsRegistered.Increment();
             RefreshDerived();
-            // No Notify() here — UI is refreshed once per tick via the Ticked handler.
+            // No Notify() here  -  UI is refreshed once per tick via the Ticked handler.
         };
         _engine.PacketDelivered  += (_, e)  =>
         {
@@ -134,12 +134,12 @@ public sealed class SimulationStatistics
 
             if (!_deliveredOrigins.Add(e.Packet.OriginId))
             {
-                // OriginId already seen — this is a duplicate delivery from a different flood clone.
+                // OriginId already seen  -  this is a duplicate delivery from a different flood clone.
                 DuplicateDeliveries.Increment();
             }
             else
             {
-                // First delivery of this logical packet — record its hop count.
+                // First delivery of this logical packet  -  record its hop count.
                 if (e.HopCount > 0)
                 {
                     _hopAccumulator += e.HopCount;
@@ -149,13 +149,13 @@ public sealed class SimulationStatistics
             }
 
             RefreshDerived();
-            // No Notify() here — UI is refreshed once per tick via the Ticked handler.
+            // No Notify() here  -  UI is refreshed once per tick via the Ticked handler.
         };
         _engine.PacketExpired    += (_, _) =>
         {
             TotalPacketsExpired.Increment();
             RefreshDerived();
-            // No Notify() here — UI is refreshed once per tick via the Ticked handler.
+            // No Notify() here  -  UI is refreshed once per tick via the Ticked handler.
         };
         _engine.DeviceRegistered += (_, _) => { TotalDevicesAdded.Increment(); Notify(); };
         _engine.Ticked           += (_, e) =>

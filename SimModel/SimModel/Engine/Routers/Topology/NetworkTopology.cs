@@ -1,4 +1,4 @@
-using Engine.Core;
+ï»¿using Engine.Core;
 using Engine.Devices;
 using System.Numerics;
 
@@ -36,7 +36,7 @@ public sealed class NetworkTopology : IMutableNetworkTopology
     }
 
     // -------------------------------------------------------------------------
-    // INetworkTopology — read-only projection
+    // INetworkTopology  -  read-only projection
     // -------------------------------------------------------------------------
 
     /// <inheritdoc/>
@@ -73,7 +73,7 @@ public sealed class NetworkTopology : IMutableNetworkTopology
         => _connections.TryGetValue(a.Id, out var set) && set.Contains(b.Id);
 
     // -------------------------------------------------------------------------
-    // IMutableNetworkTopology — builder-only mutations
+    // IMutableNetworkTopology  -  builder-only mutations
     // -------------------------------------------------------------------------
 
     /// <inheritdoc/>

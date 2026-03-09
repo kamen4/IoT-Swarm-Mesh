@@ -10,7 +10,7 @@ namespace Engine.Routers;
 /// When asked to route a packet the router queries the supplied
 /// <see cref="INetworkTopology"/> for all devices <em>visible</em> to the
 /// sender and enqueues a cloned copy addressed to each of them.
-/// Flooding uses <em>visibility</em> — not established connections — because
+/// Flooding uses <em>visibility</em>  -  not established connections  -  because
 /// it is inherently a broadcast mechanism that needs no prior topology
 /// knowledge.
 /// </para>

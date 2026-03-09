@@ -14,7 +14,7 @@ public class ConfirmationPacket : Packet
 {
     /// <summary>
     /// Initialises a new confirmation packet as a reply to <paramref name="original"/>.
-    /// The source and destination are swapped — the confirmation travels from
+    /// The source and destination are swapped  -  the confirmation travels from
     /// the original destination back to the original sender.
     /// </summary>
     /// <param name="original">The packet whose delivery is being acknowledged.</param>

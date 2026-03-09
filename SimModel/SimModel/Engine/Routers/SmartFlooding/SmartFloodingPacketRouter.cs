@@ -1,4 +1,4 @@
-using Engine.Core;
+ï»¿using Engine.Core;
 using Engine.Devices;
 using Engine.Packets;
 
@@ -13,7 +13,7 @@ namespace Engine.Routers;
 ///     <description>
 ///       If the intended destination (<see cref="Packet.To"/>) is directly
 ///       visible from <paramref name="sender"/>, the packet is sent
-///       <em>only</em> to that device — no unnecessary flood copies are made.
+///       <em>only</em> to that device  -  no unnecessary flood copies are made.
 ///     </description>
 ///   </item>
 ///   <item>
@@ -49,7 +49,7 @@ public class SmartFloodingPacketRouter : IPacketRouter
     {
         var visibleDevices = topology.GetVisibleDevices(sender);
 
-        // Rule 1 — direct delivery: if the destination is a direct neighbour,
+        // Rule 1  -  direct delivery: if the destination is a direct neighbour,
         // send only to it and skip the full flood entirely.
         foreach (var d in visibleDevices)
         {
@@ -62,7 +62,7 @@ public class SmartFloodingPacketRouter : IPacketRouter
             }
         }
 
-        // Rules 2 & 3 — filtered flood: broadcast to all visible neighbours
+        // Rules 2 & 3  -  filtered flood: broadcast to all visible neighbours
         // except the device the packet just came from (PreviousHop) and the
         // original source (From). Both exclusions prevent the most common
         // duplicate paths without requiring any routing table.

@@ -1,7 +1,36 @@
 # Top-level table of contents for the DocFX documentation site.
-# "Overview" links to the hand-written conceptual documentation.
-# "API Reference" links to the auto-generated API pages.
+# Conceptual docs are organised to mirror the folder hierarchy.
+# API Reference points to the auto-generated metadata pages.
+
 - name: Overview
   href: index.md
+
+- name: Engine
+  href: Documentation.md
+  items:
+    - name: Core
+      href: Core/Documentation.md
+    - name: Devices
+      href: Devices/Documentation.md
+    - name: Packets
+      href: Packets/Documentation.md
+    - name: Routers
+      href: Routers/Documentation.md
+      items:
+        - name: Contracts
+          href: Routers/Contracts/Documentation.md
+        - name: Topology
+          href: Routers/Topology/Documentation.md
+        - name: Builders
+          href: Routers/Builders/Documentation.md
+        - name: Flooding
+          href: Routers/Flooding/Documentation.md
+        - name: Smart Flooding
+          href: Routers/SmartFlooding/Documentation.md
+    - name: Statistics
+      href: Statistics/Documentation.md
+    - name: Benchmark
+      href: Benchmark/Documentation.md
+
 - name: API Reference
   href: api/

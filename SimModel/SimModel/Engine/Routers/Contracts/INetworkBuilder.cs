@@ -1,4 +1,4 @@
-using Engine.Devices;
+ï»¿using Engine.Devices;
 
 namespace Engine.Routers;
 
@@ -14,9 +14,9 @@ namespace Engine.Routers;
 /// <para>
 /// Examples of algorithms that implement this interface:
 /// <list type="bullet">
-///   <item>Full-mesh — every visible pair is connected (current implicit behaviour).</item>
-///   <item>Limited-degree mesh — each device connects to at most <c>K</c> neighbours.</item>
-///   <item>Minimum spanning tree — minimises total edge weight.</item>
+///   <item>Full-mesh  -  every visible pair is connected (current implicit behaviour).</item>
+///   <item>Limited-degree mesh  -  each device connects to at most <c>K</c> neighbours.</item>
+///   <item>Minimum spanning tree  -  minimises total edge weight.</item>
 ///   <item>Cluster-head / LEACH-style hierarchy.</item>
 /// </list>
 /// </para>

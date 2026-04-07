@@ -1,8 +1,6 @@
 # Overview
 
-## Overview
-
-### Problem
+## Problem
 
 The project targets an IoT deployment where many ESP devices must communicate over **ESP-NOW** as a self-organizing mesh, while being **remotely managed by a small set of authorized users** via Telegram.
 
@@ -26,7 +24,7 @@ Trade-offs to accept up front:
 - Smaller payload budget per frame and more responsibility on the protocol (fragmentation/ordering/application semantics if needed).
 - Channel/interference constraints are shared with 2.4 GHz Wi‑Fi; reliability is topology- and environment-dependent.
 
-### Solution
+## Solution
 
 The solution is a **two-layer protocol** plus a hub backend:
 

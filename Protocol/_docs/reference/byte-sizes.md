@@ -1,7 +1,5 @@
 # Byte sizes
 
-## Byte sizes
-
 This section defines the binary sizes of each field so the remaining bytes for `PAYLOAD` can be calculated.
 
 `ESP_NOW_MAX` is the maximum number of bytes available for this protocol message in a single ESP-NOW frame. Treat it as a platform/config parameter.

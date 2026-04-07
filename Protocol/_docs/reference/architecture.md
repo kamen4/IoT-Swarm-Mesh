@@ -60,8 +60,8 @@ flowchart TB
       api["Container: ASP.NET Business Server\nBusiness logic; source of truth"]
       redis["Container: Redis Message Queue\nPub/Sub"]
       uart["Container: UART Listener / Sender\nUART bridge + Redis pub/sub"]
-      sql[(("ContainerDb: SQL Database\nUsers, devices, configuration"))]
-      influx[(("ContainerDb: Influx TSDB\nTelemetry/logs"))]
+      sql["ContainerDb: SQL Database\nUsers, devices, configuration"]
+      influx["ContainerDb: Influx TSDB\nTelemetry/logs"]
       grafana["Container: Grafana\nDashboards"]
    end
 

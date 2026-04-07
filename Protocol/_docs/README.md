@@ -1,0 +1,53 @@
+﻿# IoT Swarm Mesh Protocol Documentation
+
+Documentation for a secure, on-premises ESP-NOW mesh protocol with swarm intelligence routing and Telegram-based remote management.
+
+## Quick Navigation
+
+### Core Concepts
+
+- **[Architecture](reference/architecture.md)** — Network topology, HUB design, data flow
+- **[Glossary](00-glossary.md)** — Key terms and definitions
+- **[Overview](reference/overview.md)** — Problem statement and solution summary
+
+### Algorithms
+
+1. **[Onboarding](algorithms/01-onboarding.md)** — Device registration and SPAKE2 authentication
+2. **[Message Envelope](algorithms/02-message-envelope.md)** — Frame structure, HMAC, replay protection
+3. **[UP Routing](algorithms/03-up-routing.md)** — Swarm-based charge routing toward gateway
+4. **[DOWN Routing](algorithms/04-down-routing.md)** — Tree-first broadcast from gateway
+5. **[Identity & Security](algorithms/05-identity-security.md)** — Device certificates, cryptographic primitives
+
+### Implementation Guidance
+
+- **[Byte Sizes & Encoding](reference/byte-sizes.md)** — Binary format specifications
+- **[Users & Roles](reference/users.md)** — Access control model
+- **[Corner Cases & Mitigations](mitigations/corner-cases.md)** — Failure modes and practical solutions
+
+## System Overview
+
+The protocol enables a **closed, on-premises IoT mesh** where:
+
+- **ESP devices** communicate over ESP-NOW (no access point required)
+- **One gateway device** bridges to a **HUB (host)** via UART
+- **Users** control the system via Telegram, with role-based access (User / Dedicated Admin / Admin)
+- **No cloud dependency**: core functionality works entirely locally with optional Telegram remote access
+
+See [Architecture](reference/architecture.md) for detailed system diagram and HUB container layout.
+
+## Key Design Principles
+
+- **Resilient mesh**: multi-path swarm routing for UP traffic; tree-first for DOWN
+- **Scalability**: devices keep only neighbor state, no global routing tables
+- **Security**: end-to-end HMAC per device, per-device identity certificates, SPAKE2 onboarding
+- **Efficiency**: charge-based neighbor selection, lightweight forwarding rules, deduplication by `(originMac, msgId)`
+
+## File Organization
+
+| Category       | Purpose                                                      |
+| -------------- | ------------------------------------------------------------ |
+| `algorithms/`  | Core protocol procedures (onboarding, routing, identity)     |
+| `reference/`   | Technical specifications (byte layouts, system architecture) |
+| `mitigations/` | Failure modes and practical solutions                        |
+
+For implementation details, refer to the specific algorithm file. For troubleshooting, see [Corner Cases & Mitigations](mitigations/corner-cases.md).

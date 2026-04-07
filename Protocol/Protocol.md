@@ -1,19 +1,99 @@
 # Protocol
 
-> Protocol for creating ESP-NOW mesh for IoT, based on swarm intelligence principles and controlling over telegram
+> Protocol for creating secure ESP-NOW mesh for IoT, based on swarm intelligence principles and controlling over telegram
+
+## Overview
+
+### Problem
+
+The project targets an IoT deployment where many ESP devices must communicate over **ESP-NOW** as a self-organizing mesh, while being **remotely managed by a small set of authorized users** via Telegram.
+
+Key constraints and challenges:
+
+- The solution should remain **fully on-premises**: core functionality must work without any cloud dependency and can operate **without Internet access** (local host + local radio network).
+- ESP-NOW provides link-layer delivery but does not provide end-to-end device identity, authorization, or a mesh routing scheme.
+- Devices can be multi-hop away from the gateway, and topology can change; routes should emerge without maintaining global routing tables.
+- Intermediate forwarders must be able to modify routing metadata (e.g., `ttl`, last hop), without breaking end-to-end authenticity.
+- Device onboarding must be secure and user-friendly (QR + one-time connection string), with a way to bind a physical device to a server-side record.
+- The system is **closed**: access control, roles, and audit/logging matter as much as packet delivery.
+
+Why ESP-NOW (vs “regular” Wi‑Fi networking) is attractive for this use case:
+
+- No access point (AP) is required for basic device-to-device delivery: the mesh can exist even where there is no Wi‑Fi infrastructure.
+- Lower connection/management overhead than IP networking in small payload/command scenarios (no DHCP/TCP stack requirement), which is useful for constrained devices.
+- Direct addressing by MAC and a small frame model fits a hop-by-hop forwarding design.
+
+Trade-offs to accept up front:
+
+- Smaller payload budget per frame and more responsibility on the protocol (fragmentation/ordering/application semantics if needed).
+- Channel/interference constraints are shared with 2.4 GHz Wi‑Fi; reliability is topology- and environment-dependent.
+
+### Solution
+
+The solution is a **two-layer protocol** plus a hub backend:
+
+1. **Architecture**
+   - **Mesh**: ESP devices exchange frames over ESP-NOW.
+   - **Gateway device**: one ESP node physically connected to the host via UART; it bridges mesh traffic to the server.
+   - **HUB (host)**: PC / Raspberry Pi / laptop running the server stack; user interacts through a Telegram bot.
+
+   The entire system is designed to run **on-premises**: the HUB (host), databases, and bot backend live locally. Internet access is not required for the mesh itself; remote control can be provided via Telegram when connectivity exists, but the networking and security model do not depend on a cloud service.
+
+2. **Secure onboarding (device registration)**
+   - A device exposes a configuration page (from QR) that yields a `CONNECTION_STRING` containing the device MAC and a hash of a random `CONNECTION_KEY`.
+   - The user sends the `CONNECTION_STRING` to the bot; the server broadcasts `FIND` to locate the device.
+   - The server and device perform **SPAKE2** to derive a per-device secret `S_PASSWORD`.
+   - After verification, the server fetches the device's **Interaction Protocol** (`PROTO/PROTO_R`) and moves the device to `Connected`, then sends `START`.
+
+3. **End-to-end message authenticity (server ↔ device)**
+   - After SPAKE2, device commands and telemetry are authenticated with `HMAC(S_PASSWORD, SECURE_HEADER | PAYLOAD)`.
+   - Replay protection uses a per-session `seq` validated by endpoints.
+
+4. **Mesh forwarding (swarm routing)**
+   - Each ESP-NOW frame uses a split header: a **mutable** `ROUTING_HEADER` (not covered by end-to-end HMAC) and an **immutable** `SECURE_HEADER` + payload (covered by HMAC).
+   - Forwarding is **charge-based**: nodes propagate packets to the top 50% neighbors by charge, using `q_up` for traffic towards the gateway and `q_total` for traffic from the gateway.
+   - A network-wide `DECAY` epoch prevents unbounded charge growth and helps convergence.
+
+Why a swarm-style, charge-based approach (vs common alternatives) is a good fit here:
+
+- **No global routes**: nodes keep only neighbor state, which scales better than maintaining full routing tables on constrained devices.
+- **Topology tolerance**: multi-path propagation to the “top neighbors” is more resilient than a strict tree where a single parent failure can isolate a subtree.
+- **Less waste than flooding**: selecting only a fraction of neighbors reduces the broadcast-storm behavior while still keeping redundancy.
+- **Self-stabilization**: `DECAY` prevents unbounded metric growth and helps the network re-balance when conditions change.
+
+As with any mesh routing, this is a trade-off: compared to a single-path route, it can use more airtime due to controlled replication. The protocol mitigates this with `ttl` and deduplication (`(originMac, msgId)` cache).
+
+Note: the document specifies authenticity/integrity via HMAC; payload encryption/confidentiality is not defined here.
 
 ## Global Architecture
 
 1. Network of ESP devices connected as mesh with ESP-NOW
-2. Gateway ESP device one of the network's devices (considered as a HUB device)
-3. HUB is PC/Raspberry PI/Laptop which is running all server logic
-4. User interact from Telegram running on server device
+2. Gateway ESP device (one of the mesh devices) that bridges the mesh to the host
+3. HUB (host): PC/Raspberry PI/Laptop which is running all server logic
+4. User interacts via Telegram with the bot running on the host
 
-HUB-device and HUB are connected physically and interact with each other via UART (Serial)
+Gateway device and HUB (host) are connected physically and interact with each other via UART (Serial)
+
+```mermaid
+flowchart TB
+   user["Person: User\nAuthorized operator"]
+   telegram["External System: Telegram\nMessaging platform"]
+
+   subgraph onprem["Boundary: On-Premises Site"]
+      hub["System: HUB (host)\nServer stack (containers), business logic, bot backend"]
+      gw["System: Gateway ESP device\nBridges ESP-NOW mesh to UART"]
+      mesh["System: ESP-NOW Mesh\nSwarm-routed ESP devices"]
+   end
+
+   user -->|"Uses"| telegram
+   telegram -->|"Bot updates/commands\nTelegram API"| hub
+   hub -->|"Mesh frames in/out\nUART / Serial"| gw
+   gw -->|"ESP-NOW frames\n2.4 GHz"| mesh
+```
 
 ### HUB Architecture
 
-Everything would be run on different docker container
+Everything is intended to run in different Docker containers
 
 1. UART Listener / Sender
    Would listen COM port to read serial data came from gateway device (from network)
@@ -32,11 +112,42 @@ Everything would be run on different docker container
 7. Telegram Server
    Is the main way user would interact with the system, presentation layer of whole project
 
+```mermaid
+flowchart TB
+   %% HUB Architecture (C4-style using standard Mermaid)
+
+   user["Person: User"]
+   telegram["External System: Telegram\nMessaging platform"]
+   gateway["External System: Gateway ESP device\nUART-attached mesh gateway"]
+
+   subgraph hubHost["Boundary: HUB (host) — On-Premises"]
+      bot["Container: Telegram Server\nPresentation layer"]
+      api["Container: ASP.NET Business Server\nBusiness logic; source of truth"]
+      redis["Container: Redis Message Queue\nPub/Sub"]
+      uart["Container: UART Listener / Sender\nUART bridge + Redis pub/sub"]
+      sql[("ContainerDb: SQL Database\nUsers, devices, configuration")]
+      influx[("ContainerDb: Influx TSDB\nTelemetry/logs")]
+      grafana["Container: Grafana\nDashboards"]
+   end
+
+   api --->|"Write telemetry/logs"| influx
+   grafana -->|"Query"| influx
+   user -->|"Chats with"| telegram
+   telegram <-->|"Updates/messages\nTelegram API"| bot
+   bot <-->|"Commands, queries\nHTTP/IPC"| api
+   api -->|"CRUD\nSQL"| sql
+   api -->|"Publish/consume"| redis
+   uart <--->|"Pub/Sub"| redis
+   uart <-->|"Frames in/out\nUART / Serial"| gateway
+
+
+```
+
 ## Users
 
 IoT is a closed system so there must be a restricted and very limited access on who can rule this
 
-> [!important] Rule 1
+> [!important] Rule
 > The first user connected to the bot with a `/start` command is an admin.
 
 So that if the real admin wasn't a first user, he can reset the telegram bot and try unlimited number of times.
@@ -145,10 +256,78 @@ For each element would be creates map id:name
 Request of state of the element: `id/g/`.
 Response for request of state of the element: `id/gr/value`.
 
-Request fot setting value for Output element: `id/s/value`
-Response fot setting value for Output element: `id/sr/value`
+Request for setting value for Output element: `id/s/value`
+Response for setting value for Output element: `id/sr/value`
 
 Message from device with data generated ones in a while (e.g. temperature sensor): `id/e/value`
+
+```mermaid
+sequenceDiagram
+autonumber
+
+actor User
+participant TG as "Telegram Bot"
+participant S as "Business Server"
+participant UART as "UART Listener/Sender"
+participant GW as "Gateway ESP"
+participant Mesh as "ESP-NOW Mesh"
+participant Neigh as "Neighbor Devices"
+participant D as "Target Device"
+
+User->>D: Scan QR, open DEVICE_PAGE
+D-->>User: CONNECTION_STRING (MAC + hash(CONNECTION_KEY))
+User->>TG: Send CONNECTION_STRING
+TG-->>User: Ask device name
+User->>TG: Send NAME
+TG->>S: RegisterDevice(CONNECTION_STRING, NAME)
+S->>S: Create device record (Pending)
+
+S->>UART: Publish FIND(targetMac)
+UART->>GW: Send FIND via UART
+GW->>Mesh: Broadcast FIND
+Mesh->>Neigh: FIND received
+Neigh->>Mesh: PING targetMac (swarm forwarding)
+Mesh->>D: PING
+D-->>Mesh: PONG
+Mesh-->>Neigh: PONG
+Neigh->>Mesh: FOUND(targetMac)
+Mesh->>GW: FOUND
+GW->>UART: FOUND via UART
+UART->>S: FOUND
+
+Note over S,D: SPAKE2 verification to derive S_PASSWORD
+S->>UART: VERIFY request (to targetMac)
+UART->>GW: VERIFY via UART
+GW->>Mesh: DATA_DOWN(VERIFY)
+Mesh->>D: VERIFY
+D-->>Mesh: T_d
+Mesh-->>GW: DATA_UP(T_d)
+GW-->>UART: T_d via UART
+UART-->>S: T_d
+S-->>UART: T_s | V_s
+UART-->>GW: T_s | V_s via UART
+GW-->>Mesh: DATA_DOWN(T_s | V_s)
+Mesh-->>D: T_s | V_s
+D-->>Mesh: V_d
+Mesh-->>GW: DATA_UP(V_d)
+GW-->>UART: V_d via UART
+UART-->>S: V_d
+S->>S: Save S_PASSWORD and set status = Verified
+S->>UART: PROTO request
+UART->>GW: PROTO via UART
+GW->>Mesh: DATA_DOWN(PROTO)
+Mesh->>D: PROTO
+D-->>Mesh: PROTO_R (interaction protocol)
+Mesh-->>GW: DATA_UP(PROTO_R)
+GW-->>UART: PROTO_R via UART
+UART-->>S: PROTO_R
+S->>S: Save protocol. status = Connected
+
+S->>UART: START
+UART->>GW: START via UART
+GW->>Mesh: DATA_DOWN(START)
+Mesh->>D: START
+```
 
 ## Network
 
@@ -164,9 +343,6 @@ Because routing metadata (like `TTL`, `prevHop`, `charge`) is modified by interm
 #### Keys
 
 - `S_PASSWORD` - per-device secret generated during SPAKE2 (device <-> server). Used for end-to-end HMAC of device commands and telemetry.
-- `NET_KEY` (optional but recommended) - network-wide key provisioned by server to each device after verification (encrypted/authenticated using `S_PASSWORD`). Used to authenticate mesh-control messages (like `DECAY`, `HELLO`) where end-to-end per-device HMAC is not convenient.
-
-If `NET_KEY` is not used, mesh-control messages are considered best-effort and not security-critical.
 
 #### Message envelope
 
@@ -189,7 +365,8 @@ ROUTING_HEADER | SECURE_HEADER | PAYLOAD | TAG
 - `dir` - `UP` (to gateway) or `DOWN` (from gateway)
 - `msgType` - message type
 - `originMac` - MAC of the original sender (stays constant across hops)
-- `dstMac` - target MAC, or broadcast address for mesh-control
+- `dstMac` - target MAC, or broadcast address for mesh-control.
+  - For link-layer broadcast control messages, use `dstMac = FF:FF:FF:FF:FF:FF`.
 - `msgId` - message id unique per `originMac` (used for dedup/loop prevention)
 - `seq` - per-session sequence number for end-to-end anti-replay
 
@@ -198,17 +375,18 @@ ROUTING_HEADER | SECURE_HEADER | PAYLOAD | TAG
 **TAG** - authentication tag:
 
 - For end-to-end messages: `TAG = HMAC(S_PASSWORD, SECURE_HEADER | PAYLOAD)`
-- For mesh-control messages (when `NET_KEY` is enabled): `TAG = HMAC(NET_KEY, SECURE_HEADER | PAYLOAD)`
+
+Mesh-control message authentication is not specified in this document.
 
 Intermediate nodes MUST NOT modify `SECURE_HEADER` or `PAYLOAD`.
 
 #### Byte sizes
 
-This section defines the **recommended** binary sizes of each field so the remaining bytes for `PAYLOAD` can be calculated.
+This section defines the binary sizes of each field so the remaining bytes for `PAYLOAD` can be calculated.
 
-Assume `ESP_NOW_MAX` is the maximum number of bytes available for this protocol message in a single ESP-NOW frame (commonly 250 bytes, depending on ESP-NOW stack/config).
+`ESP_NOW_MAX` is the maximum number of bytes available for this protocol message in a single ESP-NOW frame. Treat it as a platform/config parameter.
 
-Recommended fixed sizes:
+Fixed sizes:
 
 **ROUTING_HEADER**:
 
@@ -338,6 +516,8 @@ Devices MAY also apply decay locally on startup by requesting/learning the lates
 #### Minimal message types (network level)
 
 - `HELLO` - optional presence announcement (helps `neighbors.lastSeen`).
+- `BEACON` - gateway-originated link-layer broadcast used to help the mesh converge after join/reboot/partition.
+- `WAKE` - device-originated link-layer broadcast on wake from deep sleep (helps re-attach after sleep/path loss).
 - `DATA_UP` - device -> gateway (telemetry/events/responses).
 - `DATA_DOWN` - gateway -> device (commands/queries).
 - `DECAY` - network-wide charge decay.

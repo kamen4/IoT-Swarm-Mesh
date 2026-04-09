@@ -47,7 +47,9 @@ The solution is a **two-layer protocol** plus a hub backend:
 
 4. **Mesh forwarding (swarm routing)**
    - Each ESP-NOW frame uses a split header: a **mutable** `ROUTING_HEADER` (not covered by end-to-end HMAC) and an **immutable** `SECURE_HEADER` + payload (covered by HMAC).
-   - Forwarding is **charge-based**: nodes propagate packets to the top 50% neighbors by charge, using `q_up` for traffic towards the gateway and `q_total` for traffic from the gateway.
+   - **UP delivery** is **charge-based swarm forwarding**: nodes propagate UP packets towards the gateway via the top neighbors by `q_up`, using `ttl` + deduplication to prevent storms.
+   - **DOWN delivery** (gateway → device unicast commands) is **tree-first**: a gradient/tree rooted at the gateway is formed using `BEACON`, and nodes forward DOWN only to their children (loop-free by construction).
+   - Gateway-originated mesh-control broadcasts (e.g., `BEACON`, `DECAY`, onboarding `FIND`) may still use controlled multi-path dissemination so they can converge without relying on an already-formed tree.
    - A network-wide `DECAY` epoch prevents unbounded charge growth and helps convergence.
 
 Why a swarm-style, charge-based approach (vs common alternatives) is a good fit here:

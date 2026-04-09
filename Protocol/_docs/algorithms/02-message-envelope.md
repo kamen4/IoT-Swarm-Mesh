@@ -43,9 +43,14 @@ ROUTING_HEADER | SECURE_HEADER | PAYLOAD | TAG
 
 **TAG** - authentication tag:
 
-- For end-to-end messages: `TAG = HMAC(S_PASSWORD, SECURE_HEADER | PAYLOAD)`
+- For end-to-end messages (server ↔ device after SPAKE2):
+  - `TAG = Trunc16(HMAC-SHA256(S_PASSWORD, SECURE_HEADER | PAYLOAD))`
+- For non end-to-end messages (e.g., pre-SPAKE2 onboarding discovery):
+  - `TAG` MUST be all-zero bytes and MUST be ignored by receivers.
 
-Mesh-control message authentication is not specified in this document.
+The normative wire encoding, `msgType` registry, payload layouts, and fragmentation rules are defined in [Protocol Specification (Wire Format)](../reference/protocol.md).
+
+Mesh-control authentication (e.g., `BEACON/WAKE/DECAY`) is defined in [Identity & Security](05-identity-security.md).
 
 Intermediate nodes MUST NOT modify `SECURE_HEADER` or `PAYLOAD`.
 

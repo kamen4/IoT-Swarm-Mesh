@@ -1,12 +1,21 @@
-# Swarm routing (charge-based)
+# UP Routing — Swarm (charge-based)
 
-The mesh is self-organizing. Devices do not store global routes. Each device stores only neighbor MACs and two charge values.
+The mesh is self-organizing. Devices do not store global routes.
+
+This document defines the swarm/charge-based forwarding used for:
+
+- **UP data delivery** (`dir=UP`) towards the Gateway.
+- **Dissemination of certain mesh-control broadcasts** (e.g., `BEACON`, `DECAY`, `FIND`) that must reach the whole mesh without relying on an already-formed tree.
+
+**Unicast DOWN command delivery** (`dir=DOWN` with `dstMac != FF:FF:FF:FF:FF:FF`) is defined separately in [DOWN Delivery — Tree-First Broadcast Concept](04-down-routing.md).
 
 ## Definitions
 
 - **Gateway** is the ESP device physically connected to HUB over UART. Its MAC address is fixed and considered the root of the mesh for `UP` direction.
 - `q_up` - charge used to route messages **towards gateway** (`dir=UP`). Intuition: higher means "more traffic successfully flows to gateway through this node".
-- `q_total` - charge used to route messages **from gateway** (`dir=DOWN`). Intuition: higher means "more central / more traffic goes through this node overall".
+- `q_total` - total/centrality charge reflecting how much traffic passes through this node overall.
+  - Used to help disseminate some gateway-originated broadcasts (control-plane) and as a general-purpose heuristic.
+  - Not used as the primary routing metric for unicast DOWN delivery (see tree-first DOWN).
 
 Each device maintains:
 
@@ -49,9 +58,10 @@ When a device receives a packet that is not for itself:
 Forwarding target selection:
 
 - If `dstMac` is a direct neighbor: unicast to `dstMac`.
+- Else if `dir=DOWN` and `dstMac != FF:FF:FF:FF:FF:FF`: forward according to the tree-first DOWN rules (children-only) defined in [DOWN Delivery — Tree-First Broadcast Concept](04-down-routing.md).
 - Otherwise, select neighbors excluding `prevHopMac`.
   - For `dir=UP`: sort by `neighbors[mac].q_up` descending.
-  - For `dir=DOWN`: sort by `neighbors[mac].q_total` descending.
+  - For `dir=DOWN` broadcast/control (`dstMac = FF:FF:FF:FF:FF:FF`): sort by `neighbors[mac].q_total` descending.
   - Forward to the top `ceil(0.5 * neighborCount)` neighbors (minimum 1).
 
 This is not a broadcast; it is a swarm-propagation step.
@@ -84,6 +94,5 @@ Devices MAY also apply decay locally on startup by requesting/learning the lates
 - `HELLO` - optional presence announcement (helps `neighbors.lastSeen`).
 - `BEACON` - gateway-originated link-layer broadcast used to help the mesh converge after join/reboot/partition.
 - `WAKE` - device-originated link-layer broadcast on wake from deep sleep (helps re-attach after sleep/path loss).
-- `DATA_UP` - device -> gateway (telemetry/events/responses).
-- `DATA_DOWN` - gateway -> device (commands/queries).
+- `IO_*` - end-to-end interaction messages (get/set/event) exchanged after onboarding.
 - `DECAY` - network-wide charge decay.

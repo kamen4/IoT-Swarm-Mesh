@@ -61,7 +61,8 @@ Traffic flowing from the gateway to devices (e.g., server commands, updates).
 Numeric metric advertised by a node indicating its "connectivity quality":
 
 - `q_up`: charge for routing UP (higher = better path to gateway)
-- `q_total`: charge for routing DOWN or general traffic
+- `q_total`: total/centrality charge for general traffic (often useful for disseminating gateway-originated broadcasts/control)
+  - Unicast DOWN delivery primarily uses the tree/gradient model (see `BEACON` / `Tree Broadcast`).
 
 Neighbors inspect incoming packets' `ROUTING_HEADER.charge` field to build a local neighbor-charge map.
 
@@ -143,7 +144,7 @@ Broadcast to locate a device by MAC during onboarding.
 Reply to FIND confirming device presence.
 
 **VERIFY**  
-Step 1 of SPAKE2: server requests device to begin key exchange.
+SPAKE2 handshake message used during onboarding to derive `S_PASSWORD` (uses a step byte in payload).
 
 **PROTO**  
 Request for device's interaction protocol (list of elements, types, formats).
@@ -154,11 +155,17 @@ Device response containing its interaction protocol specification.
 **START**  
 Server signals device is fully onboarded and ready for normal operation.
 
-**DATA_UP**  
-Mesh-routed message traveling UP toward gateway.
+**FRAG**
+Fragmentation wrapper message used when a logical payload does not fit into a single ESP-NOW frame.
 
-**DATA_DOWN**  
-Mesh-routed message traveling DOWN from gateway.
+**IO_GET / IO_GET_R**
+Interaction read: server requests an element value; device returns the value.
+
+**IO_SET / IO_SET_R**
+Interaction write: server sets an input element value; device returns status (and optionally echoes the applied value).
+
+**IO_EVENT**
+Device-originated element update/event (telemetry).
 
 **WAKE**  
 Link-layer broadcast from a device waking from deep sleep to re-announce presence and reattach to tree.

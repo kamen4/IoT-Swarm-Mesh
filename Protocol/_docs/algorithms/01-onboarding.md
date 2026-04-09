@@ -9,8 +9,13 @@
 - The bot captures the CONNECTION_STRING and NAME and sends a request to the server to handle the device connection
 - The server creates a device record with DeviceConnectionStatus::Pending
 - Then the server creates a broadcast FIND message to find this device
-- Every device which gets FIND request tries to find the target device by sending PING requests
-- If a device receives a PONG response, it notifies the server that the device has been found with FOUND message
+- `FIND` is disseminated through the mesh (see swarm forwarding rules for broadcast/control messages).
+- When the target device receives `FIND`, it replies with `PONG`.
+- The server treats reception of `PONG` as “device found” and continues to SPAKE2.
+
+Notes:
+
+- `FIND/PONG` are discovery messages. Before SPAKE2 completes they are not end-to-end authenticated; they MUST NOT be used as proof of identity.
 
 ---
 
@@ -67,36 +72,40 @@ S: V_d' = HMAC(S_PASSWORD, "DEVICE_OK")
 
 ## Interaction Protocol
 
-Array of all elements of the device
+Conceptual model of all elements exposed by the device.
+
+Note: the normative on-wire encoding of `PROTO_R` is binary and defined in [Protocol Specification (Wire Format)](../reference/protocol.md).
 
 ```json
 [
   {
-    "n": "",
-    "t": "",
-    "f": ""
+    "id": 0,
+    "name": "",
+    "io": "",
+    "format": ""
   }
 ]
 ```
 
-- `n` - element name
-- `t` - type: `O` - output, `I` - input
-- `f` - data format:
-  - `b` - boolean 0/1
-  - `i` - integer
-  - `f` - float [0,1]
-  - `e:v1;v2;...` - enum with values: v1, v2 etc.
-  - `s` - string
+- `id` - stable element id (`uint16`) chosen by the device firmware
+- `name` - element name
+- `io` - direction:
+  - `O` - output (device produces values)
+  - `I` - input (server sets values)
+- `format` - data format:
+  - `bool`
+  - `int32`
+  - `float32`
+  - `enum(v1,v2,...)`
+  - `string`
 
-For each element would be creates map id:name
+The server stores the mapping `id -> element metadata` from `PROTO_R`.
 
-Request of state of the element: `id/g/`.
-Response for request of state of the element: `id/gr/value`.
+Application interaction messages are exchanged using the `IO_*` message family (see [Protocol Specification (Wire Format)](../reference/protocol.md)):
 
-Request for setting value for Output element: `id/s/value`
-Response for setting value for Output element: `id/sr/value`
-
-Message from device with data generated ones in a while (e.g. temperature sensor): `id/e/value`
+- Read an element: `IO_GET(elementId)` → `IO_GET_R(elementId, value)`
+- Write an input element: `IO_SET(elementId, value)` → `IO_SET_R(elementId, status)`
+- Device event/telemetry: `IO_EVENT(elementId, value)`
 
 ## Sequence diagram
 
@@ -110,7 +119,6 @@ participant S as "Business Server"
 participant UART as "UART Listener/Sender"
 participant GW as "Gateway ESP"
 participant Mesh as "ESP-NOW Mesh"
-participant Neigh as "Neighbor Devices"
 participant D as "Target Device"
 
 User->>D: Scan QR, open DEVICE_PAGE
@@ -124,46 +132,42 @@ S->>S: Create device record (Pending)
 S->>UART: Publish FIND(targetMac)
 UART->>GW: Send FIND via UART
 GW->>Mesh: Broadcast FIND
-Mesh->>Neigh: FIND received
-Neigh->>Mesh: PING targetMac (swarm forwarding)
-Mesh->>D: PING
+Mesh->>D: FIND (forwarded via swarm dissemination)
 D-->>Mesh: PONG
-Mesh-->>Neigh: PONG
-Neigh->>Mesh: FOUND(targetMac)
-Mesh->>GW: FOUND
-GW->>UART: FOUND via UART
-UART->>S: FOUND
+Mesh-->>GW: PONG (forwarded UP)
+GW->>UART: PONG via UART
+UART->>S: PONG
 
 Note over S,D: SPAKE2 verification to derive S_PASSWORD
 S->>UART: VERIFY request (to targetMac)
 UART->>GW: VERIFY via UART
-GW->>Mesh: DATA_DOWN(VERIFY)
+GW->>Mesh: VERIFY(step=1)
 Mesh->>D: VERIFY
 D-->>Mesh: T_d
-Mesh-->>GW: DATA_UP(T_d)
+Mesh-->>GW: VERIFY(step=2, T_d)
 GW-->>UART: T_d via UART
 UART-->>S: T_d
 S-->>UART: T_s | V_s
 UART-->>GW: T_s | V_s via UART
-GW-->>Mesh: DATA_DOWN(T_s | V_s)
+GW-->>Mesh: VERIFY(step=3, T_s | V_s)
 Mesh-->>D: T_s | V_s
 D-->>Mesh: V_d
-Mesh-->>GW: DATA_UP(V_d)
+Mesh-->>GW: VERIFY(step=4, V_d)
 GW-->>UART: V_d via UART
 UART-->>S: V_d
 S->>S: Save S_PASSWORD and set status = Verified
 S->>UART: PROTO request
 UART->>GW: PROTO via UART
-GW->>Mesh: DATA_DOWN(PROTO)
+GW->>Mesh: PROTO
 Mesh->>D: PROTO
 D-->>Mesh: PROTO_R (interaction protocol)
-Mesh-->>GW: DATA_UP(PROTO_R)
+Mesh-->>GW: PROTO_R
 GW-->>UART: PROTO_R via UART
 UART-->>S: PROTO_R
 S->>S: Save protocol. status = Connected
 
 S->>UART: START
 UART->>GW: START via UART
-GW->>Mesh: DATA_DOWN(START)
+GW->>Mesh: START
 Mesh->>D: START
 ```

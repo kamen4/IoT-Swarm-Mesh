@@ -16,7 +16,7 @@ Documentation for a secure, on-premises ESP-NOW mesh protocol with swarm intelli
 2. **[Message Envelope](algorithms/02-message-envelope.md)** — Frame structure, HMAC, replay protection
 3. **[UP Routing](algorithms/03-up-routing.md)** — Swarm-based charge routing toward gateway
 4. **[DOWN Routing](algorithms/04-down-routing.md)** — Tree-first broadcast from gateway
-5. **[Identity & Security](algorithms/05-identity-security.md)** — Device certificates, cryptographic primitives
+5. **[Identity & Security](algorithms/05-identity-security.md)** — Server-verified identity; `S_PASSWORD`-based authentication
 
 ### Implementation Guidance
 
@@ -40,7 +40,7 @@ See [Architecture](reference/architecture.md) for detailed system diagram and HU
 
 - **Resilient mesh**: multi-path swarm routing for UP traffic; tree-first for DOWN
 - **Scalability**: devices keep only neighbor state, no global routing tables
-- **Security**: end-to-end HMAC per device, per-device identity certificates, SPAKE2 onboarding
+- **Security**: end-to-end HMAC per device (`S_PASSWORD`), SPAKE2 onboarding; network membership is verified by the server
 - **Efficiency**: charge-based neighbor selection, lightweight forwarding rules, deduplication by `(originMac, msgId)`
 
 ## File Organization

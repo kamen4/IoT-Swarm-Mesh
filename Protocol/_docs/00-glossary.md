@@ -26,22 +26,10 @@ A single ESP-NOW transmission (bounded by the ESP-NOW maximum) containing protoc
 Symmetric Password-Authenticated Key Exchange (version 2). A cryptographic protocol used during device onboarding to derive a shared secret (`S_PASSWORD`) from the device's `CONNECTION_KEY` without transmitting the key itself.
 
 **S_PASSWORD**  
-Per-device secret derived during SPAKE2. Used for end-to-end HMAC authentication of all device-to-server messages and vice versa.
+Per-device secret derived during SPAKE2. The only cryptographic key used by the protocol after onboarding; used for end-to-end HMAC authentication of all device-to-server messages and vice versa.
 
 **HMAC**  
 Hash-based Message Authentication Code; provides authenticity and integrity verification of a message. Uses `HMAC-SHA256` truncated to 16 bytes.
-
-**DEV_PRIV / DEV_PUB**  
-Per-device Ed25519 signing key pair. `DEV_PRIV` remains on the device; `DEV_PUB` is distributed via `DEV_CERT`.
-
-**DEV_CERT**  
-Compact certificate signed by the network CA that binds a device's MAC address to its public key (`DEV_PUB`), with optional expiry and capabilities metadata.
-
-**NET_CA_PUB**  
-Network-wide CA (Certificate Authority) public key. Provisioned on all devices at manufacturing or after SPAKE2, used to verify `DEV_CERT` chain.
-
-**NET_GROUP_KEY**  
-Optional shared symmetric key for cheap mesh-control filtering. If extracted from one device, attacker can forge group messages. Must not be used for identity-critical messages.
 
 **CONNECTION_STRING**  
 User-visible credential during onboarding: device MAC address + base64(SHA256(CONNECTION_KEY)). Scanned from device QR code and sent to Telegram bot to initiate registration.
@@ -62,7 +50,7 @@ Numeric metric advertised by a node indicating its "connectivity quality":
 
 - `q_up`: charge for routing UP (higher = better path to gateway)
 - `q_total`: total/centrality charge for general traffic (often useful for disseminating gateway-originated broadcasts/control)
-  - Unicast DOWN delivery primarily uses the tree/gradient model (see `BEACON` / `Tree Broadcast`).
+  - Unicast DOWN delivery uses a charge-induced single-parent tree with a forwarding threshold `q_forward` (see `Tree Broadcast`).
 
 Neighbors inspect incoming packets' `ROUTING_HEADER.charge` field to build a local neighbor-charge map.
 
@@ -73,19 +61,24 @@ UP routing strategy: forward to the neighbor with highest `q_up`, plus top 50% o
 Network-wide synchronization mechanism preventing unbounded charge growth. Triggered by a `DECAY` mesh-control message; nodes reset or dampen their charge metrics and bump `lastDecayEpoch`.
 
 **BEACON**  
-Periodic link-layer broadcast from gateway (destination `FF:FF:FF:FF:FF:FF`) carrying gradient information (`g=0` at gateway) to help nodes converge to a tree structure for DOWN delivery.
+Periodic link-layer broadcast from gateway (destination `FF:FF:FF:FF:FF:FF`) carrying an implementation-defined convergence hint for charge-based DOWN tree formation.
 
-**Gradient**  
-Hop-distance metric in the tree: `g_self = min(g_neighbor + 1)`. Drives parent selection for tree formation.
+`BEACON` is mesh-control and is not end-to-end authenticated (`TAG = 0`); receivers MUST treat it as an untrusted hint.
+
+**Forward-Eligibility Threshold (q_forward)**  
+Minimum charge threshold used by DOWN tree-broadcast:
+
+- A node forwards DOWN only to children whose observed `q_total` is at least `q_forward`.
+- Nodes below `q_forward` are treated as “cold” / not-yet-trained and should rely on WAKE + PULL delivery.
 
 **Parent / Child**  
 In the DOWN tree:
 
-- **Parent**: the neighbor a node selects as the link back toward gateway (lowest gradient + best RSSI)
+- **Parent**: the neighbor a node selects as the link back toward gateway (higher `q_total` + best RSSI tie-break; in the ideal model the parent must have strictly higher charge than the child)
 - **Child**: a neighbor that has selected the current node as parent. Tracked in `children[]` table.
 
 **Tree Broadcast**  
-For DOWN, a node forwards only to its direct children and never back to its parent; structurally prevents loops.
+For DOWN, a node forwards only to its direct children that satisfy `q_total(child) >= q_forward` and never back to its parent; structurally prevents loops.
 
 ## Message & Frame Structure
 

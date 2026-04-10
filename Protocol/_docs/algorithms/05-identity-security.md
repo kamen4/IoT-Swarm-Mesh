@@ -1,101 +1,92 @@
-# Offline Device Identity (Device-to-Device Auth)
+# Identity & Security (Server-Verified)
 
-## Device identity without server involvement
+This protocol intentionally uses a **server-verified identity model**:
 
-Goal: allow a device to verify that another device is a **registered member of the network** (e.g. after deep-sleep wake + broadcast discovery), without querying the server and without storing per-pair keys.
+- There is **no network-wide CA**, **no device certificates**, and **no shared network/group keys**.
+- After onboarding, the only cryptographic secret used by the protocol is the per-device `S_PASSWORD` shared between that device and the server.
 
-Use a network-wide CA and per-device keys:
+The mesh is treated as an **untrusted transport** layer: intermediate forwarders do not validate end-to-end authenticity.
 
-- `NET_CA_PUB` - network CA public key (same on all devices). Provisioned at manufacturing time or delivered after SPAKE2 (protected by `S_PASSWORD`).
-- `DEV_PRIV`, `DEV_PUB` - per-device signing key pair (unique per device).
-- `DEV_CERT` - compact certificate signed by the CA that binds `(originMac -> DEV_PUB)` plus optional metadata (expiry, capabilities).
+---
 
-With this scheme:
+## 1) Keys and trust boundaries
 
-- Any device can verify another device offline by checking `DEV_CERT` with `NET_CA_PUB`, then verifying a signature made with `DEV_PRIV`.
-- Compromise of one device does **not** allow impersonation of other devices (attacker only gains that device's `DEV_PRIV`).
+- `CONNECTION_KEY`
+  - Onboarding secret embedded in the device QR code.
+  - Used only as the SPAKE2 password input; it is never transmitted.
 
-Broadcast discovery / wake:
+- `S_PASSWORD`
+  - Per-device secret established by SPAKE2 between the device and the server.
+  - Used for end-to-end message authentication (`TAG`).
+  - NOT shared with other devices; neighbors cannot verify it locally.
 
-- `WAKE` (broadcast to `FF:FF:FF:FF:FF:FF`) includes `DEV_CERT` (or its hash/id) and a signature `SIG_DEV`.
-- To prevent replay, neighbors MAY require a short challenge-response:
-  - neighbor sends `CHALLENGE(nonce)` (unicast)
-  - waking device replies `PROVE(sig(nonce))`
+---
 
-## Optional: shared group key for cheap filtering (trade-off)
+## 2) End-to-end authentication (server ↔ device)
 
-If you still want a fast symmetric check for mesh-control traffic, you MAY add:
+After SPAKE2, end-to-end authenticated messages use:
 
-- `NET_GROUP_KEY` - shared network key provisioned after SPAKE2.
+$$
+TAG = \mathrm{Trunc16}(\mathrm{HMAC\_SHA256}(S\_PASSWORD,\; SECURE\_HEADER\;|\;PAYLOAD)).
+$$
 
-Important limitation: if `NET_GROUP_KEY` is extracted from one device, an attacker can forge group-authenticated control messages. Therefore `NET_GROUP_KEY` MUST NOT be the only mechanism used to validate device identity.
+Requirements:
 
-## Cryptographic profile
+- Intermediate forwarders MUST NOT attempt to validate or generate `TAG`.
+- Any statement like “device X is authenticated” is only meaningful **at the endpoints** (server and the device).
 
-This section defines a concrete crypto profile for the **offline device identity** scheme (`NET_CA_PUB` + `DEV_CERT` + device signatures) and the optional `NET_GROUP_KEY`.
+---
 
-### Primitives
+## 3) Mesh-control messages are unauthenticated hints
 
-- Hash: `SHA-256`.
-- KDF: `HKDF-SHA256`.
-- End-to-end MAC: `HMAC-SHA256`, truncated to 16 bytes.
-- Device / CA signatures: `Ed25519` (32-byte public key, 64-byte signature).
+Mesh-control broadcasts such as `BEACON`, `DECAY`, `WAKE`, `HELLO` are typically sent with `TAG = 0`.
 
-### Key derivation from SPAKE2
+Receivers MUST treat them as **untrusted hints**:
 
-Treat SPAKE2 output as a high-entropy shared secret and derive keys via HKDF:
+- apply strict TTL and hop-by-hop deduplication;
+- per-type rate limiting;
+- conservative topology updates (hysteresis, ignore one-off samples).
 
-- `S_SHARED = SPAKE2(...)`
-- `S_PASSWORD = HKDF(S_SHARED, info="mesh-e2e-hmac", len=32)`
+They MUST NOT be treated as proof of identity / membership.
 
-Optionally: if you need to provision secrets like `NET_GROUP_KEY` over the air without leaking them, derive an encryption key too:
+---
 
-- `S_ENC_KEY = HKDF(S_SHARED, info="mesh-e2e-enc", len=32)`
+## 4) Server-assisted peer membership check (optional)
 
-If you do not implement end-to-end encryption, then any secret delivered over the air (including `NET_GROUP_KEY`) is observable and should instead be provisioned at manufacturing time.
+Problem: device **A** wants to know whether a peer **B** “belongs to the network”.
 
-### `DEV_CERT` (compact certificate)
+Because A does not know `S_PASSWORD_B`, A cannot validate any B-produced HMAC locally. The check must be **server-assisted**.
 
-Minimum fields:
+One possible minimal flow (message names are illustrative; implement as application payloads or dedicated `msgType`s if needed):
 
-- `originMac` (6 bytes)
-- `DEV_PUB` (32 bytes)
-- `notAfter` (e.g., unix minutes, 4 bytes)
-- optional `caps/flags` (1-2 bytes)
-- `CA_SIG` (64 bytes) — CA signature over the preceding fields
+1. A generates a random nonce `Na` and sends it to B as a best-effort mesh-control hint (`TAG = 0`).
+2. B replies with `(Na, proof)` where:
 
-Identifier:
+$$
+proof = \mathrm{Trunc16}(\mathrm{HMAC\_SHA256}(S\_PASSWORD_B,\; "PEER\_PROOF"\;|\;mac_A\;|\;Na)).
+$$
 
-- `certId = Trunc64(SHA256(DEV_CERT))` (8 bytes) or `Trunc128` (16 bytes)
+3. A sends `(mac_B, Na, proof)` to the server using an end-to-end authenticated request (A uses its own `S_PASSWORD_A`).
+4. The server recomputes `proof` using stored `S_PASSWORD_B` and returns a boolean verdict to A.
 
-Neighbors SHOULD cache `DEV_CERT` by `certId` so broadcasts can carry `certId` instead of the full cert once learned.
+Notes:
 
-### Signing mesh-control messages
+- The nonce prevents trivial replay.
+- If the server is unreachable, treat B as untrusted for security-critical decisions.
 
-For identity-grade control (use for `WAKE`, and optionally for `BEACON/DECAY`):
+---
 
-- Sender builds `PAYLOAD` including the fields relevant for replay control (see below) and excluding the signature.
-- Computes `SIG_DEV = Ed25519.Sign(DEV_PRIV, SHA256(SECURE_HEADER | PAYLOAD_NO_SIG))`.
-- Appends `SIG_DEV` to `PAYLOAD`.
+## 5) Key compromise
 
-Verification:
+- If `S_PASSWORD` of a device is extracted, an attacker can impersonate that device to the server and forge end-to-end authenticated traffic.
+- Mitigate with server-side revocation (deny-list by `originMac`) and requiring re-onboarding (new `CONNECTION_KEY` → new SPAKE2 → new `S_PASSWORD`).
 
-1. If full cert is present: verify `DEV_CERT` using `NET_CA_PUB`, check expiry, and check `originMac` matches `SECURE_HEADER.originMac`.
-2. Else if `certId` is present: lookup cached `DEV_CERT` by `certId`.
-3. Verify `SIG_DEV` using the `DEV_PUB` from the certificate.
+Because there are no network-wide shared secrets, compromise impact is per-device.
 
-### Anti-replay guidance (broadcast-friendly)
+---
 
-Broadcasts cannot rely on a synchronized `seq`, so use one of:
+## 6) Cryptographic profile (minimal)
 
-- **Challenge-response (strongest)**: neighbor unicasts `CHALLENGE(nonce)` and accepts `PROVE(sig(nonce))`.
-- **Stateless-ish token**: include `wakeNonce` (random 8-16 bytes) and `bootCounter` (monotonic) in `WAKE`, and keep a small LRU cache of recently-seen `(originMac, wakeNonce)` for a short window.
-
-For gateway-originated control (`BEACON/DECAY`), include a monotonic `epoch`/`counter` and accept only within a sliding window to prevent replay storms.
-
-### Size considerations
-
-`Ed25519` signatures are 64 bytes; a minimal `DEV_CERT` can be large enough to exceed a single ESP-NOW frame once combined with a signature and encoding overhead. If a single ESP-NOW frame cannot fit `DEV_CERT` + signature in one go:
-
-- Send full `DEV_CERT` only when first discovered (or fragmented), then use `certId` in subsequent broadcasts.
-- Prefer unicast challenge-response after discovery to avoid repeating large certs on broadcast.
+- SPAKE2 (onboarding only)
+- SHA-256
+- HMAC-SHA256 truncated to 16 bytes (`Trunc16`)

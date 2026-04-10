@@ -64,6 +64,10 @@ S: V_d' = HMAC(S_PASSWORD, "DEVICE_OK")
 
 [From now on, every request and response is signed with HMAC based on the S_PASSWORD]
 
+Note:
+
+- The protocol does not provision any network-wide CA/certificates or shared group keys. Device identity and membership are verified by the server using `S_PASSWORD` (see [Identity & Security](05-identity-security.md)).
+
 - The server saves S_PASSWORD and changes device's record status to DeviceConnectionStatus::Verified
 - The server sends a PROTO request to retrieve the interaction protocol data from the device
 - The device sends its protocol data with PROTO_R message

@@ -44,18 +44,19 @@ Mitigations:
 
 ---
 
-## 2) Tree Formation and Maintenance (BEACON Gradient)
+## 2) Tree Formation and Maintenance (Charge-Induced Tree)
 
 ### 2.1 Cold start (all metrics are zero)
 
 Failure:
 
-- Without a root signal, convergence is slow and unstable.
+- Without enough background traffic, charges do not separate; parent selection is effectively random and DOWN becomes unstable.
 
 Mitigations:
 
-- Gateway `BEACON` (broadcast to `FF:FF:FF:FF:FF:FF`) with a gradient value (`g=0` at root).
-- Parent selection by best gradient + RSSI penalty; compute `g_self = min(g_parent + 1)`.
+- Gateway `BEACON` (broadcast to `FF:FF:FF:FF:FF:FF`) as a small keep-warm / convergence hint broadcast.
+- Bootstrap policy: temporarily set `q_forward` low (or treat unknown charge as eligible) until the mesh is “charged”.
+- Parent selection by best charge + RSSI penalty (tie-break); require strict improvement before switching.
 - Forward jitter (random 10–100ms) to reduce synchronized collisions.
 
 ### 2.2 Parent flapping
@@ -66,7 +67,7 @@ Failure:
 
 Mitigations:
 
-- Hysteresis: switch parent only if improvement is significant (e.g., ≥2 hops or strong RSSI delta).
+- Hysteresis: switch parent only if improvement is significant (e.g., charge delta ≥ `Δq`, or strong RSSI delta).
 - Parent dead timer: expire parent if not heard for `T_dead`.
 - Rate-limit re-parenting (cooldown window).
 
@@ -219,7 +220,7 @@ Mitigations:
 Mitigations:
 
 - Protocol fragmentation (`fragId`, `index`, `count`, `totalLen`) with bounded reassembly buffers and timeouts.
-- Identity broadcasts that include `DEV_CERT` + `Ed25519` signature can exceed a single ESP-NOW frame in practice (e.g., `DEV_CERT` often ~110–130 bytes + 64-byte signature, plus encoding). Prefer `certId` caching and avoid repeating full certs on broadcast.
+- Keep mesh-control broadcasts (`BEACON/DECAY/WAKE/HELLO`) small; large broadcast payloads are more likely to be dropped or to require fragmentation.
 
 ### 7.2 Out-of-order delivery
 
@@ -246,7 +247,7 @@ Mitigations:
 
 ## 9) Security (Control-Plane)
 
-### 9.1 Control spoofing without offline identity
+### 9.1 Control spoofing (mesh-control unauthenticated)
 
 Failure:
 
@@ -254,17 +255,18 @@ Failure:
 
 Mitigations:
 
-- For `WAKE` (broadcast discovery): require `DEV_CERT` + `SIG_DEV` verification using `NET_CA_PUB`.
-- For topology-critical gateway control (`DECAY/BEACON`): require gateway identity (gateway `DEV_CERT` + signature) and reject if `originMac` is not the Gateway.
-- Optional: use `NET_GROUP_KEY` as a cheap filter for mesh-control traffic (DoS reduction only, not identity).
+- Treat `DECAY/BEACON/WAKE/HELLO` as unauthenticated hints (`TAG = 0`): apply strict TTL, dedup, and per-type rate limiting.
+- Use conservative topology rules (hysteresis for parent switching, ignore single-sample changes, require stability over time).
+- If you need to decide whether a sender `originMac` belongs to the network, query the server once you have an end-to-end session (`S_PASSWORD`) and cache the result.
 
 ### 9.2 Key compromise
 
 Mitigations:
 
-- If `DEV_PRIV` is extracted from one device, attacker can impersonate only that device. Mitigate with short-lived `DEV_CERT` (expiry) and a signed revocation/deny-list distributed by the Gateway.
-- If `NET_GROUP_KEY` is used and extracted, attacker can forge group-authenticated control. Treat it as disposable: rotate it and never rely on it for identity.
-- Rate-limit control messages by type and by verified origin.
+- If `S_PASSWORD` for a specific device is extracted, attacker can authenticate to the server as that device and forge end-to-end `TAG`s.
+  - Mitigate with server-side revocation and requiring re-onboarding (new `CONNECTION_KEY` / new SPAKE2) for compromised devices.
+- There are no network-wide shared keys; compromise impact is per-device.
+- Rate-limit control messages by type; rate-limit end-to-end traffic by verified `originMac` at the server.
 
 ---
 

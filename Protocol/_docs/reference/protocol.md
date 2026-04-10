@@ -72,7 +72,7 @@ In this case, the sender MUST transmit the content as a sequence of `FRAG` messa
 - Each fragment is a normal envelope with its own `msgId` (so hop-by-hop dedup works unchanged).
 - The fragment payload is:
 
-```
+```с
 struct FragPayload {
   u16 fragGroupId;     // groups fragments of the same logical message
   u8  fragIndex;       // 0..fragCount-1
@@ -138,7 +138,7 @@ Unless specified otherwise, integer fields below follow the encoding conventions
 
 Payload:
 
-```
+```с
 struct FindPayload {
   u8  targetMac[6];
 }
@@ -152,7 +152,7 @@ struct FindPayload {
 
 Payload:
 
-```
+```с
 struct PongPayload {
   u16 echoFindMsgId;   // msgId from the FIND being answered
 }
@@ -164,7 +164,7 @@ All `VERIFY` messages use non‑E2E authentication (`TAG = 0`).
 
 `VERIFY` payload begins with a step byte:
 
-```
+```с
 struct VerifyPayload {
   u8 step;             // 1..4
   u8 data[];           // step-dependent
@@ -200,7 +200,7 @@ Payload: empty.
 
 Payload (v1):
 
-```
+```с
 struct ProtoRPayload {
   u8  protoVersion;    // = 1
   u8  elementCount;
@@ -242,7 +242,7 @@ enum ValueFormat : u8 {
 
 Payload (v1): empty.
 
-Note: provisioning of identity material (e.g., `NET_CA_PUB`, `DEV_CERT`) is defined in [Identity & Security](../algorithms/05-identity-security.md).
+Note: after SPAKE2, this protocol does not provision additional identity material or shared network keys; endpoint authentication relies on `S_PASSWORD` (see [Identity & Security](../algorithms/05-identity-security.md)).
 
 ### 6.5 Application I/O (interaction)
 
@@ -267,7 +267,7 @@ Value encoding depends on the element `format`:
 
 `IO_GET` payload:
 
-```
+```с
 struct IoGetPayload {
   u16 elementId;
 }
@@ -275,7 +275,7 @@ struct IoGetPayload {
 
 `IO_GET_R` payload:
 
-```
+```с
 struct IoGetRPayload {
   u16 elementId;
   u8  status;
@@ -287,7 +287,7 @@ struct IoGetRPayload {
 
 `IO_SET` payload:
 
-```
+```с
 struct IoSetPayload {
   u16 elementId;
   u8  value[];
@@ -296,7 +296,7 @@ struct IoSetPayload {
 
 `IO_SET_R` payload:
 
-```
+```с
 struct IoSetRPayload {
   u16 elementId;
   u8  status;
@@ -308,7 +308,7 @@ struct IoSetRPayload {
 
 `IO_EVENT` payload:
 
-```
+```с
 struct IoEventPayload {
   u16 elementId;
   u8  value[];
@@ -321,7 +321,7 @@ struct IoEventPayload {
 
 Payload:
 
-```
+```с
 struct AckPayload {
   u16 ackedMsgId;   // msgId of the DOWN message being acknowledged
 }
@@ -333,7 +333,7 @@ struct AckPayload {
 
 `PULL` payload:
 
-```
+```с
 struct PullPayload {
   u8  maxCount;    // requested number of queued items
   u16 maxBytes;    // requested total payload budget
@@ -342,7 +342,7 @@ struct PullPayload {
 
 `PULL_R` payload:
 
-```
+```с
 struct PullRPayload {
   u8  count;
   Item items[count];
@@ -366,5 +366,5 @@ Mesh-control payloads and their authentication requirements are defined in:
 
 At minimum:
 
-- `BEACON` payload contains a gradient value `g` (gateway sends `g=0`).
+- `BEACON` payload contains an implementation-defined convergence hint for charge-based DOWN tree formation (e.g., a `q_total` / `q_forward` hint).
 - `DECAY` payload contains a monotonic `decayEpoch` and a decay `percent`.

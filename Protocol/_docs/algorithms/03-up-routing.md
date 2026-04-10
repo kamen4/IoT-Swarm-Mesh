@@ -15,7 +15,7 @@ This document defines the swarm/charge-based forwarding used for:
 - `q_up` - charge used to route messages **towards gateway** (`dir=UP`). Intuition: higher means "more traffic successfully flows to gateway through this node".
 - `q_total` - total/centrality charge reflecting how much traffic passes through this node overall.
   - Used to help disseminate some gateway-originated broadcasts (control-plane) and as a general-purpose heuristic.
-  - Not used as the primary routing metric for unicast DOWN delivery (see tree-first DOWN).
+  - Used by unicast DOWN tree-broadcast as the tree charge and as the basis for the `q_forward` forward-eligibility threshold (see tree-first DOWN).
 
 Each device maintains:
 

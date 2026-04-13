@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Charge-Induced Tree Theorem Simulator</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="app-header-top">
+          <div class="app-header-text">
+            <h1
+              title="Interactive theorem demonstration for charge-induced DOWN tree routing."
+            >
+              Charge-Induced Tree Theorem Simulator
+            </h1>
+            <p
+              title="This model verifies theorem assumptions and lemmas on the current graph state."
+            >
+              IoT Swarm Mesh: mathematical DOWN-tree simulation
+            </p>
+          </div>
+          <button
+            id="theorem-info-button"
+            class="primary"
+            type="button"
+            title="Open theorem, algorithm, and simulation guide."
+            aria-haspopup="dialog"
+            aria-controls="theorem-info-modal"
+            aria-expanded="false"
+          >
+            About theorem
+          </button>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <aside
+          id="control-panel"
+          class="panel panel-controls"
+          title="Controls for topology, theorem parameters, and run commands."
+        ></aside>
+        <section class="panel panel-canvas" title="Graph visualization canvas.">
+          <canvas
+            id="sim-canvas"
+            title="Network graph: node charges, weighted links, and parent tree."
+          ></canvas>
+        </section>
+        <aside
+          id="metrics-panel"
+          class="panel panel-metrics"
+          title="Live theorem status, assumptions, lemmas, and broadcast results."
+        ></aside>
+      </main>
+
+      <div
+        id="theorem-info-modal"
+        class="modal hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="theorem-info-title"
+      >
+        <div class="modal-backdrop" data-action="close-modal"></div>
+        <article
+          class="modal-dialog panel"
+          title="Detailed information about theorem and simulation."
+        >
+          <div class="modal-header">
+            <h2
+              id="theorem-info-title"
+              title="Theorem and simulation reference."
+            >
+              Theorem and simulation guide
+            </h2>
+            <button
+              id="theorem-info-close"
+              type="button"
+              title="Close guide window."
+            >
+              Close
+            </button>
+          </div>
+          <div class="modal-body">
+            <section class="modal-section" title="Formal theorem context.">
+              <h3>Theorem summary</h3>
+              <p>
+                The simulator demonstrates that strict charge increase toward
+                the gateway induces an acyclic parent graph that reaches the
+                root on the forward-eligible subset.
+              </p>
+              <ul>
+                <li>A5: gateway charge is the unique strict maximum.</li>
+                <li>
+                  A6: each eligible non-root node has an eligible neighbor with
+                  higher charge.
+                </li>
+                <li>
+                  A7: parent is selected among neighbors with strictly higher
+                  charge.
+                </li>
+              </ul>
+            </section>
+
+            <section class="modal-section" title="Algorithm execution flow.">
+              <h3>How the algorithm works</h3>
+              <ol>
+                <li>
+                  Generate a connected topology and initialize node charges.
+                </li>
+                <li>
+                  Propagate neighbor estimates by max update over link
+                  deliveries.
+                </li>
+                <li>
+                  Select parents with strict charge monotonicity and tie-break
+                  penalties.
+                </li>
+                <li>
+                  Rebuild parent and children maps and evaluate theorem checks.
+                </li>
+                <li>
+                  Optionally simulate DOWN broadcast along eligible child edges.
+                </li>
+              </ol>
+            </section>
+
+            <section
+              class="modal-section"
+              title="Simulation interpretation details."
+            >
+              <h3>How to read the simulation</h3>
+              <ul>
+                <li>Node color encodes charge level; gateway is emphasized.</li>
+                <li>
+                  Link thickness and brightness encode observed weight values.
+                </li>
+                <li>
+                  Tree links are highlighted, with dq labels showing
+                  parent-child charge deltas.
+                </li>
+                <li>
+                  Metrics panel reports assumptions, lemma checks, and theorem
+                  pass/fail.
+                </li>
+                <li>
+                  Broadcast report shows traversal order and duplicate detection
+                  status.
+                </li>
+              </ul>
+            </section>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

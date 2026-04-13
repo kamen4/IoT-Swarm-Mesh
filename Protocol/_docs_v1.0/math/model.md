@@ -1,13 +1,13 @@
 # Mathematical Model of the IoT Swarm Mesh Protocol
 
-This document formalizes the routing-related parts of the protocol as specified in `_docs/`.
+This document formalizes the routing-related parts of the protocol as specified in this documentation set.
 
 Scope:
 
-- UP routing (swarm, charge-based): `_docs/algorithms/03-up-routing.md`
-- DOWN delivery (tree-first, charge-induced tree): `_docs/algorithms/04-down-routing.md`
-- Envelope + dedup primitives: `_docs/algorithms/02-message-envelope.md`
-- Terms: `_docs/00-glossary.md`
+- UP routing (swarm, charge-based): [UP Routing — Swarm (charge-based)](../algorithms/03-up-routing.md)
+- DOWN delivery (tree-first, charge-induced tree): [DOWN Delivery — Tree-First Broadcast Concept](../algorithms/04-down-routing.md)
+- Envelope + dedup primitives: [Message Envelope](../algorithms/02-message-envelope.md)
+- Terms: [Glossary](../00-glossary.md)
 
 Non-goals:
 
@@ -33,7 +33,7 @@ If $\{u,v\} \in E$, then $u$ and $v$ can exchange ESP-NOW frames directly (singl
 To reason about convergence, we use a round-based abstraction:
 
 - In each round, every node may receive some set of frames from neighbors and may transmit frames to neighbors.
-- For the convergence theorem in `theorem.md`, we will assume a stable interval where $G$ is fixed and enough traffic/announcements propagate so that neighbor-charge views and parent choices can stabilize.
+- For the convergence theorem in [Charge-Induced Tree Theorem (DOWN Routing)](theorem.md), we will assume a stable interval where $G$ is fixed and enough traffic/announcements propagate so that neighbor-charge views and parent choices can stabilize.
 
 The protocol itself is asynchronous; the round model is only a proof tool.
 
@@ -83,7 +83,7 @@ The set of tracked neighbors is a bounded set $\mathcal{N}_u \subseteq \{v : \{u
 
 ### 3.2 Charges
 
-Node-local charges (as in `_docs/algorithms/03-up-routing.md`):
+Node-local charges (as in [UP Routing — Swarm (charge-based)](../algorithms/03-up-routing.md)):
 
 - $q^{\uparrow}_u \in \mathbb{R}_{\ge 0}$ (or integer, implementation-defined scaling)
 - $q^{\mathrm{tot}}_u \in \mathbb{R}_{\ge 0}$
@@ -96,7 +96,7 @@ These are **advertised** hop-by-hop via the mutable field `ROUTING_HEADER.charge
 
 ### 3.4 DOWN-tree state (charge-induced parent/children)
 
-As in `_docs/algorithms/04-down-routing.md`:
+As in [DOWN Delivery — Tree-First Broadcast Concept](../algorithms/04-down-routing.md):
 
 - parent pointer $p_u \in V \cup \{\bot\}$
 - children set $C_u \subseteq V$ (bounded table; in the formal theorem we treat it as “best effort cache” unless stated otherwise)
@@ -109,7 +109,7 @@ Gateway invariant: $p_r = \bot$.
 
 ## 4) UP Routing Dynamics (Charge-Based Swarm)
 
-UP routing is not a single-path routing table; it is controlled replication to a subset of neighbors.
+UP routing is hop-by-hop greedy best-neighbor forwarding (top-1). It does not require global routes and is not claimed to converge to a tree.
 
 ### 4.1 Charge advertisement and neighbor-charge update
 
@@ -144,7 +144,7 @@ When node $u$ forwards a frame:
 
 The increments $\Delta$ are implementation-defined (e.g., constants 1, or weighted by message type, etc.).
 
-### 4.3 Forwarding (top-50% rule)
+### 4.3 Forwarding (top-1 rule)
 
 For frames that are not for $u$ itself:
 
@@ -156,16 +156,11 @@ Neighbor selection for swarm-forwarding:
 
 - If `dst` is a direct neighbor (i.e., in $\mathcal{N}_u$), unicast directly.
 - Else if `dir=DOWN` and `dst \ne BCAST`, then **do not swarm-forward**: use DOWN tree rules (Section 5).
-- Else swarm-forward to a subset of neighbors excluding $\textsf{prevHop}$:
-  - For `dir=UP`: sort candidates by $Q^{\uparrow}_u(v)$ descending.
-  - For `dir=DOWN` broadcast/control (`dst=BCAST`): sort by $Q^{\mathrm{tot}}_u(v)$ descending.
-  - Forward to the top
-
-$$
-K_u = \max\{1,\lceil 0.5\,|\mathcal{S}_u|\rceil\}
-$$
-
-neighbors where $\mathcal{S}_u$ is the candidate set.
+- Else swarm-forward to exactly one neighbor excluding $\textsf{prevHop}$.
+  - Let $\mathcal{S}_u$ be the candidate set (neighbors excluding $\textsf{prevHop}$). If $\mathcal{S}_u = \varnothing$, do not forward.
+  - For `dir=UP`, choose $v^* \in \arg\max_{v\in\mathcal{S}_u} Q^{\uparrow}_u(v)$.
+  - For `dir=DOWN` broadcast/control (`dst=BCAST`), choose $v^* \in \arg\max_{v\in\mathcal{S}_u} Q^{\mathrm{tot}}_u(v)$.
+  - Forward to $v^*$.
 
 Tie-breaking among equal charges is not specified by the protocol; for deterministic analysis, a fixed tie-break (e.g. MAC order) can be assumed.
 
@@ -287,7 +282,7 @@ In proofs we will explicitly state whether authenticity is assumed.
 
 The protocol has two routing sub-systems:
 
-1. **UP** is a swarm (multi-path) and is not intended to converge to a tree.
+1. **UP** is hop-by-hop best-neighbor forwarding (top-1) and is not intended/claimed to converge to a tree.
 2. **DOWN** uses a single parent per node induced by accumulated charges (subject to a forwarding eligibility threshold $q_{\mathrm{forward}}$), producing a directed structure pointing “toward the root”.
 
 Accordingly, the theorem in `theorem.md` is about the charge-induced parent pointers $(p_u)$ defining a gateway-rooted spanning tree on the forward-eligible nodes, and about DOWN tree-broadcast being loop-free / duplicate-free under suitable assumptions.

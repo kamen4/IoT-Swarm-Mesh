@@ -47,18 +47,18 @@ The solution is a **two-layer protocol** plus a hub backend:
 
 4. **Mesh forwarding (swarm routing)**
    - Each ESP-NOW frame uses a split header: a **mutable** `ROUTING_HEADER` (not covered by end-to-end HMAC) and an **immutable** `SECURE_HEADER` + payload (covered by HMAC).
-   - **UP delivery** is **charge-based swarm forwarding**: nodes propagate UP packets towards the gateway via the top neighbors by `q_up`, using `ttl` + deduplication to prevent storms.
+   - **UP delivery** is **charge-based best-neighbor forwarding (top-1)**: nodes propagate UP packets towards the gateway via the single best neighbor by `q_up`, using `ttl` + deduplication to prevent storms.
    - **DOWN delivery** (gateway → device unicast commands) is **tree-first**: a single-parent tree rooted at the gateway is induced by accumulated charges (`q_total`) and a forwarding threshold (`q_forward`), and nodes forward DOWN only to eligible children (loop-free by construction).
-   - Gateway-originated mesh-control broadcasts (e.g., `BEACON`, `DECAY`, onboarding `FIND`) may still use controlled multi-path dissemination so they can converge without relying on an already-formed tree.
+   - Gateway-originated mesh-control broadcasts (e.g., `BEACON`, `DECAY`, onboarding `FIND`) use the same best-neighbor forwarding rule (best-effort) and do not rely on an already-formed tree.
    - A network-wide `DECAY` epoch prevents unbounded charge growth and helps convergence.
 
 Why a swarm-style, charge-based approach (vs common alternatives) is a good fit here:
 
 - **No global routes**: nodes keep only neighbor state, which scales better than maintaining full routing tables on constrained devices.
-- **Topology tolerance**: multi-path propagation to the “top neighbors” is more resilient than a strict tree where a single parent failure can isolate a subtree.
-- **Less waste than flooding**: selecting only a fraction of neighbors reduces the broadcast-storm behavior while still keeping redundancy.
+- **Topology tolerance**: charge-based best-neighbor forwarding adapts to changing RF without global routes.
+- **Less waste than flooding**: forwarding to a single best neighbor avoids broadcast-storm behavior.
 - **Self-stabilization**: `DECAY` prevents unbounded metric growth and helps the network re-balance when conditions change.
 
-As with any mesh routing, this is a trade-off: compared to a single-path route, it can use more airtime due to controlled replication. The protocol mitigates this with `ttl` and deduplication (`(originMac, msgId)` cache).
+As with any mesh routing, this is a trade-off: single-next-hop forwarding minimizes airtime, but may be less resilient than multi-path replication. The protocol mitigates loops/duplicates with `ttl` and deduplication (`(originMac, msgId)` cache).
 
 Note: the document specifies authenticity/integrity via HMAC; payload encryption/confidentiality is not defined here.

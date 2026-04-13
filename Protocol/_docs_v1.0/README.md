@@ -38,7 +38,7 @@ See [Architecture](reference/architecture.md) for detailed system diagram and HU
 
 ## Key Design Principles
 
-- **Resilient mesh**: multi-path swarm routing for UP traffic; tree-first for DOWN
+- **Resilient mesh**: charge-based best-neighbor routing for UP traffic; tree-first for DOWN
 - **Scalability**: devices keep only neighbor state, no global routing tables
 - **Security**: end-to-end HMAC per device (`S_PASSWORD`), SPAKE2 onboarding; network membership is verified by the server
 - **Efficiency**: charge-based neighbor selection, lightweight forwarding rules, deduplication by `(originMac, msgId)`

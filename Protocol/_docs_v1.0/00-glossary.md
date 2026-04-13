@@ -54,8 +54,8 @@ Numeric metric advertised by a node indicating its "connectivity quality":
 
 Neighbors inspect incoming packets' `ROUTING_HEADER.charge` field to build a local neighbor-charge map.
 
-**Top 50% Forwarding**  
-UP routing strategy: forward to the neighbor with highest `q_up`, plus top 50% of remaining neighbors (minimum 1). Creates multi-path resilience while limiting replication.
+**Top-1 Forwarding (Best-neighbor forwarding)**  
+UP routing strategy: forward to the single neighbor with highest `q_up` (excluding `prevHopMac`), using a deterministic tie-break; no replication. See [UP Routing](algorithms/03-up-routing.md).
 
 **Decay Epoch**  
 Network-wide synchronization mechanism preventing unbounded charge growth. Triggered by a `DECAY` mesh-control message; nodes reset or dampen their charge metrics and bump `lastDecayEpoch`.

@@ -9,7 +9,7 @@
 - The bot captures the CONNECTION_STRING and NAME and sends a request to the server to handle the device connection
 - The server creates a device record with DeviceConnectionStatus::Pending
 - Then the server creates a broadcast FIND message to find this device
-- `FIND` is disseminated through the mesh (see swarm forwarding rules for broadcast/control messages).
+- `FIND` is disseminated through the mesh (see UP routing forwarding rules for broadcast/control messages).
 - When the target device receives `FIND`, it replies with `PONG`.
 - The server treats reception of `PONG` as “device found” and continues to SPAKE2.
 

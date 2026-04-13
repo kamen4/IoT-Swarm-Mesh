@@ -47,7 +47,7 @@ Charges grow based on how much traffic passes through a node:
 
 Exact increment function is implementation-defined.
 
-## Forwarding rule (top 50%)
+## Forwarding rule (top-1 / best-neighbor)
 
 When a device receives a packet that is not for itself:
 
@@ -62,9 +62,11 @@ Forwarding target selection:
 - Otherwise, select neighbors excluding `prevHopMac`.
   - For `dir=UP`: sort by `neighbors[mac].q_up` descending.
   - For `dir=DOWN` broadcast/control (`dstMac = FF:FF:FF:FF:FF:FF`): sort by `neighbors[mac].q_total` descending.
-  - Forward to the top `ceil(0.5 * neighborCount)` neighbors (minimum 1).
+  - Forward to the single top-ranked neighbor.
+  - If excluding `prevHopMac` leaves no candidates, do not forward.
+  - If multiple candidates tie, break ties deterministically (e.g., higher charge, then better RSSI, then MAC order).
 
-This is not a broadcast; it is a swarm-propagation step.
+This is not a broadcast; it is a single-next-hop propagation step.
 
 ## Charge decay (network-wide)
 

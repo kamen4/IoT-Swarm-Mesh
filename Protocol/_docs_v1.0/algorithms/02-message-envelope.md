@@ -65,4 +65,4 @@ This cache is required to prevent loops and storms in swarm routing.
 
 ## Byte sizes
 
-See [\_docs/reference/byte-sizes.md](../reference/byte-sizes.md).
+See [reference/byte-sizes.md](../reference/byte-sizes.md).

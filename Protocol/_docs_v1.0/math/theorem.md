@@ -2,14 +2,14 @@
 
 This file states and proves a structural theorem for the **DOWN** delivery subsystem when it uses a **single-parent tree induced by accumulated charges**, as described in:
 
-- `_docs/algorithms/04-down-routing.md` (charge-tree concept, `q_forward`, parent selection, children-only forwarding)
-- `_docs/algorithms/03-up-routing.md` (how `q_total` is accumulated and advertised)
-- `_docs/00-glossary.md` (charge terminology)
-- `_docs/algorithms/02-message-envelope.md` (dedup/ttl primitives)
+- [DOWN Delivery — Tree-First Broadcast Concept](../algorithms/04-down-routing.md) (charge-tree concept, `q_forward`, parent selection, children-only forwarding)
+- [UP Routing — Swarm (charge-based)](../algorithms/03-up-routing.md) (how `q_total` is accumulated and advertised)
+- [Glossary](../00-glossary.md) (charge terminology)
+- [Message Envelope](../algorithms/02-message-envelope.md) (dedup/ttl primitives)
 
 Important scope note:
 
-- UP routing (`q_up/q_total` swarm) is intentionally multi-path and is **not** claimed to converge to a tree.
+- UP routing (`q_up/q_total` swarm) uses hop-by-hop best-neighbor (top-1) forwarding and is **not** claimed to converge to a tree.
 - This theorem concerns the **charge-induced parent pointers** used to make DOWN tree-broadcast loop-free and duplicate-free.
 
 ---
@@ -101,8 +101,8 @@ Moreover, consider a DOWN tree-broadcast of a message $m$ restricted to $V^+$:
 
 Then:
 
-3. The forwarding process cannot contain a loop.
-4. Each eligible node receives $m$ at most once; if every tree edge delivers at least one copy of $m$, then each eligible node receives $m$ exactly once.
+- The forwarding process cannot contain a loop.
+- Each eligible node receives $m$ at most once; if every tree edge delivers at least one copy of $m$, then each eligible node receives $m$ exactly once.
 
 ---
 

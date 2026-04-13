@@ -2,15 +2,20 @@
 
 This document defines a **DOWN (gateway → device)** delivery strategy for the ESP‑NOW mesh.
 
-Design goal: make DOWN reliable and simple by pushing the swarm to converge to a **tree-like structure**, so that forwarding is mostly **loop-free** and does not create duplicated storms.
+Design goal: make DOWN reliable and simple by using a **single-parent tree rule** (charge-induced) for forwarding on the **forward-eligible subset** (`q_total >= q_forward`).
 
-It is intentionally compatible with the current design where **UP** works well with multi-path “swarm” routing.
+Correctness note (do not re-derive here): under the assumptions in the math docs, the resulting **DOWN tree-broadcast on the eligible set** is **loop-free and duplicate-free**; see:
+
+- [Charge-Induced Tree Theorem](../math/theorem.md)
+- [Mathematical Model](../math/model.md)
+
+It is intentionally compatible with the current design where **UP** uses charge-based best-neighbor forwarding (top-1).
 
 ---
 
 ## 1) Core Idea
 
-- Keep **UP** as-is (resilient, multi-path) to preserve reliability in dynamic RF.
+- Keep **UP** as-is (charge-based best-neighbor forwarding) to preserve a simple, low-airtime UP path.
 - Make **DOWN** run on a **single-parent tree** rooted at the Gateway.
 - The tree is induced by **accumulated charges** (`q_total`) rather than a hop-gradient.
 - When a precise path is unknown or stale, DOWN becomes a **tree broadcast** (broadcast along tree edges only), not a mesh flood.
@@ -19,8 +24,7 @@ Tree broadcast properties:
 
 - Each node forwards **only to its children**, never back to the parent.
 - A child edge is used only if the child is “charged enough” (forward-eligible): `q_total(child) >= q_forward`.
-- With a single parent per node, cycles are structurally avoided.
-- Dedup `(originMac, msgId)` prevents re-forward on duplicates.
+- The tree / no-loop / no-duplicate claim is a structural property of the single-parent rule on the eligible set (see theorem); runtime retransmission duplicates are handled by hop-by-hop dedup + TTL (see [Message Envelope](02-message-envelope.md)).
 
 ---
 

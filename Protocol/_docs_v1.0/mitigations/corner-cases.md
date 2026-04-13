@@ -12,7 +12,7 @@ Assumptions:
 - Neighbor/peer capacity is limited (order of ~20).
 - `ESP_NOW_MAX` depends on ESP-NOW stack/config (often ~250 bytes).
 - Some devices are deep-sleep (TX-only most of the time).
-- UP is multi-path/swarm; DOWN is tree-first broadcast (children-only forwarding).
+- UP is charge-based best-neighbor (top-1); DOWN is tree-first broadcast (children-only forwarding).
 
 ---
 

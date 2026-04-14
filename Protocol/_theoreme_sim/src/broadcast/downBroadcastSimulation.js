@@ -39,5 +39,12 @@ export function simulateDownBroadcast(state) {
     order,
     duplicates,
     loopDetected: duplicates > 0,
+    reachedCount: received.size,
+    coverage:
+      state.nodes.size > 0 ? received.size / Math.max(1, state.nodes.size) : 0,
+    deliveries: order.length,
+    propagationUpdates: 0,
+    spreadUpdates: 0,
+    mode: "tree-only",
   };
 }

@@ -1,5 +1,10 @@
 /* Purpose: Simulate asynchronous neighbor charge learning with max-based estimate updates. */
 
+import {
+  getLinkDeliveryProbability,
+  recordLinkUsage,
+} from "./linkUsageTracker.js";
+
 /**
  * @param {{
  *  edges:Array<{a:number,b:number}>,
@@ -15,10 +20,12 @@ export function propagateNeighborChargesRound(state) {
   let deliveries = 0;
 
   const tryDeliver = (observerId, senderId) => {
-    if (state.rng() > state.config.deliveryProbability) {
+    const probability = getLinkDeliveryProbability(state, observerId, senderId);
+    if (state.rng() > probability) {
       return;
     }
 
+    recordLinkUsage(state, observerId, senderId, 0.35);
     deliveries += 1;
     const estimateMap = state.estimates.get(observerId);
     const oldValue = estimateMap.get(senderId) ?? 0;

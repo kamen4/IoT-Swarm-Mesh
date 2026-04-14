@@ -278,3 +278,5 @@ Mitigations:
 - Partition/heal: no flood storm; convergence completes.
 - High load: dedup cache prevents loops; queues stay bounded.
 - UART choke: backpressure prevents runaway buffering.
+
+See also: [Convergence Tuning Guide](convergence-tuning.md) for practical parameter presets and oscillation diagnostics.

@@ -7,8 +7,10 @@ import {
   createEstimateMap,
   mapNodesById,
 } from "../core/types.js";
+import { normalizeConfig } from "../config/configNormalizer.js";
 import { initializeCharges } from "../generation/chargeInitializer.js";
 import { generateConnectedTopology } from "../generation/topologyGenerator.js";
+import { createLinkStats } from "../propagation/linkUsageTracker.js";
 
 /**
  * @param {Map<number,{qTotal:number}>} nodes
@@ -45,16 +47,17 @@ export function refreshEligibility(nodes, qForward) {
  * @returns {any}
  */
 export function createSimulationState(config) {
-  const rng = createSeededRng(config.seed);
+  const normalizedConfig = normalizeConfig(config);
+  const rng = createSeededRng(normalizedConfig.seed);
   const topology = generateConnectedTopology(
-    config.nodeCount,
-    config.linkRadius,
+    normalizedConfig.nodeCount,
+    normalizedConfig.linkRadius,
     rng,
   );
   const charged = initializeCharges(
     topology.nodes,
     topology.adjacency,
-    config,
+    normalizedConfig,
     rng,
   );
   const nodes = mapNodesById(charged.nodes);
@@ -68,34 +71,54 @@ export function createSimulationState(config) {
   }
 
   return {
-    config,
+    config: normalizedConfig,
     rng,
     nodes,
     edges: topology.edges,
     adjacency: topology.adjacency,
     edgeLookup: buildEdgeLookup(topology.edges),
+    linkStats: createLinkStats(topology.edges),
     estimates,
     distances: charged.distances,
     parentMap,
     childrenMap,
     round: 0,
     stableRounds: 0,
+    decayEpoch: 0,
+    decayHistory: [],
+    lastDecay: {
+      triggered: false,
+      epoch: 0,
+      percent: 0,
+      factor: 1,
+    },
+    parentTrace: new Map(),
+    lastOscillationReport: {
+      changedParents: 0,
+      flappingNodes: 0,
+      totalTracked: 0,
+      maxFlips: 0,
+    },
     lastPropagation: { updates: 0, deliveries: 0 },
+    lastUp: { attempted: 0, reachedGateway: 0, hops: 0, updates: 0 },
+    lastSpread: { updates: 0 },
     lastTheoremReport: {
-      assumptionsPass: false,
-      theoremPass: false,
+      assumptionsPass: null,
+      theoremPass: null,
       eligibleCount: 0,
-      a5: false,
-      a6: false,
-      a7: false,
-      lemma41: false,
-      lemma42: false,
-      lemma43: false,
+      a5: null,
+      a6: null,
+      a7: null,
+      lemma41: null,
+      lemma42: null,
+      lemma43: null,
       violationsA6: [],
       unreachable: [],
       cycleWitness: [],
+      verificationState: "pending",
     },
     lastBroadcastReport: createEmptyBroadcastReport(),
+    broadcastHistory: [],
     chargeBounds: chargeBoundsFromNodes(nodes),
   };
 }

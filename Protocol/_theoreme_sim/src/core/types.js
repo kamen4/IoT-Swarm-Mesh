@@ -25,21 +25,28 @@
  * @property {number[]} order
  * @property {number} duplicates
  * @property {boolean} loopDetected
+ * @property {number} reachedCount
+ * @property {number} coverage
+ * @property {number} deliveries
+ * @property {number} propagationUpdates
+ * @property {number} spreadUpdates
+ * @property {string} mode
  */
 
 /**
  * @typedef {Object} TheoremReport
- * @property {boolean} assumptionsPass
- * @property {boolean} theoremPass
- * @property {boolean} a5
- * @property {boolean} a6
- * @property {boolean} a7
- * @property {boolean} lemma41
- * @property {boolean} lemma42
- * @property {boolean} lemma43
+ * @property {boolean|null} assumptionsPass
+ * @property {boolean|null} theoremPass
+ * @property {boolean|null} a5
+ * @property {boolean|null} a6
+ * @property {boolean|null} a7
+ * @property {boolean|null} lemma41
+ * @property {boolean|null} lemma42
+ * @property {boolean|null} lemma43
  * @property {number[]} violationsA6
  * @property {number[]} unreachable
  * @property {number[]} cycleWitness
+ * @property {"pending"|"pass"|"fail"} verificationState
  */
 
 /**
@@ -74,5 +81,11 @@ export function createEmptyBroadcastReport() {
     order: [],
     duplicates: 0,
     loopDetected: false,
+    reachedCount: 0,
+    coverage: 0,
+    deliveries: 0,
+    propagationUpdates: 0,
+    spreadUpdates: 0,
+    mode: "hybrid",
   };
 }

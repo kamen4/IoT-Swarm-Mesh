@@ -84,14 +84,18 @@
           </div>
           <div class="modal-body">
             <section class="modal-section" title="Formal theorem context.">
-              <h3>Theorem summary</h3>
+              <h3>What exactly is proven</h3>
               <p>
-                The simulator demonstrates that strict charge increase toward
-                the gateway induces an acyclic parent graph that reaches the
-                root on the forward-eligible subset.
+                The theorem checks are structural checks over the current charge
+                field and parent pointers. They verify that, on the eligible
+                subset, parent edges strictly increase charge, stay acyclic, and
+                eventually reach the gateway.
               </p>
               <ul>
-                <li>A5: gateway charge is the unique strict maximum.</li>
+                <li>
+                  A5: gateway charge is the unique strict maximum among eligible
+                  nodes.
+                </li>
                 <li>
                   A6: each eligible non-root node has an eligible neighbor with
                   higher charge.
@@ -100,53 +104,132 @@
                   A7: parent is selected among neighbors with strictly higher
                   charge.
                 </li>
+                <li>
+                  Lemma 4.1/4.2/4.3: strict increase, acyclic parent graph,
+                  reachability to gateway.
+                </li>
+                <li>
+                  PENDING means the eligible non-root set is still empty, so
+                  theorem checks are not informative yet.
+                </li>
               </ul>
             </section>
 
             <section class="modal-section" title="Algorithm execution flow.">
-              <h3>How the algorithm works</h3>
+              <h3>Round pipeline (what one step does)</h3>
               <ol>
                 <li>
-                  Generate a connected topology and initialize node charges.
+                  DOWN phase: gateway emits one DOWN packet; forwarding starts
+                  as broad coverage and gradually becomes tree-dominant.
+                  Duplicate receptions are counted for this exact step.
                 </li>
                 <li>
-                  Propagate neighbor estimates by max update over link
-                  deliveries.
+                  During DOWN forwarding, receiver updates neighbor estimate by
+                  max rule and updates local charge toward senderCharge -
+                  chargeDropPerHop.
                 </li>
                 <li>
-                  Select parents with strict charge monotonicity and tie-break
-                  penalties.
+                  UP phase: each device tries to route toward gateway via parent
+                  or best higher-charge neighbor; successful hops increase
+                  traffic centrality.
                 </li>
                 <li>
-                  Rebuild parent and children maps and evaluate theorem checks.
+                  Neighbor propagation phase: edge deliveries update neighbor
+                  estimates with deliveryProbability.
                 </li>
                 <li>
-                  Optionally simulate DOWN broadcast along eligible child edges.
+                  Spread smoothing phase: each node blends toward its best
+                  observed neighbor target with chargeSpreadFactor.
+                </li>
+                <li>
+                  Tree rebuild phase: parent selection uses strict charge
+                  increase, link-quality penalty, hysteresis, and link-stability
+                  bonus.
+                </li>
+                <li>
+                  DECAY phase (if configured interval hits): charges and stored
+                  estimates are multiplied by (1 - decayPercent), and epoch is
+                  incremented.
+                </li>
+                <li>
+                  Verification phase: A5/A6/A7 and lemmas are evaluated,
+                  oscillation metrics are updated.
                 </li>
               </ol>
             </section>
 
             <section
               class="modal-section"
-              title="Simulation interpretation details."
+              title="Randomization and deterministic behavior."
             >
-              <h3>How to read the simulation</h3>
+              <h3>Randomization and reproducibility</h3>
               <ul>
-                <li>Node color encodes charge level; gateway is emphasized.</li>
                 <li>
-                  Link thickness and brightness encode observed weight values.
+                  Topology generation and runtime packet losses are
+                  deterministic for a fixed seed.
                 </li>
                 <li>
-                  Tree links are highlighted, with dq labels showing
-                  parent-child charge deltas.
+                  Randomize All Params generates values in bounded ranges, then
+                  applies cross-parameter normalization for stability.
                 </li>
                 <li>
-                  Metrics panel reports assumptions, lemma checks, and theorem
-                  pass/fail.
+                  Normalization prevents pathological combinations, for example
+                  q_forward >= rootSourceCharge or unrealistic hop drop.
                 </li>
                 <li>
-                  Broadcast report shows traversal order and duplicate detection
-                  status.
+                  To reproduce a run exactly, keep the same seed and do not
+                  change parameters mid-run.
+                </li>
+              </ul>
+            </section>
+
+            <section class="modal-section" title="Link reinforcement behavior.">
+              <h3>Why high-traffic links become stronger</h3>
+              <p>
+                Each edge tracks usage over rounds. Frequently used edges
+                increase effectiveQuality, which increases parent preference and
+                delivery reliability in stochastic phases. This naturally
+                strengthens gateway-adjacent links and bottleneck bridges
+                between clusters.
+              </p>
+              <ul>
+                <li>
+                  linkMemory controls how long historical usage remains
+                  influential.
+                </li>
+                <li>
+                  linkLearningRate controls adaptation speed of effective link
+                  quality.
+                </li>
+                <li>
+                  linkBonusMax limits how much parent scoring can favor a stable
+                  high-traffic edge.
+                </li>
+              </ul>
+            </section>
+
+            <section
+              class="modal-section"
+              title="Interpretation of panel metrics."
+            >
+              <h3>How to interpret stability metrics</h3>
+              <ul>
+                <li>duplicates trend should generally decrease over time.</li>
+                <li>
+                  flapping nodes > 0 means repeated parent switching is still
+                  active.
+                </li>
+                <li>
+                  gateway edge quality should be high in stable converged
+                  regimes.
+                </li>
+                <li>
+                  strongest link often becomes either near-gateway trunk edge or
+                  a cluster bridge edge carrying concentrated traffic.
+                </li>
+                <li>
+                  If structure collapses late in run, increase hysteresis,
+                  reduce spread factor, or use shorter decay interval.
                 </li>
               </ul>
             </section>

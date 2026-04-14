@@ -103,28 +103,48 @@ function checkLemma43Reachability(state) {
 /**
  * @param {any} state
  * @returns {{
- * assumptionsPass:boolean,
- * theoremPass:boolean,
+ * assumptionsPass:boolean|null,
+ * theoremPass:boolean|null,
  * eligibleCount:number,
- * a5:boolean,
- * a6:boolean,
- * a7:boolean,
- * lemma41:boolean,
- * lemma42:boolean,
- * lemma43:boolean,
+ * a5:boolean|null,
+ * a6:boolean|null,
+ * a7:boolean|null,
+ * lemma41:boolean|null,
+ * lemma42:boolean|null,
+ * lemma43:boolean|null,
  * violationsA6:number[],
  * unreachable:number[],
- * cycleWitness:number[]
+ * cycleWitness:number[],
+ * verificationState:"pending"|"pass"|"fail"
  * }}
  */
 export function evaluateTheorem(state) {
+  const eligibleCount = getEligibleNodeIds(state).length;
+  const eligibleNonRoot = Math.max(0, eligibleCount - 1);
+
+  if (eligibleNonRoot === 0) {
+    return {
+      assumptionsPass: null,
+      theoremPass: null,
+      eligibleCount,
+      a5: null,
+      a6: null,
+      a7: null,
+      lemma41: null,
+      lemma42: null,
+      lemma43: null,
+      violationsA6: [],
+      unreachable: [],
+      cycleWitness: [],
+      verificationState: "pending",
+    };
+  }
+
   const assumptions = checkAssumptions(state);
   const lemma41 = checkLemma41StrictIncrease(state);
   const lemma42 = checkLemma42Acyclic(state);
   const lemma43 = checkLemma43Reachability(state);
 
-  const eligibleCount = getEligibleNodeIds(state).length;
-  const eligibleNonRoot = Math.max(0, eligibleCount - 1);
   const assignedParents = [...state.parentMap.entries()].filter(
     ([childId, parentId]) =>
       childId !== THEOREM_ROOT_ID &&
@@ -143,6 +163,8 @@ export function evaluateTheorem(state) {
     lemma43.pass &&
     spanningCondition;
 
+  const verificationState = theoremPass ? "pass" : "fail";
+
   return {
     assumptionsPass,
     theoremPass,
@@ -156,5 +178,6 @@ export function evaluateTheorem(state) {
     violationsA6: assumptions.a6.violations,
     unreachable: lemma43.unreachable,
     cycleWitness: lemma42.cycleWitness,
+    verificationState,
   };
 }

@@ -27,6 +27,9 @@ const controls = new ControlPanel(
   () => controller.toggleRun(),
   (config) => controller.reset(config),
   () => controller.simulateBroadcast(),
+  (patch) => controller.updateConfigLive(patch),
+  (config, maxSteps) => controller.runNoUiSimulation(config, maxSteps),
+  (request) => controller.runResearchBatch(request),
 );
 
 controller.setRunningCallback((running) => {

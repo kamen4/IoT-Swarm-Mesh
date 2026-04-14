@@ -9,10 +9,19 @@ export const DEFAULT_CONFIG = {
   deliveryProbability: 0.72,
   penaltyLambda: 28,
   switchHysteresis: 9,
+  switchHysteresisRatio: 0.03,
+  rootSourceCharge: 1500,
+  chargeDropPerHop: 80,
+  chargeSpreadFactor: 0.28,
+  decayIntervalSteps: 60,
+  decayPercent: 0.12,
+  linkMemory: 0.94,
+  linkLearningRate: 0.2,
+  linkBonusMax: 45,
   seed: 42,
   roundsPerSecond: 3,
   maxRounds: 350,
-  enforceTheoremAssumptions: true,
+  enforceTheoremAssumptions: false,
 };
 
 export const LAYOUT = {

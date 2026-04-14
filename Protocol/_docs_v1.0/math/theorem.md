@@ -179,6 +179,8 @@ Hence $u$ can receive $m$ at most once. If every tree edge delivers at least one
 
 2. The theorem intentionally separates “tree correctness given a charge field” from “does the runtime charge accumulation procedure always produce such a field”. The latter depends on traffic patterns, decay, and implementation details.
 
-3. In the real protocol, packets can be duplicated by retransmissions and concurrent deliveries; hop-by-hop deduplication by `(originMac, msgId)` ensures a node forwards at most once even if it receives multiple copies.
+3. In simulation, early rounds can have only the gateway in the eligible set. In that warm-up phase, theorem checks are best interpreted as **pending** rather than proof of correctness, because assumptions A6/A7 are not yet exercised on non-root eligible nodes.
 
-4. The threshold $q_{\mathrm{forward}}$ makes the theorem naturally apply to an “active / charged” subset of the mesh. Sleepy or newly joined nodes that do not yet satisfy $q_u\ge q_{\mathrm{forward}}$ should rely on WAKE + PULL delivery rather than being targeted by a tree-broadcast.
+4. In the real protocol, packets can be duplicated by retransmissions and concurrent deliveries; hop-by-hop deduplication by `(originMac, msgId)` ensures a node forwards at most once even if it receives multiple copies.
+
+5. The threshold $q_{\mathrm{forward}}$ makes the theorem naturally apply to an “active / charged” subset of the mesh. Sleepy or newly joined nodes that do not yet satisfy $q_u\ge q_{\mathrm{forward}}$ should rely on WAKE + PULL delivery rather than being targeted by a tree-broadcast.

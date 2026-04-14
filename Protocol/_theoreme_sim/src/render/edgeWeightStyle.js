@@ -6,12 +6,22 @@ import { normalize, edgeStyleFromNormalizedWeight } from "./colorScale.js";
  * @param {{a:number,b:number}} edge
  * @param {Map<number,{qTotal:number}>} nodes
  * @param {Map<number,Map<number,number>>} estimates
+ * @param {Map<string,{effectiveQuality:number}> | undefined} linkStats
  * @returns {number}
  */
-export function computeEdgeWeight(edge, nodes, estimates) {
+export function computeEdgeWeight(edge, nodes, estimates, linkStats) {
   const qAB = estimates.get(edge.a)?.get(edge.b) ?? nodes.get(edge.b).qTotal;
   const qBA = estimates.get(edge.b)?.get(edge.a) ?? nodes.get(edge.a).qTotal;
-  return (qAB + qBA) / 2;
+  const key = edge.a < edge.b ? `${edge.a}:${edge.b}` : `${edge.b}:${edge.a}`;
+  const quality = Math.max(
+    0.05,
+    Math.min(
+      1,
+      Number(linkStats?.get(key)?.effectiveQuality ?? edge.quality ?? 0.1),
+    ),
+  );
+  const base = (qAB + qBA) / 2;
+  return base * (0.55 + 0.45 * quality);
 }
 
 /**

@@ -1,6 +1,9 @@
 /* Purpose: Choose a strict higher-charge eligible parent using estimate-max and RSSI-like penalty. */
 
-import { edgeKey } from "../core/graphUtils.js";
+import {
+  computeLinkStabilityBonus,
+  getEffectiveLinkQuality,
+} from "../propagation/linkUsageTracker.js";
 
 /**
  * @param {number} nodeId
@@ -9,7 +12,8 @@ import { edgeKey } from "../core/graphUtils.js";
  *  adjacency:Map<number,Set<number>>,
  *  estimates:Map<number,Map<number,number>>,
  *  edgeLookup:Map<string,{quality:number}>,
- *  config:{qForward:number,penaltyLambda:number,switchHysteresis:number}
+ *  linkStats:Map<string,any>,
+ *  config:{qForward:number,penaltyLambda:number,switchHysteresis:number,switchHysteresisRatio:number}
  * }} state
  * @returns {number|null}
  */
@@ -22,7 +26,7 @@ export function chooseParent(nodeId, state) {
   const neighbors = state.adjacency.get(nodeId) ?? new Set();
   const estimateMap = state.estimates.get(nodeId) ?? new Map();
 
-  /** @type {Array<{id:number,penalty:number,score?:number,estimate:number}>} */
+  /** @type {Array<{id:number,penalty:number,score?:number,estimate:number,stabilityBonus:number}>} */
   const candidates = [];
 
   for (const neighborId of neighbors.values()) {
@@ -41,10 +45,10 @@ export function chooseParent(nodeId, state) {
       continue;
     }
 
-    const edge = state.edgeLookup.get(edgeKey(nodeId, neighborId));
-    const quality = edge ? edge.quality : 0.1;
+    const quality = getEffectiveLinkQuality(state, nodeId, neighborId);
     const penalty = (1 - quality) * state.config.penaltyLambda;
-    candidates.push({ id: neighborId, penalty, estimate });
+    const stabilityBonus = computeLinkStabilityBonus(state, neighborId, nodeId);
+    candidates.push({ id: neighborId, penalty, estimate, stabilityBonus });
   }
 
   if (candidates.length === 0) {
@@ -62,7 +66,8 @@ export function chooseParent(nodeId, state) {
   );
 
   for (const candidate of nearBest) {
-    candidate.score = candidate.estimate - candidate.penalty;
+    candidate.score =
+      candidate.estimate - candidate.penalty + candidate.stabilityBonus;
   }
 
   nearBest.sort((a, b) => {
@@ -82,12 +87,26 @@ export function chooseParent(nodeId, state) {
     return best.id;
   }
 
-  const current = nearBest.find((candidate) => candidate.id === currentParent);
+  let current = nearBest.find((candidate) => candidate.id === currentParent);
+  if (!current) {
+    current = candidates.find((candidate) => candidate.id === currentParent);
+    if (current) {
+      current.score =
+        current.estimate - current.penalty + current.stabilityBonus;
+    }
+  }
+
   if (!current) {
     return best.id;
   }
 
-  const keepCurrent =
-    current.score + state.config.switchHysteresis >= best.score;
+  const ratio = Math.max(0, Number(state.config.switchHysteresisRatio || 0));
+  const relativeMargin = Math.max(0, current.estimate * ratio);
+  const requiredMargin = Math.max(
+    state.config.switchHysteresis,
+    relativeMargin,
+  );
+
+  const keepCurrent = current.score + requiredMargin >= best.score;
   return keepCurrent ? currentParent : best.id;
 }

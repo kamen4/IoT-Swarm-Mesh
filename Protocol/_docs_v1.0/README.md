@@ -24,6 +24,7 @@ Documentation for a secure, on-premises ESP-NOW mesh protocol with swarm intelli
 - **[Byte Sizes & Encoding](reference/byte-sizes.md)** — Binary format specifications
 - **[Users & Roles](reference/users.md)** — Access control model
 - **[Corner Cases & Mitigations](mitigations/corner-cases.md)** — Failure modes and practical solutions
+- **[Convergence Tuning](mitigations/convergence-tuning.md)** — Practical settings for oscillation and collapse prevention
 
 ## System Overview
 

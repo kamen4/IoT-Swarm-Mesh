@@ -130,7 +130,12 @@ export class CanvasRenderer {
     for (const edge of state.edges) {
       const a = viewport.positions.get(edge.a);
       const b = viewport.positions.get(edge.b);
-      const weight = computeEdgeWeight(edge, state.nodes, state.estimates);
+      const weight = computeEdgeWeight(
+        edge,
+        state.nodes,
+        state.estimates,
+        state.linkStats,
+      );
       const style = styleForWeight(weight, minCharge, maxCharge, false);
 
       ctx.strokeStyle = style.stroke;

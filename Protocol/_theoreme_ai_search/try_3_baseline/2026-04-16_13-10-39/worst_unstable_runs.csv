@@ -1,0 +1,3 @@
+runId,networkId,seed,verdict,score,theoremPassRate,assumptionsPassRate,coverageAvg,duplicateDrop,eligibleTailRatio,parentChangeAvg,flappingAvg
+64x170@48,64x170,48,OSCILLATING,75.970197,0.523333,0.523333,0.889844,75.013333,1.000000,0.010000,0.000000
+64x170@48,64x170,48,OSCILLATING,75.970197,0.523333,0.523333,0.889844,75.013333,1.000000,0.010000,0.000000

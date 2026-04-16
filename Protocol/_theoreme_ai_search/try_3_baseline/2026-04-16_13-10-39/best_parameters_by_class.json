@@ -1,0 +1,344 @@
+[
+  {
+    "classId": "small-sparse",
+    "sizeClass": "small",
+    "densityClass": "sparse",
+    "networkCount": 8,
+    "meanScore": 85.36120833333334,
+    "scoreStdDev": 2.000513475318416,
+    "meanStableRatio": 1.0,
+    "verdictCounts": {
+      "STABLE": 8,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "18x120",
+      "label": "N=18, R=120",
+      "nodeCount": 18,
+      "linkRadius": 120,
+      "score": 89.94133333333335,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  },
+  {
+    "classId": "small-medium",
+    "sizeClass": "small",
+    "densityClass": "medium",
+    "networkCount": 4,
+    "meanScore": 91.78791666666666,
+    "scoreStdDev": 4.827052869994511,
+    "meanStableRatio": 1.0,
+    "verdictCounts": {
+      "STABLE": 4,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "18x210",
+      "label": "N=18, R=210",
+      "nodeCount": 18,
+      "linkRadius": 210,
+      "score": 96.49300000000001,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  },
+  {
+    "classId": "medium-sparse",
+    "sizeClass": "medium",
+    "densityClass": "sparse",
+    "networkCount": 3,
+    "meanScore": 97.40655555555556,
+    "scoreStdDev": 2.5234340554289805,
+    "meanStableRatio": 1.0,
+    "verdictCounts": {
+      "STABLE": 3,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "34x120",
+      "label": "N=34, R=120",
+      "nodeCount": 34,
+      "linkRadius": 120,
+      "score": 99.27833333333334,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  },
+  {
+    "classId": "medium-medium",
+    "sizeClass": "medium",
+    "densityClass": "medium",
+    "networkCount": 6,
+    "meanScore": 97.5718667870657,
+    "scoreStdDev": 1.084777681239212,
+    "meanStableRatio": 1.0,
+    "verdictCounts": {
+      "STABLE": 6,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "34x170",
+      "label": "N=34, R=170",
+      "nodeCount": 34,
+      "linkRadius": 170,
+      "score": 99.071,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  },
+  {
+    "classId": "medium-dense",
+    "sizeClass": "medium",
+    "densityClass": "dense",
+    "networkCount": 3,
+    "meanScore": 99.83999999999999,
+    "scoreStdDev": 1.4210854715202004e-14,
+    "meanStableRatio": 1.0,
+    "verdictCounts": {
+      "STABLE": 3,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "34x280",
+      "label": "N=34, R=280",
+      "nodeCount": 34,
+      "linkRadius": 280,
+      "score": 99.84,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  },
+  {
+    "classId": "large-medium",
+    "sizeClass": "large",
+    "densityClass": "medium",
+    "networkCount": 4,
+    "meanScore": 98.49597313596492,
+    "scoreStdDev": 2.1464135027248714,
+    "meanStableRatio": 0.975,
+    "verdictCounts": {
+      "STABLE": 4,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "64x230",
+      "label": "N=64, R=230",
+      "nodeCount": 64,
+      "linkRadius": 230,
+      "score": 99.84,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  },
+  {
+    "classId": "large-dense",
+    "sizeClass": "large",
+    "densityClass": "dense",
+    "networkCount": 4,
+    "meanScore": 99.83983333333333,
+    "scoreStdDev": 0.00028867513459208895,
+    "meanStableRatio": 1.0,
+    "verdictCounts": {
+      "STABLE": 4,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "64x290",
+      "label": "N=64, R=290",
+      "nodeCount": 64,
+      "linkRadius": 290,
+      "score": 99.84,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  },
+  {
+    "classId": "xlarge-medium",
+    "sizeClass": "xlarge",
+    "densityClass": "medium",
+    "networkCount": 2,
+    "meanScore": 99.83900000000001,
+    "scoreStdDev": 0.000333333333330188,
+    "meanStableRatio": 1.0,
+    "verdictCounts": {
+      "STABLE": 2,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "96x220",
+      "label": "N=96, R=220",
+      "nodeCount": 96,
+      "linkRadius": 220,
+      "score": 99.83933333333334,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  },
+  {
+    "classId": "xlarge-dense",
+    "sizeClass": "xlarge",
+    "densityClass": "dense",
+    "networkCount": 6,
+    "meanScore": 99.83750000000002,
+    "scoreStdDev": 0.0025585730977068714,
+    "meanStableRatio": 1.0,
+    "verdictCounts": {
+      "STABLE": 6,
+      "OSCILLATING": 0,
+      "UNSTABLE": 0
+    },
+    "bestNetwork": {
+      "networkId": "96x280",
+      "label": "N=96, R=280",
+      "nodeCount": 96,
+      "linkRadius": 280,
+      "score": 99.84,
+      "stableRatio": 1.0,
+      "verdict": "STABLE",
+      "bestParameters": {
+        "qForward": 443.0,
+        "deliveryProbability": 0.21,
+        "rootSourceCharge": 1808.0,
+        "penaltyLambda": 64.0,
+        "switchHysteresis": 35.0,
+        "switchHysteresisRatio": 0.07,
+        "chargeDropPerHop": 94.0,
+        "chargeSpreadFactor": 0.08,
+        "decayIntervalSteps": 91.0,
+        "decayPercent": 0.22,
+        "linkMemory": 0.872,
+        "linkLearningRate": 0.5,
+        "linkBonusMax": 50.0
+      }
+    }
+  }
+]

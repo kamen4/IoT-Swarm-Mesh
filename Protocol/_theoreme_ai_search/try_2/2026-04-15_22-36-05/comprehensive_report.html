@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&Kcy;&ocy;&mcy;&pcy;&lcy;&iecy;&kcy;&scy;&ncy;&ycy;&jcy; &ocy;&tcy;&chcy;&iecy;&tcy; &pcy;&ocy; &pcy;&acy;&rcy;&acy;&mcy;&iecy;&tcy;&rcy;&icy;&chcy;&iecy;&scy;&kcy;&ocy;&mcy;&ucy; &icy;&scy;&scy;&lcy;&iecy;&dcy;&ocy;&vcy;&acy;&ncy;&icy;&yucy;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="комплексный-отчет-по-параметрическому-исследованию">Комплексный отчет по параметрическому исследованию</h1>
+<p>Отчет собран автоматически из результатов пакетного прогона и включает: краткую теорию, методику, результаты по топологиям и классам, чувствительность параметров, корреляции, графики и выводы.</p>
+<h2 id="где-лежат-артефакты">Где лежат артефакты</h2>
+<ul>
+<li>Полный результат прогона: <a href="batch_report.json">batch_report.json</a></li>
+<li>Компактные данные для графиков: <a href="report_data.json">report_data.json</a></li>
+<li>Короткая сводка (раньше генерировалась отдельно): <a href="run_summary.html">run_summary.md</a></li>
+<li>Комплексный анализ (машиночитаемый): <a href="comprehensive_analysis.json">comprehensive_analysis.json</a></li>
+<li>Лучшие параметры по классам: <a href="best_parameters_by_class.json">best_parameters_by_class.json</a></li>
+<li>Корреляции (все): <a href="all_correlations.csv">all_correlations.csv</a></li>
+<li>Корреляции параметр-параметр: <a href="pairwise_parameter_correlations.csv">pairwise_parameter_correlations.csv</a></li>
+<li>Худшие/нестабильные seed-run: <a href="worst_unstable_runs.csv">worst_unstable_runs.csv</a></li>
+</ul>
+<h2 id="tldr-коротко">TL;DR (коротко)</h2>
+<ul>
+<li>Лучший общий случай: <strong>N=18, R=210</strong>, Score=100.00, StableRatio=100.00%, Verdict=STABLE.</li>
+<li>Самые влияющие параметры (по ImpactIndex): <code>decayIntervalSteps</code>, <code>chargeSpreadFactor</code>, <code>switchHysteresisRatio</code>.</li>
+<li>Доля нестабильных/осциллирующих запусков: <strong>5.76%</strong> (48800 оценок).</li>
+<li>Эффект топологии: и <code>nodeCount</code>, и <code>linkRadius</code> <strong>положительно коррелируют</strong> со Score в этой выборке.</li>
+</ul>
+<h2 id="1-короткая-теория-что-симулируем">1) Короткая теория (что симулируем)</h2>
+<p>Симулятор моделирует сеть устройств и gateway (корень), где у узлов есть заряд <code>q_total</code>. Узел становится <em>eligible</em>, когда <code>q_total ≥ qForward</code>, и только eligible-узлы участвуют в построении родительского дерева.</p>
+<p>В каждом раунде (упрощенно) выполняется:</p>
+<ol>
+<li><strong>DOWN</strong>: распространение информации/заряда от gateway, измеряем покрытие и дубли.</li>
+<li><strong>UP</strong>: попытки устройств пробиться к gateway по более ‘заряженным’ соседям.</li>
+<li><strong>Learning/Spread</strong>: обновление оценок соседей + смешивание зарядов к лучшим оценкам.</li>
+<li><strong>Tree rebuild</strong>: выбор родителей (с гистерезисом и штрафами качества/бонусами стабильности).</li>
+<li><strong>Decay (опционально)</strong>: периодическое затухание зарядов и памяти линков.</li>
+</ol>
+<p>Проверки теоремы в симуляции: аксиомы A5/A6/A7 и леммы 4.1/4.2/4.3. Если eligible-набор пуст (кроме gateway), состояние проверки считается <code>pending</code> (не провал/не успех).</p>
+<h3 id="что-означают-метрики-которые-мы-анализируем">Что означают метрики (которые мы анализируем)</h3>
+<ul>
+<li><code>Score</code>: эвристика 0..100 на основе pass-rate, покрытия, дублей и стабильности дерева.</li>
+<li><code>TheoremPassRate</code>: доля раундов, где агрегированная теорема проходит.</li>
+<li><code>AssumptionsPassRate</code>: доля раундов, где аксиомы проходят.</li>
+<li><code>CoverageAvg</code>: среднее покрытие DOWN.</li>
+<li><code>DuplicateDrop</code>: насколько дубли DOWN уменьшаются от начала к концу.</li>
+<li><code>EligibleTailRatio</code>: устойчивость eligible-набора в хвосте (коллапс eligible сильно штрафуется).</li>
+<li><code>ParentChangeAvg</code>, <code>FlappingAvg</code>: стабильность маршрутизационного дерева.</li>
+</ul>
+<p><strong>Вывод:</strong> метрики — это практические индикаторы качества сходимости и устойчивости дерева.</p>
+<h2 id="2-методика-исследования">2) Методика исследования</h2>
+<ul>
+<li>Топологий: 40</li>
+<li>Оценок (seed-run): 48800</li>
+<li>Всего запусков: 48800</li>
+<li>SeedCount: 10</li>
+<li>Итераций оптимизации на топологию: 40</li>
+<li>Раундов на одну оценку: 300</li>
+</ul>
+<p>Топологии (nodeCount x linkRadius):</p>
+<ul>
+<li><code>10x60</code></li>
+<li><code>10x90</code></li>
+<li><code>10x120</code></li>
+<li><code>10x160</code></li>
+<li><code>14x70</code></li>
+<li><code>14x100</code></li>
+<li><code>14x140</code></li>
+<li><code>14x180</code></li>
+<li><code>18x80</code></li>
+<li><code>18x120</code></li>
+<li><code>18x160</code></li>
+<li><code>18x210</code></li>
+<li><code>24x100</code></li>
+<li><code>24x140</code></li>
+<li><code>24x190</code></li>
+<li><code>24x240</code></li>
+<li><code>34x120</code></li>
+<li><code>34x170</code></li>
+<li><code>34x220</code></li>
+<li><code>34x280</code></li>
+<li><code>48x150</code></li>
+<li><code>48x210</code></li>
+<li><code>48x270</code></li>
+<li><code>48x330</code></li>
+<li><code>64x170</code></li>
+<li><code>64x230</code></li>
+<li><code>64x290</code></li>
+<li><code>64x350</code></li>
+<li><code>80x200</code></li>
+<li><code>80x260</code></li>
+<li><code>80x320</code></li>
+<li><code>80x380</code></li>
+<li><code>96x220</code></li>
+<li><code>96x280</code></li>
+<li><code>96x340</code></li>
+<li><code>96x400</code></li>
+<li><code>120x250</code></li>
+<li><code>120x320</code></li>
+<li><code>120x390</code></li>
+<li><code>120x460</code></li>
+</ul>
+<h3 id="21-как-считаются-таблицы-pearsonspearman">2.1 Как считаются таблицы Pearson/Spearman</h3>
+<p>Для каждой пары ‘параметр ↔ метрика’ считается коэффициент Пирсона:</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>r</mi><mrow><mi>x</mi><mi>y</mi></mrow></msub><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>i</mi></munder><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>x</mi><mo>ˉ</mo></mover><mo stretchy="false">)</mo><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>y</mi><mo>ˉ</mo></mover><mo stretchy="false">)</mo></mrow><mrow><msqrt><mrow><munder><mo>∑</mo><mi>i</mi></munder><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>x</mi><mo>ˉ</mo></mover><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></msqrt><msqrt><mrow><munder><mo>∑</mo><mi>i</mi></munder><mo stretchy="false">(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>y</mi><mo>ˉ</mo></mover><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></msqrt></mrow></mfrac></mrow><annotation encoding="application/x-tex">r_{xy}=\frac{\sum_i (x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_i(x_i-\bar{x})^2}\sqrt{\sum_i(y_i-\bar{y})^2}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.5697em;vertical-align:-1.13em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4397em;"><span style="top:-2.1999em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9101em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.162em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-2.8701em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3299em;"><span></span></span></span></span></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9101em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.162em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-2.8701em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3299em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6897em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.162em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="mclose">)</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.13em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r&gt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>: рост параметра обычно связан с ростом метрики.</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>: рост параметра обычно связан со снижением метрики.</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>r</mi><mi mathvariant="normal">∣</mi><mo>≈</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">|r|\approx 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>: линейная связь слабая.</li>
+</ul>
+<p>Для Spearman сначала заменяем значения на ранги и считаем тот же Pearson по рангам:</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>ρ</mi><mi>s</mi></msub><mo>=</mo><mi>r</mi><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">k</mi></mrow><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">k</mi></mrow><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\rho_s = r(\mathrm{rank}(x),\mathrm{rank}(y))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">ρ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mord"><span class="mord mathrm">rank</span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">rank</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">))</span></span></span></span></span></p>
+<p>Это снижает чувствительность к выбросам и нелинейным монотонным зависимостям.</p>
+<p><code>ImpactIndex</code> в отчете = среднее <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>r</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|r|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">∣</span></span></span></span> по ключевым исходам (Score, pass-rate, покрытие, стабильность), поэтому он отражает силу влияния без учета знака.</p>
+<p><strong>Вывод:</strong> исследование сравнивает параметры на сетках разной размерности/плотности и собирает чувствительность по всей выборке.</p>
+<h2 id="3-результаты">3) Результаты</h2>
+<h3 id="31-сводка-по-каждой-топологии">3.1 Сводка по каждой топологии</h3>
+<table>
+<thead>
+<tr>
+<th>NetworkId</th>
+<th>N</th>
+<th>R</th>
+<th>AvgScore</th>
+<th>StableRatio</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10x60</td>
+<td>10</td>
+<td>60</td>
+<td>84.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>10x90</td>
+<td>10</td>
+<td>90</td>
+<td>84.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>10x120</td>
+<td>10</td>
+<td>120</td>
+<td>83.84</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>10x160</td>
+<td>10</td>
+<td>160</td>
+<td>84.21</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>14x70</td>
+<td>14</td>
+<td>70</td>
+<td>84.09</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>14x100</td>
+<td>14</td>
+<td>100</td>
+<td>84.09</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>14x140</td>
+<td>14</td>
+<td>140</td>
+<td>85.25</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>14x180</td>
+<td>14</td>
+<td>180</td>
+<td>91.35</td>
+<td>90.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>18x80</td>
+<td>18</td>
+<td>80</td>
+<td>84.60</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>18x120</td>
+<td>18</td>
+<td>120</td>
+<td>77.50</td>
+<td>60.00%</td>
+<td>OSCILLATING</td>
+</tr>
+<tr>
+<td>18x160</td>
+<td>18</td>
+<td>160</td>
+<td>98.61</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>18x210</td>
+<td>18</td>
+<td>210</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>24x100</td>
+<td>24</td>
+<td>100</td>
+<td>96.95</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>24x140</td>
+<td>24</td>
+<td>140</td>
+<td>99.84</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>24x190</td>
+<td>24</td>
+<td>190</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>24x240</td>
+<td>24</td>
+<td>240</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>34x120</td>
+<td>34</td>
+<td>120</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>34x170</td>
+<td>34</td>
+<td>170</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>34x220</td>
+<td>34</td>
+<td>220</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>34x280</td>
+<td>34</td>
+<td>280</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>48x150</td>
+<td>48</td>
+<td>150</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>48x210</td>
+<td>48</td>
+<td>210</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>48x270</td>
+<td>48</td>
+<td>270</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>48x330</td>
+<td>48</td>
+<td>330</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>64x170</td>
+<td>64</td>
+<td>170</td>
+<td>92.96</td>
+<td>90.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>64x230</td>
+<td>64</td>
+<td>230</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>64x290</td>
+<td>64</td>
+<td>290</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>64x350</td>
+<td>64</td>
+<td>350</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>80x200</td>
+<td>80</td>
+<td>200</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>80x260</td>
+<td>80</td>
+<td>260</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>80x320</td>
+<td>80</td>
+<td>320</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>80x380</td>
+<td>80</td>
+<td>380</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>96x220</td>
+<td>96</td>
+<td>220</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>96x280</td>
+<td>96</td>
+<td>280</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>96x340</td>
+<td>96</td>
+<td>340</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>96x400</td>
+<td>96</td>
+<td>400</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>120x250</td>
+<td>120</td>
+<td>250</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>120x320</td>
+<td>120</td>
+<td>320</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>120x390</td>
+<td>120</td>
+<td>390</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+<tr>
+<td>120x460</td>
+<td>120</td>
+<td>460</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>STABLE</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Вывод:</strong> рост N и R в этой выборке в среднем связан с ростом Score и улучшением динамики дублей.</p>
+<h3 id="32-лучший-общий-случай">3.2 Лучший общий случай</h3>
+<ul>
+<li>Сеть: <strong>N=18, R=210</strong></li>
+<li>Score: <strong>100.00</strong></li>
+<li>StableRatio: <strong>100.00%</strong></li>
+<li>Verdict: <strong>STABLE</strong></li>
+</ul>
+<p>Лучшие параметры (для этой топологии):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">173.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.15</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2200.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">49.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">57.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.07</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">206.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.05</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.22</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.867</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.25</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">14.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><strong>Вывод:</strong> при средней плотности (здесь N=24, R=240) удается получить полностью стабильное поведение в рамках выбранной эвристики Score.</p>
+<h3 id="33-глобальный-идеальный-профиль-параметров-по-топ-20-запусков">3.3 Глобальный ‘идеальный’ профиль параметров (по топ-20% запусков)</h3>
+<table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Median</th>
+<th>Q25</th>
+<th>Q75</th>
+<th>Mean</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>qForward</td>
+<td>194.000</td>
+<td>72.000</td>
+<td>333.000</td>
+<td>266.282</td>
+</tr>
+<tr>
+<td>deliveryProbability</td>
+<td>0.610</td>
+<td>0.170</td>
+<td>0.720</td>
+<td>0.476</td>
+</tr>
+<tr>
+<td>rootSourceCharge</td>
+<td>1500.000</td>
+<td>1494.000</td>
+<td>1805.000</td>
+<td>1620.878</td>
+</tr>
+<tr>
+<td>penaltyLambda</td>
+<td>28.000</td>
+<td>17.000</td>
+<td>31.000</td>
+<td>28.535</td>
+</tr>
+<tr>
+<td>switchHysteresis</td>
+<td>9.000</td>
+<td>0.000</td>
+<td>31.000</td>
+<td>17.607</td>
+</tr>
+<tr>
+<td>switchHysteresisRatio</td>
+<td>0.070</td>
+<td>0.030</td>
+<td>0.120</td>
+<td>0.086</td>
+</tr>
+<tr>
+<td>chargeDropPerHop</td>
+<td>80.000</td>
+<td>61.000</td>
+<td>80.000</td>
+<td>82.189</td>
+</tr>
+<tr>
+<td>chargeSpreadFactor</td>
+<td>0.280</td>
+<td>0.070</td>
+<td>0.410</td>
+<td>0.258</td>
+</tr>
+<tr>
+<td>decayIntervalSteps</td>
+<td>60.000</td>
+<td>17.000</td>
+<td>60.000</td>
+<td>56.728</td>
+</tr>
+<tr>
+<td>decayPercent</td>
+<td>0.130</td>
+<td>0.120</td>
+<td>0.220</td>
+<td>0.176</td>
+</tr>
+<tr>
+<td>linkMemory</td>
+<td>0.912</td>
+<td>0.864</td>
+<td>0.940</td>
+<td>0.895</td>
+</tr>
+<tr>
+<td>linkLearningRate</td>
+<td>0.230</td>
+<td>0.170</td>
+<td>0.570</td>
+<td>0.329</td>
+</tr>
+<tr>
+<td>linkBonusMax</td>
+<td>60.000</td>
+<td>14.000</td>
+<td>80.000</td>
+<td>54.568</td>
+</tr>
+</tbody>
+</table>
+<p>Практический baseline (можно брать как стартовый конфиг):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">194.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.61</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">28.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.07</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.28</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.13</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.912</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.23</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><strong>Вывод:</strong> глобальный профиль хорошо описывает ‘типичный’ успешный режим, но для sparse-классов видны существенные отклонения.</p>
+<h3 id="34-лучшие-параметры-по-классам-топологий">3.4 Лучшие параметры по классам топологий</h3>
+<table>
+<thead>
+<tr>
+<th>Класс</th>
+<th>Топологий</th>
+<th>MeanScore</th>
+<th>MeanStable</th>
+<th>Лучшая сеть</th>
+<th>Вердикты</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>small-sparse</td>
+<td>8</td>
+<td>83.42</td>
+<td>95.00%</td>
+<td>14x140</td>
+<td>S:7/O:1/U:0</td>
+</tr>
+<tr>
+<td>small-medium</td>
+<td>4</td>
+<td>93.54</td>
+<td>97.50%</td>
+<td>18x210</td>
+<td>S:4/O:0/U:0</td>
+</tr>
+<tr>
+<td>medium-sparse</td>
+<td>3</td>
+<td>98.93</td>
+<td>100.00%</td>
+<td>34x120</td>
+<td>S:3/O:0/U:0</td>
+</tr>
+<tr>
+<td>medium-medium</td>
+<td>6</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>24x190</td>
+<td>S:6/O:0/U:0</td>
+</tr>
+<tr>
+<td>medium-dense</td>
+<td>3</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>34x280</td>
+<td>S:3/O:0/U:0</td>
+</tr>
+<tr>
+<td>large-medium</td>
+<td>4</td>
+<td>98.24</td>
+<td>97.50%</td>
+<td>64x230</td>
+<td>S:4/O:0/U:0</td>
+</tr>
+<tr>
+<td>large-dense</td>
+<td>4</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>64x290</td>
+<td>S:4/O:0/U:0</td>
+</tr>
+<tr>
+<td>xlarge-medium</td>
+<td>2</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>96x220</td>
+<td>S:2/O:0/U:0</td>
+</tr>
+<tr>
+<td>xlarge-dense</td>
+<td>6</td>
+<td>100.00</td>
+<td>100.00%</td>
+<td>96x280</td>
+<td>S:6/O:0/U:0</td>
+</tr>
+</tbody>
+</table>
+<h4 id="класс-small-sparse">Класс <code>small-sparse</code></h4>
+<ul>
+<li>Топологий в классе: <strong>8</strong></li>
+<li>MeanScore: <strong>83.42</strong> (σ=2.28)</li>
+<li>MeanStableRatio: <strong>95.00%</strong></li>
+<li>Лучшая сеть: <strong>14x140</strong> (N=14, R=140)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">672.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.72</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">17.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.04</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.27</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">30.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.23</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.94</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.06</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">38.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>qForward</code>: 672.0 vs 194.0 (Δ=+478.000, ~246% от baseline)</li>
+<li><code>decayIntervalSteps</code>: 30.0 vs 60.0 (Δ=-30.000, ~50% от baseline)</li>
+<li><code>switchHysteresis</code>: 5.0 vs 9.0 (Δ=-4.000, ~44% от baseline)</li>
+<li><code>penaltyLambda</code>: 17.0 vs 28.0 (Δ=-11.000, ~39% от baseline)</li>
+<li><code>linkBonusMax</code>: 38.0 vs 60.0 (Δ=-22.000, ~37% от baseline)</li>
+<li><code>linkLearningRate</code>: 0.06 vs 0.23 (Δ=-0.170, ~17% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>qForward</code> ↑, <code>decayIntervalSteps</code> ↓, <code>switchHysteresis</code> ↓.</p>
+<h4 id="класс-small-medium">Класс <code>small-medium</code></h4>
+<ul>
+<li>Топологий в классе: <strong>4</strong></li>
+<li>MeanScore: <strong>93.54</strong> (σ=6.31)</li>
+<li>MeanStableRatio: <strong>97.50%</strong></li>
+<li>Лучшая сеть: <strong>18x210</strong> (N=18, R=210)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">173.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.15</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2200.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">49.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">57.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.07</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">206.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.05</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.22</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.867</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.25</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">14.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>switchHysteresis</code>: 57.0 vs 9.0 (Δ=+48.000, ~533% от baseline)</li>
+<li><code>chargeDropPerHop</code>: 206.0 vs 80.0 (Δ=+126.000, ~158% от baseline)</li>
+<li><code>linkBonusMax</code>: 14.0 vs 60.0 (Δ=-46.000, ~77% от baseline)</li>
+<li><code>penaltyLambda</code>: 49.0 vs 28.0 (Δ=+21.000, ~75% от baseline)</li>
+<li><code>rootSourceCharge</code>: 2200.0 vs 1500.0 (Δ=+700.000, ~47% от baseline)</li>
+<li><code>deliveryProbability</code>: 0.15 vs 0.61 (Δ=-0.460, ~46% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>switchHysteresis</code> ↑, <code>chargeDropPerHop</code> ↑, <code>linkBonusMax</code> ↓.</p>
+<h4 id="класс-medium-sparse">Класс <code>medium-sparse</code></h4>
+<ul>
+<li>Топологий в классе: <strong>3</strong></li>
+<li>MeanScore: <strong>98.93</strong> (σ=1.40)</li>
+<li>MeanStableRatio: <strong>100.00%</strong></li>
+<li>Лучшая сеть: <strong>34x120</strong> (N=34, R=120)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">156.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.18</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1779.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">28.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.14</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.05</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.12</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.968</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.69</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">77.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>linkLearningRate</code>: 0.69 vs 0.23 (Δ=+0.460, ~46% от baseline)</li>
+<li><code>deliveryProbability</code>: 0.18 vs 0.61 (Δ=-0.430, ~43% от baseline)</li>
+<li><code>linkBonusMax</code>: 77.0 vs 60.0 (Δ=+17.000, ~28% от baseline)</li>
+<li><code>chargeSpreadFactor</code>: 0.05 vs 0.28 (Δ=-0.230, ~23% от baseline)</li>
+<li><code>qForward</code>: 156.0 vs 194.0 (Δ=-38.000, ~20% от baseline)</li>
+<li><code>rootSourceCharge</code>: 1779.0 vs 1500.0 (Δ=+279.000, ~19% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>linkLearningRate</code> ↑, <code>deliveryProbability</code> ↓, <code>linkBonusMax</code> ↑.</p>
+<h4 id="класс-medium-medium">Класс <code>medium-medium</code></h4>
+<ul>
+<li>Топологий в классе: <strong>6</strong></li>
+<li>MeanScore: <strong>100.00</strong> (σ=0.00)</li>
+<li>MeanStableRatio: <strong>100.00%</strong></li>
+<li>Лучшая сеть: <strong>24x190</strong> (N=24, R=190)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">72.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.15</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">28.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.12</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.05</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.12</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.912</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.71</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">84.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>switchHysteresis</code>: 0.0 vs 9.0 (Δ=-9.000, ~100% от baseline)</li>
+<li><code>qForward</code>: 72.0 vs 194.0 (Δ=-122.000, ~63% от baseline)</li>
+<li><code>linkLearningRate</code>: 0.71 vs 0.23 (Δ=+0.480, ~48% от baseline)</li>
+<li><code>deliveryProbability</code>: 0.15 vs 0.61 (Δ=-0.460, ~46% от baseline)</li>
+<li><code>linkBonusMax</code>: 84.0 vs 60.0 (Δ=+24.000, ~40% от baseline)</li>
+<li><code>chargeSpreadFactor</code>: 0.05 vs 0.28 (Δ=-0.230, ~23% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>switchHysteresis</code> ↓, <code>qForward</code> ↓, <code>linkLearningRate</code> ↑.</p>
+<h4 id="класс-medium-dense">Класс <code>medium-dense</code></h4>
+<ul>
+<li>Топологий в классе: <strong>3</strong></li>
+<li>MeanScore: <strong>100.00</strong> (σ=0.00)</li>
+<li>MeanStableRatio: <strong>100.00%</strong></li>
+<li>Лучшая сеть: <strong>34x280</strong> (N=34, R=280)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">220.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.72</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">28.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.03</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.28</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.12</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.94</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">45.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>linkBonusMax</code>: 45.0 vs 60.0 (Δ=-15.000, ~25% от baseline)</li>
+<li><code>qForward</code>: 220.0 vs 194.0 (Δ=+26.000, ~13% от baseline)</li>
+<li><code>deliveryProbability</code>: 0.72 vs 0.61 (Δ=+0.110, ~11% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>linkBonusMax</code> ↓, <code>qForward</code> ↑, <code>deliveryProbability</code> ↑.</p>
+<h4 id="класс-large-medium">Класс <code>large-medium</code></h4>
+<ul>
+<li>Топологий в классе: <strong>4</strong></li>
+<li>MeanScore: <strong>98.24</strong> (σ=3.05)</li>
+<li>MeanStableRatio: <strong>97.50%</strong></li>
+<li>Лучшая сеть: <strong>64x230</strong> (N=64, R=230)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">20.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.39</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.03</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.46</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.94</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">97.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>penaltyLambda</code>: 0.0 vs 28.0 (Δ=-28.000, ~100% от baseline)</li>
+<li><code>switchHysteresis</code>: 0.0 vs 9.0 (Δ=-9.000, ~100% от baseline)</li>
+<li><code>qForward</code>: 20.0 vs 194.0 (Δ=-174.000, ~90% от baseline)</li>
+<li><code>chargeDropPerHop</code>: 10.0 vs 80.0 (Δ=-70.000, ~88% от baseline)</li>
+<li><code>linkBonusMax</code>: 97.0 vs 60.0 (Δ=+37.000, ~62% от baseline)</li>
+<li><code>deliveryProbability</code>: 0.39 vs 0.61 (Δ=-0.220, ~22% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>penaltyLambda</code> ↓, <code>switchHysteresis</code> ↓, <code>qForward</code> ↓.</p>
+<h4 id="класс-large-dense">Класс <code>large-dense</code></h4>
+<ul>
+<li>Топологий в классе: <strong>4</strong></li>
+<li>MeanScore: <strong>100.00</strong> (σ=0.00)</li>
+<li>MeanStableRatio: <strong>100.00%</strong></li>
+<li>Лучшая сеть: <strong>64x290</strong> (N=64, R=290)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">20.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.72</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">28.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.03</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.7</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.12</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.995</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">45.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>qForward</code>: 20.0 vs 194.0 (Δ=-174.000, ~90% от baseline)</li>
+<li><code>chargeSpreadFactor</code>: 0.7 vs 0.28 (Δ=+0.420, ~42% от baseline)</li>
+<li><code>linkBonusMax</code>: 45.0 vs 60.0 (Δ=-15.000, ~25% от baseline)</li>
+<li><code>deliveryProbability</code>: 0.72 vs 0.61 (Δ=+0.110, ~11% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>qForward</code> ↓, <code>chargeSpreadFactor</code> ↑, <code>linkBonusMax</code> ↓.</p>
+<h4 id="класс-xlarge-medium">Класс <code>xlarge-medium</code></h4>
+<ul>
+<li>Топологий в классе: <strong>2</strong></li>
+<li>MeanScore: <strong>100.00</strong> (σ=0.00)</li>
+<li>MeanStableRatio: <strong>100.00%</strong></li>
+<li>Лучшая сеть: <strong>96x220</strong> (N=96, R=220)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">220.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.72</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1500.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">108.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.03</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.28</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.12</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.94</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">120.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>switchHysteresis</code>: 108.0 vs 9.0 (Δ=+99.000, ~1100% от baseline)</li>
+<li><code>penaltyLambda</code>: 0.0 vs 28.0 (Δ=-28.000, ~100% от baseline)</li>
+<li><code>linkBonusMax</code>: 120.0 vs 60.0 (Δ=+60.000, ~100% от baseline)</li>
+<li><code>qForward</code>: 220.0 vs 194.0 (Δ=+26.000, ~13% от baseline)</li>
+<li><code>deliveryProbability</code>: 0.72 vs 0.61 (Δ=+0.110, ~11% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>switchHysteresis</code> ↑, <code>penaltyLambda</code> ↓, <code>linkBonusMax</code> ↑. (в классе мало топологий, вывод менее надежен)</p>
+<h4 id="класс-xlarge-dense">Класс <code>xlarge-dense</code></h4>
+<ul>
+<li>Топологий в классе: <strong>6</strong></li>
+<li>MeanScore: <strong>100.00</strong> (σ=0.00)</li>
+<li>MeanStableRatio: <strong>100.00%</strong></li>
+<li>Лучшая сеть: <strong>96x280</strong> (N=96, R=280)</li>
+</ul>
+<p>Лучшие параметры (полный набор):</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;qForward&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">20.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;deliveryProbability&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.72</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;rootSourceCharge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1903.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;penaltyLambda&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">9.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;switchHysteresisRatio&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.03</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeDropPerHop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">21.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;chargeSpreadFactor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.28</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayIntervalSteps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;decayPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkMemory&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.94</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkLearningRate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;linkBonusMax&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">98.0</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Ключевые отличия от глобального baseline:</p>
+<ul>
+<li><code>penaltyLambda</code>: 0.0 vs 28.0 (Δ=-28.000, ~100% от baseline)</li>
+<li><code>qForward</code>: 20.0 vs 194.0 (Δ=-174.000, ~90% от baseline)</li>
+<li><code>chargeDropPerHop</code>: 21.0 vs 80.0 (Δ=-59.000, ~74% от baseline)</li>
+<li><code>linkBonusMax</code>: 98.0 vs 60.0 (Δ=+38.000, ~63% от baseline)</li>
+<li><code>rootSourceCharge</code>: 1903.0 vs 1500.0 (Δ=+403.000, ~27% от baseline)</li>
+<li><code>decayPercent</code>: 0.0 vs 0.13 (Δ=-0.130, ~13% от baseline)</li>
+</ul>
+<p><strong>Вывод (по классу):</strong> оптимизатор ушел от baseline: <code>penaltyLambda</code> ↓, <code>qForward</code> ↓, <code>chargeDropPerHop</code> ↓.</p>
+<h3 id="35-влияние-параметров-и-вывод-по-каждому-параметру">3.5 Влияние параметров (и вывод по каждому параметру)</h3>
+<p><code>ImpactIndex</code> = среднее значение <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>r</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|r|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">∣</span></span></span></span> по набору исходов (Score, pass-rate, покрытие, стабильность). Чем выше — тем сильнее параметр ‘двигает’ поведение в этой выборке.</p>
+<p>Топ влияния:</p>
+<table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>ImpactIndex</th>
+<th>Сильнейшая метрика</th>
+<th>r</th>
+<th>Интерпретация</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>decayIntervalSteps</td>
+<td>0.118</td>
+<td>theoremPassRate</td>
+<td>-0.210</td>
+<td>выше обычно ухудшает сильнейшую метрику</td>
+</tr>
+<tr>
+<td>chargeSpreadFactor</td>
+<td>0.095</td>
+<td>duplicateDrop</td>
+<td>0.218</td>
+<td>выше обычно улучшает сильнейшую метрику</td>
+</tr>
+<tr>
+<td>switchHysteresisRatio</td>
+<td>0.090</td>
+<td>score</td>
+<td>0.237</td>
+<td>выше обычно улучшает сильнейшую метрику</td>
+</tr>
+<tr>
+<td>rootSourceCharge</td>
+<td>0.069</td>
+<td>duplicateDrop</td>
+<td>-0.148</td>
+<td>выше обычно ухудшает сильнейшую метрику</td>
+</tr>
+<tr>
+<td>chargeDropPerHop</td>
+<td>0.067</td>
+<td>theoremPassRate</td>
+<td>-0.147</td>
+<td>выше обычно ухудшает сильнейшую метрику</td>
+</tr>
+<tr>
+<td>deliveryProbability</td>
+<td>0.058</td>
+<td>theoremPassRate</td>
+<td>-0.089</td>
+<td>выше обычно ухудшает сильнейшую метрику</td>
+</tr>
+</tbody>
+</table>
+<p>Низ влияния (почти не меняют картину в этой выборке):</p>
+<table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>ImpactIndex</th>
+<th>Сильнейшая метрика</th>
+<th>r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>decayPercent</td>
+<td>0.051</td>
+<td>duplicateDrop</td>
+<td>-0.113</td>
+</tr>
+<tr>
+<td>penaltyLambda</td>
+<td>0.048</td>
+<td>duplicateDrop</td>
+<td>-0.192</td>
+</tr>
+<tr>
+<td>linkMemory</td>
+<td>0.046</td>
+<td>theoremPassRate</td>
+<td>0.079</td>
+</tr>
+<tr>
+<td>switchHysteresis</td>
+<td>0.042</td>
+<td>eligibleTailRatio</td>
+<td>-0.114</td>
+</tr>
+<tr>
+<td>linkLearningRate</td>
+<td>0.034</td>
+<td>score</td>
+<td>0.141</td>
+</tr>
+<tr>
+<td>linkBonusMax</td>
+<td>0.020</td>
+<td>duplicateDrop</td>
+<td>-0.070</td>
+</tr>
+</tbody>
+</table>
+<p>Выводы по каждому параметру (коротко):</p>
+<table>
+<thead>
+<tr>
+<th>Параметр</th>
+<th>Смысл</th>
+<th>ImpactIndex</th>
+<th>r(Score)</th>
+<th>Сильнее всего связано</th>
+<th>Вывод</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>qForward</td>
+<td>Порог eligible: узел eligible если q_total ≥ qForward.</td>
+<td>0.052</td>
+<td>-0.018</td>
+<td>eligibleTailRatio (-0.197)</td>
+<td>Score: связь слабая; увеличение чаще ухудшает метрику</td>
+</tr>
+<tr>
+<td>deliveryProbability</td>
+<td>Базовая вероятность доставки (далее масштабируется качеством линка).</td>
+<td>0.058</td>
+<td>-0.079</td>
+<td>theoremPassRate (-0.089)</td>
+<td>Score: связь слабая; увеличение чаще ухудшает метрику</td>
+</tr>
+<tr>
+<td>rootSourceCharge</td>
+<td>Инъекция заряда в gateway каждый раунд (источник энергии).</td>
+<td>0.069</td>
+<td>+0.057</td>
+<td>duplicateDrop (-0.148)</td>
+<td>Score: связь слабая; увеличение чаще ухудшает метрику</td>
+</tr>
+<tr>
+<td>penaltyLambda</td>
+<td>Штраф слабых линков при выборе родителя (выше = сильнее избегаем плохие связи).</td>
+<td>0.048</td>
+<td>-0.053</td>
+<td>duplicateDrop (-0.192)</td>
+<td>Score: связь слабая; увеличение чаще ухудшает метрику</td>
+</tr>
+<tr>
+<td>switchHysteresis</td>
+<td>Абсолютный гистерезис смены родителя (выше = меньше переключений).</td>
+<td>0.042</td>
+<td>-0.086</td>
+<td>eligibleTailRatio (-0.114)</td>
+<td>Score: связь слабая; увеличение чаще ухудшает метрику</td>
+</tr>
+<tr>
+<td>switchHysteresisRatio</td>
+<td>Относительный гистерезис (доля от оценки), добавляется к switchHysteresis.</td>
+<td>0.090</td>
+<td>+0.237</td>
+<td>score (+0.237)</td>
+<td>скорее ↑Score; увеличение чаще улучшает метрику</td>
+</tr>
+<tr>
+<td>chargeDropPerHop</td>
+<td>Потеря заряда на хоп (ограничивает глубину распространения).</td>
+<td>0.067</td>
+<td>-0.051</td>
+<td>theoremPassRate (-0.147)</td>
+<td>Score: связь слабая; увеличение чаще ухудшает метрику</td>
+</tr>
+<tr>
+<td>chargeSpreadFactor</td>
+<td>Скорость смешивания/распространения заряда к целевому уровню.</td>
+<td>0.095</td>
+<td>+0.082</td>
+<td>duplicateDrop (+0.218)</td>
+<td>Score: связь слабая; увеличение чаще улучшает метрику</td>
+</tr>
+<tr>
+<td>decayIntervalSteps</td>
+<td>Интервал глобального decay (0 = нет decay; больше = реже).</td>
+<td>0.118</td>
+<td>-0.142</td>
+<td>theoremPassRate (-0.210)</td>
+<td>скорее ↓Score; увеличение чаще ухудшает метрику</td>
+</tr>
+<tr>
+<td>decayPercent</td>
+<td>Сила decay в эпоху (доля, которая вычитается).</td>
+<td>0.051</td>
+<td>-0.105</td>
+<td>duplicateDrop (-0.113)</td>
+<td>скорее ↓Score; увеличение чаще ухудшает метрику</td>
+</tr>
+<tr>
+<td>linkMemory</td>
+<td>Память накопленного usageScore (ближе к 1 = более инерционно).</td>
+<td>0.046</td>
+<td>-0.010</td>
+<td>theoremPassRate (+0.079)</td>
+<td>Score: связь слабая; увеличение чаще улучшает метрику</td>
+</tr>
+<tr>
+<td>linkLearningRate</td>
+<td>Скорость усиления effectiveQuality от usageScore.</td>
+<td>0.034</td>
+<td>+0.141</td>
+<td>score (+0.141)</td>
+<td>скорее ↑Score; увеличение чаще улучшает метрику</td>
+</tr>
+<tr>
+<td>linkBonusMax</td>
+<td>Макс. бонус стабильности линка в выборе родителя.</td>
+<td>0.020</td>
+<td>-0.014</td>
+<td>duplicateDrop (-0.070)</td>
+<td>Score: связь слабая; увеличение чаще ухудшает метрику</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Общий вывод по параметрам:</strong> в этой выборке сильнее всего ‘двигают’ поведение <code>penaltyLambda</code> и <code>decayIntervalSteps</code>. Корреляции — описательные, и часть эффектов может быть связана с совместной настройкой параметров оптимизатором.</p>
+<h3 id="36-связки-параметрпараметр-важно-для-интерпретации">3.6 Связки параметр↔параметр (важно для интерпретации)</h3>
+<p>| Пара | Pearson | |Pearson| |
+| --- | --- | --- |
+| deliveryProbability &lt;&gt; linkLearningRate | -0.447 | 0.447 |
+| penaltyLambda &lt;&gt; switchHysteresis | 0.425 | 0.425 |
+| switchHysteresisRatio &lt;&gt; linkLearningRate | 0.386 | 0.386 |
+| chargeDropPerHop &lt;&gt; decayIntervalSteps | 0.333 | 0.333 |
+| decayPercent &lt;&gt; linkMemory | -0.313 | 0.313 |
+| qForward &lt;&gt; switchHysteresis | 0.303 | 0.303 |
+| deliveryProbability &lt;&gt; penaltyLambda | -0.297 | 0.297 |
+| penaltyLambda &lt;&gt; chargeSpreadFactor | -0.287 | 0.287 |
+| chargeDropPerHop &lt;&gt; linkMemory | -0.281 | 0.281 |
+| decayIntervalSteps &lt;&gt; linkMemory | -0.273 | 0.273 |
+| deliveryProbability &lt;&gt; switchHysteresis | -0.261 | 0.261 |
+| deliveryProbability &lt;&gt; chargeSpreadFactor | 0.240 | 0.240 |
+| switchHysteresis &lt;&gt; switchHysteresisRatio | -0.228 | 0.228 |
+| rootSourceCharge &lt;&gt; decayIntervalSteps | -0.223 | 0.223 |
+| qForward &lt;&gt; penaltyLambda | 0.220 | 0.220 |
+| switchHysteresis &lt;&gt; decayIntervalSteps | 0.216 | 0.216 |
+| switchHysteresisRatio &lt;&gt; chargeDropPerHop | 0.214 | 0.214 |
+| linkMemory &lt;&gt; linkLearningRate | -0.196 | 0.196 |
+| chargeSpreadFactor &lt;&gt; decayIntervalSteps | -0.194 | 0.194 |
+| rootSourceCharge &lt;&gt; penaltyLambda | 0.189 | 0.189 |</p>
+<p><strong>Вывод:</strong> некоторые параметры сильно коррелируют между собой (например, <code>deliveryProbability</code> ↔ <code>penaltyLambda</code>). Это значит, что одиночная корреляция параметра с Score может отражать совместную настройку, а не ‘чистый’ эффект.</p>
+<h3 id="37-эффект-топологии">3.7 Эффект топологии</h3>
+<table>
+<thead>
+<tr>
+<th>Исход</th>
+<th>r(nodeCount)</th>
+<th>r(linkRadius)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Score (итоговая оценка)</td>
+<td>0.438</td>
+<td>0.496</td>
+</tr>
+<tr>
+<td>TheoremPassRate (доля раундов, где теорема верна)</td>
+<td>0.147</td>
+<td>0.175</td>
+</tr>
+<tr>
+<td>AssumptionsPassRate (доля раундов, где аксиомы верны)</td>
+<td>0.147</td>
+<td>0.175</td>
+</tr>
+<tr>
+<td>CoverageAvg (среднее покрытие DOWN)</td>
+<td>0.074</td>
+<td>0.124</td>
+</tr>
+<tr>
+<td>DuplicateDrop (снижение дублей DOWN)</td>
+<td>0.800</td>
+<td>0.626</td>
+</tr>
+<tr>
+<td>EligibleTailRatio (здоровье eligible-набора в конце)</td>
+<td>0.030</td>
+<td>0.048</td>
+</tr>
+<tr>
+<td>ParentChangeAvg (среднее число смен родителя)</td>
+<td>0.070</td>
+<td>0.037</td>
+</tr>
+<tr>
+<td>FlappingAvg (флаппинг родителей)</td>
+<td>0.062</td>
+<td>0.039</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Вывод:</strong> в этой выборке более крупные и более плотные топологии в среднем показывают более высокий Score и более выраженное снижение дублей (DuplicateDrop).</p>
+<h3 id="38-нестабильные-и-худшие-случаи">3.8 Нестабильные и худшие случаи</h3>
+<table>
+<thead>
+<tr>
+<th>Вердикт</th>
+<th>Count</th>
+<th>Share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STABLE</td>
+<td>45989</td>
+<td>94.24%</td>
+</tr>
+<tr>
+<td>OSCILLATING</td>
+<td>1357</td>
+<td>2.78%</td>
+</tr>
+<tr>
+<td>UNSTABLE</td>
+<td>1454</td>
+<td>2.98%</td>
+</tr>
+</tbody>
+</table>
+<p>Худшие seed-run (минимальный Score):</p>
+<table>
+<thead>
+<tr>
+<th>RunId</th>
+<th>Network</th>
+<th>Seed</th>
+<th>Verdict</th>
+<th>Score</th>
+<th>TheoremPass</th>
+<th>Coverage</th>
+<th>DupDrop</th>
+<th>ParentChange</th>
+<th>Flapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>48x150@48</td>
+<td>48x150</td>
+<td>48</td>
+<td>UNSTABLE</td>
+<td>17.16</td>
+<td>7.67%</td>
+<td>27.17%</td>
+<td>-0.09</td>
+<td>1.74</td>
+<td>2.77</td>
+</tr>
+<tr>
+<td>64x170@49</td>
+<td>64x170</td>
+<td>49</td>
+<td>UNSTABLE</td>
+<td>20.24</td>
+<td>5.67%</td>
+<td>39.65%</td>
+<td>14.89</td>
+<td>5.54</td>
+<td>9.25</td>
+</tr>
+<tr>
+<td>96x400@44</td>
+<td>96x400</td>
+<td>44</td>
+<td>UNSTABLE</td>
+<td>21.92</td>
+<td>16.33%</td>
+<td>99.93%</td>
+<td>3.19</td>
+<td>14.58</td>
+<td>26.80</td>
+</tr>
+<tr>
+<td>96x400@47</td>
+<td>96x400</td>
+<td>47</td>
+<td>UNSTABLE</td>
+<td>22.42</td>
+<td>10.33%</td>
+<td>99.84%</td>
+<td>20.91</td>
+<td>17.93</td>
+<td>33.38</td>
+</tr>
+<tr>
+<td>96x400@48</td>
+<td>96x400</td>
+<td>48</td>
+<td>UNSTABLE</td>
+<td>22.43</td>
+<td>1.67%</td>
+<td>99.87%</td>
+<td>45.68</td>
+<td>15.02</td>
+<td>28.24</td>
+</tr>
+<tr>
+<td>96x220@49</td>
+<td>96x220</td>
+<td>49</td>
+<td>UNSTABLE</td>
+<td>23.65</td>
+<td>12.00%</td>
+<td>100.00%</td>
+<td>7.36</td>
+<td>9.57</td>
+<td>17.14</td>
+</tr>
+<tr>
+<td>96x340@48</td>
+<td>96x340</td>
+<td>48</td>
+<td>UNSTABLE</td>
+<td>25.46</td>
+<td>17.33%</td>
+<td>100.00%</td>
+<td>13.43</td>
+<td>11.69</td>
+<td>18.31</td>
+</tr>
+<tr>
+<td>96x400@50</td>
+<td>96x400</td>
+<td>50</td>
+<td>UNSTABLE</td>
+<td>25.54</td>
+<td>23.00%</td>
+<td>99.99%</td>
+<td>7.57</td>
+<td>13.59</td>
+<td>24.31</td>
+</tr>
+<tr>
+<td>80x260@49</td>
+<td>80x260</td>
+<td>49</td>
+<td>UNSTABLE</td>
+<td>26.23</td>
+<td>11.00%</td>
+<td>100.00%</td>
+<td>7.79</td>
+<td>6.32</td>
+<td>10.78</td>
+</tr>
+<tr>
+<td>96x400@49</td>
+<td>96x400</td>
+<td>49</td>
+<td>UNSTABLE</td>
+<td>26.61</td>
+<td>26.33%</td>
+<td>98.76%</td>
+<td>6.20</td>
+<td>12.16</td>
+<td>21.49</td>
+</tr>
+<tr>
+<td>120x390@48</td>
+<td>120x390</td>
+<td>48</td>
+<td>UNSTABLE</td>
+<td>26.71</td>
+<td>7.00%</td>
+<td>100.00%</td>
+<td>114.85</td>
+<td>22.53</td>
+<td>36.31</td>
+</tr>
+<tr>
+<td>18x120@50</td>
+<td>18x120</td>
+<td>50</td>
+<td>UNSTABLE</td>
+<td>26.91</td>
+<td>3.33%</td>
+<td>38.85%</td>
+<td>0.00</td>
+<td>0.05</td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table>
+<p>Худший сценарий по каждой топологии:</p>
+<table>
+<thead>
+<tr>
+<th>Network</th>
+<th>Seed</th>
+<th>Verdict</th>
+<th>WorstScore</th>
+<th>TheoremPass</th>
+<th>Coverage</th>
+<th>Flapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10x60</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>10x90</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>10x120</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>10x160</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>14x70</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>14x100</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>14x140</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>14x180</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>18x80</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>18x120</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>18x160</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>18x210</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>24x100</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>24x140</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>24x190</td>
+<td>0</td>
+<td>UNSTABLE</td>
+<td>0.00</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Вывод:</strong> нестабильность концентрируется в части топологий/seed-комбинаций; для инженерного выбора параметров важно смотреть не только на средний Score, но и на хвост худших сценариев.</p>
+<h2 id="4-графики-с-выводами">4) Графики (с выводами)</h2>
+<h3 id="41-сводка-прогона">4.1 Сводка прогона</h3>
+<h3 id="score-по-топологиям">Score по топологиям</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/score_by_network.svg" alt="Score по топологиям"></p>
+<p><strong>Вывод:</strong> видно распределение качества по сеткам; лучше сравнивать с классами (size/density).</p>
+<h3 id="stableratio-по-топологиям">StableRatio по топологиям</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/stable_ratio_by_network.svg" alt="StableRatio по топологиям"></p>
+<p><strong>Вывод:</strong> показывает, где режим стабилен (высокая доля STABLE) и где возможны колебания.</p>
+<h3 id="распределение-вердиктов">Распределение вердиктов</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/verdict_distribution.svg" alt="Распределение вердиктов"></p>
+<p><strong>Вывод:</strong> характеризует общий уровень устойчивости по выбранной метрике Score.</p>
+<h3 id="первый-раунд-где-проходят-все-проверки">Первый раунд, где проходят все проверки</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/first_all_checks_round_by_network.svg" alt="Первый раунд, где проходят все проверки"></p>
+<p><strong>Вывод:</strong> чем меньше — тем быстрее сеть выходит в корректный режим (если он достигается).</p>
+<h3 id="раунд-устойчивого-прохождения-всех-проверок">Раунд устойчивого прохождения всех проверок</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/sustained_all_checks_round_by_network.svg" alt="Раунд устойчивого прохождения всех проверок"></p>
+<p><strong>Вывод:</strong> важнее, чем первый успех: показывает, когда режим перестает ‘проваливаться’.</p>
+<h3 id="42-лучший-случай-динамика">4.2 Лучший случай (динамика)</h3>
+<h3 id="топология-лучшей-сети">Топология лучшей сети</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/best_network_topology.svg" alt="Топология лучшей сети"></p>
+<p><strong>Вывод:</strong> это пример топологии, где найден режим Score≈100 и высокий StableRatio.</p>
+<h3 id="покрытие-и-eligible">Покрытие и eligible</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/best_network_connectivity_dynamics.svg" alt="Покрытие и eligible"></p>
+<p><strong>Вывод:</strong> важно следить, чтобы eligible-набор не коллапсировал в хвосте.</p>
+<h3 id="стабильность-дерева">Стабильность дерева</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/best_network_stability.svg" alt="Стабильность дерева"></p>
+<p><strong>Вывод:</strong> меньше смен родителей и флаппинга = более устойчивый режим.</p>
+<h3 id="трафик-и-дубли">Трафик и дубли</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/best_network_routing_dynamics.svg" alt="Трафик и дубли"></p>
+<p><strong>Вывод:</strong> снижение дублей при сохранении покрытия — хороший признак сходимости.</p>
+<h3 id="прохождение-теоремыаксиом-по-раундам">Прохождение теоремы/аксиом по раундам</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/best_network_theorem_status.svg" alt="Прохождение теоремы/аксиом по раундам"></p>
+<p><strong>Вывод:</strong> показывает, насколько режим устойчиво проходит проверки.</p>
+<h3 id="a5a6a7-и-леммы-по-раундам">A5/A6/A7 и леммы по раундам</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/best_network_checks_status.svg" alt="A5/A6/A7 и леммы по раундам"></p>
+<p><strong>Вывод:</strong> помогает понять, какая именно часть теоремы ломается, если ломается.</p>
+<h3 id="43-худший-нестабильный-сценарий">4.3 Худший нестабильный сценарий</h3>
+<h3 id="число-unstableoscillating-запусков-по-топологиям">Число unstable/oscillating запусков по топологиям</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/unstable_or_oscillating_runs_by_network.svg" alt="Число unstable/oscillating запусков по топологиям"></p>
+<p><strong>Вывод:</strong> показывает, в каких сетках чаще возникает деградация и нестабильность.</p>
+<h3 id="топология-худшей-сети">Топология худшей сети</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/worst_network_topology.svg" alt="Топология худшей сети"></p>
+<p><strong>Вывод:</strong> визуализация худшего случая с аннотацией зарядов узлов и средних весов ребер.</p>
+<h3 id="худший-случай-покрытие-и-eligible">Худший случай: покрытие и eligible</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/worst_network_connectivity_dynamics.svg" alt="Худший случай: покрытие и eligible"></p>
+<p><strong>Вывод:</strong> обычно видно коллапс eligible-набора или слабое восстановление покрытия.</p>
+<h3 id="худший-случай-стабильность-дерева">Худший случай: стабильность дерева</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/worst_network_stability.svg" alt="Худший случай: стабильность дерева"></p>
+<p><strong>Вывод:</strong> скачки parentChange/flapping указывают на маршрутизационную турбулентность.</p>
+<h3 id="худший-случай-трафик-и-дубли">Худший случай: трафик и дубли</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/worst_network_routing_dynamics.svg" alt="Худший случай: трафик и дубли"></p>
+<p><strong>Вывод:</strong> рост дублей при слабом покрытии — типичный признак неустойчивого режима.</p>
+<h3 id="худший-случай-теоремааксиомы-по-раундам">Худший случай: теорема/аксиомы по раундам</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/worst_network_theorem_status.svg" alt="Худший случай: теорема/аксиомы по раундам"></p>
+<p><strong>Вывод:</strong> позволяет увидеть, это постоянный провал или редкие проблески прохождения проверок.</p>
+<h3 id="худший-случай-a5a6a7-и-леммы">Худший случай: A5/A6/A7 и леммы</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/worst_network_checks_status.svg" alt="Худший случай: A5/A6/A7 и леммы"></p>
+<p><strong>Вывод:</strong> диагностирует, какая именно проверка ломается чаще всего.</p>
+<h3 id="44-чувствительность-и-корреляции">4.4 Чувствительность и корреляции</h3>
+<h3 id="индекс-влияния-параметров">Индекс влияния параметров</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/parameter_impact_index.svg" alt="Индекс влияния параметров"></p>
+<p><strong>Вывод:</strong> влияние распределено неравномерно: есть несколько параметров-лидеров и несколько почти нейтральных.</p>
+<h3 id="корреляции-параметров-со-score">Корреляции параметров со Score</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/score_correlation_signed.svg" alt="Корреляции параметров со Score"></p>
+<p><strong>Вывод:</strong> видна направленность корреляций со Score, но интерпретировать нужно с учетом связок параметров.</p>
+<h3 id="тепловая-карта-корреляций-параметры--исходы">Тепловая карта корреляций (параметры ↔ исходы)</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/parameter_outcome_heatmap.svg" alt="Тепловая карта корреляций (параметры ↔ исходы)"></p>
+<p><strong>Вывод:</strong> удобно видеть, на какие исходы сильнее влияет каждый параметр.</p>
+<h3 id="средний-score-по-классам">Средний Score по классам</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/class_mean_score.svg" alt="Средний Score по классам"></p>
+<p><strong>Вывод:</strong> плотность/размер класса напрямую отражаются в среднем Score (в этой выборке плотнее/крупнее лучше).</p>
+<h3 id="корреляции-топологии-с-исходами">Корреляции топологии с исходами</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/topology_outcome_correlations.svg" alt="Корреляции топологии с исходами"></p>
+<p><strong>Вывод:</strong> в этой выборке <code>nodeCount</code> и <code>linkRadius</code> положительно связаны со Score и DuplicateDrop.</p>
+<h3 id="доли-вердиктов-в-полной-выборке">Доли вердиктов в полной выборке</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/verdict_share_comprehensive.svg" alt="Доли вердиктов в полной выборке"></p>
+<p><strong>Вывод:</strong> доли STABLE/OSCILLATING/UNSTABLE по всей расширенной выборке; это базовый индикатор общей устойчивости.</p>
+<h3 id="доля-нестабильных-запусков-по-классам">Доля нестабильных запусков по классам</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/unstable_ratio_by_class.svg" alt="Доля нестабильных запусков по классам"></p>
+<p><strong>Вывод:</strong> показывает, какие классы топологий дают более высокий риск неустойчивого режима.</p>
+<h3 id="худший-score-по-каждой-топологии">Худший Score по каждой топологии</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/worst_score_by_network.svg" alt="Худший Score по каждой топологии"></p>
+<p><strong>Вывод:</strong> нижняя граница качества по каждой топологии; важно для оценки риска в production-сценариях.</p>
+<h3 id="score-хвоста-худших-запусков">Score хвоста худших запусков</h3>
+<p><img src="file:////home/uhorbach/projects/IoT-Swarm-Mesh/Protocol/_theoreme_ai_search/try_2/2026-04-15_22-36-05/charts/comprehensive/worst_runs_score_tail.svg" alt="Score хвоста худших запусков"></p>
+<p><strong>Вывод:</strong> хвост самых плохих seed-run: чем длиннее и глубже хвост, тем выше риск редких провалов.</p>
+<h2 id="приложение-a-полная-матрица-pearson-параметр--исход">Приложение A: Полная матрица Pearson (параметр ↔ исход)</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Score</th>
+<th>TheoremPass</th>
+<th>AssumptionPass</th>
+<th>Coverage</th>
+<th>DuplicateDrop</th>
+<th>EligibleTail</th>
+<th>ParentChanges</th>
+<th>Flapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>qForward</td>
+<td>-0.018</td>
+<td>-0.043</td>
+<td>-0.043</td>
+<td>-0.035</td>
+<td>0.049</td>
+<td>-0.197</td>
+<td>0.025</td>
+<td>-0.002</td>
+</tr>
+<tr>
+<td>deliveryProbability</td>
+<td>-0.079</td>
+<td>-0.089</td>
+<td>-0.089</td>
+<td>-0.064</td>
+<td>0.068</td>
+<td>0.068</td>
+<td>-0.007</td>
+<td>-0.003</td>
+</tr>
+<tr>
+<td>rootSourceCharge</td>
+<td>0.057</td>
+<td>0.145</td>
+<td>0.145</td>
+<td>0.044</td>
+<td>-0.148</td>
+<td>0.006</td>
+<td>-0.007</td>
+<td>-0.003</td>
+</tr>
+<tr>
+<td>penaltyLambda</td>
+<td>-0.053</td>
+<td>0.010</td>
+<td>0.010</td>
+<td>0.011</td>
+<td>-0.192</td>
+<td>-0.050</td>
+<td>-0.029</td>
+<td>-0.027</td>
+</tr>
+<tr>
+<td>switchHysteresis</td>
+<td>-0.086</td>
+<td>-0.036</td>
+<td>-0.036</td>
+<td>0.017</td>
+<td>0.006</td>
+<td>-0.114</td>
+<td>-0.013</td>
+<td>-0.030</td>
+</tr>
+<tr>
+<td>switchHysteresisRatio</td>
+<td>0.237</td>
+<td>0.070</td>
+<td>0.070</td>
+<td>0.018</td>
+<td>0.187</td>
+<td>0.054</td>
+<td>-0.047</td>
+<td>-0.038</td>
+</tr>
+<tr>
+<td>chargeDropPerHop</td>
+<td>-0.051</td>
+<td>-0.147</td>
+<td>-0.147</td>
+<td>-0.092</td>
+<td>-0.018</td>
+<td>-0.036</td>
+<td>0.025</td>
+<td>0.020</td>
+</tr>
+<tr>
+<td>chargeSpreadFactor</td>
+<td>0.082</td>
+<td>0.114</td>
+<td>0.114</td>
+<td>0.063</td>
+<td>0.218</td>
+<td>-0.027</td>
+<td>0.078</td>
+<td>0.061</td>
+</tr>
+<tr>
+<td>decayIntervalSteps</td>
+<td>-0.142</td>
+<td>-0.210</td>
+<td>-0.210</td>
+<td>-0.106</td>
+<td>-0.066</td>
+<td>-0.018</td>
+<td>0.092</td>
+<td>0.098</td>
+</tr>
+<tr>
+<td>decayPercent</td>
+<td>-0.105</td>
+<td>-0.041</td>
+<td>-0.041</td>
+<td>-0.035</td>
+<td>-0.113</td>
+<td>-0.029</td>
+<td>-0.024</td>
+<td>-0.019</td>
+</tr>
+<tr>
+<td>linkMemory</td>
+<td>-0.010</td>
+<td>0.079</td>
+<td>0.079</td>
+<td>0.075</td>
+<td>-0.057</td>
+<td>0.007</td>
+<td>-0.028</td>
+<td>-0.033</td>
+</tr>
+<tr>
+<td>linkLearningRate</td>
+<td>0.141</td>
+<td>-0.007</td>
+<td>-0.007</td>
+<td>-0.039</td>
+<td>-0.035</td>
+<td>-0.017</td>
+<td>-0.014</td>
+<td>-0.013</td>
+</tr>
+<tr>
+<td>linkBonusMax</td>
+<td>-0.014</td>
+<td>0.001</td>
+<td>0.001</td>
+<td>0.024</td>
+<td>-0.070</td>
+<td>0.019</td>
+<td>-0.016</td>
+<td>-0.012</td>
+</tr>
+</tbody>
+</table>
+<h2 id="приложение-b-входной-запрос">Приложение B: Входной запрос</h2>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;baseConfig&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;nodeCount&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">48</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;linkRadius&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">210</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;seed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">42</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;maxRounds&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">320</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;seedCount&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;optimizationIterations&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">50</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;roundsPerCheck&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">300</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;matrixText&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;10x60,10x90,10x120,10x160,14x70,14x100,14x140,14x180,18x80,18x120,18x160,18x210,24x100,24x140,24x190,24x240,34x120,34x170,34x220,34x280,48x150,48x210,48x270,48x330,64x170,64x230,64x290,64x350,80x200,80x260,80x320,80x380,96x220,96x280,96x340,96x400,120x250,120x320,120x390,120x460&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;parallelWorkers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="общий-вывод">Общий вывод</h2>
+<ol>
+<li>Для ‘средних’ и ‘плотных’ сеток глобальный baseline дает очень высокий Score и стабильность.</li>
+<li>Для sparse-классов оптимальные параметры заметно отличаются (особенно по <code>qForward</code>, spread/drop и decay).</li>
+<li>Самые чувствительные параметры в этой выборке: <code>penaltyLambda</code>, <code>decayIntervalSteps</code>, <code>rootSourceCharge</code>, <code>linkBonusMax</code>.</li>
+<li>Корреляции описательные: при настройке параметров стоит учитывать сильные связки параметр↔параметр.</li>
+<li>Для инженерной надежности нужно оптимизировать не только средний Score, но и хвост худших (unstable/oscillating) сценариев.</li>
+</ol>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>

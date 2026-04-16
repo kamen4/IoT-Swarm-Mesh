@@ -25,6 +25,7 @@ Documentation for a secure, on-premises ESP-NOW mesh protocol with swarm intelli
 - **[Users & Roles](reference/users.md)** — Access control model
 - **[Corner Cases & Mitigations](mitigations/corner-cases.md)** — Failure modes and practical solutions
 - **[Convergence Tuning](mitigations/convergence-tuning.md)** — Practical settings for oscillation and collapse prevention
+- **[Simulation Pipeline](mitigations/simulation-pipeline.md)** — Canonical round-phase order used by Python batch simulation
 
 ## System Overview
 

@@ -1,0 +1,26 @@
+{
+  "baseConfig": {
+    "nodeCount": 48,
+    "linkRadius": 210,
+    "seed": 42,
+    "maxRounds": 320,
+    "qForward": 443,
+    "deliveryProbability": 0.21,
+    "rootSourceCharge": 1808,
+    "penaltyLambda": 72,
+    "switchHysteresis": 42,
+    "switchHysteresisRatio": 0.085,
+    "chargeDropPerHop": 94,
+    "chargeSpreadFactor": 0.08,
+    "decayIntervalSteps": 91,
+    "decayPercent": 0.22,
+    "linkMemory": 0.89,
+    "linkLearningRate": 0.5,
+    "linkBonusMax": 50
+  },
+  "seedCount": 10,
+  "optimizationIterations": 0,
+  "roundsPerCheck": 300,
+  "matrixText": "10x60,10x90,10x120,10x160,14x70,14x100,14x140,14x180,18x80,18x120,18x160,18x210,24x100,24x140,24x190,24x240,34x120,34x170,34x220,34x280,48x150,48x210,48x270,48x330,64x170,64x230,64x290,64x350,80x200,80x260,80x320,80x380,96x220,96x280,96x340,96x400,120x250,120x320,120x390,120x460",
+  "parallelWorkers": 10
+}

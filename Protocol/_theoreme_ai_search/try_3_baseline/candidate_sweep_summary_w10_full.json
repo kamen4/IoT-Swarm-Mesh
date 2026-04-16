@@ -1,0 +1,76 @@
+{
+  "ranked": [
+    {
+      "name": "cand2_more_inertia",
+      "request": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_requests/cand2_more_inertia.json",
+      "runDir": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_runs/2026-04-16_13-40-27",
+      "runStable": 798,
+      "runOsc": 2,
+      "runUnstable": 0,
+      "nonstableRunShare": 0.0025,
+      "nonstableNetworkCount": 0,
+      "worstScore": 83.84,
+      "meanScore": 95.54140756881603
+    },
+    {
+      "name": "cand0_current",
+      "request": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_requests/cand0_current.json",
+      "runDir": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_runs/2026-04-16_13-37-08",
+      "runStable": 798,
+      "runOsc": 2,
+      "runUnstable": 0,
+      "nonstableRunShare": 0.0025,
+      "nonstableNetworkCount": 0,
+      "worstScore": 83.84,
+      "meanScore": 95.48146066498968
+    },
+    {
+      "name": "cand1_more_eligibility",
+      "request": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_requests/cand1_more_eligibility.json",
+      "runDir": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_runs/2026-04-16_13-38-47",
+      "runStable": 788,
+      "runOsc": 12,
+      "runUnstable": 0,
+      "nonstableRunShare": 0.015,
+      "nonstableNetworkCount": 0,
+      "worstScore": 83.84,
+      "meanScore": 95.07993913048982
+    },
+    {
+      "name": "cand3_more_flow",
+      "request": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_requests/cand3_more_flow.json",
+      "runDir": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_runs/2026-04-16_13-42-11",
+      "runStable": 786,
+      "runOsc": 14,
+      "runUnstable": 0,
+      "nonstableRunShare": 0.0175,
+      "nonstableNetworkCount": 0,
+      "worstScore": 83.84,
+      "meanScore": 94.92813447226011
+    },
+    {
+      "name": "cand5_hybrid",
+      "request": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_requests/cand5_hybrid.json",
+      "runDir": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_runs/2026-04-16_13-45-40",
+      "runStable": 774,
+      "runOsc": 24,
+      "runUnstable": 2,
+      "nonstableRunShare": 0.0325,
+      "nonstableNetworkCount": 0,
+      "worstScore": 83.71600000000001,
+      "meanScore": 94.81040683138097
+    },
+    {
+      "name": "cand4_slower_decay",
+      "request": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_requests/cand4_slower_decay.json",
+      "runDir": "../_theoreme_ai_search/try_3_baseline/candidate_sweep_runs/2026-04-16_13-43-57",
+      "runStable": 768,
+      "runOsc": 30,
+      "runUnstable": 2,
+      "nonstableRunShare": 0.04,
+      "nonstableNetworkCount": 1,
+      "worstScore": 81.86529824561404,
+      "meanScore": 94.45059056897372
+    }
+  ]
+}

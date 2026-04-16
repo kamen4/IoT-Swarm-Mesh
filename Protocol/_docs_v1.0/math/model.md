@@ -286,3 +286,15 @@ The protocol has two routing sub-systems:
 2. **DOWN** uses a single parent per node induced by accumulated charges (subject to a forwarding eligibility threshold $q_{\mathrm{forward}}$), producing a directed structure pointing “toward the root”.
 
 Accordingly, the theorem in `theorem.md` is about the charge-induced parent pointers $(p_u)$ defining a gateway-rooted spanning tree on the forward-eligible nodes, and about DOWN tree-broadcast being loop-free / duplicate-free under suitable assumptions.
+
+---
+
+## 9) Implementation Parity Notes (Python)
+
+For operational parity with the current Python simulator:
+
+- canonical phase order is documented in [Simulation Pipeline](../mitigations/simulation-pipeline.md),
+- practical parameter ranges are documented in [Convergence Tuning](../mitigations/convergence-tuning.md),
+- theorem check semantics (`pending/pass/fail`, first-pass vs sustained-pass) are documented in [Charge-Induced Tree Theorem](theorem.md).
+
+These references are normative for batch-study reproducibility.

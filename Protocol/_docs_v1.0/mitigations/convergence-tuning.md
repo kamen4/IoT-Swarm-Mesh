@@ -58,3 +58,51 @@ Use this preset as a starting point for medium-size meshes:
 - `flapping nodes` should trend toward zero.
 - `gateway edge quality` should be higher than peripheral links.
 - `strongest link` should often correspond to trunk or inter-cluster bridge edges.
+
+## Parameter ranges (Python simulation parity)
+
+The Python batch simulator uses two range layers:
+
+- runtime normalization/clamping ranges (`config_normalizer.py`): permissive safety bounds for all inputs,
+- optimization search ranges (`parameter_ranges.py`): narrower practical search space for faster batch tuning.
+
+### Runtime normalization ranges
+
+- `nodeCount`: 8..220
+- `linkRadius`: 40..420
+- `qForward`: 20..1800
+- `deliveryProbability`: 0.05..1.0
+- `penaltyLambda`: 0..250
+- `switchHysteresis`: 0..260
+- `switchHysteresisRatio`: 0.00..0.40
+- `rootSourceCharge`: 250..3000
+- `chargeDropPerHop`: 5..420
+- `chargeSpreadFactor`: 0.02..1.0
+- `seed`: 1..999999
+- `roundsPerSecond`: 1..60
+- `maxRounds`: 20..10000
+- `decayIntervalSteps`: 0..2000
+- `decayPercent`: 0.00..0.80
+- `linkMemory`: 0.600..0.999
+- `linkLearningRate`: 0.01..2.00
+- `linkBonusMax`: 0..240
+
+### Optimization search ranges
+
+- `nodeCount`: 8..180
+- `linkRadius`: 60..360
+- `qForward`: 20..1300
+- `deliveryProbability`: 0.15..1.0
+- `penaltyLambda`: 0..150
+- `switchHysteresis`: 0..120
+- `switchHysteresisRatio`: 0.00..0.20
+- `rootSourceCharge`: 500..2200
+- `chargeDropPerHop`: 10..260
+- `chargeSpreadFactor`: 0.05..1.0
+- `decayIntervalSteps`: 0..500
+- `decayPercent`: 0.00..0.40
+- `linkMemory`: 0.750..0.995
+- `linkLearningRate`: 0.05..0.80
+- `linkBonusMax`: 0..120
+
+If optimization repeatedly saturates near min/max values, expand the optimization ranges before drawing final conclusions.

@@ -184,3 +184,14 @@ Hence $u$ can receive $m$ at most once. If every tree edge delivers at least one
 4. In the real protocol, packets can be duplicated by retransmissions and concurrent deliveries; hop-by-hop deduplication by `(originMac, msgId)` ensures a node forwards at most once even if it receives multiple copies.
 
 5. The threshold $q_{\mathrm{forward}}$ makes the theorem naturally apply to an “active / charged” subset of the mesh. Sleepy or newly joined nodes that do not yet satisfy $q_u\ge q_{\mathrm{forward}}$ should rely on WAKE + PULL delivery rather than being targeted by a tree-broadcast.
+
+6. Python simulation verification semantics (in `_theoreme_sim_py`) are:
+	- `verificationState = pending` when only gateway (or fewer) is eligible; this is not a theorem failure.
+	- `verificationState = pass` only when A5/A6/A7, Lemma 4.1/4.2/4.3, and spanning assignment all pass.
+	- `verificationState = fail` in all other non-pending cases.
+
+7. For diagnostics, the simulation reports both first-pass and sustained-pass rounds:
+	- first-pass round: first round where a check became true,
+	- sustained-pass round: earliest round from which that check stayed true until the end.
+
+8. `cycleWitness` in Lemma 4.2 is an explicit node sequence extracted from parent-pointer traversal when a cycle is found. `unreachable` in Lemma 4.3 lists eligible nodes that cannot reach gateway by parent chaining.

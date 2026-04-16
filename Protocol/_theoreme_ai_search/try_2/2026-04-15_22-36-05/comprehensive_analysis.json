@@ -1,0 +1,3340 @@
+{
+  "metadata": {
+    "sampleCount": 48800,
+    "networkCount": 40,
+    "totalRuns": 48800,
+    "seedCount": 10,
+    "optimizationIterations": 40,
+    "roundsPerCheck": 300
+  },
+  "outcomeSpecs": [
+    {
+      "key": "score",
+      "label": "Score",
+      "direction": 1.0
+    },
+    {
+      "key": "theoremPassRate",
+      "label": "TheoremPass",
+      "direction": 1.0
+    },
+    {
+      "key": "assumptionsPassRate",
+      "label": "AssumptionPass",
+      "direction": 1.0
+    },
+    {
+      "key": "coverageAvg",
+      "label": "Coverage",
+      "direction": 1.0
+    },
+    {
+      "key": "duplicateDrop",
+      "label": "DuplicateDrop",
+      "direction": 1.0
+    },
+    {
+      "key": "eligibleTailRatio",
+      "label": "EligibleTail",
+      "direction": 1.0
+    },
+    {
+      "key": "parentChangeAvg",
+      "label": "ParentChanges",
+      "direction": -1.0
+    },
+    {
+      "key": "flappingAvg",
+      "label": "Flapping",
+      "direction": -1.0
+    }
+  ],
+  "bestOverallNetwork": {
+    "networkId": "18x210",
+    "label": "N=18, R=210",
+    "nodeCount": 18,
+    "linkRadius": 210,
+    "score": 100.0,
+    "stableRatio": 1.0,
+    "verdict": "STABLE",
+    "bestParameters": {
+      "qForward": 173.0,
+      "deliveryProbability": 0.15,
+      "rootSourceCharge": 2200.0,
+      "penaltyLambda": 49.0,
+      "switchHysteresis": 57.0,
+      "switchHysteresisRatio": 0.07,
+      "chargeDropPerHop": 206.0,
+      "chargeSpreadFactor": 0.05,
+      "decayIntervalSteps": 60.0,
+      "decayPercent": 0.22,
+      "linkMemory": 0.867,
+      "linkLearningRate": 0.25,
+      "linkBonusMax": 14.0
+    }
+  },
+  "networkClassSummary": [
+    {
+      "classId": "small-sparse",
+      "sizeClass": "small",
+      "densityClass": "sparse",
+      "networkCount": 8,
+      "meanScore": 83.41891228070176,
+      "scoreStdDev": 2.279372613243188,
+      "meanStableRatio": 0.95,
+      "verdictCounts": {
+        "STABLE": 7,
+        "OSCILLATING": 1,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "14x140",
+        "label": "N=14, R=140",
+        "nodeCount": 14,
+        "linkRadius": 140,
+        "score": 85.248,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 672.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 17.0,
+          "switchHysteresis": 5.0,
+          "switchHysteresisRatio": 0.04,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.27,
+          "decayIntervalSteps": 30.0,
+          "decayPercent": 0.23,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.06,
+          "linkBonusMax": 38.0
+        }
+      }
+    },
+    {
+      "classId": "small-medium",
+      "sizeClass": "small",
+      "densityClass": "medium",
+      "networkCount": 4,
+      "meanScore": 93.54154385964912,
+      "scoreStdDev": 6.308481590525028,
+      "meanStableRatio": 0.975,
+      "verdictCounts": {
+        "STABLE": 4,
+        "OSCILLATING": 0,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "18x210",
+        "label": "N=18, R=210",
+        "nodeCount": 18,
+        "linkRadius": 210,
+        "score": 100.0,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 173.0,
+          "deliveryProbability": 0.15,
+          "rootSourceCharge": 2200.0,
+          "penaltyLambda": 49.0,
+          "switchHysteresis": 57.0,
+          "switchHysteresisRatio": 0.07,
+          "chargeDropPerHop": 206.0,
+          "chargeSpreadFactor": 0.05,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.22,
+          "linkMemory": 0.867,
+          "linkLearningRate": 0.25,
+          "linkBonusMax": 14.0
+        }
+      }
+    },
+    {
+      "classId": "medium-sparse",
+      "sizeClass": "medium",
+      "densityClass": "sparse",
+      "networkCount": 3,
+      "meanScore": 98.92971241830065,
+      "scoreStdDev": 1.399939259436765,
+      "meanStableRatio": 1.0,
+      "verdictCounts": {
+        "STABLE": 3,
+        "OSCILLATING": 0,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "34x120",
+        "label": "N=34, R=120",
+        "nodeCount": 34,
+        "linkRadius": 120,
+        "score": 100.0,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 156.0,
+          "deliveryProbability": 0.18,
+          "rootSourceCharge": 1779.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.14,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.05,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.968,
+          "linkLearningRate": 0.69,
+          "linkBonusMax": 77.0
+        }
+      }
+    },
+    {
+      "classId": "medium-medium",
+      "sizeClass": "medium",
+      "densityClass": "medium",
+      "networkCount": 6,
+      "meanScore": 100.0,
+      "scoreStdDev": 0.0,
+      "meanStableRatio": 1.0,
+      "verdictCounts": {
+        "STABLE": 6,
+        "OSCILLATING": 0,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "24x190",
+        "label": "N=24, R=190",
+        "nodeCount": 24,
+        "linkRadius": 190,
+        "score": 100.0,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 72.0,
+          "deliveryProbability": 0.15,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 0.0,
+          "switchHysteresisRatio": 0.12,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.05,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.912,
+          "linkLearningRate": 0.71,
+          "linkBonusMax": 84.0
+        }
+      }
+    },
+    {
+      "classId": "medium-dense",
+      "sizeClass": "medium",
+      "densityClass": "dense",
+      "networkCount": 3,
+      "meanScore": 100.0,
+      "scoreStdDev": 0.0,
+      "meanStableRatio": 1.0,
+      "verdictCounts": {
+        "STABLE": 3,
+        "OSCILLATING": 0,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "34x280",
+        "label": "N=34, R=280",
+        "nodeCount": 34,
+        "linkRadius": 280,
+        "score": 100.0,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      }
+    },
+    {
+      "classId": "large-medium",
+      "sizeClass": "large",
+      "densityClass": "medium",
+      "networkCount": 4,
+      "meanScore": 98.24081505719002,
+      "scoreStdDev": 3.046997700857036,
+      "meanStableRatio": 0.975,
+      "verdictCounts": {
+        "STABLE": 4,
+        "OSCILLATING": 0,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "64x230",
+        "label": "N=64, R=230",
+        "nodeCount": 64,
+        "linkRadius": 230,
+        "score": 100.0,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 20.0,
+          "deliveryProbability": 0.39,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 0.0,
+          "switchHysteresis": 0.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.46,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.2,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 97.0
+        }
+      }
+    },
+    {
+      "classId": "large-dense",
+      "sizeClass": "large",
+      "densityClass": "dense",
+      "networkCount": 4,
+      "meanScore": 100.0,
+      "scoreStdDev": 0.0,
+      "meanStableRatio": 1.0,
+      "verdictCounts": {
+        "STABLE": 4,
+        "OSCILLATING": 0,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "64x290",
+        "label": "N=64, R=290",
+        "nodeCount": 64,
+        "linkRadius": 290,
+        "score": 100.0,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 20.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.7,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.995,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      }
+    },
+    {
+      "classId": "xlarge-medium",
+      "sizeClass": "xlarge",
+      "densityClass": "medium",
+      "networkCount": 2,
+      "meanScore": 100.0,
+      "scoreStdDev": 0.0,
+      "meanStableRatio": 1.0,
+      "verdictCounts": {
+        "STABLE": 2,
+        "OSCILLATING": 0,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "96x220",
+        "label": "N=96, R=220",
+        "nodeCount": 96,
+        "linkRadius": 220,
+        "score": 100.0,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 0.0,
+          "switchHysteresis": 108.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 120.0
+        }
+      }
+    },
+    {
+      "classId": "xlarge-dense",
+      "sizeClass": "xlarge",
+      "densityClass": "dense",
+      "networkCount": 6,
+      "meanScore": 100.0,
+      "scoreStdDev": 0.0,
+      "meanStableRatio": 1.0,
+      "verdictCounts": {
+        "STABLE": 6,
+        "OSCILLATING": 0,
+        "UNSTABLE": 0
+      },
+      "bestNetwork": {
+        "networkId": "96x280",
+        "label": "N=96, R=280",
+        "nodeCount": 96,
+        "linkRadius": 280,
+        "score": 100.0,
+        "stableRatio": 1.0,
+        "verdict": "STABLE",
+        "bestParameters": {
+          "qForward": 20.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1903.0,
+          "penaltyLambda": 0.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 21.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 98.0
+        }
+      }
+    }
+  ],
+  "globalIdealParameters": {
+    "sampleCount": 48800,
+    "topSampleCount": 9760,
+    "parameters": {
+      "qForward": {
+        "mean": 266.2815573770492,
+        "median": 194.0,
+        "q25": 72.0,
+        "q75": 333.0
+      },
+      "deliveryProbability": {
+        "mean": 0.4763258196721311,
+        "median": 0.61,
+        "q25": 0.17,
+        "q75": 0.72
+      },
+      "rootSourceCharge": {
+        "mean": 1620.8782786885247,
+        "median": 1500.0,
+        "q25": 1494.0,
+        "q75": 1805.0
+      },
+      "penaltyLambda": {
+        "mean": 28.53483606557377,
+        "median": 28.0,
+        "q25": 17.0,
+        "q75": 31.0
+      },
+      "switchHysteresis": {
+        "mean": 17.607069672131146,
+        "median": 9.0,
+        "q25": 0.0,
+        "q75": 31.0
+      },
+      "switchHysteresisRatio": {
+        "mean": 0.08624385245901639,
+        "median": 0.07,
+        "q25": 0.03,
+        "q75": 0.12
+      },
+      "chargeDropPerHop": {
+        "mean": 82.18862704918033,
+        "median": 80.0,
+        "q25": 61.0,
+        "q75": 80.0
+      },
+      "chargeSpreadFactor": {
+        "mean": 0.25804815573770495,
+        "median": 0.28,
+        "q25": 0.07,
+        "q75": 0.41
+      },
+      "decayIntervalSteps": {
+        "mean": 56.728073770491804,
+        "median": 60.0,
+        "q25": 17.0,
+        "q75": 60.0
+      },
+      "decayPercent": {
+        "mean": 0.1755081967213115,
+        "median": 0.13,
+        "q25": 0.12,
+        "q75": 0.22
+      },
+      "linkMemory": {
+        "mean": 0.8950566598360656,
+        "median": 0.912,
+        "q25": 0.864,
+        "q75": 0.94
+      },
+      "linkLearningRate": {
+        "mean": 0.3289754098360656,
+        "median": 0.23,
+        "q25": 0.17,
+        "q75": 0.57
+      },
+      "linkBonusMax": {
+        "mean": 54.56803278688525,
+        "median": 60.0,
+        "q25": 14.0,
+        "q75": 80.0
+      }
+    }
+  },
+  "parameterCorrelations": {
+    "qForward": {
+      "score": {
+        "pearson": -0.017790439610593133,
+        "spearman": -0.2199207632013426
+      },
+      "theoremPassRate": {
+        "pearson": -0.04330722886782824,
+        "spearman": -0.395147995247026
+      },
+      "assumptionsPassRate": {
+        "pearson": -0.04330722886782824,
+        "spearman": -0.395147995247026
+      },
+      "coverageAvg": {
+        "pearson": -0.03464729510049349,
+        "spearman": -0.07640156362055388
+      },
+      "duplicateDrop": {
+        "pearson": 0.049035012638145865,
+        "spearman": -0.0016659044034347255
+      },
+      "eligibleTailRatio": {
+        "pearson": -0.19727497324556623,
+        "spearman": -0.15975958279654923
+      },
+      "parentChangeAvg": {
+        "pearson": 0.025022402952053713,
+        "spearman": 0.11766509793349432
+      },
+      "flappingAvg": {
+        "pearson": -0.0016313631272260396,
+        "spearman": -0.0022819359526255784
+      }
+    },
+    "deliveryProbability": {
+      "score": {
+        "pearson": -0.0790409052875425,
+        "spearman": -0.003658398290934672
+      },
+      "theoremPassRate": {
+        "pearson": -0.08853629158526354,
+        "spearman": 0.13576660838213414
+      },
+      "assumptionsPassRate": {
+        "pearson": -0.08853629158526354,
+        "spearman": 0.13576660838213414
+      },
+      "coverageAvg": {
+        "pearson": -0.06419958556976986,
+        "spearman": -0.06304395786328144
+      },
+      "duplicateDrop": {
+        "pearson": 0.06820410293860485,
+        "spearman": 0.09245531497662537
+      },
+      "eligibleTailRatio": {
+        "pearson": 0.0676387329584804,
+        "spearman": 0.12541921894249144
+      },
+      "parentChangeAvg": {
+        "pearson": -0.006770728931727303,
+        "spearman": 0.14703047273997732
+      },
+      "flappingAvg": {
+        "pearson": -0.0028614508075759954,
+        "spearman": 0.05529805973027055
+      }
+    },
+    "rootSourceCharge": {
+      "score": {
+        "pearson": 0.05664259983342302,
+        "spearman": -0.04118188499851053
+      },
+      "theoremPassRate": {
+        "pearson": 0.144738372295333,
+        "spearman": 0.1754910803247401
+      },
+      "assumptionsPassRate": {
+        "pearson": 0.144738372295333,
+        "spearman": 0.1754910803247401
+      },
+      "coverageAvg": {
+        "pearson": 0.04424010319002838,
+        "spearman": 0.09766925055618166
+      },
+      "duplicateDrop": {
+        "pearson": -0.14846002638463626,
+        "spearman": -0.19690203847880458
+      },
+      "eligibleTailRatio": {
+        "pearson": 0.006249794530680715,
+        "spearman": 0.023495796824501942
+      },
+      "parentChangeAvg": {
+        "pearson": -0.007035070619897303,
+        "spearman": -0.16588028809926067
+      },
+      "flappingAvg": {
+        "pearson": -0.0034834798662123877,
+        "spearman": -0.018259842265307812
+      }
+    },
+    "penaltyLambda": {
+      "score": {
+        "pearson": -0.05283759570919925,
+        "spearman": -0.24389255907505614
+      },
+      "theoremPassRate": {
+        "pearson": 0.00969171133983008,
+        "spearman": -0.21591643467840252
+      },
+      "assumptionsPassRate": {
+        "pearson": 0.00969171133983008,
+        "spearman": -0.21591643467840252
+      },
+      "coverageAvg": {
+        "pearson": 0.011228889469950529,
+        "spearman": 0.007970412659393003
+      },
+      "duplicateDrop": {
+        "pearson": -0.191558883583888,
+        "spearman": -0.203916472239799
+      },
+      "eligibleTailRatio": {
+        "pearson": -0.05001274891308762,
+        "spearman": -0.13112855425056452
+      },
+      "parentChangeAvg": {
+        "pearson": -0.029077869008551784,
+        "spearman": 0.10397183705606151
+      },
+      "flappingAvg": {
+        "pearson": -0.0268613838604409,
+        "spearman": -0.017064640546830857
+      }
+    },
+    "switchHysteresis": {
+      "score": {
+        "pearson": -0.08622969850428572,
+        "spearman": -0.18502370728589512
+      },
+      "theoremPassRate": {
+        "pearson": -0.03640925601745709,
+        "spearman": -0.23892960756800347
+      },
+      "assumptionsPassRate": {
+        "pearson": -0.03640925601745709,
+        "spearman": -0.23892960756800347
+      },
+      "coverageAvg": {
+        "pearson": 0.016698249795575392,
+        "spearman": -0.030185354583842434
+      },
+      "duplicateDrop": {
+        "pearson": 0.00631088504366147,
+        "spearman": -0.14627652307222375
+      },
+      "eligibleTailRatio": {
+        "pearson": -0.11393678219698201,
+        "spearman": -0.1457502267194061
+      },
+      "parentChangeAvg": {
+        "pearson": -0.012928324628970133,
+        "spearman": 0.01543932290627773
+      },
+      "flappingAvg": {
+        "pearson": -0.03002275770160256,
+        "spearman": -0.06208976148821431
+      }
+    },
+    "switchHysteresisRatio": {
+      "score": {
+        "pearson": 0.2366839530873332,
+        "spearman": 0.3778121811764151
+      },
+      "theoremPassRate": {
+        "pearson": 0.07024833954920363,
+        "spearman": 0.14056197091580847
+      },
+      "assumptionsPassRate": {
+        "pearson": 0.07024833954920363,
+        "spearman": 0.14056197091580847
+      },
+      "coverageAvg": {
+        "pearson": 0.01833947551031608,
+        "spearman": 0.030999083564310335
+      },
+      "duplicateDrop": {
+        "pearson": 0.18673620278865424,
+        "spearman": 0.3183116535151468
+      },
+      "eligibleTailRatio": {
+        "pearson": 0.053696921599892734,
+        "spearman": 0.05616986834740243
+      },
+      "parentChangeAvg": {
+        "pearson": -0.047045609766087265,
+        "spearman": -0.2375811002643375
+      },
+      "flappingAvg": {
+        "pearson": -0.03832804058576844,
+        "spearman": -0.1446956227000421
+      }
+    },
+    "chargeDropPerHop": {
+      "score": {
+        "pearson": -0.051224932664341756,
+        "spearman": -0.030881925417342405
+      },
+      "theoremPassRate": {
+        "pearson": -0.14747365150762626,
+        "spearman": -0.007501819276411494
+      },
+      "assumptionsPassRate": {
+        "pearson": -0.14747365150762626,
+        "spearman": -0.007501819276411494
+      },
+      "coverageAvg": {
+        "pearson": -0.09199255903060355,
+        "spearman": -0.09932893679582064
+      },
+      "duplicateDrop": {
+        "pearson": -0.018202834643924883,
+        "spearman": 0.0532134705347363
+      },
+      "eligibleTailRatio": {
+        "pearson": -0.036279550344662626,
+        "spearman": -0.09560654669793299
+      },
+      "parentChangeAvg": {
+        "pearson": 0.02452491479496573,
+        "spearman": 0.10696574174577579
+      },
+      "flappingAvg": {
+        "pearson": 0.020160638716524786,
+        "spearman": 0.045476965174906486
+      }
+    },
+    "chargeSpreadFactor": {
+      "score": {
+        "pearson": 0.08213441091596153,
+        "spearman": 0.2896785134877172
+      },
+      "theoremPassRate": {
+        "pearson": 0.1141752367925731,
+        "spearman": 0.4766880858921698
+      },
+      "assumptionsPassRate": {
+        "pearson": 0.1141752367925731,
+        "spearman": 0.4766880858921698
+      },
+      "coverageAvg": {
+        "pearson": 0.06253482886271396,
+        "spearman": 0.12353402622593276
+      },
+      "duplicateDrop": {
+        "pearson": 0.21764096210397216,
+        "spearman": 0.2725459836656666
+      },
+      "eligibleTailRatio": {
+        "pearson": -0.027411800617358036,
+        "spearman": 0.09861137577839205
+      },
+      "parentChangeAvg": {
+        "pearson": 0.07800321045627198,
+        "spearman": -0.1509168892631363
+      },
+      "flappingAvg": {
+        "pearson": 0.06140538148285645,
+        "spearman": 0.04954193163479363
+      }
+    },
+    "decayIntervalSteps": {
+      "score": {
+        "pearson": -0.14225483683982668,
+        "spearman": -0.11020776254797741
+      },
+      "theoremPassRate": {
+        "pearson": -0.21045606761245012,
+        "spearman": -0.22411874272803453
+      },
+      "assumptionsPassRate": {
+        "pearson": -0.21045606761245012,
+        "spearman": -0.22411874272803453
+      },
+      "coverageAvg": {
+        "pearson": -0.10577375738875991,
+        "spearman": -0.11463924480268324
+      },
+      "duplicateDrop": {
+        "pearson": -0.06621640767241883,
+        "spearman": -0.065628476825972
+      },
+      "eligibleTailRatio": {
+        "pearson": -0.017984711369348632,
+        "spearman": -0.10120069995289062
+      },
+      "parentChangeAvg": {
+        "pearson": 0.09172223536217856,
+        "spearman": 0.12234681184157847
+      },
+      "flappingAvg": {
+        "pearson": 0.0984466450939351,
+        "spearman": 0.02109313462862663
+      }
+    },
+    "decayPercent": {
+      "score": {
+        "pearson": -0.10548680746146333,
+        "spearman": -0.23785898636090197
+      },
+      "theoremPassRate": {
+        "pearson": -0.041441925387733454,
+        "spearman": -0.21047453550570772
+      },
+      "assumptionsPassRate": {
+        "pearson": -0.041441925387733454,
+        "spearman": -0.21047453550570772
+      },
+      "coverageAvg": {
+        "pearson": -0.035409248961000846,
+        "spearman": -0.06675731743114244
+      },
+      "duplicateDrop": {
+        "pearson": -0.1125523478507309,
+        "spearman": -0.26347453437464946
+      },
+      "eligibleTailRatio": {
+        "pearson": -0.028558231499408126,
+        "spearman": -0.06801559128115751
+      },
+      "parentChangeAvg": {
+        "pearson": -0.02392917504507128,
+        "spearman": 0.062206456811209225
+      },
+      "flappingAvg": {
+        "pearson": -0.019208302700030384,
+        "spearman": -0.023846803275042138
+      }
+    },
+    "linkMemory": {
+      "score": {
+        "pearson": -0.010311105301240816,
+        "spearman": -0.09489873198197038
+      },
+      "theoremPassRate": {
+        "pearson": 0.07854359741450254,
+        "spearman": 0.054032921714416635
+      },
+      "assumptionsPassRate": {
+        "pearson": 0.07854359741450254,
+        "spearman": 0.054032921714416635
+      },
+      "coverageAvg": {
+        "pearson": 0.07542137673497705,
+        "spearman": 0.0670012994282451
+      },
+      "duplicateDrop": {
+        "pearson": -0.05707556845101531,
+        "spearman": -0.1151298426940363
+      },
+      "eligibleTailRatio": {
+        "pearson": 0.0072859779001674535,
+        "spearman": 0.008818497074118789
+      },
+      "parentChangeAvg": {
+        "pearson": -0.028284362675614926,
+        "spearman": -0.003941823523612302
+      },
+      "flappingAvg": {
+        "pearson": -0.033168547235155436,
+        "spearman": 0.006757643901934836
+      }
+    },
+    "linkLearningRate": {
+      "score": {
+        "pearson": 0.14071483531948298,
+        "spearman": 0.23427332506719617
+      },
+      "theoremPassRate": {
+        "pearson": -0.00693802084832514,
+        "spearman": -0.07076955475145819
+      },
+      "assumptionsPassRate": {
+        "pearson": -0.00693802084832514,
+        "spearman": -0.07076955475145819
+      },
+      "coverageAvg": {
+        "pearson": -0.03866923092305775,
+        "spearman": 0.009496679682388615
+      },
+      "duplicateDrop": {
+        "pearson": -0.03473540383903848,
+        "spearman": 0.1747142485151392
+      },
+      "eligibleTailRatio": {
+        "pearson": -0.016708575947873998,
+        "spearman": -0.051931804558343904
+      },
+      "parentChangeAvg": {
+        "pearson": -0.01387235460782146,
+        "spearman": -0.06131454845663213
+      },
+      "flappingAvg": {
+        "pearson": -0.013109285429951224,
+        "spearman": -0.01584552148990049
+      }
+    },
+    "linkBonusMax": {
+      "score": {
+        "pearson": -0.01441380095451441,
+        "spearman": 0.03673565579988664
+      },
+      "theoremPassRate": {
+        "pearson": 0.0011693844006364544,
+        "spearman": 0.07905778830238322
+      },
+      "assumptionsPassRate": {
+        "pearson": 0.0011693844006364544,
+        "spearman": 0.07905778830238322
+      },
+      "coverageAvg": {
+        "pearson": 0.024180120790129617,
+        "spearman": 0.0014926265332801674
+      },
+      "duplicateDrop": {
+        "pearson": -0.07037355481726826,
+        "spearman": -0.03496663687278332
+      },
+      "eligibleTailRatio": {
+        "pearson": 0.018508870695149875,
+        "spearman": 0.010584953974665754
+      },
+      "parentChangeAvg": {
+        "pearson": -0.01570712680823237,
+        "spearman": -0.07295355720442726
+      },
+      "flappingAvg": {
+        "pearson": -0.012315901095545033,
+        "spearman": -0.04496983904015438
+      }
+    }
+  },
+  "influenceRanking": [
+    {
+      "parameter": "decayIntervalSteps",
+      "impactIndex": 0.11791384111892099,
+      "strongestMetric": "theoremPassRate",
+      "strongestCorrelation": -0.21045606761245012,
+      "interpretation": "higher usually worsens strongest metric"
+    },
+    {
+      "parameter": "chargeSpreadFactor",
+      "impactIndex": 0.09468513350303503,
+      "strongestMetric": "duplicateDrop",
+      "strongestCorrelation": 0.21764096210397216,
+      "interpretation": "higher usually improves strongest metric"
+    },
+    {
+      "parameter": "switchHysteresisRatio",
+      "impactIndex": 0.09016586030455741,
+      "strongestMetric": "score",
+      "strongestCorrelation": 0.2366839530873332,
+      "interpretation": "higher usually improves strongest metric"
+    },
+    {
+      "parameter": "rootSourceCharge",
+      "impactIndex": 0.06944847737694301,
+      "strongestMetric": "duplicateDrop",
+      "strongestCorrelation": -0.14846002638463626,
+      "interpretation": "higher usually worsens strongest metric"
+    },
+    {
+      "parameter": "chargeDropPerHop",
+      "impactIndex": 0.06716659165128448,
+      "strongestMetric": "theoremPassRate",
+      "strongestCorrelation": -0.14747365150762626,
+      "interpretation": "higher usually worsens strongest metric"
+    },
+    {
+      "parameter": "deliveryProbability",
+      "impactIndex": 0.058223511208028496,
+      "strongestMetric": "theoremPassRate",
+      "strongestCorrelation": -0.08853629158526354,
+      "interpretation": "higher usually worsens strongest metric"
+    },
+    {
+      "parameter": "qForward",
+      "impactIndex": 0.05150199305121687,
+      "strongestMetric": "eligibleTailRatio",
+      "strongestCorrelation": -0.19727497324556623,
+      "interpretation": "higher usually worsens strongest metric"
+    },
+    {
+      "parameter": "decayPercent",
+      "impactIndex": 0.05100349553664647,
+      "strongestMetric": "duplicateDrop",
+      "strongestCorrelation": -0.1125523478507309,
+      "interpretation": "higher usually worsens strongest metric"
+    },
+    {
+      "parameter": "penaltyLambda",
+      "impactIndex": 0.047620099153097284,
+      "strongestMetric": "duplicateDrop",
+      "strongestCorrelation": -0.191558883583888,
+      "interpretation": "higher usually worsens strongest metric"
+    },
+    {
+      "parameter": "linkMemory",
+      "impactIndex": 0.04607926664089701,
+      "strongestMetric": "theoremPassRate",
+      "strongestCorrelation": 0.07854359741450254,
+      "interpretation": "higher usually improves strongest metric"
+    },
+    {
+      "parameter": "switchHysteresis",
+      "impactIndex": 0.042368151238248934,
+      "strongestMetric": "eligibleTailRatio",
+      "strongestCorrelation": -0.11393678219698201,
+      "interpretation": "higher usually worsens strongest metric"
+    },
+    {
+      "parameter": "linkLearningRate",
+      "impactIndex": 0.03396071597048452,
+      "strongestMetric": "score",
+      "strongestCorrelation": 0.14071483531948298,
+      "interpretation": "higher usually improves strongest metric"
+    },
+    {
+      "parameter": "linkBonusMax",
+      "impactIndex": 0.01972976799526406,
+      "strongestMetric": "duplicateDrop",
+      "strongestCorrelation": -0.07037355481726826,
+      "interpretation": "higher usually worsens strongest metric"
+    }
+  ],
+  "pairwiseParameterCorrelations": [
+    {
+      "left": "deliveryProbability",
+      "right": "linkLearningRate",
+      "pearson": -0.44666895755764474,
+      "absPearson": 0.44666895755764474
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "switchHysteresis",
+      "pearson": 0.425111412935157,
+      "absPearson": 0.425111412935157
+    },
+    {
+      "left": "switchHysteresisRatio",
+      "right": "linkLearningRate",
+      "pearson": 0.3863768624543149,
+      "absPearson": 0.3863768624543149
+    },
+    {
+      "left": "chargeDropPerHop",
+      "right": "decayIntervalSteps",
+      "pearson": 0.33299683915469613,
+      "absPearson": 0.33299683915469613
+    },
+    {
+      "left": "decayPercent",
+      "right": "linkMemory",
+      "pearson": -0.31305599643561,
+      "absPearson": 0.31305599643561
+    },
+    {
+      "left": "qForward",
+      "right": "switchHysteresis",
+      "pearson": 0.3030108106056167,
+      "absPearson": 0.3030108106056167
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "penaltyLambda",
+      "pearson": -0.296594284364327,
+      "absPearson": 0.296594284364327
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "chargeSpreadFactor",
+      "pearson": -0.2872917957019169,
+      "absPearson": 0.2872917957019169
+    },
+    {
+      "left": "chargeDropPerHop",
+      "right": "linkMemory",
+      "pearson": -0.2811389279558986,
+      "absPearson": 0.2811389279558986
+    },
+    {
+      "left": "decayIntervalSteps",
+      "right": "linkMemory",
+      "pearson": -0.2726826341526065,
+      "absPearson": 0.2726826341526065
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "switchHysteresis",
+      "pearson": -0.26087705823887497,
+      "absPearson": 0.26087705823887497
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "chargeSpreadFactor",
+      "pearson": 0.2401012436445781,
+      "absPearson": 0.2401012436445781
+    },
+    {
+      "left": "switchHysteresis",
+      "right": "switchHysteresisRatio",
+      "pearson": -0.2281324140820159,
+      "absPearson": 0.2281324140820159
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "decayIntervalSteps",
+      "pearson": -0.2233524480420528,
+      "absPearson": 0.2233524480420528
+    },
+    {
+      "left": "qForward",
+      "right": "penaltyLambda",
+      "pearson": 0.21988238183443873,
+      "absPearson": 0.21988238183443873
+    },
+    {
+      "left": "switchHysteresis",
+      "right": "decayIntervalSteps",
+      "pearson": 0.21645504149122574,
+      "absPearson": 0.21645504149122574
+    },
+    {
+      "left": "switchHysteresisRatio",
+      "right": "chargeDropPerHop",
+      "pearson": 0.21398115255026934,
+      "absPearson": 0.21398115255026934
+    },
+    {
+      "left": "linkMemory",
+      "right": "linkLearningRate",
+      "pearson": -0.19567604086305895,
+      "absPearson": 0.19567604086305895
+    },
+    {
+      "left": "chargeSpreadFactor",
+      "right": "decayIntervalSteps",
+      "pearson": -0.19407125981060902,
+      "absPearson": 0.19407125981060902
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "penaltyLambda",
+      "pearson": 0.1891403084008681,
+      "absPearson": 0.1891403084008681
+    },
+    {
+      "left": "linkLearningRate",
+      "right": "linkBonusMax",
+      "pearson": -0.18814846975615782,
+      "absPearson": 0.18814846975615782
+    },
+    {
+      "left": "switchHysteresisRatio",
+      "right": "chargeSpreadFactor",
+      "pearson": 0.15677647364379935,
+      "absPearson": 0.15677647364379935
+    },
+    {
+      "left": "switchHysteresis",
+      "right": "chargeDropPerHop",
+      "pearson": 0.15500452087538025,
+      "absPearson": 0.15500452087538025
+    },
+    {
+      "left": "switchHysteresis",
+      "right": "linkMemory",
+      "pearson": -0.15469475448355402,
+      "absPearson": 0.15469475448355402
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "rootSourceCharge",
+      "pearson": -0.15003043903388583,
+      "absPearson": 0.15003043903388583
+    },
+    {
+      "left": "chargeDropPerHop",
+      "right": "decayPercent",
+      "pearson": 0.1470521090518045,
+      "absPearson": 0.1470521090518045
+    },
+    {
+      "left": "chargeSpreadFactor",
+      "right": "linkLearningRate",
+      "pearson": -0.14628246390107696,
+      "absPearson": 0.14628246390107696
+    },
+    {
+      "left": "chargeSpreadFactor",
+      "right": "linkMemory",
+      "pearson": 0.14617554466657726,
+      "absPearson": 0.14617554466657726
+    },
+    {
+      "left": "qForward",
+      "right": "chargeSpreadFactor",
+      "pearson": 0.1425160364196649,
+      "absPearson": 0.1425160364196649
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "switchHysteresisRatio",
+      "pearson": -0.14009148415491116,
+      "absPearson": 0.14009148415491116
+    },
+    {
+      "left": "switchHysteresis",
+      "right": "chargeSpreadFactor",
+      "pearson": -0.13732505829466887,
+      "absPearson": 0.13732505829466887
+    },
+    {
+      "left": "linkMemory",
+      "right": "linkBonusMax",
+      "pearson": 0.1307296922567031,
+      "absPearson": 0.1307296922567031
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "switchHysteresisRatio",
+      "pearson": -0.1278285151417694,
+      "absPearson": 0.1278285151417694
+    },
+    {
+      "left": "switchHysteresisRatio",
+      "right": "linkMemory",
+      "pearson": -0.12560899794742886,
+      "absPearson": 0.12560899794742886
+    },
+    {
+      "left": "chargeSpreadFactor",
+      "right": "decayPercent",
+      "pearson": -0.12390877802784703,
+      "absPearson": 0.12390877802784703
+    },
+    {
+      "left": "qForward",
+      "right": "deliveryProbability",
+      "pearson": -0.11982365232076285,
+      "absPearson": 0.11982365232076285
+    },
+    {
+      "left": "qForward",
+      "right": "switchHysteresisRatio",
+      "pearson": -0.1180769842265368,
+      "absPearson": 0.1180769842265368
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "linkBonusMax",
+      "pearson": 0.11706526298827866,
+      "absPearson": 0.11706526298827866
+    },
+    {
+      "left": "qForward",
+      "right": "linkLearningRate",
+      "pearson": 0.11536380018022845,
+      "absPearson": 0.11536380018022845
+    },
+    {
+      "left": "chargeDropPerHop",
+      "right": "linkLearningRate",
+      "pearson": -0.10883744769218211,
+      "absPearson": 0.10883744769218211
+    },
+    {
+      "left": "qForward",
+      "right": "decayIntervalSteps",
+      "pearson": 0.1080387976358762,
+      "absPearson": 0.1080387976358762
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "chargeDropPerHop",
+      "pearson": 0.10527945388958507,
+      "absPearson": 0.10527945388958507
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "linkMemory",
+      "pearson": -0.10289147272941485,
+      "absPearson": 0.10289147272941485
+    },
+    {
+      "left": "switchHysteresisRatio",
+      "right": "decayIntervalSteps",
+      "pearson": -0.10070980075029094,
+      "absPearson": 0.10070980075029094
+    },
+    {
+      "left": "chargeDropPerHop",
+      "right": "linkBonusMax",
+      "pearson": -0.09233617803182737,
+      "absPearson": 0.09233617803182737
+    },
+    {
+      "left": "qForward",
+      "right": "linkMemory",
+      "pearson": -0.08947160581644019,
+      "absPearson": 0.08947160581644019
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "chargeSpreadFactor",
+      "pearson": -0.08699007545392476,
+      "absPearson": 0.08699007545392476
+    },
+    {
+      "left": "switchHysteresis",
+      "right": "decayPercent",
+      "pearson": -0.08564876652259847,
+      "absPearson": 0.08564876652259847
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "linkMemory",
+      "pearson": 0.077008543731669,
+      "absPearson": 0.077008543731669
+    },
+    {
+      "left": "switchHysteresis",
+      "right": "linkLearningRate",
+      "pearson": -0.07337526470337878,
+      "absPearson": 0.07337526470337878
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "decayIntervalSteps",
+      "pearson": 0.07277304527354297,
+      "absPearson": 0.07277304527354297
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "linkBonusMax",
+      "pearson": -0.05838025556776379,
+      "absPearson": 0.05838025556776379
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "linkLearningRate",
+      "pearson": 0.05727919476517197,
+      "absPearson": 0.05727919476517197
+    },
+    {
+      "left": "qForward",
+      "right": "chargeDropPerHop",
+      "pearson": 0.05596848230973035,
+      "absPearson": 0.05596848230973035
+    },
+    {
+      "left": "qForward",
+      "right": "linkBonusMax",
+      "pearson": -0.05381357287326129,
+      "absPearson": 0.05381357287326129
+    },
+    {
+      "left": "switchHysteresis",
+      "right": "linkBonusMax",
+      "pearson": -0.05368166717589997,
+      "absPearson": 0.05368166717589997
+    },
+    {
+      "left": "switchHysteresisRatio",
+      "right": "decayPercent",
+      "pearson": 0.048841279436844104,
+      "absPearson": 0.048841279436844104
+    },
+    {
+      "left": "decayIntervalSteps",
+      "right": "linkBonusMax",
+      "pearson": 0.04673041815036526,
+      "absPearson": 0.04673041815036526
+    },
+    {
+      "left": "qForward",
+      "right": "decayPercent",
+      "pearson": 0.04415874360091081,
+      "absPearson": 0.04415874360091081
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "decayIntervalSteps",
+      "pearson": -0.043106390757466875,
+      "absPearson": 0.043106390757466875
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "decayPercent",
+      "pearson": 0.04289361127872868,
+      "absPearson": 0.04289361127872868
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "linkLearningRate",
+      "pearson": 0.04273317488356486,
+      "absPearson": 0.04273317488356486
+    },
+    {
+      "left": "decayIntervalSteps",
+      "right": "decayPercent",
+      "pearson": -0.0426673695953646,
+      "absPearson": 0.0426673695953646
+    },
+    {
+      "left": "decayPercent",
+      "right": "linkLearningRate",
+      "pearson": -0.04216726711107124,
+      "absPearson": 0.04216726711107124
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "chargeDropPerHop",
+      "pearson": 0.040618940463899904,
+      "absPearson": 0.040618940463899904
+    },
+    {
+      "left": "chargeDropPerHop",
+      "right": "chargeSpreadFactor",
+      "pearson": -0.04018697468733842,
+      "absPearson": 0.04018697468733842
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "switchHysteresisRatio",
+      "pearson": -0.03940132225753809,
+      "absPearson": 0.03940132225753809
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "decayPercent",
+      "pearson": 0.03384672640096921,
+      "absPearson": 0.03384672640096921
+    },
+    {
+      "left": "chargeSpreadFactor",
+      "right": "linkBonusMax",
+      "pearson": -0.03089266024477902,
+      "absPearson": 0.03089266024477902
+    },
+    {
+      "left": "penaltyLambda",
+      "right": "linkMemory",
+      "pearson": 0.029426821941591384,
+      "absPearson": 0.029426821941591384
+    },
+    {
+      "left": "qForward",
+      "right": "rootSourceCharge",
+      "pearson": 0.026728465458005047,
+      "absPearson": 0.026728465458005047
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "chargeDropPerHop",
+      "pearson": -0.025910591935237044,
+      "absPearson": 0.025910591935237044
+    },
+    {
+      "left": "switchHysteresisRatio",
+      "right": "linkBonusMax",
+      "pearson": -0.023173297293177363,
+      "absPearson": 0.023173297293177363
+    },
+    {
+      "left": "decayIntervalSteps",
+      "right": "linkLearningRate",
+      "pearson": -0.0206147403772091,
+      "absPearson": 0.0206147403772091
+    },
+    {
+      "left": "decayPercent",
+      "right": "linkBonusMax",
+      "pearson": -0.015428559067115018,
+      "absPearson": 0.015428559067115018
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "switchHysteresis",
+      "pearson": 0.014292161118117729,
+      "absPearson": 0.014292161118117729
+    },
+    {
+      "left": "deliveryProbability",
+      "right": "decayPercent",
+      "pearson": 0.013022443845134866,
+      "absPearson": 0.013022443845134866
+    },
+    {
+      "left": "rootSourceCharge",
+      "right": "linkBonusMax",
+      "pearson": -9.150940278622418e-05,
+      "absPearson": 9.150940278622418e-05
+    }
+  ],
+  "topologyCorrelations": {
+    "score": {
+      "nodeCount": 0.4376402523504989,
+      "linkRadius": 0.495728030424467
+    },
+    "theoremPassRate": {
+      "nodeCount": 0.14719491599725296,
+      "linkRadius": 0.1746297325676834
+    },
+    "assumptionsPassRate": {
+      "nodeCount": 0.14719491599725296,
+      "linkRadius": 0.1746297325676834
+    },
+    "coverageAvg": {
+      "nodeCount": 0.0743972363288861,
+      "linkRadius": 0.12424530217280436
+    },
+    "duplicateDrop": {
+      "nodeCount": 0.7996383783432572,
+      "linkRadius": 0.6262467485481595
+    },
+    "eligibleTailRatio": {
+      "nodeCount": 0.02957083292287008,
+      "linkRadius": 0.04793198364290598
+    },
+    "parentChangeAvg": {
+      "nodeCount": 0.06970060656430233,
+      "linkRadius": 0.03679018845261378
+    },
+    "flappingAvg": {
+      "nodeCount": 0.062010438336804606,
+      "linkRadius": 0.03884527808437216
+    }
+  },
+  "instabilitySummary": {
+    "sampleCount": 48800,
+    "unstableOrOscillatingCount": 2811,
+    "unstableOrOscillatingRatio": 0.057602459016393444,
+    "verdictCounts": {
+      "STABLE": 45989,
+      "OSCILLATING": 1357,
+      "UNSTABLE": 1454
+    },
+    "worstRuns": [
+      {
+        "runId": "48x150@48",
+        "networkId": "48x150",
+        "seed": 48,
+        "verdict": "UNSTABLE",
+        "score": 17.16317543859649,
+        "theoremPassRate": 0.07666666666666666,
+        "assumptionsPassRate": 0.07666666666666666,
+        "coverageAvg": 0.27166666666666667,
+        "duplicateDrop": -0.09333333333333327,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 1.7366666666666666,
+        "flappingAvg": 2.7733333333333334,
+        "params": {
+          "qForward": 783.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 2200.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.72,
+          "decayIntervalSteps": 291.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.995,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "64x170@49",
+        "networkId": "64x170",
+        "seed": 49,
+        "verdict": "UNSTABLE",
+        "score": 20.244450833038975,
+        "theoremPassRate": 0.056666666666666664,
+        "assumptionsPassRate": 0.056666666666666664,
+        "coverageAvg": 0.39651041666666664,
+        "duplicateDrop": 14.893333333333333,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 5.54,
+        "flappingAvg": 9.25,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 190.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.995,
+          "linkLearningRate": 0.05,
+          "linkBonusMax": 98.0
+        }
+      },
+      {
+        "runId": "96x400@44",
+        "networkId": "96x400",
+        "seed": 44,
+        "verdict": "UNSTABLE",
+        "score": 21.92383984997656,
+        "theoremPassRate": 0.16333333333333333,
+        "assumptionsPassRate": 0.16333333333333333,
+        "coverageAvg": 0.9993055555555557,
+        "duplicateDrop": 3.1866666666666674,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 14.576666666666666,
+        "flappingAvg": 26.8,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.12,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.7,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.841,
+          "linkLearningRate": 0.5,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "96x400@47",
+        "networkId": "96x400",
+        "seed": 47,
+        "verdict": "UNSTABLE",
+        "score": 22.41745479930192,
+        "theoremPassRate": 0.10333333333333333,
+        "assumptionsPassRate": 0.10333333333333333,
+        "coverageAvg": 0.9984027777777778,
+        "duplicateDrop": 20.906666666666673,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 17.933333333333334,
+        "flappingAvg": 33.376666666666665,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.12,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.7,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.841,
+          "linkLearningRate": 0.5,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "96x400@48",
+        "networkId": "96x400",
+        "seed": 48,
+        "verdict": "UNSTABLE",
+        "score": 22.430531835205993,
+        "theoremPassRate": 0.016666666666666666,
+        "assumptionsPassRate": 0.016666666666666666,
+        "coverageAvg": 0.9986805555555556,
+        "duplicateDrop": 45.68,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 15.023333333333333,
+        "flappingAvg": 28.24,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.12,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.7,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.841,
+          "linkLearningRate": 0.5,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "96x220@49",
+        "networkId": "96x220",
+        "seed": 49,
+        "verdict": "UNSTABLE",
+        "score": 23.64623049421661,
+        "theoremPassRate": 0.12,
+        "assumptionsPassRate": 0.12,
+        "coverageAvg": 1.0,
+        "duplicateDrop": 7.359999999999999,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 9.566666666666666,
+        "flappingAvg": 17.136666666666667,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 0.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 1.0,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "96x340@48",
+        "networkId": "96x340",
+        "seed": 48,
+        "verdict": "UNSTABLE",
+        "score": 25.46025148224244,
+        "theoremPassRate": 0.17333333333333334,
+        "assumptionsPassRate": 0.17333333333333334,
+        "coverageAvg": 1.0,
+        "duplicateDrop": 13.42666666666667,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 11.69,
+        "flappingAvg": 18.31,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 2200.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.7,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "96x400@50",
+        "networkId": "96x400",
+        "seed": 50,
+        "verdict": "UNSTABLE",
+        "score": 25.53863603520148,
+        "theoremPassRate": 0.23,
+        "assumptionsPassRate": 0.23,
+        "coverageAvg": 0.9999305555555557,
+        "duplicateDrop": 7.573333333333331,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 13.593333333333334,
+        "flappingAvg": 24.313333333333333,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.12,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.7,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.841,
+          "linkLearningRate": 0.5,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "80x260@49",
+        "networkId": "80x260",
+        "seed": 49,
+        "verdict": "UNSTABLE",
+        "score": 26.22881377084454,
+        "theoremPassRate": 0.11,
+        "assumptionsPassRate": 0.11,
+        "coverageAvg": 1.0,
+        "duplicateDrop": 7.786666666666665,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 6.32,
+        "flappingAvg": 10.78,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 1.0,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.6,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "96x400@49",
+        "networkId": "96x400",
+        "seed": 49,
+        "verdict": "UNSTABLE",
+        "score": 26.61388957773981,
+        "theoremPassRate": 0.2633333333333333,
+        "assumptionsPassRate": 0.2633333333333333,
+        "coverageAvg": 0.9876041666666666,
+        "duplicateDrop": 6.199999999999996,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 12.156666666666666,
+        "flappingAvg": 21.49,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.12,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.7,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.841,
+          "linkLearningRate": 0.5,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "120x390@48",
+        "networkId": "120x390",
+        "seed": 48,
+        "verdict": "UNSTABLE",
+        "score": 26.711691170965903,
+        "theoremPassRate": 0.07,
+        "assumptionsPassRate": 0.07,
+        "coverageAvg": 1.0,
+        "duplicateDrop": 114.85333333333332,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 22.526666666666667,
+        "flappingAvg": 36.306666666666665,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.35,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 3.0,
+          "switchHysteresis": 0.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.3,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "18x120@50",
+        "networkId": "18x120",
+        "seed": 50,
+        "verdict": "UNSTABLE",
+        "score": 26.914736842105263,
+        "theoremPassRate": 0.03333333333333333,
+        "assumptionsPassRate": 0.03333333333333333,
+        "coverageAvg": 0.38851851851851854,
+        "duplicateDrop": 0.0,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 0.04666666666666667,
+        "flappingAvg": 0.0,
+        "params": {
+          "qForward": 360.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 500.0,
+          "penaltyLambda": 89.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 324.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.995,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "80x260@48",
+        "networkId": "80x260",
+        "seed": 48,
+        "verdict": "UNSTABLE",
+        "score": 27.456082868525897,
+        "theoremPassRate": 0.11,
+        "assumptionsPassRate": 0.11,
+        "coverageAvg": 1.0,
+        "duplicateDrop": 8.773333333333333,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 5.04,
+        "flappingAvg": 9.066666666666666,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 1.0,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.6,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "96x220@49",
+        "networkId": "96x220",
+        "seed": 49,
+        "verdict": "UNSTABLE",
+        "score": 27.578929067996118,
+        "theoremPassRate": 0.043333333333333335,
+        "assumptionsPassRate": 0.043333333333333335,
+        "coverageAvg": 0.9956597222222223,
+        "duplicateDrop": 14.093333333333334,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 3.473333333333333,
+        "flappingAvg": 6.453333333333333,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.56,
+          "decayIntervalSteps": 0.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "64x170@49",
+        "networkId": "64x170",
+        "seed": 49,
+        "verdict": "UNSTABLE",
+        "score": 28.014495614035088,
+        "theoremPassRate": 0.07666666666666666,
+        "assumptionsPassRate": 0.07666666666666666,
+        "coverageAvg": 0.41067708333333336,
+        "duplicateDrop": 0.35999999999999943,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 1.4633333333333334,
+        "flappingAvg": 0.41,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 0.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 190.0,
+          "chargeSpreadFactor": 0.72,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.05,
+          "linkBonusMax": 98.0
+        }
+      },
+      {
+        "runId": "96x400@42",
+        "networkId": "96x400",
+        "seed": 42,
+        "verdict": "UNSTABLE",
+        "score": 28.969369200779724,
+        "theoremPassRate": 0.31333333333333335,
+        "assumptionsPassRate": 0.31333333333333335,
+        "coverageAvg": 0.999826388888889,
+        "duplicateDrop": 7.826666666666668,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 10.146666666666667,
+        "flappingAvg": 17.916666666666668,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.12,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.7,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.0,
+          "linkMemory": 0.841,
+          "linkLearningRate": 0.5,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "96x220@49",
+        "networkId": "96x220",
+        "seed": 49,
+        "verdict": "UNSTABLE",
+        "score": 30.29652782615908,
+        "theoremPassRate": 0.04666666666666667,
+        "assumptionsPassRate": 0.04666666666666667,
+        "coverageAvg": 0.9524305555555557,
+        "duplicateDrop": 36.44,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 4.173333333333333,
+        "flappingAvg": 7.22,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 321.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.94,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "120x250@49",
+        "networkId": "120x250",
+        "seed": 49,
+        "verdict": "UNSTABLE",
+        "score": 30.308911190760654,
+        "theoremPassRate": 0.10666666666666667,
+        "assumptionsPassRate": 0.10666666666666667,
+        "coverageAvg": 1.0,
+        "duplicateDrop": 78.44,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 8.653333333333334,
+        "flappingAvg": 13.936666666666667,
+        "params": {
+          "qForward": 220.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 0.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 80.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.14,
+          "linkMemory": 0.926,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "18x120@46",
+        "networkId": "18x120",
+        "seed": 46,
+        "verdict": "UNSTABLE",
+        "score": 30.4840350877193,
+        "theoremPassRate": 0.05,
+        "assumptionsPassRate": 0.05,
+        "coverageAvg": 0.5390740740740741,
+        "duplicateDrop": 0.0,
+        "eligibleTailRatio": 1.0,
+        "parentChangeAvg": 0.13,
+        "flappingAvg": 0.0,
+        "params": {
+          "qForward": 360.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 500.0,
+          "penaltyLambda": 89.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.03,
+          "chargeDropPerHop": 10.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 324.0,
+          "decayPercent": 0.12,
+          "linkMemory": 0.995,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      },
+      {
+        "runId": "18x160@51",
+        "networkId": "18x160",
+        "seed": 51,
+        "verdict": "UNSTABLE",
+        "score": 30.930543859649116,
+        "theoremPassRate": 0.19666666666666666,
+        "assumptionsPassRate": 0.19666666666666666,
+        "coverageAvg": 0.8935185185185185,
+        "duplicateDrop": -0.30666666666666664,
+        "eligibleTailRatio": 0.5,
+        "parentChangeAvg": 0.18333333333333332,
+        "flappingAvg": 0.0,
+        "params": {
+          "qForward": 1300.0,
+          "deliveryProbability": 0.72,
+          "rootSourceCharge": 1500.0,
+          "penaltyLambda": 28.0,
+          "switchHysteresis": 9.0,
+          "switchHysteresisRatio": 0.0,
+          "chargeDropPerHop": 196.0,
+          "chargeSpreadFactor": 0.28,
+          "decayIntervalSteps": 60.0,
+          "decayPercent": 0.3,
+          "linkMemory": 0.827,
+          "linkLearningRate": 0.2,
+          "linkBonusMax": 45.0
+        }
+      }
+    ],
+    "worstByNetwork": [
+      {
+        "networkId": "10x60",
+        "nodeCount": 10,
+        "linkRadius": 60,
+        "unstableOrOscillatingCount": 57,
+        "sampleCount": 1220,
+        "worstRunId": "10x60@51",
+        "worstSeed": 51,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 44.1359649122807,
+        "worstTheoremPassRate": 0.23,
+        "worstAssumptionsPassRate": 0.23,
+        "worstCoverageAvg": 0.7986666666666666,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.03666666666666667,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "10x60@51",
+        "worstUnstableSeed": 51,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 44.1359649122807,
+        "worstUnstableTheoremPassRate": 0.23,
+        "worstUnstableAssumptionsPassRate": 0.23,
+        "worstUnstableCoverageAvg": 0.7986666666666666,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.03666666666666667,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.04672131147540984
+      },
+      {
+        "networkId": "10x90",
+        "nodeCount": 10,
+        "linkRadius": 90,
+        "unstableOrOscillatingCount": 49,
+        "sampleCount": 1220,
+        "worstRunId": "10x90@47",
+        "worstSeed": 47,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 44.878771929824566,
+        "worstTheoremPassRate": 0.25333333333333335,
+        "worstAssumptionsPassRate": 0.25333333333333335,
+        "worstCoverageAvg": 0.777,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.0033333333333333335,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "10x90@47",
+        "worstUnstableSeed": 47,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 44.878771929824566,
+        "worstUnstableTheoremPassRate": 0.25333333333333335,
+        "worstUnstableAssumptionsPassRate": 0.25333333333333335,
+        "worstUnstableCoverageAvg": 0.777,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.0033333333333333335,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.04016393442622951
+      },
+      {
+        "networkId": "10x120",
+        "nodeCount": 10,
+        "linkRadius": 120,
+        "unstableOrOscillatingCount": 46,
+        "sampleCount": 1220,
+        "worstRunId": "10x120@51",
+        "worstSeed": 51,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 40.0221052631579,
+        "worstTheoremPassRate": 0.14,
+        "worstAssumptionsPassRate": 0.14,
+        "worstCoverageAvg": 0.8086666666666666,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.02,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "10x120@51",
+        "worstUnstableSeed": 51,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 40.0221052631579,
+        "worstUnstableTheoremPassRate": 0.14,
+        "worstUnstableAssumptionsPassRate": 0.14,
+        "worstUnstableCoverageAvg": 0.8086666666666666,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.02,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.03770491803278689
+      },
+      {
+        "networkId": "10x160",
+        "nodeCount": 10,
+        "linkRadius": 160,
+        "unstableOrOscillatingCount": 68,
+        "sampleCount": 1220,
+        "worstRunId": "10x160@45",
+        "worstSeed": 45,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 38.784385964912275,
+        "worstTheoremPassRate": 0.16666666666666666,
+        "worstAssumptionsPassRate": 0.16666666666666666,
+        "worstCoverageAvg": 0.6766666666666666,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.03666666666666667,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "10x160@45",
+        "worstUnstableSeed": 45,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 38.784385964912275,
+        "worstUnstableTheoremPassRate": 0.16666666666666666,
+        "worstUnstableAssumptionsPassRate": 0.16666666666666666,
+        "worstUnstableCoverageAvg": 0.6766666666666666,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.03666666666666667,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.05573770491803279
+      },
+      {
+        "networkId": "14x70",
+        "nodeCount": 14,
+        "linkRadius": 70,
+        "unstableOrOscillatingCount": 50,
+        "sampleCount": 1220,
+        "worstRunId": "14x70@50",
+        "worstSeed": 50,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 38.25521303258145,
+        "worstTheoremPassRate": 0.19,
+        "worstAssumptionsPassRate": 0.19,
+        "worstCoverageAvg": 0.5885714285714285,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.016666666666666666,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "14x70@50",
+        "worstUnstableSeed": 50,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 38.25521303258145,
+        "worstUnstableTheoremPassRate": 0.19,
+        "worstUnstableAssumptionsPassRate": 0.19,
+        "worstUnstableCoverageAvg": 0.5885714285714285,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.016666666666666666,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.040983606557377046
+      },
+      {
+        "networkId": "14x100",
+        "nodeCount": 14,
+        "linkRadius": 100,
+        "unstableOrOscillatingCount": 67,
+        "sampleCount": 1220,
+        "worstRunId": "14x100@50",
+        "worstSeed": 50,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 37.15982456140351,
+        "worstTheoremPassRate": 0.17333333333333334,
+        "worstAssumptionsPassRate": 0.17333333333333334,
+        "worstCoverageAvg": 0.5733333333333334,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.023333333333333334,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "14x100@50",
+        "worstUnstableSeed": 50,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 37.15982456140351,
+        "worstUnstableTheoremPassRate": 0.17333333333333334,
+        "worstUnstableAssumptionsPassRate": 0.17333333333333334,
+        "worstUnstableCoverageAvg": 0.5733333333333334,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.023333333333333334,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.05491803278688524
+      },
+      {
+        "networkId": "14x140",
+        "nodeCount": 14,
+        "linkRadius": 140,
+        "unstableOrOscillatingCount": 121,
+        "sampleCount": 1220,
+        "worstRunId": "14x140@51",
+        "worstSeed": 51,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 37.3890977443609,
+        "worstTheoremPassRate": 0.1,
+        "worstAssumptionsPassRate": 0.1,
+        "worstCoverageAvg": 0.7726190476190476,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.05,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "14x140@51",
+        "worstUnstableSeed": 51,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 37.3890977443609,
+        "worstUnstableTheoremPassRate": 0.1,
+        "worstUnstableAssumptionsPassRate": 0.1,
+        "worstUnstableCoverageAvg": 0.7726190476190476,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.05,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.09918032786885246
+      },
+      {
+        "networkId": "14x180",
+        "nodeCount": 14,
+        "linkRadius": 180,
+        "unstableOrOscillatingCount": 208,
+        "sampleCount": 1220,
+        "worstRunId": "14x180@46",
+        "worstSeed": 46,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 36.869473684210526,
+        "worstTheoremPassRate": 0.15666666666666668,
+        "worstAssumptionsPassRate": 0.15666666666666668,
+        "worstCoverageAvg": 0.58,
+        "worstDuplicateDrop": 0.02666666666666667,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.06666666666666667,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "14x180@46",
+        "worstUnstableSeed": 46,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 36.869473684210526,
+        "worstUnstableTheoremPassRate": 0.15666666666666668,
+        "worstUnstableAssumptionsPassRate": 0.15666666666666668,
+        "worstUnstableCoverageAvg": 0.58,
+        "worstUnstableDuplicateDrop": 0.02666666666666667,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.06666666666666667,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.17049180327868851
+      },
+      {
+        "networkId": "18x80",
+        "nodeCount": 18,
+        "linkRadius": 80,
+        "unstableOrOscillatingCount": 59,
+        "sampleCount": 1220,
+        "worstRunId": "18x80@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 37.76473684210526,
+        "worstTheoremPassRate": 0.19666666666666666,
+        "worstAssumptionsPassRate": 0.19666666666666666,
+        "worstCoverageAvg": 0.5468518518518518,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.03666666666666667,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "18x80@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 37.76473684210526,
+        "worstUnstableTheoremPassRate": 0.19666666666666666,
+        "worstUnstableAssumptionsPassRate": 0.19666666666666666,
+        "worstUnstableCoverageAvg": 0.5468518518518518,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.03666666666666667,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.04836065573770492
+      },
+      {
+        "networkId": "18x120",
+        "nodeCount": 18,
+        "linkRadius": 120,
+        "unstableOrOscillatingCount": 548,
+        "sampleCount": 1220,
+        "worstRunId": "18x120@50",
+        "worstSeed": 50,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 26.914736842105263,
+        "worstTheoremPassRate": 0.03333333333333333,
+        "worstAssumptionsPassRate": 0.03333333333333333,
+        "worstCoverageAvg": 0.38851851851851854,
+        "worstDuplicateDrop": 0.0,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.04666666666666667,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "18x120@50",
+        "worstUnstableSeed": 50,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 26.914736842105263,
+        "worstUnstableTheoremPassRate": 0.03333333333333333,
+        "worstUnstableAssumptionsPassRate": 0.03333333333333333,
+        "worstUnstableCoverageAvg": 0.38851851851851854,
+        "worstUnstableDuplicateDrop": 0.0,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.04666666666666667,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.4491803278688525
+      },
+      {
+        "networkId": "18x160",
+        "nodeCount": 18,
+        "linkRadius": 160,
+        "unstableOrOscillatingCount": 115,
+        "sampleCount": 1220,
+        "worstRunId": "18x160@51",
+        "worstSeed": 51,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 30.930543859649116,
+        "worstTheoremPassRate": 0.19666666666666666,
+        "worstAssumptionsPassRate": 0.19666666666666666,
+        "worstCoverageAvg": 0.8935185185185185,
+        "worstDuplicateDrop": -0.30666666666666664,
+        "worstEligibleTailRatio": 0.5,
+        "worstParentChangeAvg": 0.18333333333333332,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "18x160@51",
+        "worstUnstableSeed": 51,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 30.930543859649116,
+        "worstUnstableTheoremPassRate": 0.19666666666666666,
+        "worstUnstableAssumptionsPassRate": 0.19666666666666666,
+        "worstUnstableCoverageAvg": 0.8935185185185185,
+        "worstUnstableDuplicateDrop": -0.30666666666666664,
+        "worstUnstableEligibleTailRatio": 0.5,
+        "worstUnstableParentChangeAvg": 0.18333333333333332,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.0942622950819672
+      },
+      {
+        "networkId": "18x210",
+        "nodeCount": 18,
+        "linkRadius": 210,
+        "unstableOrOscillatingCount": 96,
+        "sampleCount": 1220,
+        "worstRunId": "18x210@47",
+        "worstSeed": 47,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 40.39231166150671,
+        "worstTheoremPassRate": 0.043333333333333335,
+        "worstAssumptionsPassRate": 0.043333333333333335,
+        "worstCoverageAvg": 0.8518518518518519,
+        "worstDuplicateDrop": 0.3600000000000001,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.06333333333333334,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "18x210@47",
+        "worstUnstableSeed": 47,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 40.39231166150671,
+        "worstUnstableTheoremPassRate": 0.043333333333333335,
+        "worstUnstableAssumptionsPassRate": 0.043333333333333335,
+        "worstUnstableCoverageAvg": 0.8518518518518519,
+        "worstUnstableDuplicateDrop": 0.3600000000000001,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.06333333333333334,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.07868852459016394
+      },
+      {
+        "networkId": "24x100",
+        "nodeCount": 24,
+        "linkRadius": 100,
+        "unstableOrOscillatingCount": 203,
+        "sampleCount": 1220,
+        "worstRunId": "24x100@45",
+        "worstSeed": 45,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 31.96,
+        "worstTheoremPassRate": 0.12666666666666668,
+        "worstAssumptionsPassRate": 0.12666666666666668,
+        "worstCoverageAvg": 0.38,
+        "worstDuplicateDrop": 0.05333333333333334,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.17333333333333334,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "24x100@45",
+        "worstUnstableSeed": 45,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 31.96,
+        "worstUnstableTheoremPassRate": 0.12666666666666668,
+        "worstUnstableAssumptionsPassRate": 0.12666666666666668,
+        "worstUnstableCoverageAvg": 0.38,
+        "worstUnstableDuplicateDrop": 0.05333333333333334,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.17333333333333334,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.16639344262295083
+      },
+      {
+        "networkId": "24x140",
+        "nodeCount": 24,
+        "linkRadius": 140,
+        "unstableOrOscillatingCount": 43,
+        "sampleCount": 1220,
+        "worstRunId": "24x140@45",
+        "worstSeed": 45,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 31.129649122807017,
+        "worstTheoremPassRate": 0.12333333333333334,
+        "worstAssumptionsPassRate": 0.12333333333333334,
+        "worstCoverageAvg": 0.3813888888888889,
+        "worstDuplicateDrop": -0.12,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.016666666666666666,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "24x140@45",
+        "worstUnstableSeed": 45,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 31.129649122807017,
+        "worstUnstableTheoremPassRate": 0.12333333333333334,
+        "worstUnstableAssumptionsPassRate": 0.12333333333333334,
+        "worstUnstableCoverageAvg": 0.3813888888888889,
+        "worstUnstableDuplicateDrop": -0.12,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.016666666666666666,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.03524590163934426
+      },
+      {
+        "networkId": "24x190",
+        "nodeCount": 24,
+        "linkRadius": 190,
+        "unstableOrOscillatingCount": 49,
+        "sampleCount": 1220,
+        "worstRunId": "24x190@50",
+        "worstSeed": 50,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 48.68684684684685,
+        "worstTheoremPassRate": 0.06666666666666667,
+        "worstAssumptionsPassRate": 0.06666666666666667,
+        "worstCoverageAvg": 0.99625,
+        "worstDuplicateDrop": 1.4666666666666668,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.02666666666666667,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "24x190@50",
+        "worstUnstableSeed": 50,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 48.68684684684685,
+        "worstUnstableTheoremPassRate": 0.06666666666666667,
+        "worstUnstableAssumptionsPassRate": 0.06666666666666667,
+        "worstUnstableCoverageAvg": 0.99625,
+        "worstUnstableDuplicateDrop": 1.4666666666666668,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.02666666666666667,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.04016393442622951
+      },
+      {
+        "networkId": "24x240",
+        "nodeCount": 24,
+        "linkRadius": 240,
+        "unstableOrOscillatingCount": 61,
+        "sampleCount": 1220,
+        "worstRunId": "24x240@50",
+        "worstSeed": 50,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 40.03,
+        "worstTheoremPassRate": 0.09,
+        "worstAssumptionsPassRate": 0.09,
+        "worstCoverageAvg": 0.9933333333333333,
+        "worstDuplicateDrop": -1.08,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.21,
+        "worstFlappingAvg": 0.05333333333333334,
+        "worstUnstableRunId": "24x240@50",
+        "worstUnstableSeed": 50,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 40.03,
+        "worstUnstableTheoremPassRate": 0.09,
+        "worstUnstableAssumptionsPassRate": 0.09,
+        "worstUnstableCoverageAvg": 0.9933333333333333,
+        "worstUnstableDuplicateDrop": -1.08,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.21,
+        "worstUnstableFlappingAvg": 0.05333333333333334,
+        "unstableOrOscillatingShare": 0.05
+      },
+      {
+        "networkId": "34x120",
+        "nodeCount": 34,
+        "linkRadius": 120,
+        "unstableOrOscillatingCount": 72,
+        "sampleCount": 1220,
+        "worstRunId": "34x120@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 34.032745098039214,
+        "worstTheoremPassRate": 0.2,
+        "worstAssumptionsPassRate": 0.2,
+        "worstCoverageAvg": 0.3446078431372549,
+        "worstDuplicateDrop": -0.36,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.09666666666666666,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "34x120@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 34.032745098039214,
+        "worstUnstableTheoremPassRate": 0.2,
+        "worstUnstableAssumptionsPassRate": 0.2,
+        "worstUnstableCoverageAvg": 0.3446078431372549,
+        "worstUnstableDuplicateDrop": -0.36,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.09666666666666666,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.05901639344262295
+      },
+      {
+        "networkId": "34x170",
+        "nodeCount": 34,
+        "linkRadius": 170,
+        "unstableOrOscillatingCount": 60,
+        "sampleCount": 1220,
+        "worstRunId": "34x170@48",
+        "worstSeed": 48,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 37.31766261137517,
+        "worstTheoremPassRate": 0.08,
+        "worstAssumptionsPassRate": 0.08,
+        "worstCoverageAvg": 0.27205882352941174,
+        "worstDuplicateDrop": 3.6799999999999997,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.043333333333333335,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "34x170@48",
+        "worstUnstableSeed": 48,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 37.31766261137517,
+        "worstUnstableTheoremPassRate": 0.08,
+        "worstUnstableAssumptionsPassRate": 0.08,
+        "worstUnstableCoverageAvg": 0.27205882352941174,
+        "worstUnstableDuplicateDrop": 3.6799999999999997,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.043333333333333335,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.04918032786885246
+      },
+      {
+        "networkId": "34x220",
+        "nodeCount": 34,
+        "linkRadius": 220,
+        "unstableOrOscillatingCount": 75,
+        "sampleCount": 1220,
+        "worstRunId": "34x220@50",
+        "worstSeed": 50,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 40.363375796178346,
+        "worstTheoremPassRate": 0.07666666666666666,
+        "worstAssumptionsPassRate": 0.07666666666666666,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 0.18666666666666654,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.03,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "34x220@50",
+        "worstUnstableSeed": 50,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 40.363375796178346,
+        "worstUnstableTheoremPassRate": 0.07666666666666666,
+        "worstUnstableAssumptionsPassRate": 0.07666666666666666,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 0.18666666666666654,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.03,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.06147540983606557
+      },
+      {
+        "networkId": "34x280",
+        "nodeCount": 34,
+        "linkRadius": 280,
+        "unstableOrOscillatingCount": 0,
+        "sampleCount": 1220,
+        "worstRunId": "34x280@49",
+        "worstSeed": 49,
+        "worstVerdict": "STABLE",
+        "worstScore": 80.54991869918699,
+        "worstTheoremPassRate": 0.61,
+        "worstAssumptionsPassRate": 0.61,
+        "worstCoverageAvg": 0.9758823529411764,
+        "worstDuplicateDrop": 10.48,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.06666666666666667,
+        "worstFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.0
+      },
+      {
+        "networkId": "48x150",
+        "nodeCount": 48,
+        "linkRadius": 150,
+        "unstableOrOscillatingCount": 200,
+        "sampleCount": 1220,
+        "worstRunId": "48x150@48",
+        "worstSeed": 48,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 17.16317543859649,
+        "worstTheoremPassRate": 0.07666666666666666,
+        "worstAssumptionsPassRate": 0.07666666666666666,
+        "worstCoverageAvg": 0.27166666666666667,
+        "worstDuplicateDrop": -0.09333333333333327,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 1.7366666666666666,
+        "worstFlappingAvg": 2.7733333333333334,
+        "worstUnstableRunId": "48x150@48",
+        "worstUnstableSeed": 48,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 17.16317543859649,
+        "worstUnstableTheoremPassRate": 0.07666666666666666,
+        "worstUnstableAssumptionsPassRate": 0.07666666666666666,
+        "worstUnstableCoverageAvg": 0.27166666666666667,
+        "worstUnstableDuplicateDrop": -0.09333333333333327,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 1.7366666666666666,
+        "worstUnstableFlappingAvg": 2.7733333333333334,
+        "unstableOrOscillatingShare": 0.16393442622950818
+      },
+      {
+        "networkId": "48x210",
+        "nodeCount": 48,
+        "linkRadius": 210,
+        "unstableOrOscillatingCount": 44,
+        "sampleCount": 1220,
+        "worstRunId": "48x210@50",
+        "worstSeed": 50,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 44.52956331877729,
+        "worstTheoremPassRate": 0.12,
+        "worstAssumptionsPassRate": 0.12,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 1.1066666666666665,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.13,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "48x210@50",
+        "worstUnstableSeed": 50,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 44.52956331877729,
+        "worstUnstableTheoremPassRate": 0.12,
+        "worstUnstableAssumptionsPassRate": 0.12,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 1.1066666666666665,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.13,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.036065573770491806
+      },
+      {
+        "networkId": "48x270",
+        "nodeCount": 48,
+        "linkRadius": 270,
+        "unstableOrOscillatingCount": 3,
+        "sampleCount": 1220,
+        "worstRunId": "48x270@48",
+        "worstSeed": 48,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 43.278333333333336,
+        "worstTheoremPassRate": 0.24,
+        "worstAssumptionsPassRate": 0.24,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": -3.8000000000000007,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 1.1466666666666667,
+        "worstFlappingAvg": 2.0633333333333335,
+        "worstUnstableRunId": "48x270@48",
+        "worstUnstableSeed": 48,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 43.278333333333336,
+        "worstUnstableTheoremPassRate": 0.24,
+        "worstUnstableAssumptionsPassRate": 0.24,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": -3.8000000000000007,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 1.1466666666666667,
+        "worstUnstableFlappingAvg": 2.0633333333333335,
+        "unstableOrOscillatingShare": 0.002459016393442623
+      },
+      {
+        "networkId": "48x330",
+        "nodeCount": 48,
+        "linkRadius": 330,
+        "unstableOrOscillatingCount": 0,
+        "sampleCount": 1220,
+        "worstRunId": "48x330@44",
+        "worstSeed": 44,
+        "worstVerdict": "STABLE",
+        "worstScore": 90.57333333333332,
+        "worstTheoremPassRate": 0.8066666666666666,
+        "worstAssumptionsPassRate": 0.8066666666666666,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 10.693333333333333,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.14666666666666667,
+        "worstFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.0
+      },
+      {
+        "networkId": "64x170",
+        "nodeCount": 64,
+        "linkRadius": 170,
+        "unstableOrOscillatingCount": 298,
+        "sampleCount": 1220,
+        "worstRunId": "64x170@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 20.244450833038975,
+        "worstTheoremPassRate": 0.056666666666666664,
+        "worstAssumptionsPassRate": 0.056666666666666664,
+        "worstCoverageAvg": 0.39651041666666664,
+        "worstDuplicateDrop": 14.893333333333333,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 5.54,
+        "worstFlappingAvg": 9.25,
+        "worstUnstableRunId": "64x170@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 20.244450833038975,
+        "worstUnstableTheoremPassRate": 0.056666666666666664,
+        "worstUnstableAssumptionsPassRate": 0.056666666666666664,
+        "worstUnstableCoverageAvg": 0.39651041666666664,
+        "worstUnstableDuplicateDrop": 14.893333333333333,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 5.54,
+        "worstUnstableFlappingAvg": 9.25,
+        "unstableOrOscillatingShare": 0.2442622950819672
+      },
+      {
+        "networkId": "64x230",
+        "nodeCount": 64,
+        "linkRadius": 230,
+        "unstableOrOscillatingCount": 5,
+        "sampleCount": 1220,
+        "worstRunId": "64x230@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 47.72053097345133,
+        "worstTheoremPassRate": 0.13666666666666666,
+        "worstAssumptionsPassRate": 0.13666666666666666,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 5.573333333333334,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.22,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "64x230@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 47.72053097345133,
+        "worstUnstableTheoremPassRate": 0.13666666666666666,
+        "worstUnstableAssumptionsPassRate": 0.13666666666666666,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 5.573333333333334,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.22,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.004098360655737705
+      },
+      {
+        "networkId": "64x290",
+        "nodeCount": 64,
+        "linkRadius": 290,
+        "unstableOrOscillatingCount": 3,
+        "sampleCount": 1220,
+        "worstRunId": "64x290@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 35.5600243567753,
+        "worstTheoremPassRate": 0.16,
+        "worstAssumptionsPassRate": 0.16,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 17.093333333333334,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 2.51,
+        "worstFlappingAvg": 4.4,
+        "worstUnstableRunId": "64x290@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 35.5600243567753,
+        "worstUnstableTheoremPassRate": 0.16,
+        "worstUnstableAssumptionsPassRate": 0.16,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 17.093333333333334,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 2.51,
+        "worstUnstableFlappingAvg": 4.4,
+        "unstableOrOscillatingShare": 0.002459016393442623
+      },
+      {
+        "networkId": "64x350",
+        "nodeCount": 64,
+        "linkRadius": 350,
+        "unstableOrOscillatingCount": 0,
+        "sampleCount": 1220,
+        "worstRunId": "64x350@48",
+        "worstSeed": 48,
+        "worstVerdict": "STABLE",
+        "worstScore": 83.21666666666667,
+        "worstTheoremPassRate": 0.6533333333333333,
+        "worstAssumptionsPassRate": 0.6533333333333333,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 19.52,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.14333333333333334,
+        "worstFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.0
+      },
+      {
+        "networkId": "80x200",
+        "nodeCount": 80,
+        "linkRadius": 200,
+        "unstableOrOscillatingCount": 53,
+        "sampleCount": 1220,
+        "worstRunId": "80x200@46",
+        "worstSeed": 46,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 53.594701542588865,
+        "worstTheoremPassRate": 0.17,
+        "worstAssumptionsPassRate": 0.17,
+        "worstCoverageAvg": 0.9980833333333333,
+        "worstDuplicateDrop": 11.879999999999999,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.12666666666666668,
+        "worstFlappingAvg": 0.0,
+        "worstUnstableRunId": "80x200@46",
+        "worstUnstableSeed": 46,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 53.594701542588865,
+        "worstUnstableTheoremPassRate": 0.17,
+        "worstUnstableAssumptionsPassRate": 0.17,
+        "worstUnstableCoverageAvg": 0.9980833333333333,
+        "worstUnstableDuplicateDrop": 11.879999999999999,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.12666666666666668,
+        "worstUnstableFlappingAvg": 0.0,
+        "unstableOrOscillatingShare": 0.04344262295081967
+      },
+      {
+        "networkId": "80x260",
+        "nodeCount": 80,
+        "linkRadius": 260,
+        "unstableOrOscillatingCount": 11,
+        "sampleCount": 1220,
+        "worstRunId": "80x260@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 26.22881377084454,
+        "worstTheoremPassRate": 0.11,
+        "worstAssumptionsPassRate": 0.11,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 7.786666666666665,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 6.32,
+        "worstFlappingAvg": 10.78,
+        "worstUnstableRunId": "80x260@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 26.22881377084454,
+        "worstUnstableTheoremPassRate": 0.11,
+        "worstUnstableAssumptionsPassRate": 0.11,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 7.786666666666665,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 6.32,
+        "worstUnstableFlappingAvg": 10.78,
+        "unstableOrOscillatingShare": 0.009016393442622951
+      },
+      {
+        "networkId": "80x320",
+        "nodeCount": 80,
+        "linkRadius": 320,
+        "unstableOrOscillatingCount": 2,
+        "sampleCount": 1220,
+        "worstRunId": "80x320@48",
+        "worstSeed": 48,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 51.28150621957815,
+        "worstTheoremPassRate": 0.14666666666666667,
+        "worstAssumptionsPassRate": 0.14666666666666667,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 26.306666666666665,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.29,
+        "worstFlappingAvg": 0.0033333333333333335,
+        "worstUnstableRunId": "80x320@48",
+        "worstUnstableSeed": 48,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 51.28150621957815,
+        "worstUnstableTheoremPassRate": 0.14666666666666667,
+        "worstUnstableAssumptionsPassRate": 0.14666666666666667,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 26.306666666666665,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.29,
+        "worstUnstableFlappingAvg": 0.0033333333333333335,
+        "unstableOrOscillatingShare": 0.001639344262295082
+      },
+      {
+        "networkId": "80x380",
+        "nodeCount": 80,
+        "linkRadius": 380,
+        "unstableOrOscillatingCount": 10,
+        "sampleCount": 1220,
+        "worstRunId": "80x380@44",
+        "worstSeed": 44,
+        "worstVerdict": "OSCILLATING",
+        "worstScore": 72.07253333333333,
+        "worstTheoremPassRate": 1.0,
+        "worstAssumptionsPassRate": 1.0,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 73.09333333333333,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 4.1066666666666665,
+        "worstFlappingAvg": 7.963333333333333,
+        "worstUnstableRunId": "80x380@44",
+        "worstUnstableSeed": 44,
+        "worstUnstableVerdict": "OSCILLATING",
+        "worstUnstableScore": 72.07253333333333,
+        "worstUnstableTheoremPassRate": 1.0,
+        "worstUnstableAssumptionsPassRate": 1.0,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 73.09333333333333,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 4.1066666666666665,
+        "worstUnstableFlappingAvg": 7.963333333333333,
+        "unstableOrOscillatingShare": 0.00819672131147541
+      },
+      {
+        "networkId": "96x220",
+        "nodeCount": 96,
+        "linkRadius": 220,
+        "unstableOrOscillatingCount": 53,
+        "sampleCount": 1220,
+        "worstRunId": "96x220@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 23.64623049421661,
+        "worstTheoremPassRate": 0.12,
+        "worstAssumptionsPassRate": 0.12,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 7.359999999999999,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 9.566666666666666,
+        "worstFlappingAvg": 17.136666666666667,
+        "worstUnstableRunId": "96x220@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 23.64623049421661,
+        "worstUnstableTheoremPassRate": 0.12,
+        "worstUnstableAssumptionsPassRate": 0.12,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 7.359999999999999,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 9.566666666666666,
+        "worstUnstableFlappingAvg": 17.136666666666667,
+        "unstableOrOscillatingShare": 0.04344262295081967
+      },
+      {
+        "networkId": "96x280",
+        "nodeCount": 96,
+        "linkRadius": 280,
+        "unstableOrOscillatingCount": 2,
+        "sampleCount": 1220,
+        "worstRunId": "96x280@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 48.78717514124294,
+        "worstTheoremPassRate": 0.15333333333333332,
+        "worstAssumptionsPassRate": 0.15333333333333332,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 13.759999999999998,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 0.35333333333333333,
+        "worstFlappingAvg": 0.03333333333333333,
+        "worstUnstableRunId": "96x280@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 48.78717514124294,
+        "worstUnstableTheoremPassRate": 0.15333333333333332,
+        "worstUnstableAssumptionsPassRate": 0.15333333333333332,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 13.759999999999998,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 0.35333333333333333,
+        "worstUnstableFlappingAvg": 0.03333333333333333,
+        "unstableOrOscillatingShare": 0.001639344262295082
+      },
+      {
+        "networkId": "96x340",
+        "nodeCount": 96,
+        "linkRadius": 340,
+        "unstableOrOscillatingCount": 6,
+        "sampleCount": 1220,
+        "worstRunId": "96x340@48",
+        "worstSeed": 48,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 25.46025148224244,
+        "worstTheoremPassRate": 0.17333333333333334,
+        "worstAssumptionsPassRate": 0.17333333333333334,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 13.42666666666667,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 11.69,
+        "worstFlappingAvg": 18.31,
+        "worstUnstableRunId": "96x340@48",
+        "worstUnstableSeed": 48,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 25.46025148224244,
+        "worstUnstableTheoremPassRate": 0.17333333333333334,
+        "worstUnstableAssumptionsPassRate": 0.17333333333333334,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 13.42666666666667,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 11.69,
+        "worstUnstableFlappingAvg": 18.31,
+        "unstableOrOscillatingShare": 0.004918032786885246
+      },
+      {
+        "networkId": "96x400",
+        "nodeCount": 96,
+        "linkRadius": 400,
+        "unstableOrOscillatingCount": 10,
+        "sampleCount": 1220,
+        "worstRunId": "96x400@44",
+        "worstSeed": 44,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 21.92383984997656,
+        "worstTheoremPassRate": 0.16333333333333333,
+        "worstAssumptionsPassRate": 0.16333333333333333,
+        "worstCoverageAvg": 0.9993055555555557,
+        "worstDuplicateDrop": 3.1866666666666674,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 14.576666666666666,
+        "worstFlappingAvg": 26.8,
+        "worstUnstableRunId": "96x400@44",
+        "worstUnstableSeed": 44,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 21.92383984997656,
+        "worstUnstableTheoremPassRate": 0.16333333333333333,
+        "worstUnstableAssumptionsPassRate": 0.16333333333333333,
+        "worstUnstableCoverageAvg": 0.9993055555555557,
+        "worstUnstableDuplicateDrop": 3.1866666666666674,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 14.576666666666666,
+        "worstUnstableFlappingAvg": 26.8,
+        "unstableOrOscillatingShare": 0.00819672131147541
+      },
+      {
+        "networkId": "120x250",
+        "nodeCount": 120,
+        "linkRadius": 250,
+        "unstableOrOscillatingCount": 9,
+        "sampleCount": 1220,
+        "worstRunId": "120x250@49",
+        "worstSeed": 49,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 30.308911190760654,
+        "worstTheoremPassRate": 0.10666666666666667,
+        "worstAssumptionsPassRate": 0.10666666666666667,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 78.44,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 8.653333333333334,
+        "worstFlappingAvg": 13.936666666666667,
+        "worstUnstableRunId": "120x250@49",
+        "worstUnstableSeed": 49,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 30.308911190760654,
+        "worstUnstableTheoremPassRate": 0.10666666666666667,
+        "worstUnstableAssumptionsPassRate": 0.10666666666666667,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 78.44,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 8.653333333333334,
+        "worstUnstableFlappingAvg": 13.936666666666667,
+        "unstableOrOscillatingShare": 0.007377049180327869
+      },
+      {
+        "networkId": "120x320",
+        "nodeCount": 120,
+        "linkRadius": 320,
+        "unstableOrOscillatingCount": 45,
+        "sampleCount": 1220,
+        "worstRunId": "120x320@48",
+        "worstSeed": 48,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 37.088842266249564,
+        "worstTheoremPassRate": 0.35333333333333333,
+        "worstAssumptionsPassRate": 0.35333333333333333,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 39.72,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 8.013333333333334,
+        "worstFlappingAvg": 13.363333333333333,
+        "worstUnstableRunId": "120x320@48",
+        "worstUnstableSeed": 48,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 37.088842266249564,
+        "worstUnstableTheoremPassRate": 0.35333333333333333,
+        "worstUnstableAssumptionsPassRate": 0.35333333333333333,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 39.72,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 8.013333333333334,
+        "worstUnstableFlappingAvg": 13.363333333333333,
+        "unstableOrOscillatingShare": 0.036885245901639344
+      },
+      {
+        "networkId": "120x390",
+        "nodeCount": 120,
+        "linkRadius": 390,
+        "unstableOrOscillatingCount": 1,
+        "sampleCount": 1220,
+        "worstRunId": "120x390@48",
+        "worstSeed": 48,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 26.711691170965903,
+        "worstTheoremPassRate": 0.07,
+        "worstAssumptionsPassRate": 0.07,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 114.85333333333332,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 22.526666666666667,
+        "worstFlappingAvg": 36.306666666666665,
+        "worstUnstableRunId": "120x390@48",
+        "worstUnstableSeed": 48,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 26.711691170965903,
+        "worstUnstableTheoremPassRate": 0.07,
+        "worstUnstableAssumptionsPassRate": 0.07,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 114.85333333333332,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 22.526666666666667,
+        "worstUnstableFlappingAvg": 36.306666666666665,
+        "unstableOrOscillatingShare": 0.000819672131147541
+      },
+      {
+        "networkId": "120x460",
+        "nodeCount": 120,
+        "linkRadius": 460,
+        "unstableOrOscillatingCount": 9,
+        "sampleCount": 1220,
+        "worstRunId": "120x460@48",
+        "worstSeed": 48,
+        "worstVerdict": "UNSTABLE",
+        "worstScore": 43.459593363988816,
+        "worstTheoremPassRate": 0.5233333333333333,
+        "worstAssumptionsPassRate": 0.5233333333333333,
+        "worstCoverageAvg": 1.0,
+        "worstDuplicateDrop": 90.88,
+        "worstEligibleTailRatio": 1.0,
+        "worstParentChangeAvg": 9.953333333333333,
+        "worstFlappingAvg": 16.19333333333333,
+        "worstUnstableRunId": "120x460@48",
+        "worstUnstableSeed": 48,
+        "worstUnstableVerdict": "UNSTABLE",
+        "worstUnstableScore": 43.459593363988816,
+        "worstUnstableTheoremPassRate": 0.5233333333333333,
+        "worstUnstableAssumptionsPassRate": 0.5233333333333333,
+        "worstUnstableCoverageAvg": 1.0,
+        "worstUnstableDuplicateDrop": 90.88,
+        "worstUnstableEligibleTailRatio": 1.0,
+        "worstUnstableParentChangeAvg": 9.953333333333333,
+        "worstUnstableFlappingAvg": 16.19333333333333,
+        "unstableOrOscillatingShare": 0.007377049180327869
+      }
+    ],
+    "metricBounds": {
+      "score": {
+        "min": 17.16317543859649,
+        "max": 100.0
+      },
+      "theoremPassRate": {
+        "min": 0.016666666666666666,
+        "max": 1.0
+      },
+      "assumptionsPassRate": {
+        "min": 0.016666666666666666,
+        "max": 1.0
+      },
+      "coverageAvg": {
+        "min": 0.21361111111111108,
+        "max": 1.0
+      },
+      "duplicateDrop": {
+        "min": -5.546666666666624,
+        "max": 535.52
+      },
+      "eligibleTailRatio": {
+        "min": 0.0,
+        "max": 1.0
+      },
+      "parentChangeAvg": {
+        "min": 0.0,
+        "max": 26.533333333333335
+      },
+      "flappingAvg": {
+        "min": 0.0,
+        "max": 49.18666666666667
+      }
+    }
+  }
+}

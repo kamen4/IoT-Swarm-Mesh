@@ -8,8 +8,9 @@ The `Benchmark` folder contains the headless benchmarking subsystem. It can run 
 
 | File                     | Responsibility                                                                                                                                                                                                                                                       |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `BenchmarkConfig.cs`     | Fully serialisable scenario definition: initial device list, scheduled events, engine settings, and the list of router names to compare.                                                                                                                             |
-| `BenchmarkRunner.cs`     | Headless tick loop. For each router in `BenchmarkConfig.RouterNames` it resets the engine, applies the config, fires scheduled events at their ticks, runs the simulation for `DurationTicks`, and captures a `BenchmarkResult`. Returns a `BenchmarkSession`.       |
+| `BenchmarkConfig.cs`     | Fully serialisable scenario definition: initial device list, scheduled events, engine settings (including packet defaults for TTL and travel time), and the list of router names to compare.                                                                       |
+| `BenchmarkRunner.cs`     | Headless tick loop. For each router in `BenchmarkConfig.RouterNames` it creates an isolated engine/statistics context, applies the config (visibility, packet limits, packet defaults, router), fires scheduled events at their ticks, runs the simulation for `DurationTicks`, captures a `BenchmarkResult`, and emits optional progress snapshots. Supports optional topology/vector overrides and bounded router-level parallel execution (`maxDegreeOfParallelism`). Returns a `BenchmarkSession`. |
+| `BenchmarkRunProgress.cs`| Progress payload used by `BenchmarkRunner` callback consumers. Includes current router name/index, completed routers, current tick, duration, per-router progress, and overall progress. |
 | `BenchmarkResult.cs`     | Per-router output: final metric values and the full `TickSnapshot[]` history for charting.                                                                                                                                                                           |
 | `BenchmarkSession.cs`    | Root JSON document combining `BenchmarkConfig` with all `BenchmarkResult` entries. Self-contained for saving and sharing.                                                                                                                                            |
 | `BenchmarkEventEntry.cs` | Tick-stamped event union. Supported types: `ToggleBenchmarkEvent` (Hub sends a `ControlPacket`), `RemoveDeviceBenchmarkEvent` (simulates node failure), `AddDeviceBenchmarkEvent` (simulates node join). Uses `System.Text.Json` polymorphic `$type` discriminators. |
@@ -23,12 +24,16 @@ The `Benchmark` folder contains the headless benchmarking subsystem. It can run 
 BenchmarkConfig
   +- BenchmarkRunner.Run()
        for each router:
-         1. Engine.Reset() + Statistics.Reset()
-         2. Apply settings + register initial devices
-         3. Tick loop [0 .. DurationTicks]:
-              - fire scheduled BenchmarkEventEntry at matching ticks
-              - Engine.Tick()
-         4. Capture BenchmarkResult (metrics + TickSnapshot[])
+      1. Create isolated engine/statistics context
+      2. Engine.Reset() + Statistics.Reset()
+      3. Apply network builder/vector overrides (or current engine defaults)
+      4. Apply settings + register initial devices
+      5. Tick loop [0 .. DurationTicks]:
+        - fire scheduled BenchmarkEventEntry at matching ticks
+        - Engine.Tick()
+        - optionally publish `BenchmarkRunProgress`
+      6. Capture BenchmarkResult (metrics + TickSnapshot[])
+  +- Optional: run multiple routers in parallel with bounded degree
   +- Returns BenchmarkSession { Config, Results[] }
 ```
 

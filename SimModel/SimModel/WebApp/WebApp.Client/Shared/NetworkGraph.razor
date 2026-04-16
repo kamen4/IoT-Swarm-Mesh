@@ -1,5 +1,6 @@
 @using Engine.Core
 @using Engine.Devices
+@using Engine.Routers
 @using System.Globalization
 
 <div class="panel network-graph-panel">
@@ -23,7 +24,7 @@
             }
         }
 
-        @foreach (var edge in VisiblePairs())
+        @foreach (var edge in ConnectionPairs())
         {
             <line x1="@F(Sx(edge.A.Position.X))" y1="@F(Sy(edge.A.Position.Y))"
                   x2="@F(Sx(edge.B.Position.X))" y2="@F(Sy(edge.B.Position.Y))"
@@ -48,6 +49,7 @@
 @code {
     [Parameter, EditorRequired] public IReadOnlyList<Device> Devices           { get; set; } = [];
     [Parameter]                 public int                   VisibilityDistance { get; set; } = SimulationEngine.VISIBILITY_DISTANCE;
+    [Parameter]                 public INetworkTopology?     Topology          { get; set; }
 
     private bool _showRadii = true;
 
@@ -91,16 +93,32 @@
 
     private record EdgePair(Device A, Device B);
 
-    private IEnumerable<EdgePair> VisiblePairs()
+    private IEnumerable<EdgePair> ConnectionPairs()
     {
         var seen = new HashSet<(Guid, Guid)>();
-        foreach (var a in Devices)
-        foreach (var b in Devices)
+
+        if (Topology is null)
         {
-            if (a.Id == b.Id) continue;
-            if (System.Numerics.Vector2.Distance(a.Position, b.Position) > VisibilityDistance) continue;
-            var key = a.Id.CompareTo(b.Id) < 0 ? (a.Id, b.Id) : (b.Id, a.Id);
-            if (seen.Add(key)) yield return new EdgePair(a, b);
+            foreach (var a in Devices)
+            foreach (var b in Devices)
+            {
+                if (a.Id == b.Id) continue;
+                if (System.Numerics.Vector2.Distance(a.Position, b.Position) > VisibilityDistance) continue;
+                var key = a.Id.CompareTo(b.Id) < 0 ? (a.Id, b.Id) : (b.Id, a.Id);
+                if (seen.Add(key)) yield return new EdgePair(a, b);
+            }
+
+            yield break;
+        }
+
+        foreach (var a in Devices)
+        {
+            foreach (var b in Topology.GetConnectedDevices(a))
+            {
+                var key = a.Id.CompareTo(b.Id) < 0 ? (a.Id, b.Id) : (b.Id, a.Id);
+                if (seen.Add(key))
+                    yield return new EdgePair(a, b);
+            }
         }
     }
 

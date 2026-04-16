@@ -47,7 +47,7 @@ public class SimulationConfig
     /// Applied to <see cref="Engine.Core.SimulationEngine.Router"/> on
     /// <see cref="SimulationService.ApplyConfig"/>.
     /// </summary>
-    public IPacketRouter SelectedRouter { get; set; } = new SmartFloodingPacketRouter();
+    public IPacketRouter SelectedRouter { get; set; } = new SwarmProtocolPacketRouter();
 
     /// <summary>
     /// All available routing strategies shown in the settings dropdown.
@@ -55,7 +55,29 @@ public class SimulationConfig
     /// </summary>
     public static readonly IReadOnlyList<IPacketRouter> AvailableRouters =
     [
+        new SwarmProtocolPacketRouter(),
         new SmartFloodingPacketRouter(),
         new FloodingPacketRouter(),
     ];
+
+    /// <summary>
+    /// The network-topology formation strategy selected in the UI.
+    /// Applied to <see cref="Engine.Core.SimulationEngine.NetworkBuilder"/>.
+    /// </summary>
+    public INetworkBuilder SelectedNetworkBuilder { get; set; } = new MinimumSpanningTreeNetworkBuilder();
+
+    /// <summary>
+    /// All available topology builders shown in the settings dropdown.
+    /// </summary>
+    public static readonly IReadOnlyList<INetworkBuilder> AvailableNetworkBuilders =
+    [
+        new MinimumSpanningTreeNetworkBuilder(),
+        new FullMeshNetworkBuilder(),
+        new KNearestNetworkBuilder(3),
+    ];
+
+    /// <summary>
+    /// Tunable swarm-parameter vector used by protocol-aware routing/state.
+    /// </summary>
+    public SwarmProtocolVector SwarmVector { get; } = new();
 }

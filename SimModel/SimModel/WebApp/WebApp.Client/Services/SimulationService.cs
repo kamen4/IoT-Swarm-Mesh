@@ -71,7 +71,11 @@ public class SimulationService : IDisposable
     public SimulationService()
     {
         // Apply the default router from config before seeding devices.
+        Engine.DefaultPacketTtl = Config.DefaultTTL;
+        Engine.DefaultPacketTicksToTravel = Config.TicksToTravel;
         Engine.Router = Config.SelectedRouter;
+        Engine.NetworkBuilder = Config.SelectedNetworkBuilder;
+        Engine.SetSwarmVector(Config.SwarmVector);
         SeedDefaultDevices();
     }
 
@@ -127,7 +131,12 @@ public class SimulationService : IDisposable
     {
         Engine.VisibilityDistance = Config.VisibilityDistance;
         Engine.MaxActivePackets = Config.MaxActivePackets;
+        Engine.DefaultPacketTtl = Config.DefaultTTL;
+        Engine.DefaultPacketTicksToTravel = Config.TicksToTravel;
         Engine.Router = Config.SelectedRouter;
+        Engine.NetworkBuilder = Config.SelectedNetworkBuilder;
+        Engine.SetSwarmVector(Config.SwarmVector);
+        Engine.RebuildTopology();
 
         if (IsRunning)
         {
@@ -160,6 +169,8 @@ public class SimulationService : IDisposable
 
         if (device is EmitterDevice emitter)
             emitter.ControlFrequencyTicks = form.ControlFrequencyTicks;
+
+        Engine.RebuildTopology();
     }
 
     /// <summary>Removes the device with the given <paramref name="id"/> from the engine.</summary>
@@ -222,6 +233,16 @@ public class SimulationService : IDisposable
     /// to the built-in default rather than re-generating the random layout.
     /// </summary>
     public void GenerateRandom(int count)
+        => GenerateRandom(new RandomGenerationOptions { DeviceCount = count });
+
+    /// <summary>
+    /// Places a random network based on <paramref name="options"/>.
+    /// When <see cref="RandomGenerationOptions.EnsureConnected"/> is enabled,
+    /// each generated device is guaranteed to be within visibility range of an
+    /// existing node, producing a connected graph.
+    /// </summary>
+    /// <param name="options">Random-generation options.</param>
+    public void GenerateRandom(RandomGenerationOptions options)
     {
         _activePreset = null;   // random layout has no preset to restore
         Stop();
@@ -230,24 +251,104 @@ public class SimulationService : IDisposable
         PacketLimitError = null;
 
         var rng = Random.Shared;
-        Engine.RegisterDevice(new HubDevice { Name = "Hub", Position = new Vector2(0, 0) });
+        var hub = new HubDevice { Name = "Hub", Position = new Vector2(0, 0) };
+        Engine.RegisterDevice(hub);
 
-        for (int i = 0; i < count; i++)
+        var placedPositions = new List<Vector2> { hub.Position };
+        var requestedCount = Math.Clamp(options.DeviceCount, 1, 500);
+
+        var generatorMin = Math.Clamp(Math.Min(options.GeneratorMinTicks, options.GeneratorMaxTicks), 1, 10_000);
+        var generatorMax = Math.Clamp(Math.Max(options.GeneratorMinTicks, options.GeneratorMaxTicks), generatorMin, 10_000);
+
+        var emitterMin = Math.Clamp(Math.Min(options.EmitterMinTicks, options.EmitterMaxTicks), 1, 10_000);
+        var emitterMax = Math.Clamp(Math.Max(options.EmitterMinTicks, options.EmitterMaxTicks), emitterMin, 10_000);
+
+        var emitterShare = Math.Clamp(options.EmitterSharePercent, 0, 100) / 100.0;
+
+        var sensorIndex = 1;
+        var lampIndex = 1;
+
+        for (var i = 0; i < requestedCount; i++)
         {
-            double angle = rng.NextDouble() * Math.PI * 2;
-            double radius = rng.NextDouble() * Engine.VisibilityDistance * 2.5;
-            var pos = new Vector2(
-                (float)(Math.Cos(angle) * radius),
-                (float)(Math.Sin(angle) * radius));
+            var position = options.EnsureConnected
+                ? GenerateConnectedPosition(placedPositions, Engine.VisibilityDistance, options, rng)
+                : GenerateUnconstrainedPosition(Engine.VisibilityDistance, options, rng);
 
-            Device device = i % 2 == 0
-                ? new GeneratorDevice(rng.Next(20, 80)) { Name = $"Sensor-{i + 1}", Position = pos }
-                : new EmitterDevice { Name = $"Lamp-{i + 1}", Position = pos };
+            placedPositions.Add(position);
+
+            var useEmitter = rng.NextDouble() < emitterShare;
+            Device device = useEmitter
+                ? new EmitterDevice(rng.Next(emitterMin, emitterMax + 1))
+                {
+                    Name = $"Lamp-{lampIndex++}",
+                    Position = position,
+                }
+                : new GeneratorDevice(rng.Next(generatorMin, generatorMax + 1))
+                {
+                    Name = $"Sensor-{sensorIndex++}",
+                    Position = position,
+                };
 
             Engine.RegisterDevice(device);
         }
 
         StateChanged?.Invoke();
+    }
+
+    private static Vector2 GenerateConnectedPosition(
+        IReadOnlyList<Vector2> anchors,
+        int visibilityDistance,
+        RandomGenerationOptions options,
+        Random rng)
+    {
+        var minFactor = Math.Clamp(options.ConnectedMinRadiusFactor, 0.05, 0.95);
+        var maxFactor = Math.Clamp(options.ConnectedMaxRadiusFactor, minFactor, 0.98);
+
+        var minSpacing = visibilityDistance * 0.12f;
+        var fallback = Vector2.Zero;
+
+        for (var attempt = 0; attempt < 48; attempt++)
+        {
+            var anchor = anchors[rng.Next(anchors.Count)];
+            var angle = rng.NextDouble() * Math.PI * 2.0;
+            var radiusFactor = minFactor + rng.NextDouble() * (maxFactor - minFactor);
+            var radius = (float)(visibilityDistance * radiusFactor);
+
+            var candidate = anchor + new Vector2(
+                (float)(Math.Cos(angle) * radius),
+                (float)(Math.Sin(angle) * radius));
+
+            if (attempt == 0)
+                fallback = candidate;
+
+            if (!IsTooClose(candidate, anchors, minSpacing))
+                return candidate;
+        }
+
+        return fallback;
+    }
+
+    private static Vector2 GenerateUnconstrainedPosition(
+        int visibilityDistance,
+        RandomGenerationOptions options,
+        Random rng)
+    {
+        var radiusFactor = Math.Max(1.0, options.FreeRadiusFactor);
+        var angle = rng.NextDouble() * Math.PI * 2.0;
+        var radius = rng.NextDouble() * visibilityDistance * radiusFactor;
+
+        return new Vector2(
+            (float)(Math.Cos(angle) * radius),
+            (float)(Math.Sin(angle) * radius));
+    }
+
+    private static bool IsTooClose(Vector2 candidate, IReadOnlyList<Vector2> anchors, float minSpacing)
+    {
+        foreach (var point in anchors)
+            if (Vector2.Distance(candidate, point) < minSpacing)
+                return true;
+
+        return false;
     }
 
     /// <summary>Stops the tick loop and releases the cancellation-token source.</summary>

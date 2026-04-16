@@ -3,7 +3,7 @@
 @using Engine.Routers
 
 <div class="modal-backdrop" @onclick="OnBackdropClick">
-    <div class="modal-box" @onclick:stopPropagation>
+    <div class="modal-box settings-modal" @onclick:stopPropagation>
         <h3>Simulation settings</h3>
 
         <div class="settings-stat">
@@ -20,6 +20,98 @@
                 }
             </select>
         </label>
+
+        <label>
+            Topology builder
+            <select class="form-input" value="@_builderIndex" @onchange="OnBuilderChanged">
+                @for (int i = 0; i < SimulationConfig.AvailableNetworkBuilders.Count; i++)
+                {
+                    <option value="@i">@SimulationConfig.AvailableNetworkBuilders[i].Name</option>
+                }
+            </select>
+        </label>
+
+        <h3>Swarm parameter vector</h3>
+
+        <div class="settings-vector-grid">
+            <label>
+                qForward
+                <input class="form-input" type="number" min="20" max="1800"
+                       @bind="Config.SwarmVector.QForward" />
+            </label>
+
+            <label>
+                Root source charge
+                <input class="form-input" type="number" min="250" max="3000"
+                       @bind="Config.SwarmVector.RootSourceCharge" />
+            </label>
+
+            <label>
+                Penalty lambda
+                <input class="form-input" type="number" min="0" max="250" step="1"
+                       @bind="Config.SwarmVector.PenaltyLambda" />
+            </label>
+
+            <label>
+                Switch hysteresis
+                <input class="form-input" type="number" min="0" max="260"
+                       @bind="Config.SwarmVector.SwitchHysteresis" />
+            </label>
+
+            <label>
+                Switch hysteresis ratio
+                <input class="form-input" type="number" min="0" max="0.4" step="0.01"
+                       @bind="Config.SwarmVector.SwitchHysteresisRatio" />
+            </label>
+
+            <label>
+                Parent dead ticks
+                <input class="form-input" type="number" min="1" max="10000"
+                       @bind="Config.SwarmVector.ParentDeadTicks" />
+            </label>
+
+            <label>
+                Charge drop per hop
+                <input class="form-input" type="number" min="5" max="420"
+                       @bind="Config.SwarmVector.ChargeDropPerHop" />
+            </label>
+
+            <label>
+                Charge spread factor
+                <input class="form-input" type="number" min="0.01" max="1" step="0.01"
+                       @bind="Config.SwarmVector.ChargeSpreadFactor" />
+            </label>
+
+            <label>
+                Decay interval ticks
+                <input class="form-input" type="number" min="0" max="2000"
+                       @bind="Config.SwarmVector.DecayIntervalSteps" />
+            </label>
+
+            <label>
+                Decay percent
+                <input class="form-input" type="number" min="0" max="0.8" step="0.01"
+                       @bind="Config.SwarmVector.DecayPercent" />
+            </label>
+
+            <label>
+                Link memory
+                <input class="form-input" type="number" min="0.6" max="0.999" step="0.001"
+                       @bind="Config.SwarmVector.LinkMemory" />
+            </label>
+
+            <label>
+                Link learning rate
+                <input class="form-input" type="number" min="0.01" max="2" step="0.01"
+                       @bind="Config.SwarmVector.LinkLearningRate" />
+            </label>
+
+            <label>
+                Link bonus max
+                <input class="form-input" type="number" min="0" max="240"
+                       @bind="Config.SwarmVector.LinkBonusMax" />
+            </label>
+        </div>
 
         <label>
             Visibility distance (units)
@@ -61,6 +153,7 @@
 
     // Index into SimulationConfig.AvailableRouters, kept in sync with Config.SelectedRouter.
     private int _routerIndex;
+    private int _builderIndex;
 
     private int _autoLimit => DeviceCount * SimulationEngine.AUTO_PACKET_LIMIT_PER_DEVICE;
 
@@ -70,6 +163,10 @@
         _routerIndex = SimulationConfig.AvailableRouters
             .Select((r, i) => (r, i))
             .FirstOrDefault(x => x.r.Name == Config.SelectedRouter.Name).i;
+
+        _builderIndex = SimulationConfig.AvailableNetworkBuilders
+            .Select((b, i) => (b, i))
+            .FirstOrDefault(x => x.b.Name == Config.SelectedNetworkBuilder.Name).i;
     }
 
     private void OnRouterChanged(ChangeEventArgs e)
@@ -79,6 +176,16 @@
         {
             _routerIndex          = idx;
             Config.SelectedRouter = SimulationConfig.AvailableRouters[idx];
+        }
+    }
+
+    private void OnBuilderChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var idx)
+            && idx >= 0 && idx < SimulationConfig.AvailableNetworkBuilders.Count)
+        {
+            _builderIndex = idx;
+            Config.SelectedNetworkBuilder = SimulationConfig.AvailableNetworkBuilders[idx];
         }
     }
 

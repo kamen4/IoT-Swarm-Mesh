@@ -3,12 +3,12 @@
 @using System.Numerics
 
 @* -----------------------------------------------------------------------
-   BenchmarkConfigModal — create or edit a BenchmarkConfig.
+   BenchmarkConfigModal ï¿½ create or edit a BenchmarkConfig.
 
    Layout:
-     • Header with name field
-     • Tab bar: Devices | Events | Settings | Routers
-     • Footer: Cancel / Run
+     ï¿½ Header with name field
+     ï¿½ Tab bar: Devices | Events | Settings | Routers
+     ï¿½ Footer: Cancel / Run
    ----------------------------------------------------------------------- *@
 
 <div class="modal-backdrop" @onclick="Cancel">
@@ -18,7 +18,10 @@
     <div class="detail-header">
         <input class="bm-name-input" placeholder="Benchmark name"
                @bind="Config.Name" @bind:event="oninput" />
-        <button class="btn btn-ghost btn-sm" @onclick="Cancel">?</button>
+        <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" @onclick="RandomizeAll">Random all</button>
+            <button class="btn btn-ghost btn-sm" @onclick="Cancel">Close</button>
+        </div>
     </div>
 
     @* ?? Tab bar ??????????????????????????????????????????????????????? *@
@@ -79,7 +82,7 @@
                                            title="Control freq (0 = manual only)"
                                            @bind="d.ControlFrequencyTicks" />
                                 }
-                                else { <span class="empty-hint">—</span> }
+                                else { <span class="empty-hint">ï¿½</span> }
                             </td>
                             <td>
                                 <button class="btn btn-danger btn-sm"
@@ -249,6 +252,7 @@
 
     private static readonly string[] _tabs = ["Devices", "Events", "Settings", "Routers"];
     private string _activeTab = "Devices";
+    private int _randomJoinIndex = 1;
 
     private bool CanRun => Config.RouterNames.Count > 0 && Config.DurationTicks > 0;
 
@@ -297,6 +301,25 @@
         }
     }
 
+    private void RandomizeAll()
+    {
+        var rng = Random.Shared;
+
+        Config.Name = $"Random benchmark {DateTime.Now:HHmmss}";
+        Config.Description = "Auto-generated random scenario";
+        Config.VisibilityDistance = rng.Next(160, 321);
+        Config.DefaultTtl = rng.Next(6, 19);
+        Config.TicksToTravel = rng.Next(1, 8);
+        Config.MaxActivePackets = 0;
+        Config.DurationTicks = rng.Next(300, 1201);
+
+        BuildRandomDevices(rng, rng.Next(8, 31));
+        BuildRandomEvents(rng);
+        BuildRandomRouterSelection(rng);
+
+        _activeTab = "Devices";
+    }
+
     // ?? Event management ??????????????????????????????????????????????
 
     private enum EventKind { Toggle, Remove, Add }
@@ -321,7 +344,61 @@
         Config.Events.Add(new BenchmarkEventEntry(Config.DurationTicks / 2, evt));
     }
 
-    /// <summary>Replaces an event entry — necessary because record is immutable.</summary>
+    private void BuildRandomEvents(Random rng)
+    {
+        Config.Events.Clear();
+        _randomJoinIndex = 1;
+
+        var knownKinds = Config.Devices
+            .ToDictionary(x => x.Name, x => x.Kind, StringComparer.Ordinal);
+
+        var anchors = Config.Devices
+            .Select(x => new Vector2(x.X, x.Y))
+            .ToList();
+
+        var eventCount = Math.Clamp(rng.Next(Config.Devices.Count / 2, Config.Devices.Count * 2), 4, 48);
+        var startTick = 5;
+        var endTick = (int)Math.Max(startTick + 1, Math.Min(Config.DurationTicks - 1, 50_000));
+
+        for (var i = 0; i < eventCount; i++)
+        {
+            var tick = rng.Next(startTick, endTick);
+            var roll = rng.NextDouble();
+
+            BenchmarkEvent evt;
+            var emitterNames = knownKinds
+                .Where(x => x.Value == BenchmarkDeviceKind.Emitter)
+                .Select(x => x.Key)
+                .ToArray();
+
+            var removableNames = knownKinds
+                .Where(x => x.Value != BenchmarkDeviceKind.Hub)
+                .Select(x => x.Key)
+                .ToArray();
+
+            if (roll < 0.45 && emitterNames.Length > 0)
+            {
+                evt = new ToggleBenchmarkEvent(emitterNames[rng.Next(emitterNames.Length)]);
+            }
+            else if (roll < 0.70 && removableNames.Length > 0)
+            {
+                var name = removableNames[rng.Next(removableNames.Length)];
+                knownKinds.Remove(name);
+                evt = new RemoveDeviceBenchmarkEvent(name);
+            }
+            else
+            {
+                var dto = CreateRandomJoinDevice(rng, anchors, Config.VisibilityDistance);
+                knownKinds[dto.Name] = dto.Kind;
+                anchors.Add(new Vector2(dto.X, dto.Y));
+                evt = new AddDeviceBenchmarkEvent(dto);
+            }
+
+            Config.Events.Add(new BenchmarkEventEntry(tick, evt));
+        }
+    }
+
+    /// <summary>Replaces an event entry ï¿½ necessary because record is immutable.</summary>
     private void ReplaceEntry(BenchmarkEventEntry old, long newTick, BenchmarkEvent newEvt)
     {
         var idx = Config.Events.IndexOf(old);
@@ -347,7 +424,7 @@
         _                          => ""
     };
 
-    /// <summary>Renders the parameter cell inline — device-name inputs for toggle/remove.</summary>
+    /// <summary>Renders the parameter cell inline ï¿½ device-name inputs for toggle/remove.</summary>
     private RenderFragment RenderEventParams(BenchmarkEventEntry entry) => entry.Event switch
     {
         ToggleBenchmarkEvent t => @<span>
@@ -395,7 +472,7 @@
                              Y = float.Parse(e.Value!.ToString()!) }))" />
         </span>,
 
-        _ => @<span>—</span>
+        _ => @<span>ï¿½</span>
     };
 
     // ?? Router selection ??????????????????????????????????????????????
@@ -406,6 +483,119 @@
             Config.RouterNames.Add(name);
         else if (!add)
             Config.RouterNames.Remove(name);
+    }
+
+    private void BuildRandomRouterSelection(Random rng)
+    {
+        Config.RouterNames.Clear();
+
+        var allRouters = BenchmarkService.AvailableRouters.Keys
+            .OrderBy(_ => rng.Next())
+            .ToList();
+
+        if (allRouters.Count == 0)
+            return;
+
+        var take = rng.Next(1, allRouters.Count + 1);
+        foreach (var router in allRouters.Take(take))
+            Config.RouterNames.Add(router);
+    }
+
+    private void BuildRandomDevices(Random rng, int nonHubCount)
+    {
+        Config.Devices.Clear();
+        Config.Devices.Add(new DeviceBenchmarkDto
+        {
+            Name = "Hub",
+            Kind = BenchmarkDeviceKind.Hub,
+            X = 0,
+            Y = 0,
+        });
+
+        var anchors = new List<Vector2> { Vector2.Zero };
+        var sensorIndex = 1;
+        var lampIndex = 1;
+
+        for (var i = 0; i < nonHubCount; i++)
+        {
+            var pos = GenerateConnectedPoint(anchors, Config.VisibilityDistance, rng);
+            anchors.Add(pos);
+
+            if (rng.NextDouble() < 0.40)
+            {
+                Config.Devices.Add(new DeviceBenchmarkDto
+                {
+                    Name = $"Lamp-{lampIndex++}",
+                    Kind = BenchmarkDeviceKind.Emitter,
+                    X = pos.X,
+                    Y = pos.Y,
+                    ControlFrequencyTicks = rng.Next(12, 91),
+                });
+            }
+            else
+            {
+                Config.Devices.Add(new DeviceBenchmarkDto
+                {
+                    Name = $"Sensor-{sensorIndex++}",
+                    Kind = BenchmarkDeviceKind.Generator,
+                    X = pos.X,
+                    Y = pos.Y,
+                    GenFrequencyTicks = rng.Next(20, 81),
+                });
+            }
+        }
+    }
+
+    private DeviceBenchmarkDto CreateRandomJoinDevice(Random rng, IReadOnlyList<Vector2> anchors, int visibilityDistance)
+    {
+        var pos = GenerateConnectedPoint(anchors, visibilityDistance, rng);
+        var isEmitter = rng.NextDouble() < 0.40;
+
+        return new DeviceBenchmarkDto
+        {
+            Name = $"Join-{_randomJoinIndex++}",
+            Kind = isEmitter ? BenchmarkDeviceKind.Emitter : BenchmarkDeviceKind.Generator,
+            X = pos.X,
+            Y = pos.Y,
+            GenFrequencyTicks = rng.Next(20, 81),
+            ControlFrequencyTicks = rng.Next(12, 91),
+        };
+    }
+
+    private static Vector2 GenerateConnectedPoint(IReadOnlyList<Vector2> anchors, int visibilityDistance, Random rng)
+    {
+        const int maxAttempts = 48;
+        var minSpacing = visibilityDistance * 0.12f;
+        var fallback = Vector2.Zero;
+
+        for (var attempt = 0; attempt < maxAttempts; attempt++)
+        {
+            var anchor = anchors[rng.Next(anchors.Count)];
+            var angle = rng.NextDouble() * Math.PI * 2.0;
+            var radiusFactor = 0.25 + rng.NextDouble() * 0.57;
+            var radius = (float)(visibilityDistance * radiusFactor);
+            var candidate = anchor + new Vector2(
+                (float)(Math.Cos(angle) * radius),
+                (float)(Math.Sin(angle) * radius));
+
+            if (attempt == 0)
+                fallback = candidate;
+
+            var tooClose = false;
+            foreach (var point in anchors)
+            {
+                if (Vector2.Distance(point, candidate) < minSpacing)
+                {
+                    tooClose = true;
+                    break;
+                }
+            }
+
+            if (!tooClose)
+                return candidate;
+        }
+
+        return fallback;
     }
 
     // ?? Footer actions ?????????????????????????????????????????????????

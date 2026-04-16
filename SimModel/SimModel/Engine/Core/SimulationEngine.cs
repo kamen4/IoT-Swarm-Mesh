@@ -2,11 +2,12 @@
 using Engine.Packets;
 using Engine.Routers;
 using System;
+using System.Threading;
 
 namespace Engine.Core;
 
 /// <summary>
-/// The central singleton that drives the entire simulation.
+/// The central simulation engine type that drives the entire simulation.
 /// It maintains the device registry, owns the tick-based time model, and
 /// manages the priority queue of in-flight packets.
 /// <para>
@@ -37,8 +38,52 @@ public class SimulationEngine
     /// </summary>
     public int VisibilityDistance { get; set; } = VISIBILITY_DISTANCE;
 
-    /// <summary>Gets the singleton instance of <see cref="SimulationEngine"/>.</summary>
-    public static SimulationEngine Instance { get; } = new();
+    /// <summary>
+    /// Default TTL applied to packets that keep
+    /// <see cref="Packet.DEFAULT_TTL"/>.
+    /// </summary>
+    public int DefaultPacketTtl { get; set; } = Packet.DEFAULT_TTL;
+
+    /// <summary>
+    /// Default per-hop travel time applied to packets that keep
+    /// <see cref="Packet.DEFAULT_TICKS_TO_TRAVEL"/>.
+    /// </summary>
+    public long DefaultPacketTicksToTravel { get; set; } = Packet.DEFAULT_TICKS_TO_TRAVEL;
+
+    private static readonly SimulationEngine GlobalInstance = new();
+    private static readonly AsyncLocal<SimulationEngine?> ScopedInstance = new();
+
+    /// <summary>
+    /// Gets the current simulation engine instance.
+    /// <para>
+    /// Default behavior returns the process-global engine.
+    /// Benchmark code may temporarily override this per async-flow via
+    /// <see cref="PushScopedInstance"/> to run isolated simulations in parallel.
+    /// </para>
+    /// </summary>
+    public static SimulationEngine Instance => ScopedInstance.Value ?? GlobalInstance;
+
+    /// <summary>
+    /// Creates a detached simulation engine instance suitable for isolated
+    /// benchmark execution.
+    /// </summary>
+    /// <returns>A new engine instance with default settings.</returns>
+    public static SimulationEngine CreateIsolated() => new();
+
+    /// <summary>
+    /// Overrides <see cref="Instance"/> for the current async flow until the
+    /// returned scope is disposed.
+    /// </summary>
+    /// <param name="engine">Engine instance to expose as <see cref="Instance"/>.</param>
+    /// <returns>A scope token that restores the previous engine on dispose.</returns>
+    public static IDisposable PushScopedInstance(SimulationEngine engine)
+    {
+        ArgumentNullException.ThrowIfNull(engine);
+
+        var previous = ScopedInstance.Value;
+        ScopedInstance.Value = engine;
+        return new ScopedEngineToken(previous);
+    }
 
     private DateTime _lastTickTime = DateTime.Now;
 
@@ -77,11 +122,11 @@ public class SimulationEngine
 
     /// <summary>
     /// Gets or sets the active packet-routing strategy.
-    /// Defaults to <see cref="FloodingPacketRouter"/>.
+    /// Defaults to <see cref="SwarmProtocolPacketRouter"/>.
     /// Can be swapped at runtime (e.g. from the UI) to compare different
     /// routing protocols on the same network without restarting the simulation.
     /// </summary>
-    public IPacketRouter Router { get; set; } = new FloodingPacketRouter();
+    public IPacketRouter Router { get; set; } = new SwarmProtocolPacketRouter();
 
     /// <summary>
     /// Gets or sets the active network-formation strategy.
@@ -93,6 +138,12 @@ public class SimulationEngine
     public INetworkBuilder NetworkBuilder { get; set; } = new FullMeshNetworkBuilder();
 
     /// <summary>
+    /// Gets the active swarm-parameter vector used by protocol-aware devices
+    /// and routers.
+    /// </summary>
+    public SwarmProtocolVector SwarmVector => _swarmVector;
+
+    /// <summary>
     /// Gets the read-only view of the current network topology (visibility and
     /// established connections).
     /// Always up-to-date: visibility is computed on-the-fly, connections are
@@ -101,6 +152,27 @@ public class SimulationEngine
     public INetworkTopology Topology => _topology;
 
     private readonly NetworkTopology _topology;
+    private SwarmProtocolVector _swarmVector = new();
+
+    private sealed class ScopedEngineToken : IDisposable
+    {
+        private readonly SimulationEngine? _previous;
+        private bool _disposed;
+
+        public ScopedEngineToken(SimulationEngine? previous)
+        {
+            _previous = previous;
+        }
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            ScopedInstance.Value = _previous;
+            _disposed = true;
+        }
+    }
 
     // -------------------------------------------------------------------------
     // Events
@@ -137,6 +209,7 @@ public class SimulationEngine
     private SimulationEngine()
     {
         _topology = new NetworkTopology(this);
+        _swarmVector.NormalizeInPlace();
     }
 
     // -------------------------------------------------------------------------
@@ -265,6 +338,15 @@ public class SimulationEngine
         if (currentCount >= limit)
             throw new PacketLimitExceededException(limit, currentCount, TickCount);
 
+        if (packet.TTL == Packet.DEFAULT_TTL)
+            packet.TTL = DefaultPacketTtl;
+
+        if (packet.TicksToTravel == Packet.DEFAULT_TICKS_TO_TRAVEL)
+            packet.TicksToTravel = DefaultPacketTicksToTravel;
+
+        packet.TTL = Math.Max(1, packet.TTL);
+        packet.TicksToTravel = Math.Max(1L, packet.TicksToTravel);
+
         // Record the starting TTL once  -  clones inherit it; we only stamp when
         // it has not been set yet (InitialTtl == 0 means "not yet recorded").
         if (packet.InitialTtl == 0)
@@ -288,12 +370,27 @@ public class SimulationEngine
     /// </summary>
     public void RegisterDevice(Device device)
     {
+        device.ApplySwarmVector(_swarmVector);
+
         if (device is HubDevice)
             Hub = device;
 
         _devices.Add(device);
         RebuildTopology();
         DeviceRegistered?.Invoke(this, new DeviceRegisteredEventArgs(device));
+    }
+
+    /// <summary>
+    /// Applies a new swarm-parameter vector and immediately updates all
+    /// registered devices.
+    /// </summary>
+    /// <param name="vector">New vector values.</param>
+    public void SetSwarmVector(SwarmProtocolVector vector)
+    {
+        _swarmVector = vector.Normalized();
+
+        foreach (var device in _devices)
+            device.ApplySwarmVector(_swarmVector);
     }
 
     /// <summary>

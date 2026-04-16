@@ -1,5 +1,6 @@
 ﻿using Engine.Benchmark;
 using Engine.Routers;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -8,7 +9,7 @@ namespace WebApp.Client.Services;
 /// <summary>
 /// Blazor-side service that wraps <see cref="BenchmarkRunner"/> and adds:
 /// <list type="bullet">
-///   <item>Async execution via <c>Task.Run</c> so the WASM UI stays responsive.</item>
+///   <item>Async execution with periodic yields so WASM UI stays responsive.</item>
 ///   <item>Progress reporting as a 0-1 fraction for a loading-wheel overlay.</item>
 ///   <item>JSON serialisation / deserialisation of <see cref="BenchmarkSession"/>
 ///         objects so users can save and reload benchmark results.</item>
@@ -41,6 +42,46 @@ public sealed class BenchmarkService
     /// Updated after each router completes; 0 before start, 1 when done.
     /// </summary>
     public double Progress { get; private set; }
+
+    /// <summary>
+    /// Number of fully completed router runs.
+    /// </summary>
+    public int CompletedRouters { get; private set; }
+
+    /// <summary>
+    /// Total number of routers scheduled for this run.
+    /// </summary>
+    public int TotalRouters { get; private set; }
+
+    /// <summary>
+    /// One-based index of the router currently being executed.
+    /// </summary>
+    public int CurrentRouterIndex { get; private set; }
+
+    /// <summary>
+    /// Name of the router currently being executed.
+    /// </summary>
+    public string CurrentRouterName { get; private set; } = "";
+
+    /// <summary>
+    /// Current tick in the active router run.
+    /// </summary>
+    public long CurrentRouterTick { get; private set; }
+
+    /// <summary>
+    /// Target duration ticks for the active router run.
+    /// </summary>
+    public long CurrentRouterDuration { get; private set; }
+
+    /// <summary>
+    /// Active-router progress in [0, 1].
+    /// </summary>
+    public double CurrentRouterProgress { get; private set; }
+
+    /// <summary>
+    /// Elapsed wall-clock time of the current benchmark run.
+    /// </summary>
+    public TimeSpan Elapsed { get; private set; }
 
     /// <summary>The session produced by the most recent run, or <c>null</c> if none yet.</summary>
     public BenchmarkSession? LastSession { get; private set; }
@@ -78,17 +119,17 @@ public sealed class BenchmarkService
     // Run
     // ------------------------------------------------------------------
 
+    private readonly Stopwatch _stopwatch = new();
+
     /// <summary>
     /// Starts the benchmark for <paramref name="config"/> asynchronously.
     /// Returns immediately; the caller should watch <see cref="StateChanged"/>
     /// to know when the run finishes.
     /// </summary>
     /// <remarks>
-    /// The actual tick loop runs inside <c>Task.Run</c> on a thread-pool thread
-    /// so the Blazor render loop is never blocked.  Progress callbacks marshal
-    /// back to <see cref="StateChanged"/> without switching to the UI thread
-    /// (since this is WASM, all code runs on the same thread anyway, but the
-    /// pattern is correct for future server-side use).
+    /// Uses <see cref="BenchmarkRunner.RunAsync(BenchmarkConfig, IReadOnlyDictionary{string, IPacketRouter}, Action{BenchmarkRunProgress}?, CancellationToken)"/>
+    /// which periodically yields during long tick loops, allowing the Blazor
+    /// renderer to paint live progress updates on single-threaded WASM runtime.
     /// </remarks>
     public async Task RunAsync(BenchmarkConfig config)
     {
@@ -96,6 +137,14 @@ public sealed class BenchmarkService
 
         IsRunning = true;
         Progress = 0;
+        CompletedRouters = 0;
+        TotalRouters = 0;
+        CurrentRouterIndex = 0;
+        CurrentRouterName = "";
+        CurrentRouterTick = 0;
+        CurrentRouterDuration = 0;
+        CurrentRouterProgress = 0;
+        Elapsed = TimeSpan.Zero;
         LastSession = null;
         Notify();
 
@@ -103,26 +152,38 @@ public sealed class BenchmarkService
             .Count(n => AvailableRouters.ContainsKey(n));
         if (total == 0) total = 1; // avoid div-by-zero
 
+        TotalRouters = total;
+        _stopwatch.Restart();
+
         try
         {
-            // Run headless on the thread pool so WASM can still process JS
-            // events (e.g. the browser doesn't freeze).
-            var session = await Task.Run(() =>
-                BenchmarkRunner.Run(
-                    config,
-                    AvailableRouters,
-                    (done, _) =>
-                    {
-                        Progress = (double)done / total;
-                        Notify();
-                    }));
+            var session = await BenchmarkRunner.RunAsync(
+                config,
+                AvailableRouters,
+                progress =>
+                {
+                    CompletedRouters = progress.CompletedRouters;
+                    TotalRouters = progress.TotalRouters;
+                    CurrentRouterIndex = progress.CurrentRouterIndex;
+                    CurrentRouterName = progress.CurrentRouterName;
+                    CurrentRouterTick = progress.CurrentTick;
+                    CurrentRouterDuration = progress.DurationTicks;
+                    CurrentRouterProgress = progress.RouterProgress;
+                    Progress = progress.OverallProgress;
+                    Elapsed = _stopwatch.Elapsed;
+                    Notify();
+                });
 
             LastSession = session;
         }
         finally
         {
+            _stopwatch.Stop();
             IsRunning = false;
+            CompletedRouters = TotalRouters;
+            CurrentRouterProgress = 1;
             Progress = 1;
+            Elapsed = _stopwatch.Elapsed;
             Notify();
         }
     }

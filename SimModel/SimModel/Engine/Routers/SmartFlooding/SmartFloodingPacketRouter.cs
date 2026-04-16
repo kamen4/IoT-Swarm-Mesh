@@ -9,10 +9,18 @@ namespace Engine.Routers;
 /// three optimisations over the naive <see cref="FloodingPacketRouter"/>:
 /// <list type="number">
 ///   <item>
+///     <term>Bounded candidate set</term>
+///     <description>
+///       Routing decisions are made only on the nearest
+///       <see cref="RoutingNeighborPolicy.DefaultMaxVisibleNeighbors"/>
+///       visible neighbors for deterministic fairness across protocols.
+///     </description>
+///   </item>
+///   <item>
 ///     <term>Direct delivery</term>
 ///     <description>
 ///       If the intended destination (<see cref="Packet.To"/>) is directly
-///       visible from <paramref name="sender"/>, the packet is sent
+///       visible from <c>sender</c>, the packet is sent
 ///       <em>only</em> to that device  -  no unnecessary flood copies are made.
 ///     </description>
 ///   </item>
@@ -47,7 +55,7 @@ public class SmartFloodingPacketRouter : IPacketRouter
     /// <inheritdoc/>
     public void Route(Packet packet, Device sender, INetworkTopology topology)
     {
-        var visibleDevices = topology.GetVisibleDevices(sender);
+        var visibleDevices = RoutingNeighborPolicy.GetNearestVisibleNeighbors(sender, topology);
 
         // Rule 1  -  direct delivery: if the destination is a direct neighbour,
         // send only to it and skip the full flood entirely.
@@ -57,6 +65,12 @@ public class SmartFloodingPacketRouter : IPacketRouter
             {
                 var direct = packet.Clone();
                 direct.NextHop = d;
+                direct.PreviousHop = sender;
+                direct.PreviousHopMac = PacketAddress.Clone(sender.MacAddress);
+                direct.AdvertisedCharge = packet.Direction == PacketDirection.Up
+                    ? sender.QUpSelf
+                    : sender.QTotalSelf;
+                direct.DecayEpochHint = sender.LastDecayEpoch;
                 SimulationEngine.Instance.RegisterPacket(direct);
                 return;
             }
@@ -78,6 +92,12 @@ public class SmartFloodingPacketRouter : IPacketRouter
 
             var p = packet.Clone();
             p.NextHop = d;
+            p.PreviousHop = sender;
+            p.PreviousHopMac = PacketAddress.Clone(sender.MacAddress);
+            p.AdvertisedCharge = packet.Direction == PacketDirection.Up
+                ? sender.QUpSelf
+                : sender.QTotalSelf;
+            p.DecayEpochHint = sender.LastDecayEpoch;
             SimulationEngine.Instance.RegisterPacket(p);
         }
     }

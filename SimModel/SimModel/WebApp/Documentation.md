@@ -30,6 +30,7 @@ Browser (WASM)
 |         +-- PacketTable.razor
 |         +-- StatisticsPanel.razor / DetailedStatsModal.razor
 |         +-- SimulationSettings.razor
+|         +-- RandomGenerationModal.razor
 |         +-- BenchmarkConfigModal.razor
 |         +-- BenchmarkResultModal.razor
 |         +-- BenchmarkLibraryModal.razor
@@ -53,16 +54,16 @@ high-level operations consumed by `Home.razor`:
 | `UpdateDevice(id, form)` | Mutate an existing device's name, position, and frequency                             |
 | `RemoveDevice(id)`       | Delegate to `SimulationEngine.RemoveDevice`                                           |
 | `LoadPreset(preset)`     | Reset engine and apply a `SimulationPreset` layout; remembered for `Reset()`          |
-| `GenerateRandom(count)`  | Reset engine and scatter `count` random devices around the hub                        |
+| `GenerateRandom(...)`    | Reset engine and generate a random layout (including connected-topology mode) with configurable device and frequency ranges |
 | `Reset()`                | Restore the last-loaded preset, or the built-in default layout                        |
 | `PacketLimitError`       | Non-null when the tick loop stopped due to `PacketLimitExceededException`             |
 | `ActivePresetName`       | Name shown on the Reset button tooltip                                                |
 | `StateChanged`           | Event raised after every tick or state change  -  components subscribe for re-renders   |
 
 **Default router:** `SimulationConfig.SelectedRouter` defaults to
-`SmartFloodingPacketRouter`, which `SimulationService` pushes to `SimulationEngine.Router`
-in its constructor. The engine's own built-in default is `FloodingPacketRouter`; the WebApp
-always overrides it.
+`SwarmProtocolPacketRouter`, which `SimulationService` pushes to `SimulationEngine.Router`
+in its constructor. Users can switch to `SmartFloodingPacketRouter` or
+`FloodingPacketRouter` from settings.
 
 ---
 
@@ -77,8 +78,8 @@ Flat settings model bound to `SimulationSettings.razor`.
 | `TicksToTravel`      | `3`                         | applied when creating packets                  |
 | `VisibilityDistance` | `200`                       | `SimulationEngine.VisibilityDistance`          |
 | `MaxActivePackets`   | `0`                         | `SimulationEngine.MaxActivePackets` (0 = auto) |
-| `SelectedRouter`     | `SmartFloodingPacketRouter` | `SimulationEngine.Router`                      |
-| `AvailableRouters`   | `[Smart, Flooding]`         | bound to the router dropdown                   |
+| `SelectedRouter`     | `SwarmProtocolPacketRouter` | `SimulationEngine.Router`                      |
+| `AvailableRouters`   | `[SwarmProtocol, Smart, Flooding]` | bound to the router dropdown           |
 
 ---
 
@@ -89,7 +90,10 @@ Runs headless multi-router benchmarks asynchronously without blocking the WASM U
 | Member                                                  | Purpose                                                                |
 | ------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `RunAsync(config)`                                      | Starts `BenchmarkRunner.Run` on a thread-pool thread; reports progress |
-| `Progress`                                              | `[0, 1]` fraction updated after each router completes                  |
+| `Progress`                                              | `[0, 1]` overall fraction updated continuously during each router run  |
+| `CurrentRouterName` / `CurrentRouterIndex`              | Which router is currently executing                                    |
+| `CurrentTick` / `DurationTicks`                         | Live per-router tick progress                                          |
+| `CurrentRouterProgress` / `Elapsed`                     | Per-router percentage and elapsed benchmark runtime                    |
 | `LastSession`                                           | Most recent `BenchmarkSession` result                                  |
 | `SavedSessions`                                         | In-memory library of saved sessions (lost on page refresh)             |
 | `SaveToLibrary(session)` / `DeleteFromLibrary(session)` | Manage the in-memory library                                           |
@@ -142,11 +146,12 @@ View-model for the Add / Edit Device modal (bound by `DeviceModal.razor`).
 | `NetworkGraph.razor`          | SVG canvas showing devices as circles, connections as lines, and packets as animated dots. Scales to the simulation coordinate space. |
 | `DeviceTable.razor`           | Shows all registered devices with type, position, and frequency; host for Add / Edit / Delete actions.                                |
 | `DeviceModal.razor`           | Add / Edit modal bound to `DeviceFormModel`; validates and calls back `SimulationService`.                                            |
-| `PacketTable.razor`           | Live table of all in-flight packets with source, destination, next-hop, and TTL.                                                      |
+| `PacketTable.razor`           | Live table of in-flight packets with protocol fields (message type, direction, MAC addresses, charge) plus source, destination, next-hop, and TTL. |
 | `StatisticsPanel.razor`       | Summary card grid showing all `SimulationStatistics.Metrics`; includes a time-series chart of plottable metrics.                      |
 | `DetailedStatsModal.razor`    | Full-screen modal with an expanded chart and per-tick history table.                                                                  |
 | `SimulationSettings.razor`    | Settings modal bound to `SimulationConfig`; exposes tick interval, TTL, travel time, visibility, packet limit, and router selection.  |
-| `BenchmarkConfigModal.razor`  | Modal for composing a `BenchmarkConfig`: device layout, events, settings, and router list.                                            |
+| `RandomGenerationModal.razor` | Modal for random simulation generation: connected graph parameters, generator/emitter share, and frequency ranges.                    |
+| `BenchmarkConfigModal.razor`  | Modal for composing a `BenchmarkConfig`: device layout, events, settings, router list, and one-click full random scenario generation. |
 | `BenchmarkResultModal.razor`  | Shows a `BenchmarkSession`'s per-router metrics and time-series charts side-by-side.                                                  |
 | `BenchmarkLibraryModal.razor` | In-session library of saved `BenchmarkSession` objects; supports load, delete, and JSON download/upload.                              |
 
@@ -162,7 +167,7 @@ The single page of the application.
 - Start / Stop button
 - Reset button (tooltip shows the active preset name)
 - Preset selector + Load button
-- Random device count input + Random button
+- Random button (opens dedicated random-generation modal)
 - Settings, Stats, Benchmark, Library, and Docs buttons
 
 **Error banner**  -  shown when `SimulationService.PacketLimitError` is set.
@@ -174,6 +179,8 @@ The single page of the application.
 
 **Stats panel**  -  collapsible overlay showing `StatisticsPanel`.
 
+**Benchmark running overlay**  -  displays detailed benchmark runtime telemetry: current router, router index/total, tick progress, router/overall percentages, and elapsed time.
+
 ---
 
 ## Project structure
@@ -182,6 +189,7 @@ The single page of the application.
 | -------------------------------------------------- | ----------------------------------------------------------------------------- |
 | `WebApp.Client/Pages/Home.razor`                   | Single-page application shell; top bar, main grid, modal wiring               |
 | `WebApp.Client/Services/SimulationService.cs`      | Tick loop, device CRUD, preset / random management                            |
+| `WebApp.Client/Services/RandomGenerationOptions.cs`| Random layout options model consumed by `SimulationService` and random modal   |
 | `WebApp.Client/Services/SimulationConfig.cs`       | Flat settings model for the UI settings panel                                 |
 | `WebApp.Client/Services/BenchmarkService.cs`       | Async benchmark runner wrapper, session library, JSON serialisation           |
 | `WebApp.Client/Services/SimulationPreset.cs`       | Preset record type                                                            |
@@ -194,6 +202,7 @@ The single page of the application.
 | `WebApp.Client/Shared/StatisticsPanel.razor`       | Metric cards + time-series chart                                              |
 | `WebApp.Client/Shared/DetailedStatsModal.razor`    | Expanded statistics modal                                                     |
 | `WebApp.Client/Shared/SimulationSettings.razor`    | Settings modal                                                                |
+| `WebApp.Client/Shared/RandomGenerationModal.razor` | Random layout generation modal                                                |
 | `WebApp.Client/Shared/BenchmarkConfigModal.razor`  | Benchmark scenario composer                                                   |
 | `WebApp.Client/Shared/BenchmarkResultModal.razor`  | Benchmark results viewer                                                      |
 | `WebApp.Client/Shared/BenchmarkLibraryModal.razor` | Saved sessions library                                                        |

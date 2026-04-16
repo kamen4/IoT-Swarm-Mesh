@@ -1,6 +1,6 @@
 ﻿# Engine/Routers/SmartFlooding
 
-This folder contains the `SmartFloodingPacketRouter`, the WebApp's default routing strategy and the improved alternative to `FloodingPacketRouter`.
+This folder contains the `SmartFloodingPacketRouter`, an improved alternative to `FloodingPacketRouter`.
 
 ---
 
@@ -8,15 +8,15 @@ This folder contains the `SmartFloodingPacketRouter`, the WebApp's default routi
 
 | File                           | Responsibility                                                                                                                                                                                                                                                                                            |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `SmartFloodingPacketRouter.cs` | `SmartFloodingPacketRouter`  -  implements `IPacketRouter`. Applies three optimisations over naive flooding: (1) direct delivery if the destination is a visible neighbour, skipping the full broadcast; (2) no reverse-path forward back to `PreviousHop`; (3) no echo back to the original `From` device. |
+| `SmartFloodingPacketRouter.cs` | `SmartFloodingPacketRouter`  -  implements `IPacketRouter`. Applies bounded candidate selection and three optimisations over naive flooding: nearest-visible top-k window (default k=10), direct delivery if destination is visible, no reverse-path back to `PreviousHop`, and no echo back to the original `From` device. |
 
 ---
 
 ## Strategy characteristics
 
 - **Reliability**  -  guaranteed delivery in any connected topology with sufficient TTL.
-- **Overhead**  -  substantially fewer clones than naive flooding; in sparse topologies may reach near-unicast efficiency.
-- **Use case**  -  WebApp default (`SimulationConfig.SelectedRouter`); set by `SimulationService` on construction.
+- **Overhead**  -  substantially fewer clones than naive flooding due to direct delivery, loop suppression, and top-k visible-neighbor cap.
+- **Use case**  -  selectable runtime strategy for lower fan-out than naive flooding.
 
 ---
 

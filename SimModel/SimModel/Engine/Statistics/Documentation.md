@@ -8,7 +8,7 @@ The `Statistics` folder contains the reactive simulation metrics subsystem. It l
 
 | File                      | Responsibility                                                                                                                                                                                                                          |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `SimulationStatistics.cs` | Singleton that subscribes to all `SimulationEngine` events and maintains ten `StatMetric` values. Appends a `TickSnapshot` to the history ring buffer on every tick. Raises `Updated` after each change so UI can re-render reactively. |
+| `SimulationStatistics.cs` | Global-default statistics collector with optional scoped-instance override for isolated benchmark runs. Subscribes to `SimulationEngine` events and maintains ten `StatMetric` values. Appends a `TickSnapshot` to the history ring buffer on every tick. Raises `Updated` after each change so UI can re-render reactively. |
 | `StatMetric.cs`           | A single named metric with a `double Value`, display format flags (`isDecimal`, `isPlottable`), and an `Updated` event. `Increment()` and `Set(value)` update the value and notify subscribers.                                         |
 | `TickSnapshot.cs`         | Immutable record capturing a point-in-time snapshot of the eight plottable metrics for one tick. Used for time-series chart rendering.                                                                                                  |
 

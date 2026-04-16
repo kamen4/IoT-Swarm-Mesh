@@ -16,10 +16,15 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Type</th>
+                        <th>Dir</th>
                         <th>From</th>
                         <th>To</th>
+                        <th>Origin MAC</th>
+                        <th>Dst MAC</th>
                         <th>Next hop</th>
                         <th>TTL</th>
+                        <th>Charge</th>
                         <th>Arrives</th>
                         <th>Payload</th>
                     </tr>
@@ -29,10 +34,15 @@
                     {
                         <tr class="@(p.TTL <= 2 ? "row-danger" : "")">
                             <td class="mono">@p.Id.ToString()[..8]</td>
+                            <td class="mono">@p.MessageType</td>
+                            <td class="mono">@p.Direction</td>
                             <td>@p.From.Name</td>
                             <td>@p.To.Name</td>
-                            <td>@(p.NextHop?.Name ?? "\u2014")</td>
+                            <td class="mono">@MacText(p.OriginMac)</td>
+                            <td class="mono">@MacText(p.DestinationMac)</td>
+                            <td>@(p.NextHop?.Name ?? "-")</td>
                             <td class="@TtlClass(p.TTL)">@p.TTL</td>
+                            <td class="mono">@p.AdvertisedCharge</td>
                             <td class="mono">@p.ArrivalTick</td>
                             <td class="mono">@PayloadText(p)</td>
                         </tr>
@@ -43,7 +53,7 @@
 
         @if (Packets.Count > 20)
         {
-            <p class="empty-hint">…and @(Packets.Count - 20) more</p>
+            <p class="empty-hint">and @(Packets.Count - 20) more</p>
         }
     }
 </div>
@@ -55,7 +65,15 @@
 
     private static string PayloadText(Packet p)
     {
-        var text = p.Payload.Data?.ToString() ?? "—";
+        var text = p.Payload.Data?.ToString() ?? "-";
         return text.Length > 10 ? text[..10] : text;
+    }
+
+    private static string MacText(byte[]? mac)
+    {
+        if (mac is null || mac.Length != 6)
+            return "--:--:--:--:--:--";
+
+        return string.Join(":", mac.Select(static b => b.ToString("X2")));
     }
 }

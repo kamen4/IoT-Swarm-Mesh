@@ -10,7 +10,7 @@
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `Layout/`   | Blazor layout components. Contains `MainLayout.razor`, which defines the application shell with the top bar and body region. |
 | `Pages/`    | Routable Blazor pages. Contains `Home.razor`, the single application page.                                                   |
-| `Services/` | Client-side services: simulation driver, config model, benchmark service, presets, and form models.                          |
+| `Services/` | Client-side services: simulation driver, config model, benchmark service, presets, and form models. Includes router selection defaults (`SwarmProtocol`, `SmartFlooding`, `Flooding`). |
 | `Shared/`   | Reusable Blazor components: network graph, device table, packet table, statistics panel, and all modal dialogs.              |
 | `wwwroot/`  | Static assets served to the browser: `app.css`, `index.html`, `404.html`.                                                    |
 

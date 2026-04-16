@@ -31,5 +31,9 @@ public class ControlPacket : Packet
         : base(hub, target, new PacketData { Data = command })
     {
         Command = command;
+
+        Direction = PacketDirection.Down;
+        MessageType = SwarmMessageType.IO_SET;
+        DestinationMac = PacketAddress.Clone(target.MacAddress);
     }
 }

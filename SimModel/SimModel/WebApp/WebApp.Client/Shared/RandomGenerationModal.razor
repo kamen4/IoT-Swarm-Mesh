@@ -1,0 +1,89 @@
+@using WebApp.Client.Services
+
+<div class="modal-backdrop" @onclick="Cancel">
+    <div class="modal-box random-modal" @onclick:stopPropagation>
+        <h3>Random generation</h3>
+        <p class="random-modal-hint">
+            Connected mode is enabled: every generated node is placed within
+            radio range of an existing node, so the graph remains connected.
+        </p>
+
+        <label>
+            Device count (without Hub)
+            <input class="form-input" type="number" min="1" max="500"
+                   @bind="Options.DeviceCount" />
+        </label>
+
+        <label>
+            Emitter share (%)
+            <input class="form-input" type="number" min="0" max="100"
+                   @bind="Options.EmitterSharePercent" />
+        </label>
+
+        <div class="random-range-grid">
+            <label>
+                Generator min ticks
+                <input class="form-input" type="number" min="1" max="10000"
+                       @bind="Options.GeneratorMinTicks" />
+            </label>
+            <label>
+                Generator max ticks
+                <input class="form-input" type="number" min="1" max="10000"
+                       @bind="Options.GeneratorMaxTicks" />
+            </label>
+        </div>
+
+        <div class="random-range-grid">
+            <label>
+                Emitter min ticks
+                <input class="form-input" type="number" min="1" max="10000"
+                       @bind="Options.EmitterMinTicks" />
+            </label>
+            <label>
+                Emitter max ticks
+                <input class="form-input" type="number" min="1" max="10000"
+                       @bind="Options.EmitterMaxTicks" />
+            </label>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn btn-ghost" @onclick="Cancel">Cancel</button>
+            <button class="btn btn-primary" @onclick="Generate">Generate</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public RandomGenerationOptions Options { get; set; } = new();
+    [Parameter] public EventCallback OnGenerate { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    private async Task Generate()
+    {
+        Normalize();
+        Options.EnsureConnected = true;
+        await OnGenerate.InvokeAsync();
+    }
+
+    private async Task Cancel()
+        => await OnCancel.InvokeAsync();
+
+    private void Normalize()
+    {
+        Options.DeviceCount = Math.Clamp(Options.DeviceCount, 1, 500);
+        Options.EmitterSharePercent = Math.Clamp(Options.EmitterSharePercent, 0, 100);
+
+        if (Options.GeneratorMinTicks > Options.GeneratorMaxTicks)
+            (Options.GeneratorMinTicks, Options.GeneratorMaxTicks) =
+                (Options.GeneratorMaxTicks, Options.GeneratorMinTicks);
+
+        if (Options.EmitterMinTicks > Options.EmitterMaxTicks)
+            (Options.EmitterMinTicks, Options.EmitterMaxTicks) =
+                (Options.EmitterMaxTicks, Options.EmitterMinTicks);
+
+        Options.GeneratorMinTicks = Math.Clamp(Options.GeneratorMinTicks, 1, 10000);
+        Options.GeneratorMaxTicks = Math.Clamp(Options.GeneratorMaxTicks, 1, 10000);
+        Options.EmitterMinTicks = Math.Clamp(Options.EmitterMinTicks, 1, 10000);
+        Options.EmitterMaxTicks = Math.Clamp(Options.EmitterMaxTicks, 1, 10000);
+    }
+}

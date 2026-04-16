@@ -44,7 +44,13 @@ public class GeneratorDevice : Device
         var hub = SimulationEngine.Instance.Hub;
         if (hub is not null)
         {
-            var packet = new Packet(this, hub, new() { Data = new Random().NextDouble() });
+            var packet = new Packet(this, hub, new() { Data = new Random().NextDouble() })
+            {
+                Direction = PacketDirection.Up,
+                MessageType = SwarmMessageType.IO_EVENT,
+                DestinationMac = PacketAddress.Clone(hub.MacAddress),
+            };
+
             SimulationEngine.Instance.RoutePacket(packet, this);
         }
     }

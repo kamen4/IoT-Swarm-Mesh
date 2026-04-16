@@ -1,10 +1,11 @@
 ﻿using Engine.Core;
+using System.Threading;
 
 namespace Engine.Statistics;
 
 /// <summary>
-/// A singleton that listens to <see cref="SimulationEngine"/> events and
-/// accumulates simulation metrics.
+/// Statistics collector that listens to <see cref="SimulationEngine"/> events
+/// and accumulates simulation metrics.
 /// <para>
 /// Extensibility: add a new <see cref="StatMetric"/> to <see cref="Metrics"/>
 /// and subscribe to any <see cref="SimulationEngine"/> event to populate it.
@@ -18,8 +19,42 @@ namespace Engine.Statistics;
 /// </summary>
 public sealed class SimulationStatistics
 {
-    /// <summary>Gets the singleton instance.</summary>
-    public static SimulationStatistics Instance { get; } = new();
+    private static readonly SimulationStatistics GlobalInstance = new(SimulationEngine.Instance);
+    private static readonly AsyncLocal<SimulationStatistics?> ScopedInstance = new();
+
+    /// <summary>
+    /// Gets the current statistics collector instance.
+    /// <para>
+    /// Default behavior returns the process-global collector.
+    /// Benchmark code may temporarily override this per async-flow via
+    /// <see cref="PushScopedInstance"/> to isolate metrics for parallel runs.
+    /// </para>
+    /// </summary>
+    public static SimulationStatistics Instance => ScopedInstance.Value ?? GlobalInstance;
+
+    /// <summary>
+    /// Creates a detached statistics collector bound to
+    /// <paramref name="engine"/>.
+    /// </summary>
+    /// <param name="engine">Engine instance to observe.</param>
+    /// <returns>A new isolated statistics collector.</returns>
+    public static SimulationStatistics CreateIsolated(SimulationEngine engine)
+        => new(engine);
+
+    /// <summary>
+    /// Overrides <see cref="Instance"/> for the current async flow until the
+    /// returned scope is disposed.
+    /// </summary>
+    /// <param name="statistics">Collector to expose as <see cref="Instance"/>.</param>
+    /// <returns>A scope token that restores the previous collector on dispose.</returns>
+    public static IDisposable PushScopedInstance(SimulationStatistics statistics)
+    {
+        ArgumentNullException.ThrowIfNull(statistics);
+
+        var previous = ScopedInstance.Value;
+        ScopedInstance.Value = statistics;
+        return new ScopedStatisticsToken(previous);
+    }
 
     /// <summary>Raised after any metric value changes.</summary>
     public event Action? Updated;
@@ -87,7 +122,7 @@ public sealed class SimulationStatistics
 
     // Queue gives O(1) Enqueue and Dequeue (vs List.RemoveAt(0) which is O(N)).
     private readonly Queue<TickSnapshot> _history = new();
-    private readonly SimulationEngine   _engine  = SimulationEngine.Instance;
+    private readonly SimulationEngine _engine;
     private double _tickMsAccumulator;
     private long   _tickMsSamples;
     // The very first dt sample is unreliable: SimulationEngine stamps _lastTickTime
@@ -104,8 +139,12 @@ public sealed class SimulationStatistics
     private double _hopAccumulator;
     private long   _hopSamples;
 
-    private SimulationStatistics()
+    private SimulationStatistics(SimulationEngine engine)
     {
+        ArgumentNullException.ThrowIfNull(engine);
+
+        _engine = engine;
+
         Metrics =
         [
             TotalPacketsRegistered,
@@ -182,6 +221,26 @@ public sealed class SimulationStatistics
             AppendSnapshot(e.TickCount);
             Notify();
         };
+    }
+
+    private sealed class ScopedStatisticsToken : IDisposable
+    {
+        private readonly SimulationStatistics? _previous;
+        private bool _disposed;
+
+        public ScopedStatisticsToken(SimulationStatistics? previous)
+        {
+            _previous = previous;
+        }
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            ScopedInstance.Value = _previous;
+            _disposed = true;
+        }
     }
 
     private void RefreshDerived()

@@ -24,5 +24,8 @@ public class ConfirmationPacket : Packet
             Data = original.Id.ToByteArray()
         })
     {
+        Direction = PacketDirection.Up;
+        MessageType = SwarmMessageType.ACK;
+        DestinationMac = PacketAddress.Clone(original.From.MacAddress);
     }
 }

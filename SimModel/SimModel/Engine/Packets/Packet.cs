@@ -1,4 +1,7 @@
 ﻿using Engine.Devices;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Engine.Packets;
 
@@ -8,11 +11,41 @@ namespace Engine.Packets;
 /// destination (<see cref="To"/>), and the <see cref="NextHop"/> device it
 /// will be delivered to on the next simulation tick.
 /// Travel time is expressed in engine ticks via <see cref="TicksToTravel"/>,
-/// and each hop decrements the <see cref="TTL"/> counter  -  a packet that
+/// and each hop decrements the <see cref="TTL"/> counter - a packet that
 /// reaches zero TTL is silently dropped.
+/// <para>
+/// The same class also carries a swarm protocol envelope:
+/// <list type="bullet">
+///   <item>Routing metadata: version, previous-hop MAC, advertised charge and decay hint.</item>
+///   <item>Secure header fields: direction, message type, origin/destination MAC, message id and sequence.</item>
+///   <item>End-to-end tag bytes used by HMAC-SHA256 truncation.</item>
+/// </list>
+/// These fields are optional for legacy routing and are populated by default
+/// for newly created packets.
+/// </para>
 /// </summary>
 public class Packet
 {
+    /// <summary>
+    /// Protocol envelope version currently emitted by this simulator.
+    /// </summary>
+    public const byte PROTOCOL_VERSION = 1;
+
+    /// <summary>
+    /// Library default TTL used by packet constructors.
+    /// </summary>
+    public const int DEFAULT_TTL = 10;
+
+    /// <summary>
+    /// Library default per-hop travel time used by packet constructors.
+    /// </summary>
+    public const long DEFAULT_TICKS_TO_TRAVEL = 3;
+
+    /// <summary>
+    /// Truncated authentication tag length in bytes.
+    /// </summary>
+    public const int TAG_LENGTH = 16;
+
     /// <summary>
     /// Initialises a new packet.
     /// <see cref="OriginId"/> is set to the same value as <see cref="Id"/> so
@@ -25,7 +58,17 @@ public class Packet
         To       = to;
         Payload  = payload;
         Id       = Guid.NewGuid();
-        OriginId = Id;   // clones will keep this value via MemberwiseClone
+        OriginId = Id; // clones will keep this value via MemberwiseClone
+
+        Version        = PROTOCOL_VERSION;
+        Direction      = from is HubDevice ? PacketDirection.Down : PacketDirection.Up;
+        MessageType    = SwarmMessageType.IO_EVENT;
+        OriginMac      = PacketAddress.Clone(from.MacAddress);
+        DestinationMac = PacketAddress.Clone(to.MacAddress);
+        PreviousHopMac = PacketAddress.Clone(PacketAddress.Empty);
+        MessageId      = from.AllocateMessageId();
+        Sequence       = from.AllocateSequence();
+        Tag            = new byte[TAG_LENGTH];
     }
 
     /// <summary>Gets the unique identifier of this packet instance.</summary>
@@ -45,6 +88,82 @@ public class Packet
     public Guid OriginId { get; }
 
     /// <summary>
+    /// Gets or sets the protocol envelope version.
+    /// </summary>
+    public byte Version { get; set; }
+
+    /// <summary>
+    /// Gets or sets the secure-header direction field.
+    /// </summary>
+    public PacketDirection Direction { get; set; }
+
+    /// <summary>
+    /// Gets or sets the secure-header message type field.
+    /// </summary>
+    public SwarmMessageType MessageType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the secure-header origin MAC address (6 bytes).
+    /// </summary>
+    public byte[] OriginMac { get; set; }
+
+    /// <summary>
+    /// Gets or sets the secure-header destination MAC address (6 bytes).
+    /// </summary>
+    public byte[] DestinationMac { get; set; }
+
+    /// <summary>
+    /// Gets or sets the routing-header previous-hop MAC address (6 bytes).
+    /// </summary>
+    public byte[] PreviousHopMac { get; set; }
+
+    /// <summary>
+    /// Gets or sets the secure-header message id.
+    /// </summary>
+    public ushort MessageId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the secure-header sequence value.
+    /// </summary>
+    public ushort Sequence { get; set; }
+
+    /// <summary>
+    /// Gets or sets the routing-header advertised charge value.
+    /// </summary>
+    public ushort AdvertisedCharge { get; set; }
+
+    /// <summary>
+    /// Gets or sets the routing-header decay epoch hint.
+    /// </summary>
+    public ushort DecayEpochHint { get; set; }
+
+    /// <summary>
+    /// Gets or sets the optional fragment-group id.
+    /// </summary>
+    public ushort? FragmentGroupId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the optional fragment index.
+    /// </summary>
+    public byte? FragmentIndex { get; set; }
+
+    /// <summary>
+    /// Gets or sets the optional total number of fragments.
+    /// </summary>
+    public byte? FragmentCount { get; set; }
+
+    /// <summary>
+    /// Gets the current authentication tag bytes.
+    /// </summary>
+    public byte[] Tag { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether <see cref="DestinationMac"/> is the
+    /// broadcast address.
+    /// </summary>
+    public bool IsBroadcastDestination => PacketAddress.IsBroadcast(DestinationMac);
+
+    /// <summary>
     /// Gets the TTL value that was recorded when this packet was first enqueued
     /// by <see cref="Engine.Core.SimulationEngine.RegisterPacket"/>.
     /// <para>
@@ -60,7 +179,7 @@ public class Packet
     /// Gets or sets the number of engine ticks the packet takes to travel
     /// between two adjacent devices.
     /// </summary>
-    public long TicksToTravel { get; set; } = 3;
+    public long TicksToTravel { get; set; } = DEFAULT_TICKS_TO_TRAVEL;
 
     /// <summary>
     /// Gets or sets the absolute engine tick at which this packet is due to
@@ -89,7 +208,7 @@ public class Packet
     /// Gets or sets the time-to-live counter. Decremented on every hop;
     /// the packet is dropped when it reaches zero.
     /// </summary>
-    public int TTL { get; set; } = 10;
+    public int TTL { get; set; } = DEFAULT_TTL;
 
     /// <summary>Gets the device that originally sent this packet.</summary>
     public Device From { get; }
@@ -111,11 +230,100 @@ public class Packet
     /// Creates a shallow copy of this packet, suitable for broadcasting the
     /// same packet to multiple next-hop neighbours.
     /// All clones share the same <see cref="OriginId"/> as the original.
+    /// Address and tag arrays are duplicated so clones can mutate envelope
+    /// metadata independently.
     /// </summary>
     /// <returns>A shallow clone of this packet.</returns>
     public Packet Clone()
     {
-        return (MemberwiseClone() as Packet)!;
+        var clone = (MemberwiseClone() as Packet)!;
+        clone.OriginMac      = PacketAddress.Clone(OriginMac);
+        clone.DestinationMac = PacketAddress.Clone(DestinationMac);
+        clone.PreviousHopMac = PacketAddress.Clone(PreviousHopMac);
+        clone.Tag            = (byte[])Tag.Clone();
+        return clone;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DestinationMac"/> to the broadcast address.
+    /// </summary>
+    public void MarkBroadcastDestination()
+    {
+        DestinationMac = PacketAddress.Clone(PacketAddress.Broadcast);
+    }
+
+    /// <summary>
+    /// Updates <see cref="Tag"/> by computing HMAC-SHA256 over
+    /// secure-header bytes plus payload bytes, then truncating to 16 bytes.
+    /// Routing-header bytes are intentionally excluded.
+    /// </summary>
+    /// <param name="sharedSecret">Shared secret bytes.</param>
+    public void UpdateTag(ReadOnlySpan<byte> sharedSecret)
+    {
+        if (sharedSecret.Length == 0)
+        {
+            Array.Clear(Tag);
+            return;
+        }
+
+        var secureFrame = BuildSecureHeaderAndPayload();
+        using var hmac = new HMACSHA256(sharedSecret.ToArray());
+        var hash = hmac.ComputeHash(secureFrame);
+
+        Tag = new byte[TAG_LENGTH];
+        Array.Copy(hash, 0, Tag, 0, TAG_LENGTH);
+    }
+
+    /// <summary>
+    /// Validates <see cref="Tag"/> against the current packet fields using
+    /// the provided shared secret.
+    /// </summary>
+    /// <param name="sharedSecret">Shared secret bytes.</param>
+    /// <returns><c>true</c> when the computed tag matches.</returns>
+    public bool ValidateTag(ReadOnlySpan<byte> sharedSecret)
+    {
+        if (Tag.Length != TAG_LENGTH)
+            return false;
+
+        if (sharedSecret.Length == 0)
+            return Tag.All(static b => b == 0);
+
+        var secureFrame = BuildSecureHeaderAndPayload();
+        using var hmac = new HMACSHA256(sharedSecret.ToArray());
+        var hash = hmac.ComputeHash(secureFrame);
+
+        for (var i = 0; i < TAG_LENGTH; i++)
+            if (Tag[i] != hash[i])
+                return false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Builds a byte buffer consisting of secure-header fields followed by
+    /// serialized payload bytes.
+    /// </summary>
+    /// <returns>Serialized secure-header + payload bytes.</returns>
+    public byte[] BuildSecureHeaderAndPayload()
+    {
+        var payloadBytes = SerializePayload(Payload.Data);
+        var bytes = new byte[18 + payloadBytes.Length];
+
+        var offset = 0;
+        bytes[offset++] = (byte)Direction;
+        bytes[offset++] = (byte)MessageType;
+
+        Array.Copy(OriginMac, 0, bytes, offset, PacketAddress.AddressLength);
+        offset += PacketAddress.AddressLength;
+
+        Array.Copy(DestinationMac, 0, bytes, offset, PacketAddress.AddressLength);
+        offset += PacketAddress.AddressLength;
+
+        WriteUInt16LittleEndian(bytes, ref offset, MessageId);
+        WriteUInt16LittleEndian(bytes, ref offset, Sequence);
+
+        Array.Copy(payloadBytes, 0, bytes, offset, payloadBytes.Length);
+        return bytes;
     }
 
     /// <inheritdoc/>
@@ -128,4 +336,45 @@ public class Packet
 
     /// <inheritdoc/>
     public override int GetHashCode() => Id.GetHashCode();
+
+    private static void WriteUInt16LittleEndian(byte[] bytes, ref int offset, ushort value)
+    {
+        bytes[offset++] = (byte)(value & 0xFF);
+        bytes[offset++] = (byte)((value >> 8) & 0xFF);
+    }
+
+    private static byte[] SerializePayload(object? value)
+    {
+        return value switch
+        {
+            null        => [],
+            byte[] data => data.ToArray(),
+            bool flag   => [flag ? (byte)1 : (byte)0],
+            byte b      => [b],
+            sbyte sb    => [(byte)sb],
+            short s     => BitConverter.GetBytes(s),
+            ushort us   => BitConverter.GetBytes(us),
+            int i       => BitConverter.GetBytes(i),
+            uint ui     => BitConverter.GetBytes(ui),
+            long l      => BitConverter.GetBytes(l),
+            ulong ul    => BitConverter.GetBytes(ul),
+            float f     => BitConverter.GetBytes(f),
+            double d    => BitConverter.GetBytes(d),
+            Guid g      => g.ToByteArray(),
+            DateTime dt => BitConverter.GetBytes(dt.ToBinary()),
+            decimal m   => SerializeDecimal(m),
+            string str  => Encoding.UTF8.GetBytes(str),
+            IFormattable formattable
+                => Encoding.UTF8.GetBytes(formattable.ToString(null, CultureInfo.InvariantCulture)),
+            _ => Encoding.UTF8.GetBytes(value.ToString() ?? string.Empty),
+        };
+    }
+
+    private static byte[] SerializeDecimal(decimal value)
+    {
+        var bits = decimal.GetBits(value);
+        var bytes = new byte[16];
+        Buffer.BlockCopy(bits, 0, bytes, 0, bytes.Length);
+        return bytes;
+    }
 }

@@ -1,4 +1,6 @@
-﻿using Engine.Packets;
+﻿using Engine.Core;
+using Engine.Packets;
+using Engine.Routers;
 
 namespace Engine.Devices;
 
@@ -8,9 +10,78 @@ namespace Engine.Devices;
 /// <see cref="GeneratorDevice"/> instances and the root of the network topology.
 /// It is registered as the singleton hub inside <see cref="Engine.Core.SimulationEngine"/>
 /// when added to the simulation.
+/// <para>
+/// The hub also emits protocol control traffic:
+/// <list type="bullet">
+///   <item>BEACON messages to seed DOWN-tree parent selection.</item>
+///   <item>DECAY messages to prevent unbounded charge growth.</item>
+/// </list>
+/// </para>
 /// </summary>
 public class HubDevice : Device
 {
+    private long _beaconTickCounter;
+    private long _decayTickCounter;
+    private ushort _decayEpoch;
+
+    /// <summary>
+    /// Gets or sets the tick interval for gateway BEACON broadcasts.
+    /// Set to <c>0</c> to disable.
+    /// </summary>
+    public long BeaconFrequencyTicks { get; set; } = 12;
+
+    /// <summary>
+    /// Gets or sets the tick interval for gateway DECAY broadcasts.
+    /// Set to <c>0</c> to disable.
+    /// </summary>
+    public long DecayFrequencyTicks { get; set; } = 60;
+
+    /// <summary>
+    /// Gets or sets the decay factor distributed by DECAY messages.
+    /// Expected range is [0, 1].
+    /// </summary>
+    public double DecayPercent { get; set; } = 0.12;
+
+    /// <summary>
+    /// Gets or sets the recommended q_forward threshold distributed by BEACON.
+    /// </summary>
+    public ushort RecommendedForwardThreshold { get; set; } = 100;
+
+    /// <summary>
+    /// Gets or sets the baseline root charge used to seed convergence.
+    /// </summary>
+    public int RootSourceCharge { get; set; } = 1500;
+
+    /// <summary>
+    /// Initializes a hub device and subscribes to tick events for periodic
+    /// control traffic.
+    /// </summary>
+    public HubDevice()
+    {
+        ApplyRootCharge();
+
+        SimulationEngine.Instance.TickEvent += OnTick;
+    }
+
+    /// <inheritdoc/>
+    public override void ApplySwarmVector(SwarmProtocolVector vector)
+    {
+        base.ApplySwarmVector(vector);
+        var normalized = vector.Normalized();
+
+        RootSourceCharge = normalized.RootSourceCharge;
+        RecommendedForwardThreshold = (ushort)Math.Clamp(normalized.QForward, 1, ushort.MaxValue);
+
+        DecayFrequencyTicks = normalized.DecayIntervalSteps;
+        DecayPercent = normalized.DecayPercent;
+
+        BeaconFrequencyTicks = normalized.DecayIntervalSteps <= 0
+            ? 12
+            : Math.Max(1, normalized.DecayIntervalSteps / 5);
+
+        ApplyRootCharge();
+    }
+
     /// <summary>
     /// Accepts a packet that has been delivered to the hub and logs it.
     /// </summary>
@@ -20,7 +91,62 @@ public class HubDevice : Device
         Log(packet);
     }
 
+    private void OnTick(object? sender, EventArgs e)
+    {
+        if (BeaconFrequencyTicks > 0)
+        {
+            _beaconTickCounter++;
+            if (_beaconTickCounter >= BeaconFrequencyTicks)
+            {
+                _beaconTickCounter = 0;
+                EmitBeacon();
+            }
+        }
+
+        if (DecayFrequencyTicks > 0)
+        {
+            _decayTickCounter++;
+            if (_decayTickCounter >= DecayFrequencyTicks)
+            {
+                _decayTickCounter = 0;
+                EmitDecay();
+            }
+        }
+    }
+
+    private void EmitBeacon()
+    {
+        var packet = new BeaconPacket(this, RecommendedForwardThreshold)
+        {
+            NeedConfirmation = false,
+        };
+
+        SimulationEngine.Instance.RoutePacket(packet, this);
+    }
+
+    private void EmitDecay()
+    {
+        _decayEpoch = _decayEpoch == ushort.MaxValue
+            ? (ushort)1
+            : (ushort)(_decayEpoch + 1);
+
+        ApplyDecay(_decayEpoch, DecayPercent);
+
+        var packet = new DecayPacket(this, _decayEpoch, DecayPercent)
+        {
+            NeedConfirmation = false,
+        };
+
+        SimulationEngine.Instance.RoutePacket(packet, this);
+    }
+
     private void Log(Packet packet)
     {
+    }
+
+    private void ApplyRootCharge()
+    {
+        var charge = (ushort)Math.Clamp(RootSourceCharge, 0, ushort.MaxValue);
+        SetChargeLevels(charge, charge);
     }
 }

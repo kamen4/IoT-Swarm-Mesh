@@ -47,10 +47,7 @@
 
             <div class="topbar-sep"></div>
 
-            @* Random generation *@
-            <input class="topbar-count" type="number" min="1" max="50" @bind="_generateCount"
-                   title="Device count for random generation" />
-            <button class="btn btn-ghost btn-sm" @onclick="GenerateDevices">Random</button>
+                 <button class="btn btn-ghost btn-sm" @onclick="OpenRandomGeneration">Random</button>
 
             <button class="btn btn-ghost btn-sm" @onclick="OpenSettings">Settings</button>
             <button class="btn btn-ghost btn-sm" @onclick="() => _showStats = !_showStats">Stats</button>
@@ -82,7 +79,9 @@
             </section>
 
             <section class="col-right">
-                <NetworkGraph Devices="Sim.Engine.Devices" VisibilityDistance="Sim.Engine.VisibilityDistance" />
+                <NetworkGraph Devices="Sim.Engine.Devices"
+                              VisibilityDistance="Sim.Engine.VisibilityDistance"
+                              Topology="Sim.Engine.Topology" />
             </section>
 
         </main>
@@ -104,6 +103,13 @@
                             OnApply="ApplySettings" OnClose="() => _showSettings = false" />
     }
 
+    @if (_showRandomGeneration)
+    {
+        <RandomGenerationModal Options="_randomOptions"
+                               OnGenerate="GenerateRandomFromModal"
+                               OnCancel="() => _showRandomGeneration = false" />
+    }
+
     @* -- Benchmark config modal ----------------------------------------- *@
     @if (_showBenchConfig)
     {
@@ -117,10 +123,40 @@
         <div class="bm-loading-overlay">
             <div class="bm-loading-box">
                 <div class="bm-spinner"></div>
-                <p class="bm-loading-title">Running benchmark…</p>
-                <p class="bm-loading-sub">@_benchProgressLabel</p>
+                <p class="bm-loading-title">Running benchmark...</p>
+                <p class="bm-loading-sub">
+                    Router @BenchSvc.CurrentRouterIndex / @Math.Max(1, BenchSvc.TotalRouters)
+                    - @CurrentRouterName
+                </p>
+
+                <div class="bm-progress-details">
+                    <div class="bm-progress-row">
+                        <span>Overall</span>
+                        <strong>@Percent(BenchSvc.Progress)</strong>
+                    </div>
+                    <div class="bm-progress-row">
+                        <span>Current router</span>
+                        <strong>@Percent(BenchSvc.CurrentRouterProgress)</strong>
+                    </div>
+                    <div class="bm-progress-row">
+                        <span>Tick</span>
+                        <strong>@BenchSvc.CurrentRouterTick / @Math.Max(1, BenchSvc.CurrentRouterDuration)</strong>
+                    </div>
+                    <div class="bm-progress-row">
+                        <span>Elapsed</span>
+                        <strong>@FormatDuration(BenchSvc.Elapsed)</strong>
+                    </div>
+                </div>
+
+                <p class="bm-progress-label">Overall progress</p>
                 <div class="bm-progress-bar">
-                    <div class="bm-progress-fill" style="width:@((BenchSvc.Progress * 100).ToString("F0"))%"></div>
+                    <div class="bm-progress-fill" style="width:@ProgressWidth(BenchSvc.Progress)"></div>
+                </div>
+
+                <p class="bm-progress-label">Router progress</p>
+                <div class="bm-progress-bar bm-progress-bar--secondary">
+                    <div class="bm-progress-fill bm-progress-fill--secondary"
+                         style="width:@ProgressWidth(BenchSvc.CurrentRouterProgress)"></div>
                 </div>
             </div>
         </div>
@@ -140,11 +176,12 @@
 @code {
     private bool _showDeviceModal;
     private bool _showSettings;
+    private bool _showRandomGeneration;
     private bool _showStats;
     private bool _isEditMode;
     private Guid _editingId;
     private DeviceFormModel _deviceForm = new();
-    private int _generateCount = 6;
+    private readonly RandomGenerationOptions _randomOptions = new();
     private int _selectedPresetIndex = 0;
 
     // -- Benchmark state ------------------------------------------------
@@ -152,11 +189,14 @@
     private bool _showBenchResult = false;
     private bool _showBenchLibrary = false;
     private BenchmarkConfig _benchConfig = new();
-    private string _benchProgressLabel = "";
-    private CancellationTokenSource _benchUiCts = new();
 
     private string SelectedPresetDescription =>
         SimulationPresets.All[_selectedPresetIndex].Description;
+
+    private string CurrentRouterName =>
+        string.IsNullOrWhiteSpace(BenchSvc.CurrentRouterName)
+            ? "..."
+            : BenchSvc.CurrentRouterName;
 
     protected override void OnInitialized()
     {
@@ -168,13 +208,6 @@
 
     private void OnBenchStateChanged()
     {
-        // Update progress label while running.
-        var done = (int)Math.Round(BenchSvc.Progress * _benchConfig.RouterNames.Count);
-        var total = _benchConfig.RouterNames.Count;
-        _benchProgressLabel = BenchSvc.IsRunning
-            ? $"Router {done} / {total}"
-            : "Done";
-
         // When run finishes, hide config modal and show result.
         if (!BenchSvc.IsRunning && BenchSvc.LastSession is not null)
         {
@@ -236,7 +269,14 @@
 
     private void ApplySettings() => Sim.ApplyConfig();
 
-    private void GenerateDevices() => Sim.GenerateRandom(_generateCount);
+    private void OpenRandomGeneration() => _showRandomGeneration = true;
+
+    private Task GenerateRandomFromModal()
+    {
+        Sim.GenerateRandom(_randomOptions);
+        _showRandomGeneration = false;
+        return Task.CompletedTask;
+    }
 
     private void OpenBenchmark()
     {
@@ -279,10 +319,29 @@
         Sim.Reset();
     }
 
+    private static string Percent(double value)
+        => $"{Math.Clamp(value, 0, 1) * 100:F1}%";
+
+    private static string ProgressWidth(double value)
+    {
+        var pct = Math.Clamp(value, 0, 1) * 100.0;
+        if (pct > 0 && pct < 0.5)
+            pct = 0.5;
+
+        return pct.ToString("F2", System.Globalization.CultureInfo.InvariantCulture) + "%";
+    }
+
+    private static string FormatDuration(TimeSpan value)
+    {
+        if (value.TotalHours >= 1)
+            return $"{(int)value.TotalHours:00}:{value.Minutes:00}:{value.Seconds:00}";
+
+        return $"{value.Minutes:00}:{value.Seconds:00}";
+    }
+
     public void Dispose()
     {
         Sim.StateChanged -= OnEngineStateChanged;
         BenchSvc.StateChanged -= OnBenchStateChanged;
-        _benchUiCts.Dispose();
     }
 }

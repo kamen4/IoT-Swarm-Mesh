@@ -86,7 +86,7 @@
 <tbody>
 <tr>
 <td><code>SimulationStatistics.cs</code></td>
-<td>Singleton that subscribes to all <code>SimulationEngine</code> events and maintains ten <code>StatMetric</code> values. Appends a <code>TickSnapshot</code> to the history ring buffer on every tick. Raises <code>Updated</code> after each change so UI can re-render reactively.</td>
+<td>Global-default statistics collector with optional scoped-instance override for isolated benchmark runs. Subscribes to <code>SimulationEngine</code> events and maintains ten <code>StatMetric</code> values. Appends a <code>TickSnapshot</code> to the history ring buffer on every tick. Raises <code>Updated</code> after each change so UI can re-render reactively.</td>
 </tr>
 <tr>
 <td><code>StatMetric.cs</code></td>

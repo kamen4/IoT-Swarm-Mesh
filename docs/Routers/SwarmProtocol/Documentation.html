@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Engine/Routers/SwarmProtocol | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Engine/Routers/SwarmProtocol | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/Documentation.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="engineroutersswarmprotocol">Engine/Routers/SwarmProtocol</h1>
+
+<p>This folder contains the protocol-oriented router implementation that maps the
+Protocol v1.0 swarm behavior into the Engine routing abstraction.</p>
+<hr>
+<h2 id="files">Files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SwarmProtocolPacketRouter.cs</code></td>
+<td><code>SwarmProtocolPacketRouter</code> implementation of <code>IPacketRouter</code>. Applies direction-aware routing on a nearest-visible top-k window (default k=10): UP bootstrap fan-out until charge signal appears, then best-neighbor by observed q_up; DOWN unicast/tree-first and broadcast children-first with deterministic fallback by q_total. Stamps previous-hop MAC and charge metadata on every clone.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="routing-rules-implemented">Routing rules implemented</h2>
+<ul>
+<li>UP path:
+<ul>
+<li>Use nearest-visible top-k neighbors as a deterministic candidate set.</li>
+<li>Bootstrap stage: if all observed <code>q_up</code> values are zero, fan-out over the same top-k window as flooding.</li>
+<li>Prefer direct delivery when destination is currently visible.</li>
+<li>After charge signal appears, select one best visible neighbor by sender-observed <code>q_up</code>.</li>
+<li>Tie-break deterministically by MAC order.</li>
+</ul>
+</li>
+<li>DOWN path:
+<ul>
+<li>Unicast: direct if destination visible, otherwise children-first (neighbors whose selected parent is the sender).</li>
+<li>Broadcast: children-first fan-out with single-neighbor fallback by <code>q_total</code>.</li>
+</ul>
+</li>
+<li>Envelope stamping:
+<ul>
+<li>Each clone receives <code>PreviousHop</code>, <code>PreviousHopMac</code>, <code>AdvertisedCharge</code>, and <code>DecayEpochHint</code> from the sender.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="parent">Parent</h2>
+<p>See <code>Engine/Routers/Documentation.md</code> for the full routing subsystem overview.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/Documentation.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

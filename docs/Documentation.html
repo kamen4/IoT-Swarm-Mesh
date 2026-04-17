@@ -79,7 +79,7 @@ It models a wireless IoT network on a 2D plane: devices are placed at arbitrary 
 <hr>
 <h2 id="architecture-overview">Architecture overview</h2>
 <pre><code class="lang-mermaid">graph TD
-    SE[&quot;SimulationEngine (singleton)\ntick loop * device registry\npacket priority queue * typed events\nRouter: IPacketRouter\nNetworkBuilder: INetworkBuilder\nTopology: INetworkTopology&quot;]
+    SE[&quot;SimulationEngine (global default + scoped contexts)\ntick loop * device registry\npacket priority queue * typed events\nRouter: IPacketRouter\nNetworkBuilder: INetworkBuilder\nTopology: INetworkTopology&quot;]
 
     subgraph &quot;Routing abstractions (Engine/Routers/)&quot;
         IR[&quot;IPacketRouter\n&lt;&lt;interface&gt;&gt;\nName * Route(packet, sender, topology)&quot;]
@@ -87,8 +87,9 @@ It models a wireless IoT network on a 2D plane: devices are placed at arbitrary 
         IMT[&quot;IMutableNetworkTopology\n&lt;&lt;interface&gt;&gt;\nnextends INetworkTopology\nConnect * Disconnect\nRemoveDevice * ClearConnections&quot;]
         IB[&quot;INetworkBuilder\n&lt;&lt;interface&gt;&gt;\nName * Build(devices, topology)&quot;]
 
-        FPR[&quot;FloodingPacketRouter\nimplements IPacketRouter\nbroadcast to all visible neighbours\n(engine default)&quot;]
-        SFR[&quot;SmartFloodingPacketRouter\nimplements IPacketRouter\ndirect if visible * filtered flood\n(WebApp default)&quot;]
+        FPR[&quot;FloodingPacketRouter\nimplements IPacketRouter\nbroadcast to nearest-visible top-k neighbours\n(baseline)&quot;]
+        SFR[&quot;SmartFloodingPacketRouter\nimplements IPacketRouter\ndirect if visible * filtered flood&quot;]
+        SPR[&quot;SwarmProtocolPacketRouter\nimplements IPacketRouter\nUP best-neighbor + DOWN tree-first\n(engine and WebApp default)&quot;]
         NT[&quot;NetworkTopology\nimplements IMutableNetworkTopology\nadjacency set + on-the-fly visibility&quot;]
         FMB[&quot;FullMeshNetworkBuilder\nimplements INetworkBuilder\nconnects every visible pair&quot;]
     end
@@ -117,6 +118,7 @@ It models a wireless IoT network on a 2D plane: devices are placed at arbitrary 
 
     IR -.implements.-&gt; FPR
     IR -.implements.-&gt; SFR
+    IR -.implements.-&gt; SPR
     IB -.implements.-&gt; FMB
     IMT -.implements.-&gt; NT
     IT -.extends.-&gt; IMT
@@ -134,7 +136,7 @@ It models a wireless IoT network on a 2D plane: devices are placed at arbitrary 
 <hr>
 <h2 id="key-concepts">Key concepts</h2>
 <h3 id="tick-based-time-model">Tick-based time model</h3>
-<p><a href="Core/SimulationEngine.cs"><code>SimulationEngine</code></a> is the singleton clock.<br>
+<p><a href="Core/SimulationEngine.cs"><code>SimulationEngine</code></a> is the default global clock.<br>
 Each call to <code>Tick()</code> represents one simulation step:</p>
 <ol>
 <li><code>TickCount</code> is incremented.</li>
@@ -143,6 +145,7 @@ Each call to <code>Tick()</code> represents one simulation step:</p>
 <li>All packets whose <code>ArrivalTick &lt;= TickCount</code> are dequeued and dispatched to their <code>NextHop</code> device.</li>
 <li><code>Ticked</code> is raised with the final tick count and <code>dt</code> for observers such as <code>SimulationStatistics</code>.</li>
 </ol>
+<p>Packet enqueue behavior is centrally normalized in <code>SimulationEngine.RegisterPacket</code>: packets that keep constructor defaults inherit engine-level defaults (<code>DefaultPacketTtl</code>, <code>DefaultPacketTicksToTravel</code>), which lets UI and benchmark configs control global TTL and hop travel time consistently.</p>
 <hr>
 <h3 id="visibility-vs-connection">Visibility vs. Connection</h3>
 <p>Two distinct spatial concepts are kept separate by design:</p>
@@ -176,7 +179,7 @@ topology.AreConnected(a, b)
 </code></pre>
 <hr>
 <h3 id="pluggable-routing-----ipacketrouter">Pluggable routing  -  <code>IPacketRouter</code></h3>
-<p><a href="Routers/IPacketRouter.cs"><code>IPacketRouter</code></a> is the single abstraction for all routing strategies.</p>
+<p><a href="Routers/Contracts/IPacketRouter.cs"><code>IPacketRouter</code></a> is the single abstraction for all routing strategies.</p>
 <pre><code class="lang-csharp">public interface IPacketRouter
 {
     string Name { get; }
@@ -197,17 +200,22 @@ topology.AreConnected(a, b)
 </thead>
 <tbody>
 <tr>
-<td><a href="Routers/PacketRouter.cs"><code>FloodingPacketRouter</code></a></td>
-<td><strong>Engine default</strong> (<code>SimulationEngine.Router</code>). Naive broadcast  -  clones the packet to every <strong>visible</strong> neighbour.</td>
+<td><a href="Routers/SwarmProtocol/SwarmProtocolPacketRouter.cs"><code>SwarmProtocolPacketRouter</code></a></td>
+<td><strong>Engine default</strong> (<code>SimulationEngine.Router</code>) and <strong>WebApp default</strong> (<code>SimulationConfig.SelectedRouter</code>). Uses nearest-visible top-k window (<code>k=10</code>): UP bootstrap fan-out until charge signal appears, then best-neighbor by <code>q_up</code>; DOWN uses tree-first forwarding by parent/children state.</td>
 </tr>
 <tr>
-<td><a href="Routers/SmartFloodingPacketRouter.cs"><code>SmartFloodingPacketRouter</code></a></td>
-<td><strong>WebApp default</strong> (<code>SimulationConfig.SelectedRouter</code>). Sends directly to destination if visible; otherwise floods all visible neighbours except <code>From</code> and <code>PreviousHop</code>.</td>
+<td><a href="Routers/SmartFlooding/SmartFloodingPacketRouter.cs"><code>SmartFloodingPacketRouter</code></a></td>
+<td>Uses nearest-visible top-k window (<code>k=10</code>), direct destination delivery when visible, and filtered flooding that excludes <code>From</code> and <code>PreviousHop</code>.</td>
+</tr>
+<tr>
+<td><a href="Routers/Flooding/PacketRouter.cs"><code>FloodingPacketRouter</code></a></td>
+<td>Baseline flooding over nearest-visible top-k window (<code>k=10</code>) with one clone per selected neighbor.</td>
 </tr>
 </tbody>
 </table>
+<p>All bundled routers share the same visibility candidate policy via <code>RoutingNeighborPolicy</code>, which keeps neighborhood fairness symmetric across protocol comparisons.</p>
 <blockquote>
-<p><strong>Note:</strong> <code>SimulationEngine.Router</code> initialises to <code>FloodingPacketRouter</code>. The Blazor WebApp overrides this to <code>SmartFloodingPacketRouter</code> via <code>SimulationConfig.SelectedRouter</code>, which <code>SimulationService</code> applies on construction.</p>
+<p><strong>Note:</strong> <code>SimulationEngine.Router</code> initialises to <code>SwarmProtocolPacketRouter</code>. The Blazor WebApp uses the same default via <code>SimulationConfig.SelectedRouter</code>, and users can switch routers at runtime.</p>
 </blockquote>
 <p><code>Packet.PreviousHop</code> is set by <code>Device.Recieve</code> just before re-routing so the smart router knows which device the packet came from and can avoid sending it back.</p>
 <hr>
@@ -253,8 +261,14 @@ Connections are an in-memory adjacency set updated by the builder.</p>
 <p>A <a href="Packets/Packet.cs"><code>Packet</code></a> carries a source (<code>From</code>), destination (<code>To</code>), next-hop device, arrival tick, and a TTL counter.<br>
 Each hop decrements TTL; a packet reaching zero is silently dropped (raises <code>PacketExpired</code>).<br>
 If <code>NeedConfirmation</code> is set, the destination automatically routes a <a href="Packets/ConfirmationPacket.cs"><code>ConfirmationPacket</code></a> back to the originator.</p>
+<p>Protocol-aware packet fields include:</p>
+<ul>
+<li>Routing metadata: <code>Version</code>, <code>PreviousHopMac</code>, <code>AdvertisedCharge</code>, <code>DecayEpochHint</code>.</li>
+<li>Secure metadata: <code>Direction</code>, <code>MessageType</code>, <code>OriginMac</code>, <code>DestinationMac</code>, <code>MessageId</code>, <code>Sequence</code>.</li>
+<li>End-to-end tag bytes: <code>Tag</code> (HMAC-SHA256 truncation to 16 bytes over secure-header + payload).</li>
+</ul>
 <p><strong>Flood-clone identity fields</strong></p>
-<p>Because flooding broadcasts cloned copies of a packet to every visible neighbour, two extra fields are stamped on <code>Packet</code> to make statistical analysis of these copies possible:</p>
+<p>Because flooding broadcasts cloned copies of a packet to nearest-visible top-k neighbors, two extra fields are stamped on <code>Packet</code> to make statistical analysis of these copies possible:</p>
 <table>
 <thead>
 <tr>
@@ -336,7 +350,7 @@ active packets &gt;= limit            -&gt; PacketLimitExceededException thrown
 <tbody>
 <tr>
 <td><a href="Core/SimulationEngine.cs"><code>Core/SimulationEngine.cs</code></a></td>
-<td>Singleton engine: tick loop, device registry, packet queue, typed events, <code>Router</code> + <code>NetworkBuilder</code> + <code>Topology</code>, packet-limit guard</td>
+<td>Global-default engine with scoped override support: tick loop, device registry, packet queue, typed events, <code>Router</code> + <code>NetworkBuilder</code> + <code>Topology</code>, packet defaults (<code>DefaultPacketTtl</code>, <code>DefaultPacketTicksToTravel</code>), packet-limit guard</td>
 </tr>
 <tr>
 <td><a href="Core/SimulationEvents.cs"><code>Core/SimulationEvents.cs</code></a></td>
@@ -351,8 +365,12 @@ active packets &gt;= limit            -&gt; PacketLimitExceededException thrown
 <td>Abstract base: identity, 2D position, receive / forward via <code>SimulationEngine.RoutePacket</code></td>
 </tr>
 <tr>
+<td><a href="Devices/NeighborState.cs"><code>Devices/NeighborState.cs</code></a></td>
+<td>Protocol neighbor table entry (<code>QUp</code>, <code>QTotal</code>, <code>LastSeenTick</code>, <code>SampleCount</code>) used by routing and parent selection</td>
+</tr>
+<tr>
 <td><a href="Devices/HubDevice.cs"><code>Devices/HubDevice.cs</code></a></td>
-<td>Central gateway; destination for all <code>GeneratorDevice</code> packets</td>
+<td>Central gateway; destination for generator traffic and source of periodic <code>BEACON</code> / <code>DECAY</code> protocol control packets</td>
 </tr>
 <tr>
 <td><a href="Devices/GeneratorDevice.cs"><code>Devices/GeneratorDevice.cs</code></a></td>
@@ -379,6 +397,30 @@ active packets &gt;= limit            -&gt; PacketLimitExceededException thrown
 <td>Hub-&gt;Emitter command packet carrying a <code>bool Command</code> (on/off)</td>
 </tr>
 <tr>
+<td><a href="Packets/BeaconPacket.cs"><code>Packets/BeaconPacket.cs</code></a></td>
+<td>Gateway BEACON broadcast packet with convergence threshold hint</td>
+</tr>
+<tr>
+<td><a href="Packets/DecayPacket.cs"><code>Packets/DecayPacket.cs</code></a></td>
+<td>Gateway DECAY broadcast packet with epoch and damping factor</td>
+</tr>
+<tr>
+<td><a href="Packets/PacketDirection.cs"><code>Packets/PacketDirection.cs</code></a></td>
+<td>Protocol traffic direction enum (<code>Up</code>, <code>Down</code>)</td>
+</tr>
+<tr>
+<td><a href="Packets/SwarmMessageType.cs"><code>Packets/SwarmMessageType.cs</code></a></td>
+<td>Protocol message-type enum registry</td>
+</tr>
+<tr>
+<td><a href="Packets/PacketAddress.cs"><code>Packets/PacketAddress.cs</code></a></td>
+<td>6-byte address helpers (broadcast constant, compare/equality, GUID mapping)</td>
+</tr>
+<tr>
+<td><a href="Packets/ProtocolPayloads.cs"><code>Packets/ProtocolPayloads.cs</code></a></td>
+<td>Payload records used by BEACON and DECAY control traffic</td>
+</tr>
+<tr>
 <td><a href="Routers/Contracts/IPacketRouter.cs"><code>Routers/Contracts/IPacketRouter.cs</code></a></td>
 <td><strong>&lt;<interface>&gt;</interface></strong> routing strategy contract</td>
 </tr>
@@ -395,6 +437,10 @@ active packets &gt;= limit            -&gt; PacketLimitExceededException thrown
 <td><strong>&lt;<interface>&gt;</interface></strong> network-formation strategy contract</td>
 </tr>
 <tr>
+<td><a href="Routers/RoutingNeighborPolicy.cs"><code>Routers/RoutingNeighborPolicy.cs</code></a></td>
+<td>Shared deterministic visibility policy used by routers; selects nearest-visible top-k neighbors (default k=10) for fairness and bounded fan-out</td>
+</tr>
+<tr>
 <td><a href="Routers/Topology/NetworkTopology.cs"><code>Routers/Topology/NetworkTopology.cs</code></a></td>
 <td>Concrete topology: on-the-fly visibility + adjacency-set connections</td>
 </tr>
@@ -404,15 +450,19 @@ active packets &gt;= limit            -&gt; PacketLimitExceededException thrown
 </tr>
 <tr>
 <td><a href="Routers/Flooding/PacketRouter.cs"><code>Routers/Flooding/PacketRouter.cs</code></a></td>
-<td><code>FloodingPacketRouter</code>  -  broadcast to all visible neighbours (engine default)</td>
+<td><code>FloodingPacketRouter</code>  -  flooding over nearest-visible top-k neighbors (baseline strategy)</td>
 </tr>
 <tr>
 <td><a href="Routers/SmartFlooding/SmartFloodingPacketRouter.cs"><code>Routers/SmartFlooding/SmartFloodingPacketRouter.cs</code></a></td>
-<td><code>SmartFloodingPacketRouter</code>  -  direct if destination visible; filtered flood otherwise (WebApp default)</td>
+<td><code>SmartFloodingPacketRouter</code>  -  direct if destination visible; filtered flood otherwise, both on nearest-visible top-k neighbors</td>
+</tr>
+<tr>
+<td><a href="Routers/SwarmProtocol/SwarmProtocolPacketRouter.cs"><code>Routers/SwarmProtocol/SwarmProtocolPacketRouter.cs</code></a></td>
+<td><code>SwarmProtocolPacketRouter</code>  -  protocol routing on nearest-visible top-k neighbors (UP bootstrap -&gt; charge-best, DOWN tree-first)</td>
 </tr>
 <tr>
 <td><a href="Statistics/SimulationStatistics.cs"><code>Statistics/SimulationStatistics.cs</code></a></td>
-<td>Event-driven singleton: ten metrics + history ring-buffer</td>
+<td>Event-driven global-default collector with scoped override support: ten metrics + history ring-buffer</td>
 </tr>
 <tr>
 <td><a href="Statistics/StatMetric.cs"><code>Statistics/StatMetric.cs</code></a></td>
@@ -444,13 +494,13 @@ active packets &gt;= limit            -&gt; PacketLimitExceededException thrown
 </tr>
 <tr>
 <td><a href="Benchmark/BenchmarkRunner.cs"><code>Benchmark/BenchmarkRunner.cs</code></a></td>
-<td>Headless tick loop: resets engine, applies events, runs N routers, returns session</td>
+<td>Headless tick loop: isolated per-router engine/statistics context, applies events, optional router parallelism, returns session</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h2 id="comparing-protocols-on-the-same-network">Comparing protocols on the same network</h2>
-<p>Because both <code>Router</code> and <code>NetworkBuilder</code> are hot-swappable properties on the singleton engine, you can:</p>
+<p>Because both <code>Router</code> and <code>NetworkBuilder</code> are hot-swappable properties on the engine, you can:</p>
 <ul>
 <li>Run a fixed network for N ticks with protocol A -&gt; collect <code>SimulationStatistics</code>.</li>
 <li>Call <code>SimulationEngine.Instance.Router = protocolB; SimulationEngine.Instance.Reset()</code> -&gt; run again.</li>
@@ -462,12 +512,14 @@ active packets &gt;= limit            -&gt; PacketLimitExceededException thrown
     v
 BenchmarkRunner.Run()    &lt;- headless loop; one full reset+run per router
     |  for each router:
-    |    1. engine.Reset() + stats.Reset()
-    |    2. apply engine settings + register initial devices
-    |    3. tick loop (0..DurationTicks):
+    |    1. create isolated engine + statistics context
+    |    2. engine.Reset() + stats.Reset()
+    |    3. apply engine settings + register initial devices
+    |    4. tick loop (0..DurationTicks):
     |         - fire scheduled BenchmarkEvents at matching ticks
     |         - engine.Tick()
-    |    4. capture BenchmarkResult (final metrics + TickSnapshot[])
+    |    5. capture BenchmarkResult (final metrics + TickSnapshot[])
+    |  optional: run routers in parallel (bounded)
     |
     v
 BenchmarkSession         &lt;- { Config, Results[] }  -  JSON-serialisable
@@ -500,7 +552,7 @@ BenchmarkSession         &lt;- { Config, Results[] }  -  JSON-serialisable
 <h2 id="documentation-hierarchy">Documentation hierarchy</h2>
 <p>Each subfolder contains its own <code>Documentation.md</code>:</p>
 <ul>
-<li><code>Core/Documentation.md</code>  -  engine singleton, events, packet-limit exception.</li>
+<li><code>Core/Documentation.md</code>  -  global engine with scoped-context support, events, packet-limit exception.</li>
 <li><code>Devices/Documentation.md</code>  -  device base class and all concrete device types.</li>
 <li><code>Packets/Documentation.md</code>  -  packet types and payload.</li>
 <li><code>Routers/Documentation.md</code>  -  routing subsystem overview and design principles.</li>
@@ -509,8 +561,9 @@ BenchmarkSession         &lt;- { Config, Results[] }  -  JSON-serialisable
 <li><code>Routers/Builders/Documentation.md</code>  -  network-formation strategies.</li>
 <li><code>Routers/Flooding/Documentation.md</code>  -  <code>FloodingPacketRouter</code>.</li>
 <li><code>Routers/SmartFlooding/Documentation.md</code>  -  <code>SmartFloodingPacketRouter</code>.</li>
+<li><code>Routers/SwarmProtocol/Documentation.md</code>  -  <code>SwarmProtocolPacketRouter</code>.</li>
 <li><code>Statistics/Documentation.md</code>  -  metrics, observable values, history ring buffer.</li>
-<li><code>Benchmark/Documentation.md</code>  -  headless benchmark runner and session types.</li>
+<li><code>Benchmark/Documentation.md</code>  -  isolated headless benchmark runner and session types.</li>
 </ul>
 
 </article>

@@ -95,6 +95,16 @@
 Classes
 </h3>
     <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Packets.BeaconPacket.html">BeaconPacket</a></dt>
+      <dd><p>Broadcast gateway beacon used to seed and maintain DOWN-tree convergence.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Packets.BeaconPayload.html">BeaconPayload</a></dt>
+      <dd><p>Payload for BEACON messages.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Engine.Packets.ConfirmationPacket.html">ConfirmationPacket</a></dt>
       <dd><p>A special packet that is automatically generated and sent back to the
 original sender when a packet with <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_NeedConfirmation">NeedConfirmation</a>
@@ -118,14 +128,35 @@ When an <a class="xref" href="Engine.Devices.EmitterDevice.html">EmitterDevice</
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Packets.DecayPacket.html">DecayPacket</a></dt>
+      <dd><p>Broadcast packet carrying a monotonic decay epoch and damping factor.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Packets.DecayPayload.html">DecayPayload</a></dt>
+      <dd><p>Payload for DECAY messages.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Engine.Packets.Packet.html">Packet</a></dt>
       <dd><p>Represents a unit of data travelling through the simulation network.
 A packet knows its originator (<a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_From">From</a>), its intended
 destination (<a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_To">To</a>), and the <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_NextHop">NextHop</a> device it
 will be delivered to on the next simulation tick.
 Travel time is expressed in engine ticks via <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_TicksToTravel">TicksToTravel</a>,
-and each hop decrements the <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_TTL">TTL</a> counter  -  a packet that
+and each hop decrements the <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_TTL">TTL</a> counter - a packet that
 reaches zero TTL is silently dropped.</p>
+<p>
+The same class also carries a swarm protocol envelope:
+<ul><li>Routing metadata: version, previous-hop MAC, advertised charge and decay hint.</li><li>Secure header fields: direction, message type, origin/destination MAC, message id and sequence.</li><li>End-to-end tag bytes used by HMAC-SHA256 truncation.</li></ul>
+These fields are optional for legacy routing and are populated by default
+for newly created packets.
+
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Packets.PacketAddress.html">PacketAddress</a></dt>
+      <dd><p>Helpers for fixed-width 6-byte mesh addresses used by protocol headers.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -134,6 +165,19 @@ reaches zero TTL is silently dropped.</p>
 The <a class="xref" href="Engine.Packets.PacketData.html#Engine_Packets_PacketData_Data">Data</a> property is intentionally untyped so that any
 value (sensor readings, command flags, raw bytes, etc.) can be transported
 without the engine imposing a schema.</p>
+</dd>
+    </dl>
+    <h3 id="enums">
+Enums
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Packets.PacketDirection.html">PacketDirection</a></dt>
+      <dd><p>Direction of a protocol frame in the swarm mesh.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Packets.SwarmMessageType.html">SwarmMessageType</a></dt>
+      <dd><p>Message type registry for the swarm protocol envelope.</p>
 </dd>
     </dl>
 

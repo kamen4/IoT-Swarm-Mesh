@@ -135,20 +135,27 @@ router protocol.</p>
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Benchmark.BenchmarkRunProgress.html">BenchmarkRunProgress</a></dt>
+      <dd><p>Progress snapshot emitted while a benchmark is running.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Engine.Benchmark.BenchmarkRunner.html">BenchmarkRunner</a></dt>
       <dd><p>Executes a <a class="xref" href="Engine.Benchmark.BenchmarkConfig.html">BenchmarkConfig</a> headlessly  -  without any UI  -  and
 produces a <a class="xref" href="Engine.Benchmark.BenchmarkSession.html">BenchmarkSession</a> containing one
 <a class="xref" href="Engine.Benchmark.BenchmarkResult.html">BenchmarkResult</a> per configured router.</p>
 <p>
-<b>Threading:</b> designed to be called from <code>Task.Run</code> so that the
-Blazor UI thread stays responsive during the (potentially long) run.
-All engine interaction happens through the singleton
-<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Instance">Instance</a> which is fully reset between runs.
+<b>Threading:</b> supports both synchronous and asynchronous execution.
+The async entry point periodically yields to keep UI render loops responsive
+on single-threaded environments such as Blazor WebAssembly.
+Each router run uses an isolated engine/statistics context so independent
+runs can execute in parallel when requested.
 </p>
 <p>
-<b>Progress reporting:</b> the optional <code class="paramref">onProgress</code>
-callback in <a class="xref" href="Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_Run_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_System_Int32_System_Int32__">Run(BenchmarkConfig, IReadOnlyDictionary&lt;string, IPacketRouter&gt;, Action&lt;int, int&gt;?)</a> is invoked after each completed router run
-with <code>(routerIndex, totalRouters)</code> so callers can display a spinner.
+<b>Progress reporting:</b> the optional <code>onProgress</code>
+callback in <a class="xref" href="Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_Run_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_Engine_Benchmark_BenchmarkRunProgress__Engine_Routers_INetworkBuilder_Engine_Routers_SwarmProtocolVector_System_Int32_">Run(BenchmarkConfig, IReadOnlyDictionary&lt;string, IPacketRouter&gt;, Action&lt;BenchmarkRunProgress&gt;?, INetworkBuilder?, SwarmProtocolVector?, int)</a> receives detailed
+<a class="xref" href="Engine.Benchmark.BenchmarkRunProgress.html">BenchmarkRunProgress</a> snapshots while each router is running,
+including per-router tick progress and overall progress.
 </p>
 </dd>
     </dl>

@@ -385,21 +385,131 @@ references:
   isSpec: "True"
   fullName: Engine.Benchmark.BenchmarkResult.TotalPacketsRegistered
   nameWithType: BenchmarkResult.TotalPacketsRegistered
+- uid: Engine.Benchmark.BenchmarkRunProgress
+  name: BenchmarkRunProgress
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html
+  commentId: T:Engine.Benchmark.BenchmarkRunProgress
+  fullName: Engine.Benchmark.BenchmarkRunProgress
+  nameWithType: BenchmarkRunProgress
+- uid: Engine.Benchmark.BenchmarkRunProgress.CompletedRouters
+  name: CompletedRouters
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_CompletedRouters
+  commentId: P:Engine.Benchmark.BenchmarkRunProgress.CompletedRouters
+  fullName: Engine.Benchmark.BenchmarkRunProgress.CompletedRouters
+  nameWithType: BenchmarkRunProgress.CompletedRouters
+- uid: Engine.Benchmark.BenchmarkRunProgress.CompletedRouters*
+  name: CompletedRouters
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_CompletedRouters_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunProgress.CompletedRouters
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunProgress.CompletedRouters
+  nameWithType: BenchmarkRunProgress.CompletedRouters
+- uid: Engine.Benchmark.BenchmarkRunProgress.CurrentRouterIndex
+  name: CurrentRouterIndex
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_CurrentRouterIndex
+  commentId: P:Engine.Benchmark.BenchmarkRunProgress.CurrentRouterIndex
+  fullName: Engine.Benchmark.BenchmarkRunProgress.CurrentRouterIndex
+  nameWithType: BenchmarkRunProgress.CurrentRouterIndex
+- uid: Engine.Benchmark.BenchmarkRunProgress.CurrentRouterIndex*
+  name: CurrentRouterIndex
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_CurrentRouterIndex_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunProgress.CurrentRouterIndex
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunProgress.CurrentRouterIndex
+  nameWithType: BenchmarkRunProgress.CurrentRouterIndex
+- uid: Engine.Benchmark.BenchmarkRunProgress.CurrentRouterName
+  name: CurrentRouterName
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_CurrentRouterName
+  commentId: P:Engine.Benchmark.BenchmarkRunProgress.CurrentRouterName
+  fullName: Engine.Benchmark.BenchmarkRunProgress.CurrentRouterName
+  nameWithType: BenchmarkRunProgress.CurrentRouterName
+- uid: Engine.Benchmark.BenchmarkRunProgress.CurrentRouterName*
+  name: CurrentRouterName
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_CurrentRouterName_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunProgress.CurrentRouterName
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunProgress.CurrentRouterName
+  nameWithType: BenchmarkRunProgress.CurrentRouterName
+- uid: Engine.Benchmark.BenchmarkRunProgress.CurrentTick
+  name: CurrentTick
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_CurrentTick
+  commentId: P:Engine.Benchmark.BenchmarkRunProgress.CurrentTick
+  fullName: Engine.Benchmark.BenchmarkRunProgress.CurrentTick
+  nameWithType: BenchmarkRunProgress.CurrentTick
+- uid: Engine.Benchmark.BenchmarkRunProgress.CurrentTick*
+  name: CurrentTick
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_CurrentTick_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunProgress.CurrentTick
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunProgress.CurrentTick
+  nameWithType: BenchmarkRunProgress.CurrentTick
+- uid: Engine.Benchmark.BenchmarkRunProgress.DurationTicks
+  name: DurationTicks
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_DurationTicks
+  commentId: P:Engine.Benchmark.BenchmarkRunProgress.DurationTicks
+  fullName: Engine.Benchmark.BenchmarkRunProgress.DurationTicks
+  nameWithType: BenchmarkRunProgress.DurationTicks
+- uid: Engine.Benchmark.BenchmarkRunProgress.DurationTicks*
+  name: DurationTicks
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_DurationTicks_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunProgress.DurationTicks
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunProgress.DurationTicks
+  nameWithType: BenchmarkRunProgress.DurationTicks
+- uid: Engine.Benchmark.BenchmarkRunProgress.OverallProgress
+  name: OverallProgress
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_OverallProgress
+  commentId: P:Engine.Benchmark.BenchmarkRunProgress.OverallProgress
+  fullName: Engine.Benchmark.BenchmarkRunProgress.OverallProgress
+  nameWithType: BenchmarkRunProgress.OverallProgress
+- uid: Engine.Benchmark.BenchmarkRunProgress.OverallProgress*
+  name: OverallProgress
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_OverallProgress_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunProgress.OverallProgress
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunProgress.OverallProgress
+  nameWithType: BenchmarkRunProgress.OverallProgress
+- uid: Engine.Benchmark.BenchmarkRunProgress.RouterProgress
+  name: RouterProgress
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_RouterProgress
+  commentId: P:Engine.Benchmark.BenchmarkRunProgress.RouterProgress
+  fullName: Engine.Benchmark.BenchmarkRunProgress.RouterProgress
+  nameWithType: BenchmarkRunProgress.RouterProgress
+- uid: Engine.Benchmark.BenchmarkRunProgress.RouterProgress*
+  name: RouterProgress
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_RouterProgress_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunProgress.RouterProgress
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunProgress.RouterProgress
+  nameWithType: BenchmarkRunProgress.RouterProgress
+- uid: Engine.Benchmark.BenchmarkRunProgress.TotalRouters
+  name: TotalRouters
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_TotalRouters
+  commentId: P:Engine.Benchmark.BenchmarkRunProgress.TotalRouters
+  fullName: Engine.Benchmark.BenchmarkRunProgress.TotalRouters
+  nameWithType: BenchmarkRunProgress.TotalRouters
+- uid: Engine.Benchmark.BenchmarkRunProgress.TotalRouters*
+  name: TotalRouters
+  href: api/Engine.Benchmark.BenchmarkRunProgress.html#Engine_Benchmark_BenchmarkRunProgress_TotalRouters_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunProgress.TotalRouters
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunProgress.TotalRouters
+  nameWithType: BenchmarkRunProgress.TotalRouters
 - uid: Engine.Benchmark.BenchmarkRunner
   name: BenchmarkRunner
   href: api/Engine.Benchmark.BenchmarkRunner.html
   commentId: T:Engine.Benchmark.BenchmarkRunner
   fullName: Engine.Benchmark.BenchmarkRunner
   nameWithType: BenchmarkRunner
-- uid: Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{System.Int32,System.Int32})
-  name: Run(BenchmarkConfig, IReadOnlyDictionary<string, IPacketRouter>, Action<int, int>?)
-  href: api/Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_Run_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_System_Int32_System_Int32__
-  commentId: M:Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{System.Int32,System.Int32})
-  name.vb: Run(BenchmarkConfig, IReadOnlyDictionary(Of String, IPacketRouter), Action(Of Integer, Integer))
-  fullName: Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig, System.Collections.Generic.IReadOnlyDictionary<string, Engine.Routers.IPacketRouter>, System.Action<int, int>?)
-  fullName.vb: Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig, System.Collections.Generic.IReadOnlyDictionary(Of String, Engine.Routers.IPacketRouter), System.Action(Of Integer, Integer))
-  nameWithType: BenchmarkRunner.Run(BenchmarkConfig, IReadOnlyDictionary<string, IPacketRouter>, Action<int, int>?)
-  nameWithType.vb: BenchmarkRunner.Run(BenchmarkConfig, IReadOnlyDictionary(Of String, IPacketRouter), Action(Of Integer, Integer))
+- uid: Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{Engine.Benchmark.BenchmarkRunProgress},Engine.Routers.INetworkBuilder,Engine.Routers.SwarmProtocolVector,System.Int32)
+  name: Run(BenchmarkConfig, IReadOnlyDictionary<string, IPacketRouter>, Action<BenchmarkRunProgress>?, INetworkBuilder?, SwarmProtocolVector?, int)
+  href: api/Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_Run_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_Engine_Benchmark_BenchmarkRunProgress__Engine_Routers_INetworkBuilder_Engine_Routers_SwarmProtocolVector_System_Int32_
+  commentId: M:Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{Engine.Benchmark.BenchmarkRunProgress},Engine.Routers.INetworkBuilder,Engine.Routers.SwarmProtocolVector,System.Int32)
+  name.vb: Run(BenchmarkConfig, IReadOnlyDictionary(Of String, IPacketRouter), Action(Of BenchmarkRunProgress), INetworkBuilder, SwarmProtocolVector, Integer)
+  fullName: Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig, System.Collections.Generic.IReadOnlyDictionary<string, Engine.Routers.IPacketRouter>, System.Action<Engine.Benchmark.BenchmarkRunProgress>?, Engine.Routers.INetworkBuilder?, Engine.Routers.SwarmProtocolVector?, int)
+  fullName.vb: Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig, System.Collections.Generic.IReadOnlyDictionary(Of String, Engine.Routers.IPacketRouter), System.Action(Of Engine.Benchmark.BenchmarkRunProgress), Engine.Routers.INetworkBuilder, Engine.Routers.SwarmProtocolVector, Integer)
+  nameWithType: BenchmarkRunner.Run(BenchmarkConfig, IReadOnlyDictionary<string, IPacketRouter>, Action<BenchmarkRunProgress>?, INetworkBuilder?, SwarmProtocolVector?, int)
+  nameWithType.vb: BenchmarkRunner.Run(BenchmarkConfig, IReadOnlyDictionary(Of String, IPacketRouter), Action(Of BenchmarkRunProgress), INetworkBuilder, SwarmProtocolVector, Integer)
 - uid: Engine.Benchmark.BenchmarkRunner.Run*
   name: Run
   href: api/Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_Run_
@@ -407,6 +517,22 @@ references:
   isSpec: "True"
   fullName: Engine.Benchmark.BenchmarkRunner.Run
   nameWithType: BenchmarkRunner.Run
+- uid: Engine.Benchmark.BenchmarkRunner.RunAsync(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{Engine.Benchmark.BenchmarkRunProgress},Engine.Routers.INetworkBuilder,Engine.Routers.SwarmProtocolVector,System.Int32,System.Threading.CancellationToken)
+  name: RunAsync(BenchmarkConfig, IReadOnlyDictionary<string, IPacketRouter>, Action<BenchmarkRunProgress>?, INetworkBuilder?, SwarmProtocolVector?, int, CancellationToken)
+  href: api/Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_RunAsync_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_Engine_Benchmark_BenchmarkRunProgress__Engine_Routers_INetworkBuilder_Engine_Routers_SwarmProtocolVector_System_Int32_System_Threading_CancellationToken_
+  commentId: M:Engine.Benchmark.BenchmarkRunner.RunAsync(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{Engine.Benchmark.BenchmarkRunProgress},Engine.Routers.INetworkBuilder,Engine.Routers.SwarmProtocolVector,System.Int32,System.Threading.CancellationToken)
+  name.vb: RunAsync(BenchmarkConfig, IReadOnlyDictionary(Of String, IPacketRouter), Action(Of BenchmarkRunProgress), INetworkBuilder, SwarmProtocolVector, Integer, CancellationToken)
+  fullName: Engine.Benchmark.BenchmarkRunner.RunAsync(Engine.Benchmark.BenchmarkConfig, System.Collections.Generic.IReadOnlyDictionary<string, Engine.Routers.IPacketRouter>, System.Action<Engine.Benchmark.BenchmarkRunProgress>?, Engine.Routers.INetworkBuilder?, Engine.Routers.SwarmProtocolVector?, int, System.Threading.CancellationToken)
+  fullName.vb: Engine.Benchmark.BenchmarkRunner.RunAsync(Engine.Benchmark.BenchmarkConfig, System.Collections.Generic.IReadOnlyDictionary(Of String, Engine.Routers.IPacketRouter), System.Action(Of Engine.Benchmark.BenchmarkRunProgress), Engine.Routers.INetworkBuilder, Engine.Routers.SwarmProtocolVector, Integer, System.Threading.CancellationToken)
+  nameWithType: BenchmarkRunner.RunAsync(BenchmarkConfig, IReadOnlyDictionary<string, IPacketRouter>, Action<BenchmarkRunProgress>?, INetworkBuilder?, SwarmProtocolVector?, int, CancellationToken)
+  nameWithType.vb: BenchmarkRunner.RunAsync(BenchmarkConfig, IReadOnlyDictionary(Of String, IPacketRouter), Action(Of BenchmarkRunProgress), INetworkBuilder, SwarmProtocolVector, Integer, CancellationToken)
+- uid: Engine.Benchmark.BenchmarkRunner.RunAsync*
+  name: RunAsync
+  href: api/Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_RunAsync_
+  commentId: Overload:Engine.Benchmark.BenchmarkRunner.RunAsync
+  isSpec: "True"
+  fullName: Engine.Benchmark.BenchmarkRunner.RunAsync
+  nameWithType: BenchmarkRunner.RunAsync
 - uid: Engine.Benchmark.BenchmarkSession
   name: BenchmarkSession
   href: api/Engine.Benchmark.BenchmarkSession.html
@@ -923,6 +1049,45 @@ references:
   isSpec: "True"
   fullName: Engine.Core.SimulationEngine.ActivePacketsCount
   nameWithType: SimulationEngine.ActivePacketsCount
+- uid: Engine.Core.SimulationEngine.CreateIsolated
+  name: CreateIsolated()
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_CreateIsolated
+  commentId: M:Engine.Core.SimulationEngine.CreateIsolated
+  fullName: Engine.Core.SimulationEngine.CreateIsolated()
+  nameWithType: SimulationEngine.CreateIsolated()
+- uid: Engine.Core.SimulationEngine.CreateIsolated*
+  name: CreateIsolated
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_CreateIsolated_
+  commentId: Overload:Engine.Core.SimulationEngine.CreateIsolated
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.CreateIsolated
+  nameWithType: SimulationEngine.CreateIsolated
+- uid: Engine.Core.SimulationEngine.DefaultPacketTicksToTravel
+  name: DefaultPacketTicksToTravel
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_DefaultPacketTicksToTravel
+  commentId: P:Engine.Core.SimulationEngine.DefaultPacketTicksToTravel
+  fullName: Engine.Core.SimulationEngine.DefaultPacketTicksToTravel
+  nameWithType: SimulationEngine.DefaultPacketTicksToTravel
+- uid: Engine.Core.SimulationEngine.DefaultPacketTicksToTravel*
+  name: DefaultPacketTicksToTravel
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_DefaultPacketTicksToTravel_
+  commentId: Overload:Engine.Core.SimulationEngine.DefaultPacketTicksToTravel
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.DefaultPacketTicksToTravel
+  nameWithType: SimulationEngine.DefaultPacketTicksToTravel
+- uid: Engine.Core.SimulationEngine.DefaultPacketTtl
+  name: DefaultPacketTtl
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_DefaultPacketTtl
+  commentId: P:Engine.Core.SimulationEngine.DefaultPacketTtl
+  fullName: Engine.Core.SimulationEngine.DefaultPacketTtl
+  nameWithType: SimulationEngine.DefaultPacketTtl
+- uid: Engine.Core.SimulationEngine.DefaultPacketTtl*
+  name: DefaultPacketTtl
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_DefaultPacketTtl_
+  commentId: Overload:Engine.Core.SimulationEngine.DefaultPacketTtl
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.DefaultPacketTtl
+  nameWithType: SimulationEngine.DefaultPacketTtl
 - uid: Engine.Core.SimulationEngine.DeviceRegistered
   name: DeviceRegistered
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_DeviceRegistered
@@ -1031,6 +1196,19 @@ references:
   commentId: E:Engine.Core.SimulationEngine.PacketRegistered
   fullName: Engine.Core.SimulationEngine.PacketRegistered
   nameWithType: SimulationEngine.PacketRegistered
+- uid: Engine.Core.SimulationEngine.PushScopedInstance(Engine.Core.SimulationEngine)
+  name: PushScopedInstance(SimulationEngine)
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_PushScopedInstance_Engine_Core_SimulationEngine_
+  commentId: M:Engine.Core.SimulationEngine.PushScopedInstance(Engine.Core.SimulationEngine)
+  fullName: Engine.Core.SimulationEngine.PushScopedInstance(Engine.Core.SimulationEngine)
+  nameWithType: SimulationEngine.PushScopedInstance(SimulationEngine)
+- uid: Engine.Core.SimulationEngine.PushScopedInstance*
+  name: PushScopedInstance
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_PushScopedInstance_
+  commentId: Overload:Engine.Core.SimulationEngine.PushScopedInstance
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.PushScopedInstance
+  nameWithType: SimulationEngine.PushScopedInstance
 - uid: Engine.Core.SimulationEngine.RebuildTopology
   name: RebuildTopology()
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_RebuildTopology
@@ -1109,6 +1287,32 @@ references:
   isSpec: "True"
   fullName: Engine.Core.SimulationEngine.Router
   nameWithType: SimulationEngine.Router
+- uid: Engine.Core.SimulationEngine.SetSwarmVector(Engine.Routers.SwarmProtocolVector)
+  name: SetSwarmVector(SwarmProtocolVector)
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_SetSwarmVector_Engine_Routers_SwarmProtocolVector_
+  commentId: M:Engine.Core.SimulationEngine.SetSwarmVector(Engine.Routers.SwarmProtocolVector)
+  fullName: Engine.Core.SimulationEngine.SetSwarmVector(Engine.Routers.SwarmProtocolVector)
+  nameWithType: SimulationEngine.SetSwarmVector(SwarmProtocolVector)
+- uid: Engine.Core.SimulationEngine.SetSwarmVector*
+  name: SetSwarmVector
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_SetSwarmVector_
+  commentId: Overload:Engine.Core.SimulationEngine.SetSwarmVector
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.SetSwarmVector
+  nameWithType: SimulationEngine.SetSwarmVector
+- uid: Engine.Core.SimulationEngine.SwarmVector
+  name: SwarmVector
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_SwarmVector
+  commentId: P:Engine.Core.SimulationEngine.SwarmVector
+  fullName: Engine.Core.SimulationEngine.SwarmVector
+  nameWithType: SimulationEngine.SwarmVector
+- uid: Engine.Core.SimulationEngine.SwarmVector*
+  name: SwarmVector
+  href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_SwarmVector_
+  commentId: Overload:Engine.Core.SimulationEngine.SwarmVector
+  isSpec: "True"
+  fullName: Engine.Core.SimulationEngine.SwarmVector
+  nameWithType: SimulationEngine.SwarmVector
 - uid: Engine.Core.SimulationEngine.Tick
   name: Tick()
   href: api/Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Tick
@@ -1242,6 +1446,25 @@ references:
   commentId: T:Engine.Devices.Device
   fullName: Engine.Devices.Device
   nameWithType: Device
+- uid: Engine.Devices.Device.#ctor
+  name: Device()
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device__ctor
+  commentId: M:Engine.Devices.Device.#ctor
+  name.vb: New()
+  fullName: Engine.Devices.Device.Device()
+  fullName.vb: Engine.Devices.Device.New()
+  nameWithType: Device.Device()
+  nameWithType.vb: Device.New()
+- uid: Engine.Devices.Device.#ctor*
+  name: Device
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device__ctor_
+  commentId: Overload:Engine.Devices.Device.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Devices.Device.Device
+  fullName.vb: Engine.Devices.Device.New
+  nameWithType: Device.Device
+  nameWithType.vb: Device.New
 - uid: Engine.Devices.Device.Accept(Engine.Packets.Packet)
   name: Accept(Packet)
   href: api/Engine.Devices.Device.html#Engine_Devices_Device_Accept_Engine_Packets_Packet_
@@ -1255,6 +1478,93 @@ references:
   isSpec: "True"
   fullName: Engine.Devices.Device.Accept
   nameWithType: Device.Accept
+- uid: Engine.Devices.Device.ApplyDecay(System.UInt16,System.Double)
+  name: ApplyDecay(ushort, double)
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ApplyDecay_System_UInt16_System_Double_
+  commentId: M:Engine.Devices.Device.ApplyDecay(System.UInt16,System.Double)
+  name.vb: ApplyDecay(UShort, Double)
+  fullName: Engine.Devices.Device.ApplyDecay(ushort, double)
+  fullName.vb: Engine.Devices.Device.ApplyDecay(UShort, Double)
+  nameWithType: Device.ApplyDecay(ushort, double)
+  nameWithType.vb: Device.ApplyDecay(UShort, Double)
+- uid: Engine.Devices.Device.ApplyDecay*
+  name: ApplyDecay
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ApplyDecay_
+  commentId: Overload:Engine.Devices.Device.ApplyDecay
+  isSpec: "True"
+  fullName: Engine.Devices.Device.ApplyDecay
+  nameWithType: Device.ApplyDecay
+- uid: Engine.Devices.Device.ApplySwarmVector(Engine.Routers.SwarmProtocolVector)
+  name: ApplySwarmVector(SwarmProtocolVector)
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ApplySwarmVector_Engine_Routers_SwarmProtocolVector_
+  commentId: M:Engine.Devices.Device.ApplySwarmVector(Engine.Routers.SwarmProtocolVector)
+  fullName: Engine.Devices.Device.ApplySwarmVector(Engine.Routers.SwarmProtocolVector)
+  nameWithType: Device.ApplySwarmVector(SwarmProtocolVector)
+- uid: Engine.Devices.Device.ApplySwarmVector*
+  name: ApplySwarmVector
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ApplySwarmVector_
+  commentId: Overload:Engine.Devices.Device.ApplySwarmVector
+  isSpec: "True"
+  fullName: Engine.Devices.Device.ApplySwarmVector
+  nameWithType: Device.ApplySwarmVector
+- uid: Engine.Devices.Device.DedupCacheCapacity
+  name: DedupCacheCapacity
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_DedupCacheCapacity
+  commentId: P:Engine.Devices.Device.DedupCacheCapacity
+  fullName: Engine.Devices.Device.DedupCacheCapacity
+  nameWithType: Device.DedupCacheCapacity
+- uid: Engine.Devices.Device.DedupCacheCapacity*
+  name: DedupCacheCapacity
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_DedupCacheCapacity_
+  commentId: Overload:Engine.Devices.Device.DedupCacheCapacity
+  isSpec: "True"
+  fullName: Engine.Devices.Device.DedupCacheCapacity
+  nameWithType: Device.DedupCacheCapacity
+- uid: Engine.Devices.Device.GetNeighborCharge(System.ReadOnlySpan{System.Byte},Engine.Packets.PacketDirection)
+  name: GetNeighborCharge(ReadOnlySpan<byte>, PacketDirection)
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_GetNeighborCharge_System_ReadOnlySpan_System_Byte__Engine_Packets_PacketDirection_
+  commentId: M:Engine.Devices.Device.GetNeighborCharge(System.ReadOnlySpan{System.Byte},Engine.Packets.PacketDirection)
+  name.vb: GetNeighborCharge(ReadOnlySpan(Of Byte), PacketDirection)
+  fullName: Engine.Devices.Device.GetNeighborCharge(System.ReadOnlySpan<byte>, Engine.Packets.PacketDirection)
+  fullName.vb: Engine.Devices.Device.GetNeighborCharge(System.ReadOnlySpan(Of Byte), Engine.Packets.PacketDirection)
+  nameWithType: Device.GetNeighborCharge(ReadOnlySpan<byte>, PacketDirection)
+  nameWithType.vb: Device.GetNeighborCharge(ReadOnlySpan(Of Byte), PacketDirection)
+- uid: Engine.Devices.Device.GetNeighborCharge*
+  name: GetNeighborCharge
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_GetNeighborCharge_
+  commentId: Overload:Engine.Devices.Device.GetNeighborCharge
+  isSpec: "True"
+  fullName: Engine.Devices.Device.GetNeighborCharge
+  nameWithType: Device.GetNeighborCharge
+- uid: Engine.Devices.Device.GetNeighborLinkBonus(System.ReadOnlySpan{System.Byte},System.Int32)
+  name: GetNeighborLinkBonus(ReadOnlySpan<byte>, int)
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_GetNeighborLinkBonus_System_ReadOnlySpan_System_Byte__System_Int32_
+  commentId: M:Engine.Devices.Device.GetNeighborLinkBonus(System.ReadOnlySpan{System.Byte},System.Int32)
+  name.vb: GetNeighborLinkBonus(ReadOnlySpan(Of Byte), Integer)
+  fullName: Engine.Devices.Device.GetNeighborLinkBonus(System.ReadOnlySpan<byte>, int)
+  fullName.vb: Engine.Devices.Device.GetNeighborLinkBonus(System.ReadOnlySpan(Of Byte), Integer)
+  nameWithType: Device.GetNeighborLinkBonus(ReadOnlySpan<byte>, int)
+  nameWithType.vb: Device.GetNeighborLinkBonus(ReadOnlySpan(Of Byte), Integer)
+- uid: Engine.Devices.Device.GetNeighborLinkBonus*
+  name: GetNeighborLinkBonus
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_GetNeighborLinkBonus_
+  commentId: Overload:Engine.Devices.Device.GetNeighborLinkBonus
+  isSpec: "True"
+  fullName: Engine.Devices.Device.GetNeighborLinkBonus
+  nameWithType: Device.GetNeighborLinkBonus
+- uid: Engine.Devices.Device.HasParent(Engine.Devices.Device)
+  name: HasParent(Device)
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_HasParent_Engine_Devices_Device_
+  commentId: M:Engine.Devices.Device.HasParent(Engine.Devices.Device)
+  fullName: Engine.Devices.Device.HasParent(Engine.Devices.Device)
+  nameWithType: Device.HasParent(Device)
+- uid: Engine.Devices.Device.HasParent*
+  name: HasParent
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_HasParent_
+  commentId: Overload:Engine.Devices.Device.HasParent
+  isSpec: "True"
+  fullName: Engine.Devices.Device.HasParent
+  nameWithType: Device.HasParent
 - uid: Engine.Devices.Device.Id
   name: Id
   href: api/Engine.Devices.Device.html#Engine_Devices_Device_Id
@@ -1268,6 +1578,45 @@ references:
   isSpec: "True"
   fullName: Engine.Devices.Device.Id
   nameWithType: Device.Id
+- uid: Engine.Devices.Device.IsForwardEligible
+  name: IsForwardEligible
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_IsForwardEligible
+  commentId: P:Engine.Devices.Device.IsForwardEligible
+  fullName: Engine.Devices.Device.IsForwardEligible
+  nameWithType: Device.IsForwardEligible
+- uid: Engine.Devices.Device.IsForwardEligible*
+  name: IsForwardEligible
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_IsForwardEligible_
+  commentId: Overload:Engine.Devices.Device.IsForwardEligible
+  isSpec: "True"
+  fullName: Engine.Devices.Device.IsForwardEligible
+  nameWithType: Device.IsForwardEligible
+- uid: Engine.Devices.Device.LastDecayEpoch
+  name: LastDecayEpoch
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_LastDecayEpoch
+  commentId: P:Engine.Devices.Device.LastDecayEpoch
+  fullName: Engine.Devices.Device.LastDecayEpoch
+  nameWithType: Device.LastDecayEpoch
+- uid: Engine.Devices.Device.LastDecayEpoch*
+  name: LastDecayEpoch
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_LastDecayEpoch_
+  commentId: Overload:Engine.Devices.Device.LastDecayEpoch
+  isSpec: "True"
+  fullName: Engine.Devices.Device.LastDecayEpoch
+  nameWithType: Device.LastDecayEpoch
+- uid: Engine.Devices.Device.MacAddress
+  name: MacAddress
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_MacAddress
+  commentId: P:Engine.Devices.Device.MacAddress
+  fullName: Engine.Devices.Device.MacAddress
+  nameWithType: Device.MacAddress
+- uid: Engine.Devices.Device.MacAddress*
+  name: MacAddress
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_MacAddress_
+  commentId: Overload:Engine.Devices.Device.MacAddress
+  isSpec: "True"
+  fullName: Engine.Devices.Device.MacAddress
+  nameWithType: Device.MacAddress
 - uid: Engine.Devices.Device.Name
   name: Name
   href: api/Engine.Devices.Device.html#Engine_Devices_Device_Name
@@ -1281,6 +1630,97 @@ references:
   isSpec: "True"
   fullName: Engine.Devices.Device.Name
   nameWithType: Device.Name
+- uid: Engine.Devices.Device.Neighbors
+  name: Neighbors
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_Neighbors
+  commentId: P:Engine.Devices.Device.Neighbors
+  fullName: Engine.Devices.Device.Neighbors
+  nameWithType: Device.Neighbors
+- uid: Engine.Devices.Device.Neighbors*
+  name: Neighbors
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_Neighbors_
+  commentId: Overload:Engine.Devices.Device.Neighbors
+  isSpec: "True"
+  fullName: Engine.Devices.Device.Neighbors
+  nameWithType: Device.Neighbors
+- uid: Engine.Devices.Device.OnForwardPacket(Engine.Packets.Packet)
+  name: OnForwardPacket(Packet)
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_OnForwardPacket_Engine_Packets_Packet_
+  commentId: M:Engine.Devices.Device.OnForwardPacket(Engine.Packets.Packet)
+  fullName: Engine.Devices.Device.OnForwardPacket(Engine.Packets.Packet)
+  nameWithType: Device.OnForwardPacket(Packet)
+- uid: Engine.Devices.Device.OnForwardPacket*
+  name: OnForwardPacket
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_OnForwardPacket_
+  commentId: Overload:Engine.Devices.Device.OnForwardPacket
+  isSpec: "True"
+  fullName: Engine.Devices.Device.OnForwardPacket
+  nameWithType: Device.OnForwardPacket
+- uid: Engine.Devices.Device.ParentDeadTicks
+  name: ParentDeadTicks
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentDeadTicks
+  commentId: P:Engine.Devices.Device.ParentDeadTicks
+  fullName: Engine.Devices.Device.ParentDeadTicks
+  nameWithType: Device.ParentDeadTicks
+- uid: Engine.Devices.Device.ParentDeadTicks*
+  name: ParentDeadTicks
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentDeadTicks_
+  commentId: Overload:Engine.Devices.Device.ParentDeadTicks
+  isSpec: "True"
+  fullName: Engine.Devices.Device.ParentDeadTicks
+  nameWithType: Device.ParentDeadTicks
+- uid: Engine.Devices.Device.ParentLastSeenTick
+  name: ParentLastSeenTick
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentLastSeenTick
+  commentId: P:Engine.Devices.Device.ParentLastSeenTick
+  fullName: Engine.Devices.Device.ParentLastSeenTick
+  nameWithType: Device.ParentLastSeenTick
+- uid: Engine.Devices.Device.ParentLastSeenTick*
+  name: ParentLastSeenTick
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentLastSeenTick_
+  commentId: Overload:Engine.Devices.Device.ParentLastSeenTick
+  isSpec: "True"
+  fullName: Engine.Devices.Device.ParentLastSeenTick
+  nameWithType: Device.ParentLastSeenTick
+- uid: Engine.Devices.Device.ParentMac
+  name: ParentMac
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentMac
+  commentId: P:Engine.Devices.Device.ParentMac
+  fullName: Engine.Devices.Device.ParentMac
+  nameWithType: Device.ParentMac
+- uid: Engine.Devices.Device.ParentMac*
+  name: ParentMac
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentMac_
+  commentId: Overload:Engine.Devices.Device.ParentMac
+  isSpec: "True"
+  fullName: Engine.Devices.Device.ParentMac
+  nameWithType: Device.ParentMac
+- uid: Engine.Devices.Device.ParentSwitchHysteresis
+  name: ParentSwitchHysteresis
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentSwitchHysteresis
+  commentId: P:Engine.Devices.Device.ParentSwitchHysteresis
+  fullName: Engine.Devices.Device.ParentSwitchHysteresis
+  nameWithType: Device.ParentSwitchHysteresis
+- uid: Engine.Devices.Device.ParentSwitchHysteresis*
+  name: ParentSwitchHysteresis
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentSwitchHysteresis_
+  commentId: Overload:Engine.Devices.Device.ParentSwitchHysteresis
+  isSpec: "True"
+  fullName: Engine.Devices.Device.ParentSwitchHysteresis
+  nameWithType: Device.ParentSwitchHysteresis
+- uid: Engine.Devices.Device.ParentSwitchHysteresisRatio
+  name: ParentSwitchHysteresisRatio
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentSwitchHysteresisRatio
+  commentId: P:Engine.Devices.Device.ParentSwitchHysteresisRatio
+  fullName: Engine.Devices.Device.ParentSwitchHysteresisRatio
+  nameWithType: Device.ParentSwitchHysteresisRatio
+- uid: Engine.Devices.Device.ParentSwitchHysteresisRatio*
+  name: ParentSwitchHysteresisRatio
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_ParentSwitchHysteresisRatio_
+  commentId: Overload:Engine.Devices.Device.ParentSwitchHysteresisRatio
+  isSpec: "True"
+  fullName: Engine.Devices.Device.ParentSwitchHysteresisRatio
+  nameWithType: Device.ParentSwitchHysteresisRatio
 - uid: Engine.Devices.Device.Position
   name: Position
   href: api/Engine.Devices.Device.html#Engine_Devices_Device_Position
@@ -1294,6 +1734,45 @@ references:
   isSpec: "True"
   fullName: Engine.Devices.Device.Position
   nameWithType: Device.Position
+- uid: Engine.Devices.Device.QForwardThreshold
+  name: QForwardThreshold
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_QForwardThreshold
+  commentId: P:Engine.Devices.Device.QForwardThreshold
+  fullName: Engine.Devices.Device.QForwardThreshold
+  nameWithType: Device.QForwardThreshold
+- uid: Engine.Devices.Device.QForwardThreshold*
+  name: QForwardThreshold
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_QForwardThreshold_
+  commentId: Overload:Engine.Devices.Device.QForwardThreshold
+  isSpec: "True"
+  fullName: Engine.Devices.Device.QForwardThreshold
+  nameWithType: Device.QForwardThreshold
+- uid: Engine.Devices.Device.QTotalSelf
+  name: QTotalSelf
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_QTotalSelf
+  commentId: P:Engine.Devices.Device.QTotalSelf
+  fullName: Engine.Devices.Device.QTotalSelf
+  nameWithType: Device.QTotalSelf
+- uid: Engine.Devices.Device.QTotalSelf*
+  name: QTotalSelf
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_QTotalSelf_
+  commentId: Overload:Engine.Devices.Device.QTotalSelf
+  isSpec: "True"
+  fullName: Engine.Devices.Device.QTotalSelf
+  nameWithType: Device.QTotalSelf
+- uid: Engine.Devices.Device.QUpSelf
+  name: QUpSelf
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_QUpSelf
+  commentId: P:Engine.Devices.Device.QUpSelf
+  fullName: Engine.Devices.Device.QUpSelf
+  nameWithType: Device.QUpSelf
+- uid: Engine.Devices.Device.QUpSelf*
+  name: QUpSelf
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_QUpSelf_
+  commentId: Overload:Engine.Devices.Device.QUpSelf
+  isSpec: "True"
+  fullName: Engine.Devices.Device.QUpSelf
+  nameWithType: Device.QUpSelf
 - uid: Engine.Devices.Device.Recieve(Engine.Packets.Packet)
   name: Recieve(Packet)
   href: api/Engine.Devices.Device.html#Engine_Devices_Device_Recieve_Engine_Packets_Packet_
@@ -1307,6 +1786,22 @@ references:
   isSpec: "True"
   fullName: Engine.Devices.Device.Recieve
   nameWithType: Device.Recieve
+- uid: Engine.Devices.Device.SetChargeLevels(System.UInt16,System.UInt16)
+  name: SetChargeLevels(ushort, ushort)
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_SetChargeLevels_System_UInt16_System_UInt16_
+  commentId: M:Engine.Devices.Device.SetChargeLevels(System.UInt16,System.UInt16)
+  name.vb: SetChargeLevels(UShort, UShort)
+  fullName: Engine.Devices.Device.SetChargeLevels(ushort, ushort)
+  fullName.vb: Engine.Devices.Device.SetChargeLevels(UShort, UShort)
+  nameWithType: Device.SetChargeLevels(ushort, ushort)
+  nameWithType.vb: Device.SetChargeLevels(UShort, UShort)
+- uid: Engine.Devices.Device.SetChargeLevels*
+  name: SetChargeLevels
+  href: api/Engine.Devices.Device.html#Engine_Devices_Device_SetChargeLevels_
+  commentId: Overload:Engine.Devices.Device.SetChargeLevels
+  isSpec: "True"
+  fullName: Engine.Devices.Device.SetChargeLevels
+  nameWithType: Device.SetChargeLevels
 - uid: Engine.Devices.EmitterDevice
   name: EmitterDevice
   href: api/Engine.Devices.EmitterDevice.html
@@ -1460,6 +1955,25 @@ references:
   commentId: T:Engine.Devices.HubDevice
   fullName: Engine.Devices.HubDevice
   nameWithType: HubDevice
+- uid: Engine.Devices.HubDevice.#ctor
+  name: HubDevice()
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice__ctor
+  commentId: M:Engine.Devices.HubDevice.#ctor
+  name.vb: New()
+  fullName: Engine.Devices.HubDevice.HubDevice()
+  fullName.vb: Engine.Devices.HubDevice.New()
+  nameWithType: HubDevice.HubDevice()
+  nameWithType.vb: HubDevice.New()
+- uid: Engine.Devices.HubDevice.#ctor*
+  name: HubDevice
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice__ctor_
+  commentId: Overload:Engine.Devices.HubDevice.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Devices.HubDevice.HubDevice
+  fullName.vb: Engine.Devices.HubDevice.New
+  nameWithType: HubDevice.HubDevice
+  nameWithType.vb: HubDevice.New
 - uid: Engine.Devices.HubDevice.Accept(Engine.Packets.Packet)
   name: Accept(Packet)
   href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_Accept_Engine_Packets_Packet_
@@ -1473,12 +1987,262 @@ references:
   isSpec: "True"
   fullName: Engine.Devices.HubDevice.Accept
   nameWithType: HubDevice.Accept
+- uid: Engine.Devices.HubDevice.ApplySwarmVector(Engine.Routers.SwarmProtocolVector)
+  name: ApplySwarmVector(SwarmProtocolVector)
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_ApplySwarmVector_Engine_Routers_SwarmProtocolVector_
+  commentId: M:Engine.Devices.HubDevice.ApplySwarmVector(Engine.Routers.SwarmProtocolVector)
+  fullName: Engine.Devices.HubDevice.ApplySwarmVector(Engine.Routers.SwarmProtocolVector)
+  nameWithType: HubDevice.ApplySwarmVector(SwarmProtocolVector)
+- uid: Engine.Devices.HubDevice.ApplySwarmVector*
+  name: ApplySwarmVector
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_ApplySwarmVector_
+  commentId: Overload:Engine.Devices.HubDevice.ApplySwarmVector
+  isSpec: "True"
+  fullName: Engine.Devices.HubDevice.ApplySwarmVector
+  nameWithType: HubDevice.ApplySwarmVector
+- uid: Engine.Devices.HubDevice.BeaconFrequencyTicks
+  name: BeaconFrequencyTicks
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_BeaconFrequencyTicks
+  commentId: P:Engine.Devices.HubDevice.BeaconFrequencyTicks
+  fullName: Engine.Devices.HubDevice.BeaconFrequencyTicks
+  nameWithType: HubDevice.BeaconFrequencyTicks
+- uid: Engine.Devices.HubDevice.BeaconFrequencyTicks*
+  name: BeaconFrequencyTicks
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_BeaconFrequencyTicks_
+  commentId: Overload:Engine.Devices.HubDevice.BeaconFrequencyTicks
+  isSpec: "True"
+  fullName: Engine.Devices.HubDevice.BeaconFrequencyTicks
+  nameWithType: HubDevice.BeaconFrequencyTicks
+- uid: Engine.Devices.HubDevice.DecayFrequencyTicks
+  name: DecayFrequencyTicks
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_DecayFrequencyTicks
+  commentId: P:Engine.Devices.HubDevice.DecayFrequencyTicks
+  fullName: Engine.Devices.HubDevice.DecayFrequencyTicks
+  nameWithType: HubDevice.DecayFrequencyTicks
+- uid: Engine.Devices.HubDevice.DecayFrequencyTicks*
+  name: DecayFrequencyTicks
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_DecayFrequencyTicks_
+  commentId: Overload:Engine.Devices.HubDevice.DecayFrequencyTicks
+  isSpec: "True"
+  fullName: Engine.Devices.HubDevice.DecayFrequencyTicks
+  nameWithType: HubDevice.DecayFrequencyTicks
+- uid: Engine.Devices.HubDevice.DecayPercent
+  name: DecayPercent
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_DecayPercent
+  commentId: P:Engine.Devices.HubDevice.DecayPercent
+  fullName: Engine.Devices.HubDevice.DecayPercent
+  nameWithType: HubDevice.DecayPercent
+- uid: Engine.Devices.HubDevice.DecayPercent*
+  name: DecayPercent
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_DecayPercent_
+  commentId: Overload:Engine.Devices.HubDevice.DecayPercent
+  isSpec: "True"
+  fullName: Engine.Devices.HubDevice.DecayPercent
+  nameWithType: HubDevice.DecayPercent
+- uid: Engine.Devices.HubDevice.RecommendedForwardThreshold
+  name: RecommendedForwardThreshold
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_RecommendedForwardThreshold
+  commentId: P:Engine.Devices.HubDevice.RecommendedForwardThreshold
+  fullName: Engine.Devices.HubDevice.RecommendedForwardThreshold
+  nameWithType: HubDevice.RecommendedForwardThreshold
+- uid: Engine.Devices.HubDevice.RecommendedForwardThreshold*
+  name: RecommendedForwardThreshold
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_RecommendedForwardThreshold_
+  commentId: Overload:Engine.Devices.HubDevice.RecommendedForwardThreshold
+  isSpec: "True"
+  fullName: Engine.Devices.HubDevice.RecommendedForwardThreshold
+  nameWithType: HubDevice.RecommendedForwardThreshold
+- uid: Engine.Devices.HubDevice.RootSourceCharge
+  name: RootSourceCharge
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_RootSourceCharge
+  commentId: P:Engine.Devices.HubDevice.RootSourceCharge
+  fullName: Engine.Devices.HubDevice.RootSourceCharge
+  nameWithType: HubDevice.RootSourceCharge
+- uid: Engine.Devices.HubDevice.RootSourceCharge*
+  name: RootSourceCharge
+  href: api/Engine.Devices.HubDevice.html#Engine_Devices_HubDevice_RootSourceCharge_
+  commentId: Overload:Engine.Devices.HubDevice.RootSourceCharge
+  isSpec: "True"
+  fullName: Engine.Devices.HubDevice.RootSourceCharge
+  nameWithType: HubDevice.RootSourceCharge
+- uid: Engine.Devices.NeighborState
+  name: NeighborState
+  href: api/Engine.Devices.NeighborState.html
+  commentId: T:Engine.Devices.NeighborState
+  fullName: Engine.Devices.NeighborState
+  nameWithType: NeighborState
+- uid: Engine.Devices.NeighborState.#ctor(System.Byte[])
+  name: NeighborState(byte[])
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState__ctor_System_Byte___
+  commentId: M:Engine.Devices.NeighborState.#ctor(System.Byte[])
+  name.vb: New(Byte())
+  fullName: Engine.Devices.NeighborState.NeighborState(byte[])
+  fullName.vb: Engine.Devices.NeighborState.New(Byte())
+  nameWithType: NeighborState.NeighborState(byte[])
+  nameWithType.vb: NeighborState.New(Byte())
+- uid: Engine.Devices.NeighborState.#ctor*
+  name: NeighborState
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState__ctor_
+  commentId: Overload:Engine.Devices.NeighborState.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Devices.NeighborState.NeighborState
+  fullName.vb: Engine.Devices.NeighborState.New
+  nameWithType: NeighborState.NeighborState
+  nameWithType.vb: NeighborState.New
+- uid: Engine.Devices.NeighborState.LastSeenTick
+  name: LastSeenTick
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_LastSeenTick
+  commentId: P:Engine.Devices.NeighborState.LastSeenTick
+  fullName: Engine.Devices.NeighborState.LastSeenTick
+  nameWithType: NeighborState.LastSeenTick
+- uid: Engine.Devices.NeighborState.LastSeenTick*
+  name: LastSeenTick
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_LastSeenTick_
+  commentId: Overload:Engine.Devices.NeighborState.LastSeenTick
+  isSpec: "True"
+  fullName: Engine.Devices.NeighborState.LastSeenTick
+  nameWithType: NeighborState.LastSeenTick
+- uid: Engine.Devices.NeighborState.LinkQuality
+  name: LinkQuality
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_LinkQuality
+  commentId: P:Engine.Devices.NeighborState.LinkQuality
+  fullName: Engine.Devices.NeighborState.LinkQuality
+  nameWithType: NeighborState.LinkQuality
+- uid: Engine.Devices.NeighborState.LinkQuality*
+  name: LinkQuality
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_LinkQuality_
+  commentId: Overload:Engine.Devices.NeighborState.LinkQuality
+  isSpec: "True"
+  fullName: Engine.Devices.NeighborState.LinkQuality
+  nameWithType: NeighborState.LinkQuality
+- uid: Engine.Devices.NeighborState.MacAddress
+  name: MacAddress
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_MacAddress
+  commentId: P:Engine.Devices.NeighborState.MacAddress
+  fullName: Engine.Devices.NeighborState.MacAddress
+  nameWithType: NeighborState.MacAddress
+- uid: Engine.Devices.NeighborState.MacAddress*
+  name: MacAddress
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_MacAddress_
+  commentId: Overload:Engine.Devices.NeighborState.MacAddress
+  isSpec: "True"
+  fullName: Engine.Devices.NeighborState.MacAddress
+  nameWithType: NeighborState.MacAddress
+- uid: Engine.Devices.NeighborState.QTotal
+  name: QTotal
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_QTotal
+  commentId: P:Engine.Devices.NeighborState.QTotal
+  fullName: Engine.Devices.NeighborState.QTotal
+  nameWithType: NeighborState.QTotal
+- uid: Engine.Devices.NeighborState.QTotal*
+  name: QTotal
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_QTotal_
+  commentId: Overload:Engine.Devices.NeighborState.QTotal
+  isSpec: "True"
+  fullName: Engine.Devices.NeighborState.QTotal
+  nameWithType: NeighborState.QTotal
+- uid: Engine.Devices.NeighborState.QUp
+  name: QUp
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_QUp
+  commentId: P:Engine.Devices.NeighborState.QUp
+  fullName: Engine.Devices.NeighborState.QUp
+  nameWithType: NeighborState.QUp
+- uid: Engine.Devices.NeighborState.QUp*
+  name: QUp
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_QUp_
+  commentId: Overload:Engine.Devices.NeighborState.QUp
+  isSpec: "True"
+  fullName: Engine.Devices.NeighborState.QUp
+  nameWithType: NeighborState.QUp
+- uid: Engine.Devices.NeighborState.SampleCount
+  name: SampleCount
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_SampleCount
+  commentId: P:Engine.Devices.NeighborState.SampleCount
+  fullName: Engine.Devices.NeighborState.SampleCount
+  nameWithType: NeighborState.SampleCount
+- uid: Engine.Devices.NeighborState.SampleCount*
+  name: SampleCount
+  href: api/Engine.Devices.NeighborState.html#Engine_Devices_NeighborState_SampleCount_
+  commentId: Overload:Engine.Devices.NeighborState.SampleCount
+  isSpec: "True"
+  fullName: Engine.Devices.NeighborState.SampleCount
+  nameWithType: NeighborState.SampleCount
 - uid: Engine.Packets
   name: Engine.Packets
   href: api/Engine.Packets.html
   commentId: N:Engine.Packets
   fullName: Engine.Packets
   nameWithType: Engine.Packets
+- uid: Engine.Packets.BeaconPacket
+  name: BeaconPacket
+  href: api/Engine.Packets.BeaconPacket.html
+  commentId: T:Engine.Packets.BeaconPacket
+  fullName: Engine.Packets.BeaconPacket
+  nameWithType: BeaconPacket
+- uid: Engine.Packets.BeaconPacket.#ctor(Engine.Devices.HubDevice,System.UInt16)
+  name: BeaconPacket(HubDevice, ushort)
+  href: api/Engine.Packets.BeaconPacket.html#Engine_Packets_BeaconPacket__ctor_Engine_Devices_HubDevice_System_UInt16_
+  commentId: M:Engine.Packets.BeaconPacket.#ctor(Engine.Devices.HubDevice,System.UInt16)
+  name.vb: New(HubDevice, UShort)
+  fullName: Engine.Packets.BeaconPacket.BeaconPacket(Engine.Devices.HubDevice, ushort)
+  fullName.vb: Engine.Packets.BeaconPacket.New(Engine.Devices.HubDevice, UShort)
+  nameWithType: BeaconPacket.BeaconPacket(HubDevice, ushort)
+  nameWithType.vb: BeaconPacket.New(HubDevice, UShort)
+- uid: Engine.Packets.BeaconPacket.#ctor*
+  name: BeaconPacket
+  href: api/Engine.Packets.BeaconPacket.html#Engine_Packets_BeaconPacket__ctor_
+  commentId: Overload:Engine.Packets.BeaconPacket.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Packets.BeaconPacket.BeaconPacket
+  fullName.vb: Engine.Packets.BeaconPacket.New
+  nameWithType: BeaconPacket.BeaconPacket
+  nameWithType.vb: BeaconPacket.New
+- uid: Engine.Packets.BeaconPacket.DEFAULT_BEACON_TTL
+  name: DEFAULT_BEACON_TTL
+  href: api/Engine.Packets.BeaconPacket.html#Engine_Packets_BeaconPacket_DEFAULT_BEACON_TTL
+  commentId: F:Engine.Packets.BeaconPacket.DEFAULT_BEACON_TTL
+  fullName: Engine.Packets.BeaconPacket.DEFAULT_BEACON_TTL
+  nameWithType: BeaconPacket.DEFAULT_BEACON_TTL
+- uid: Engine.Packets.BeaconPayload
+  name: BeaconPayload
+  href: api/Engine.Packets.BeaconPayload.html
+  commentId: T:Engine.Packets.BeaconPayload
+  fullName: Engine.Packets.BeaconPayload
+  nameWithType: BeaconPayload
+- uid: Engine.Packets.BeaconPayload.#ctor(System.UInt16)
+  name: BeaconPayload(ushort)
+  href: api/Engine.Packets.BeaconPayload.html#Engine_Packets_BeaconPayload__ctor_System_UInt16_
+  commentId: M:Engine.Packets.BeaconPayload.#ctor(System.UInt16)
+  name.vb: New(UShort)
+  fullName: Engine.Packets.BeaconPayload.BeaconPayload(ushort)
+  fullName.vb: Engine.Packets.BeaconPayload.New(UShort)
+  nameWithType: BeaconPayload.BeaconPayload(ushort)
+  nameWithType.vb: BeaconPayload.New(UShort)
+- uid: Engine.Packets.BeaconPayload.#ctor*
+  name: BeaconPayload
+  href: api/Engine.Packets.BeaconPayload.html#Engine_Packets_BeaconPayload__ctor_
+  commentId: Overload:Engine.Packets.BeaconPayload.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Packets.BeaconPayload.BeaconPayload
+  fullName.vb: Engine.Packets.BeaconPayload.New
+  nameWithType: BeaconPayload.BeaconPayload
+  nameWithType.vb: BeaconPayload.New
+- uid: Engine.Packets.BeaconPayload.RecommendedForwardThreshold
+  name: RecommendedForwardThreshold
+  href: api/Engine.Packets.BeaconPayload.html#Engine_Packets_BeaconPayload_RecommendedForwardThreshold
+  commentId: P:Engine.Packets.BeaconPayload.RecommendedForwardThreshold
+  fullName: Engine.Packets.BeaconPayload.RecommendedForwardThreshold
+  nameWithType: BeaconPayload.RecommendedForwardThreshold
+- uid: Engine.Packets.BeaconPayload.RecommendedForwardThreshold*
+  name: RecommendedForwardThreshold
+  href: api/Engine.Packets.BeaconPayload.html#Engine_Packets_BeaconPayload_RecommendedForwardThreshold_
+  commentId: Overload:Engine.Packets.BeaconPayload.RecommendedForwardThreshold
+  isSpec: "True"
+  fullName: Engine.Packets.BeaconPayload.RecommendedForwardThreshold
+  nameWithType: BeaconPayload.RecommendedForwardThreshold
 - uid: Engine.Packets.ConfirmationPacket
   name: ConfirmationPacket
   href: api/Engine.Packets.ConfirmationPacket.html
@@ -1542,6 +2306,88 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.ControlPacket.Command
   nameWithType: ControlPacket.Command
+- uid: Engine.Packets.DecayPacket
+  name: DecayPacket
+  href: api/Engine.Packets.DecayPacket.html
+  commentId: T:Engine.Packets.DecayPacket
+  fullName: Engine.Packets.DecayPacket
+  nameWithType: DecayPacket
+- uid: Engine.Packets.DecayPacket.#ctor(Engine.Devices.HubDevice,System.UInt16,System.Double)
+  name: DecayPacket(HubDevice, ushort, double)
+  href: api/Engine.Packets.DecayPacket.html#Engine_Packets_DecayPacket__ctor_Engine_Devices_HubDevice_System_UInt16_System_Double_
+  commentId: M:Engine.Packets.DecayPacket.#ctor(Engine.Devices.HubDevice,System.UInt16,System.Double)
+  name.vb: New(HubDevice, UShort, Double)
+  fullName: Engine.Packets.DecayPacket.DecayPacket(Engine.Devices.HubDevice, ushort, double)
+  fullName.vb: Engine.Packets.DecayPacket.New(Engine.Devices.HubDevice, UShort, Double)
+  nameWithType: DecayPacket.DecayPacket(HubDevice, ushort, double)
+  nameWithType.vb: DecayPacket.New(HubDevice, UShort, Double)
+- uid: Engine.Packets.DecayPacket.#ctor*
+  name: DecayPacket
+  href: api/Engine.Packets.DecayPacket.html#Engine_Packets_DecayPacket__ctor_
+  commentId: Overload:Engine.Packets.DecayPacket.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Packets.DecayPacket.DecayPacket
+  fullName.vb: Engine.Packets.DecayPacket.New
+  nameWithType: DecayPacket.DecayPacket
+  nameWithType.vb: DecayPacket.New
+- uid: Engine.Packets.DecayPacket.DEFAULT_DECAY_TTL
+  name: DEFAULT_DECAY_TTL
+  href: api/Engine.Packets.DecayPacket.html#Engine_Packets_DecayPacket_DEFAULT_DECAY_TTL
+  commentId: F:Engine.Packets.DecayPacket.DEFAULT_DECAY_TTL
+  fullName: Engine.Packets.DecayPacket.DEFAULT_DECAY_TTL
+  nameWithType: DecayPacket.DEFAULT_DECAY_TTL
+- uid: Engine.Packets.DecayPayload
+  name: DecayPayload
+  href: api/Engine.Packets.DecayPayload.html
+  commentId: T:Engine.Packets.DecayPayload
+  fullName: Engine.Packets.DecayPayload
+  nameWithType: DecayPayload
+- uid: Engine.Packets.DecayPayload.#ctor(System.UInt16,System.Double)
+  name: DecayPayload(ushort, double)
+  href: api/Engine.Packets.DecayPayload.html#Engine_Packets_DecayPayload__ctor_System_UInt16_System_Double_
+  commentId: M:Engine.Packets.DecayPayload.#ctor(System.UInt16,System.Double)
+  name.vb: New(UShort, Double)
+  fullName: Engine.Packets.DecayPayload.DecayPayload(ushort, double)
+  fullName.vb: Engine.Packets.DecayPayload.New(UShort, Double)
+  nameWithType: DecayPayload.DecayPayload(ushort, double)
+  nameWithType.vb: DecayPayload.New(UShort, Double)
+- uid: Engine.Packets.DecayPayload.#ctor*
+  name: DecayPayload
+  href: api/Engine.Packets.DecayPayload.html#Engine_Packets_DecayPayload__ctor_
+  commentId: Overload:Engine.Packets.DecayPayload.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Packets.DecayPayload.DecayPayload
+  fullName.vb: Engine.Packets.DecayPayload.New
+  nameWithType: DecayPayload.DecayPayload
+  nameWithType.vb: DecayPayload.New
+- uid: Engine.Packets.DecayPayload.DecayEpoch
+  name: DecayEpoch
+  href: api/Engine.Packets.DecayPayload.html#Engine_Packets_DecayPayload_DecayEpoch
+  commentId: P:Engine.Packets.DecayPayload.DecayEpoch
+  fullName: Engine.Packets.DecayPayload.DecayEpoch
+  nameWithType: DecayPayload.DecayEpoch
+- uid: Engine.Packets.DecayPayload.DecayEpoch*
+  name: DecayEpoch
+  href: api/Engine.Packets.DecayPayload.html#Engine_Packets_DecayPayload_DecayEpoch_
+  commentId: Overload:Engine.Packets.DecayPayload.DecayEpoch
+  isSpec: "True"
+  fullName: Engine.Packets.DecayPayload.DecayEpoch
+  nameWithType: DecayPayload.DecayEpoch
+- uid: Engine.Packets.DecayPayload.DecayPercent
+  name: DecayPercent
+  href: api/Engine.Packets.DecayPayload.html#Engine_Packets_DecayPayload_DecayPercent
+  commentId: P:Engine.Packets.DecayPayload.DecayPercent
+  fullName: Engine.Packets.DecayPayload.DecayPercent
+  nameWithType: DecayPayload.DecayPercent
+- uid: Engine.Packets.DecayPayload.DecayPercent*
+  name: DecayPercent
+  href: api/Engine.Packets.DecayPayload.html#Engine_Packets_DecayPayload_DecayPercent_
+  commentId: Overload:Engine.Packets.DecayPayload.DecayPercent
+  isSpec: "True"
+  fullName: Engine.Packets.DecayPayload.DecayPercent
+  nameWithType: DecayPayload.DecayPercent
 - uid: Engine.Packets.Packet
   name: Packet
   href: api/Engine.Packets.Packet.html
@@ -1567,6 +2413,19 @@ references:
   fullName.vb: Engine.Packets.Packet.New
   nameWithType: Packet.Packet
   nameWithType.vb: Packet.New
+- uid: Engine.Packets.Packet.AdvertisedCharge
+  name: AdvertisedCharge
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_AdvertisedCharge
+  commentId: P:Engine.Packets.Packet.AdvertisedCharge
+  fullName: Engine.Packets.Packet.AdvertisedCharge
+  nameWithType: Packet.AdvertisedCharge
+- uid: Engine.Packets.Packet.AdvertisedCharge*
+  name: AdvertisedCharge
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_AdvertisedCharge_
+  commentId: Overload:Engine.Packets.Packet.AdvertisedCharge
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.AdvertisedCharge
+  nameWithType: Packet.AdvertisedCharge
 - uid: Engine.Packets.Packet.ArrivalTick
   name: ArrivalTick
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_ArrivalTick
@@ -1580,6 +2439,19 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.ArrivalTick
   nameWithType: Packet.ArrivalTick
+- uid: Engine.Packets.Packet.BuildSecureHeaderAndPayload
+  name: BuildSecureHeaderAndPayload()
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_BuildSecureHeaderAndPayload
+  commentId: M:Engine.Packets.Packet.BuildSecureHeaderAndPayload
+  fullName: Engine.Packets.Packet.BuildSecureHeaderAndPayload()
+  nameWithType: Packet.BuildSecureHeaderAndPayload()
+- uid: Engine.Packets.Packet.BuildSecureHeaderAndPayload*
+  name: BuildSecureHeaderAndPayload
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_BuildSecureHeaderAndPayload_
+  commentId: Overload:Engine.Packets.Packet.BuildSecureHeaderAndPayload
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.BuildSecureHeaderAndPayload
+  nameWithType: Packet.BuildSecureHeaderAndPayload
 - uid: Engine.Packets.Packet.Clone
   name: Clone()
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Clone
@@ -1593,6 +2465,57 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.Clone
   nameWithType: Packet.Clone
+- uid: Engine.Packets.Packet.DEFAULT_TICKS_TO_TRAVEL
+  name: DEFAULT_TICKS_TO_TRAVEL
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_DEFAULT_TICKS_TO_TRAVEL
+  commentId: F:Engine.Packets.Packet.DEFAULT_TICKS_TO_TRAVEL
+  fullName: Engine.Packets.Packet.DEFAULT_TICKS_TO_TRAVEL
+  nameWithType: Packet.DEFAULT_TICKS_TO_TRAVEL
+- uid: Engine.Packets.Packet.DEFAULT_TTL
+  name: DEFAULT_TTL
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_DEFAULT_TTL
+  commentId: F:Engine.Packets.Packet.DEFAULT_TTL
+  fullName: Engine.Packets.Packet.DEFAULT_TTL
+  nameWithType: Packet.DEFAULT_TTL
+- uid: Engine.Packets.Packet.DecayEpochHint
+  name: DecayEpochHint
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_DecayEpochHint
+  commentId: P:Engine.Packets.Packet.DecayEpochHint
+  fullName: Engine.Packets.Packet.DecayEpochHint
+  nameWithType: Packet.DecayEpochHint
+- uid: Engine.Packets.Packet.DecayEpochHint*
+  name: DecayEpochHint
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_DecayEpochHint_
+  commentId: Overload:Engine.Packets.Packet.DecayEpochHint
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.DecayEpochHint
+  nameWithType: Packet.DecayEpochHint
+- uid: Engine.Packets.Packet.DestinationMac
+  name: DestinationMac
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_DestinationMac
+  commentId: P:Engine.Packets.Packet.DestinationMac
+  fullName: Engine.Packets.Packet.DestinationMac
+  nameWithType: Packet.DestinationMac
+- uid: Engine.Packets.Packet.DestinationMac*
+  name: DestinationMac
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_DestinationMac_
+  commentId: Overload:Engine.Packets.Packet.DestinationMac
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.DestinationMac
+  nameWithType: Packet.DestinationMac
+- uid: Engine.Packets.Packet.Direction
+  name: Direction
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Direction
+  commentId: P:Engine.Packets.Packet.Direction
+  fullName: Engine.Packets.Packet.Direction
+  nameWithType: Packet.Direction
+- uid: Engine.Packets.Packet.Direction*
+  name: Direction
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Direction_
+  commentId: Overload:Engine.Packets.Packet.Direction
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.Direction
+  nameWithType: Packet.Direction
 - uid: Engine.Packets.Packet.Equals(System.Object)
   name: Equals(object?)
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Equals_System_Object_
@@ -1609,6 +2532,45 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.Equals
   nameWithType: Packet.Equals
+- uid: Engine.Packets.Packet.FragmentCount
+  name: FragmentCount
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_FragmentCount
+  commentId: P:Engine.Packets.Packet.FragmentCount
+  fullName: Engine.Packets.Packet.FragmentCount
+  nameWithType: Packet.FragmentCount
+- uid: Engine.Packets.Packet.FragmentCount*
+  name: FragmentCount
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_FragmentCount_
+  commentId: Overload:Engine.Packets.Packet.FragmentCount
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.FragmentCount
+  nameWithType: Packet.FragmentCount
+- uid: Engine.Packets.Packet.FragmentGroupId
+  name: FragmentGroupId
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_FragmentGroupId
+  commentId: P:Engine.Packets.Packet.FragmentGroupId
+  fullName: Engine.Packets.Packet.FragmentGroupId
+  nameWithType: Packet.FragmentGroupId
+- uid: Engine.Packets.Packet.FragmentGroupId*
+  name: FragmentGroupId
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_FragmentGroupId_
+  commentId: Overload:Engine.Packets.Packet.FragmentGroupId
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.FragmentGroupId
+  nameWithType: Packet.FragmentGroupId
+- uid: Engine.Packets.Packet.FragmentIndex
+  name: FragmentIndex
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_FragmentIndex
+  commentId: P:Engine.Packets.Packet.FragmentIndex
+  fullName: Engine.Packets.Packet.FragmentIndex
+  nameWithType: Packet.FragmentIndex
+- uid: Engine.Packets.Packet.FragmentIndex*
+  name: FragmentIndex
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_FragmentIndex_
+  commentId: Overload:Engine.Packets.Packet.FragmentIndex
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.FragmentIndex
+  nameWithType: Packet.FragmentIndex
 - uid: Engine.Packets.Packet.From
   name: From
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_From
@@ -1661,6 +2623,58 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.InitialTtl
   nameWithType: Packet.InitialTtl
+- uid: Engine.Packets.Packet.IsBroadcastDestination
+  name: IsBroadcastDestination
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_IsBroadcastDestination
+  commentId: P:Engine.Packets.Packet.IsBroadcastDestination
+  fullName: Engine.Packets.Packet.IsBroadcastDestination
+  nameWithType: Packet.IsBroadcastDestination
+- uid: Engine.Packets.Packet.IsBroadcastDestination*
+  name: IsBroadcastDestination
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_IsBroadcastDestination_
+  commentId: Overload:Engine.Packets.Packet.IsBroadcastDestination
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.IsBroadcastDestination
+  nameWithType: Packet.IsBroadcastDestination
+- uid: Engine.Packets.Packet.MarkBroadcastDestination
+  name: MarkBroadcastDestination()
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_MarkBroadcastDestination
+  commentId: M:Engine.Packets.Packet.MarkBroadcastDestination
+  fullName: Engine.Packets.Packet.MarkBroadcastDestination()
+  nameWithType: Packet.MarkBroadcastDestination()
+- uid: Engine.Packets.Packet.MarkBroadcastDestination*
+  name: MarkBroadcastDestination
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_MarkBroadcastDestination_
+  commentId: Overload:Engine.Packets.Packet.MarkBroadcastDestination
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.MarkBroadcastDestination
+  nameWithType: Packet.MarkBroadcastDestination
+- uid: Engine.Packets.Packet.MessageId
+  name: MessageId
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_MessageId
+  commentId: P:Engine.Packets.Packet.MessageId
+  fullName: Engine.Packets.Packet.MessageId
+  nameWithType: Packet.MessageId
+- uid: Engine.Packets.Packet.MessageId*
+  name: MessageId
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_MessageId_
+  commentId: Overload:Engine.Packets.Packet.MessageId
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.MessageId
+  nameWithType: Packet.MessageId
+- uid: Engine.Packets.Packet.MessageType
+  name: MessageType
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_MessageType
+  commentId: P:Engine.Packets.Packet.MessageType
+  fullName: Engine.Packets.Packet.MessageType
+  nameWithType: Packet.MessageType
+- uid: Engine.Packets.Packet.MessageType*
+  name: MessageType
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_MessageType_
+  commentId: Overload:Engine.Packets.Packet.MessageType
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.MessageType
+  nameWithType: Packet.MessageType
 - uid: Engine.Packets.Packet.NeedConfirmation
   name: NeedConfirmation
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_NeedConfirmation
@@ -1700,6 +2714,25 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.OriginId
   nameWithType: Packet.OriginId
+- uid: Engine.Packets.Packet.OriginMac
+  name: OriginMac
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_OriginMac
+  commentId: P:Engine.Packets.Packet.OriginMac
+  fullName: Engine.Packets.Packet.OriginMac
+  nameWithType: Packet.OriginMac
+- uid: Engine.Packets.Packet.OriginMac*
+  name: OriginMac
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_OriginMac_
+  commentId: Overload:Engine.Packets.Packet.OriginMac
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.OriginMac
+  nameWithType: Packet.OriginMac
+- uid: Engine.Packets.Packet.PROTOCOL_VERSION
+  name: PROTOCOL_VERSION
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_PROTOCOL_VERSION
+  commentId: F:Engine.Packets.Packet.PROTOCOL_VERSION
+  fullName: Engine.Packets.Packet.PROTOCOL_VERSION
+  nameWithType: Packet.PROTOCOL_VERSION
 - uid: Engine.Packets.Packet.Payload
   name: Payload
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Payload
@@ -1726,6 +2759,38 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.PreviousHop
   nameWithType: Packet.PreviousHop
+- uid: Engine.Packets.Packet.PreviousHopMac
+  name: PreviousHopMac
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_PreviousHopMac
+  commentId: P:Engine.Packets.Packet.PreviousHopMac
+  fullName: Engine.Packets.Packet.PreviousHopMac
+  nameWithType: Packet.PreviousHopMac
+- uid: Engine.Packets.Packet.PreviousHopMac*
+  name: PreviousHopMac
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_PreviousHopMac_
+  commentId: Overload:Engine.Packets.Packet.PreviousHopMac
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.PreviousHopMac
+  nameWithType: Packet.PreviousHopMac
+- uid: Engine.Packets.Packet.Sequence
+  name: Sequence
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Sequence
+  commentId: P:Engine.Packets.Packet.Sequence
+  fullName: Engine.Packets.Packet.Sequence
+  nameWithType: Packet.Sequence
+- uid: Engine.Packets.Packet.Sequence*
+  name: Sequence
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Sequence_
+  commentId: Overload:Engine.Packets.Packet.Sequence
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.Sequence
+  nameWithType: Packet.Sequence
+- uid: Engine.Packets.Packet.TAG_LENGTH
+  name: TAG_LENGTH
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_TAG_LENGTH
+  commentId: F:Engine.Packets.Packet.TAG_LENGTH
+  fullName: Engine.Packets.Packet.TAG_LENGTH
+  nameWithType: Packet.TAG_LENGTH
 - uid: Engine.Packets.Packet.TTL
   name: TTL
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_TTL
@@ -1739,6 +2804,19 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.TTL
   nameWithType: Packet.TTL
+- uid: Engine.Packets.Packet.Tag
+  name: Tag
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Tag
+  commentId: P:Engine.Packets.Packet.Tag
+  fullName: Engine.Packets.Packet.Tag
+  nameWithType: Packet.Tag
+- uid: Engine.Packets.Packet.Tag*
+  name: Tag
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Tag_
+  commentId: Overload:Engine.Packets.Packet.Tag
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.Tag
+  nameWithType: Packet.Tag
 - uid: Engine.Packets.Packet.TicksToTravel
   name: TicksToTravel
   href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_TicksToTravel
@@ -1765,6 +2843,168 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.Packet.To
   nameWithType: Packet.To
+- uid: Engine.Packets.Packet.UpdateTag(System.ReadOnlySpan{System.Byte})
+  name: UpdateTag(ReadOnlySpan<byte>)
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_UpdateTag_System_ReadOnlySpan_System_Byte__
+  commentId: M:Engine.Packets.Packet.UpdateTag(System.ReadOnlySpan{System.Byte})
+  name.vb: UpdateTag(ReadOnlySpan(Of Byte))
+  fullName: Engine.Packets.Packet.UpdateTag(System.ReadOnlySpan<byte>)
+  fullName.vb: Engine.Packets.Packet.UpdateTag(System.ReadOnlySpan(Of Byte))
+  nameWithType: Packet.UpdateTag(ReadOnlySpan<byte>)
+  nameWithType.vb: Packet.UpdateTag(ReadOnlySpan(Of Byte))
+- uid: Engine.Packets.Packet.UpdateTag*
+  name: UpdateTag
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_UpdateTag_
+  commentId: Overload:Engine.Packets.Packet.UpdateTag
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.UpdateTag
+  nameWithType: Packet.UpdateTag
+- uid: Engine.Packets.Packet.ValidateTag(System.ReadOnlySpan{System.Byte})
+  name: ValidateTag(ReadOnlySpan<byte>)
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_ValidateTag_System_ReadOnlySpan_System_Byte__
+  commentId: M:Engine.Packets.Packet.ValidateTag(System.ReadOnlySpan{System.Byte})
+  name.vb: ValidateTag(ReadOnlySpan(Of Byte))
+  fullName: Engine.Packets.Packet.ValidateTag(System.ReadOnlySpan<byte>)
+  fullName.vb: Engine.Packets.Packet.ValidateTag(System.ReadOnlySpan(Of Byte))
+  nameWithType: Packet.ValidateTag(ReadOnlySpan<byte>)
+  nameWithType.vb: Packet.ValidateTag(ReadOnlySpan(Of Byte))
+- uid: Engine.Packets.Packet.ValidateTag*
+  name: ValidateTag
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_ValidateTag_
+  commentId: Overload:Engine.Packets.Packet.ValidateTag
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.ValidateTag
+  nameWithType: Packet.ValidateTag
+- uid: Engine.Packets.Packet.Version
+  name: Version
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Version
+  commentId: P:Engine.Packets.Packet.Version
+  fullName: Engine.Packets.Packet.Version
+  nameWithType: Packet.Version
+- uid: Engine.Packets.Packet.Version*
+  name: Version
+  href: api/Engine.Packets.Packet.html#Engine_Packets_Packet_Version_
+  commentId: Overload:Engine.Packets.Packet.Version
+  isSpec: "True"
+  fullName: Engine.Packets.Packet.Version
+  nameWithType: Packet.Version
+- uid: Engine.Packets.PacketAddress
+  name: PacketAddress
+  href: api/Engine.Packets.PacketAddress.html
+  commentId: T:Engine.Packets.PacketAddress
+  fullName: Engine.Packets.PacketAddress
+  nameWithType: PacketAddress
+- uid: Engine.Packets.PacketAddress.AddressLength
+  name: AddressLength
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_AddressLength
+  commentId: F:Engine.Packets.PacketAddress.AddressLength
+  fullName: Engine.Packets.PacketAddress.AddressLength
+  nameWithType: PacketAddress.AddressLength
+- uid: Engine.Packets.PacketAddress.Broadcast
+  name: Broadcast
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_Broadcast
+  commentId: F:Engine.Packets.PacketAddress.Broadcast
+  fullName: Engine.Packets.PacketAddress.Broadcast
+  nameWithType: PacketAddress.Broadcast
+- uid: Engine.Packets.PacketAddress.Clone(System.ReadOnlySpan{System.Byte})
+  name: Clone(ReadOnlySpan<byte>)
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_Clone_System_ReadOnlySpan_System_Byte__
+  commentId: M:Engine.Packets.PacketAddress.Clone(System.ReadOnlySpan{System.Byte})
+  name.vb: Clone(ReadOnlySpan(Of Byte))
+  fullName: Engine.Packets.PacketAddress.Clone(System.ReadOnlySpan<byte>)
+  fullName.vb: Engine.Packets.PacketAddress.Clone(System.ReadOnlySpan(Of Byte))
+  nameWithType: PacketAddress.Clone(ReadOnlySpan<byte>)
+  nameWithType.vb: PacketAddress.Clone(ReadOnlySpan(Of Byte))
+- uid: Engine.Packets.PacketAddress.Clone*
+  name: Clone
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_Clone_
+  commentId: Overload:Engine.Packets.PacketAddress.Clone
+  isSpec: "True"
+  fullName: Engine.Packets.PacketAddress.Clone
+  nameWithType: PacketAddress.Clone
+- uid: Engine.Packets.PacketAddress.Compare(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  name: Compare(ReadOnlySpan<byte>, ReadOnlySpan<byte>)
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_Compare_System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__
+  commentId: M:Engine.Packets.PacketAddress.Compare(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  name.vb: Compare(ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+  fullName: Engine.Packets.PacketAddress.Compare(System.ReadOnlySpan<byte>, System.ReadOnlySpan<byte>)
+  fullName.vb: Engine.Packets.PacketAddress.Compare(System.ReadOnlySpan(Of Byte), System.ReadOnlySpan(Of Byte))
+  nameWithType: PacketAddress.Compare(ReadOnlySpan<byte>, ReadOnlySpan<byte>)
+  nameWithType.vb: PacketAddress.Compare(ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+- uid: Engine.Packets.PacketAddress.Compare*
+  name: Compare
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_Compare_
+  commentId: Overload:Engine.Packets.PacketAddress.Compare
+  isSpec: "True"
+  fullName: Engine.Packets.PacketAddress.Compare
+  nameWithType: PacketAddress.Compare
+- uid: Engine.Packets.PacketAddress.Empty
+  name: Empty
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_Empty
+  commentId: F:Engine.Packets.PacketAddress.Empty
+  fullName: Engine.Packets.PacketAddress.Empty
+  nameWithType: PacketAddress.Empty
+- uid: Engine.Packets.PacketAddress.EqualsMac(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  name: EqualsMac(ReadOnlySpan<byte>, ReadOnlySpan<byte>)
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_EqualsMac_System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__
+  commentId: M:Engine.Packets.PacketAddress.EqualsMac(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  name.vb: EqualsMac(ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+  fullName: Engine.Packets.PacketAddress.EqualsMac(System.ReadOnlySpan<byte>, System.ReadOnlySpan<byte>)
+  fullName.vb: Engine.Packets.PacketAddress.EqualsMac(System.ReadOnlySpan(Of Byte), System.ReadOnlySpan(Of Byte))
+  nameWithType: PacketAddress.EqualsMac(ReadOnlySpan<byte>, ReadOnlySpan<byte>)
+  nameWithType.vb: PacketAddress.EqualsMac(ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+- uid: Engine.Packets.PacketAddress.EqualsMac*
+  name: EqualsMac
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_EqualsMac_
+  commentId: Overload:Engine.Packets.PacketAddress.EqualsMac
+  isSpec: "True"
+  fullName: Engine.Packets.PacketAddress.EqualsMac
+  nameWithType: PacketAddress.EqualsMac
+- uid: Engine.Packets.PacketAddress.FromGuid(System.Guid)
+  name: FromGuid(Guid)
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_FromGuid_System_Guid_
+  commentId: M:Engine.Packets.PacketAddress.FromGuid(System.Guid)
+  fullName: Engine.Packets.PacketAddress.FromGuid(System.Guid)
+  nameWithType: PacketAddress.FromGuid(Guid)
+- uid: Engine.Packets.PacketAddress.FromGuid*
+  name: FromGuid
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_FromGuid_
+  commentId: Overload:Engine.Packets.PacketAddress.FromGuid
+  isSpec: "True"
+  fullName: Engine.Packets.PacketAddress.FromGuid
+  nameWithType: PacketAddress.FromGuid
+- uid: Engine.Packets.PacketAddress.IsBroadcast(System.ReadOnlySpan{System.Byte})
+  name: IsBroadcast(ReadOnlySpan<byte>)
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_IsBroadcast_System_ReadOnlySpan_System_Byte__
+  commentId: M:Engine.Packets.PacketAddress.IsBroadcast(System.ReadOnlySpan{System.Byte})
+  name.vb: IsBroadcast(ReadOnlySpan(Of Byte))
+  fullName: Engine.Packets.PacketAddress.IsBroadcast(System.ReadOnlySpan<byte>)
+  fullName.vb: Engine.Packets.PacketAddress.IsBroadcast(System.ReadOnlySpan(Of Byte))
+  nameWithType: PacketAddress.IsBroadcast(ReadOnlySpan<byte>)
+  nameWithType.vb: PacketAddress.IsBroadcast(ReadOnlySpan(Of Byte))
+- uid: Engine.Packets.PacketAddress.IsBroadcast*
+  name: IsBroadcast
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_IsBroadcast_
+  commentId: Overload:Engine.Packets.PacketAddress.IsBroadcast
+  isSpec: "True"
+  fullName: Engine.Packets.PacketAddress.IsBroadcast
+  nameWithType: PacketAddress.IsBroadcast
+- uid: Engine.Packets.PacketAddress.ToKey(System.ReadOnlySpan{System.Byte})
+  name: ToKey(ReadOnlySpan<byte>)
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_ToKey_System_ReadOnlySpan_System_Byte__
+  commentId: M:Engine.Packets.PacketAddress.ToKey(System.ReadOnlySpan{System.Byte})
+  name.vb: ToKey(ReadOnlySpan(Of Byte))
+  fullName: Engine.Packets.PacketAddress.ToKey(System.ReadOnlySpan<byte>)
+  fullName.vb: Engine.Packets.PacketAddress.ToKey(System.ReadOnlySpan(Of Byte))
+  nameWithType: PacketAddress.ToKey(ReadOnlySpan<byte>)
+  nameWithType.vb: PacketAddress.ToKey(ReadOnlySpan(Of Byte))
+- uid: Engine.Packets.PacketAddress.ToKey*
+  name: ToKey
+  href: api/Engine.Packets.PacketAddress.html#Engine_Packets_PacketAddress_ToKey_
+  commentId: Overload:Engine.Packets.PacketAddress.ToKey
+  isSpec: "True"
+  fullName: Engine.Packets.PacketAddress.ToKey
+  nameWithType: PacketAddress.ToKey
 - uid: Engine.Packets.PacketData
   name: PacketData
   href: api/Engine.Packets.PacketData.html
@@ -1784,6 +3024,144 @@ references:
   isSpec: "True"
   fullName: Engine.Packets.PacketData.Data
   nameWithType: PacketData.Data
+- uid: Engine.Packets.PacketDirection
+  name: PacketDirection
+  href: api/Engine.Packets.PacketDirection.html
+  commentId: T:Engine.Packets.PacketDirection
+  fullName: Engine.Packets.PacketDirection
+  nameWithType: PacketDirection
+- uid: Engine.Packets.PacketDirection.Down
+  name: Down
+  href: api/Engine.Packets.PacketDirection.html#Engine_Packets_PacketDirection_Down
+  commentId: F:Engine.Packets.PacketDirection.Down
+  fullName: Engine.Packets.PacketDirection.Down
+  nameWithType: PacketDirection.Down
+- uid: Engine.Packets.PacketDirection.Up
+  name: Up
+  href: api/Engine.Packets.PacketDirection.html#Engine_Packets_PacketDirection_Up
+  commentId: F:Engine.Packets.PacketDirection.Up
+  fullName: Engine.Packets.PacketDirection.Up
+  nameWithType: PacketDirection.Up
+- uid: Engine.Packets.SwarmMessageType
+  name: SwarmMessageType
+  href: api/Engine.Packets.SwarmMessageType.html
+  commentId: T:Engine.Packets.SwarmMessageType
+  fullName: Engine.Packets.SwarmMessageType
+  nameWithType: SwarmMessageType
+- uid: Engine.Packets.SwarmMessageType.ACK
+  name: ACK
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_ACK
+  commentId: F:Engine.Packets.SwarmMessageType.ACK
+  fullName: Engine.Packets.SwarmMessageType.ACK
+  nameWithType: SwarmMessageType.ACK
+- uid: Engine.Packets.SwarmMessageType.BEACON
+  name: BEACON
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_BEACON
+  commentId: F:Engine.Packets.SwarmMessageType.BEACON
+  fullName: Engine.Packets.SwarmMessageType.BEACON
+  nameWithType: SwarmMessageType.BEACON
+- uid: Engine.Packets.SwarmMessageType.DECAY
+  name: DECAY
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_DECAY
+  commentId: F:Engine.Packets.SwarmMessageType.DECAY
+  fullName: Engine.Packets.SwarmMessageType.DECAY
+  nameWithType: SwarmMessageType.DECAY
+- uid: Engine.Packets.SwarmMessageType.FIND
+  name: FIND
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_FIND
+  commentId: F:Engine.Packets.SwarmMessageType.FIND
+  fullName: Engine.Packets.SwarmMessageType.FIND
+  nameWithType: SwarmMessageType.FIND
+- uid: Engine.Packets.SwarmMessageType.FRAG
+  name: FRAG
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_FRAG
+  commentId: F:Engine.Packets.SwarmMessageType.FRAG
+  fullName: Engine.Packets.SwarmMessageType.FRAG
+  nameWithType: SwarmMessageType.FRAG
+- uid: Engine.Packets.SwarmMessageType.HELLO
+  name: HELLO
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_HELLO
+  commentId: F:Engine.Packets.SwarmMessageType.HELLO
+  fullName: Engine.Packets.SwarmMessageType.HELLO
+  nameWithType: SwarmMessageType.HELLO
+- uid: Engine.Packets.SwarmMessageType.IO_EVENT
+  name: IO_EVENT
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_IO_EVENT
+  commentId: F:Engine.Packets.SwarmMessageType.IO_EVENT
+  fullName: Engine.Packets.SwarmMessageType.IO_EVENT
+  nameWithType: SwarmMessageType.IO_EVENT
+- uid: Engine.Packets.SwarmMessageType.IO_GET
+  name: IO_GET
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_IO_GET
+  commentId: F:Engine.Packets.SwarmMessageType.IO_GET
+  fullName: Engine.Packets.SwarmMessageType.IO_GET
+  nameWithType: SwarmMessageType.IO_GET
+- uid: Engine.Packets.SwarmMessageType.IO_GET_R
+  name: IO_GET_R
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_IO_GET_R
+  commentId: F:Engine.Packets.SwarmMessageType.IO_GET_R
+  fullName: Engine.Packets.SwarmMessageType.IO_GET_R
+  nameWithType: SwarmMessageType.IO_GET_R
+- uid: Engine.Packets.SwarmMessageType.IO_SET
+  name: IO_SET
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_IO_SET
+  commentId: F:Engine.Packets.SwarmMessageType.IO_SET
+  fullName: Engine.Packets.SwarmMessageType.IO_SET
+  nameWithType: SwarmMessageType.IO_SET
+- uid: Engine.Packets.SwarmMessageType.IO_SET_R
+  name: IO_SET_R
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_IO_SET_R
+  commentId: F:Engine.Packets.SwarmMessageType.IO_SET_R
+  fullName: Engine.Packets.SwarmMessageType.IO_SET_R
+  nameWithType: SwarmMessageType.IO_SET_R
+- uid: Engine.Packets.SwarmMessageType.PONG
+  name: PONG
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_PONG
+  commentId: F:Engine.Packets.SwarmMessageType.PONG
+  fullName: Engine.Packets.SwarmMessageType.PONG
+  nameWithType: SwarmMessageType.PONG
+- uid: Engine.Packets.SwarmMessageType.PROTO
+  name: PROTO
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_PROTO
+  commentId: F:Engine.Packets.SwarmMessageType.PROTO
+  fullName: Engine.Packets.SwarmMessageType.PROTO
+  nameWithType: SwarmMessageType.PROTO
+- uid: Engine.Packets.SwarmMessageType.PROTO_R
+  name: PROTO_R
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_PROTO_R
+  commentId: F:Engine.Packets.SwarmMessageType.PROTO_R
+  fullName: Engine.Packets.SwarmMessageType.PROTO_R
+  nameWithType: SwarmMessageType.PROTO_R
+- uid: Engine.Packets.SwarmMessageType.PULL
+  name: PULL
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_PULL
+  commentId: F:Engine.Packets.SwarmMessageType.PULL
+  fullName: Engine.Packets.SwarmMessageType.PULL
+  nameWithType: SwarmMessageType.PULL
+- uid: Engine.Packets.SwarmMessageType.PULL_R
+  name: PULL_R
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_PULL_R
+  commentId: F:Engine.Packets.SwarmMessageType.PULL_R
+  fullName: Engine.Packets.SwarmMessageType.PULL_R
+  nameWithType: SwarmMessageType.PULL_R
+- uid: Engine.Packets.SwarmMessageType.START
+  name: START
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_START
+  commentId: F:Engine.Packets.SwarmMessageType.START
+  fullName: Engine.Packets.SwarmMessageType.START
+  nameWithType: SwarmMessageType.START
+- uid: Engine.Packets.SwarmMessageType.VERIFY
+  name: VERIFY
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_VERIFY
+  commentId: F:Engine.Packets.SwarmMessageType.VERIFY
+  fullName: Engine.Packets.SwarmMessageType.VERIFY
+  nameWithType: SwarmMessageType.VERIFY
+- uid: Engine.Packets.SwarmMessageType.WAKE
+  name: WAKE
+  href: api/Engine.Packets.SwarmMessageType.html#Engine_Packets_SwarmMessageType_WAKE
+  commentId: F:Engine.Packets.SwarmMessageType.WAKE
+  fullName: Engine.Packets.SwarmMessageType.WAKE
+  nameWithType: SwarmMessageType.WAKE
 - uid: Engine.Routers
   name: Engine.Routers
   href: api/Engine.Routers.html
@@ -2040,6 +3418,108 @@ references:
   isSpec: "True"
   fullName: Engine.Routers.IPacketRouter.Route
   nameWithType: IPacketRouter.Route
+- uid: Engine.Routers.KNearestNetworkBuilder
+  name: KNearestNetworkBuilder
+  href: api/Engine.Routers.KNearestNetworkBuilder.html
+  commentId: T:Engine.Routers.KNearestNetworkBuilder
+  fullName: Engine.Routers.KNearestNetworkBuilder
+  nameWithType: KNearestNetworkBuilder
+- uid: Engine.Routers.KNearestNetworkBuilder.#ctor(System.Int32)
+  name: KNearestNetworkBuilder(int)
+  href: api/Engine.Routers.KNearestNetworkBuilder.html#Engine_Routers_KNearestNetworkBuilder__ctor_System_Int32_
+  commentId: M:Engine.Routers.KNearestNetworkBuilder.#ctor(System.Int32)
+  name.vb: New(Integer)
+  fullName: Engine.Routers.KNearestNetworkBuilder.KNearestNetworkBuilder(int)
+  fullName.vb: Engine.Routers.KNearestNetworkBuilder.New(Integer)
+  nameWithType: KNearestNetworkBuilder.KNearestNetworkBuilder(int)
+  nameWithType.vb: KNearestNetworkBuilder.New(Integer)
+- uid: Engine.Routers.KNearestNetworkBuilder.#ctor*
+  name: KNearestNetworkBuilder
+  href: api/Engine.Routers.KNearestNetworkBuilder.html#Engine_Routers_KNearestNetworkBuilder__ctor_
+  commentId: Overload:Engine.Routers.KNearestNetworkBuilder.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Engine.Routers.KNearestNetworkBuilder.KNearestNetworkBuilder
+  fullName.vb: Engine.Routers.KNearestNetworkBuilder.New
+  nameWithType: KNearestNetworkBuilder.KNearestNetworkBuilder
+  nameWithType.vb: KNearestNetworkBuilder.New
+- uid: Engine.Routers.KNearestNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList{Engine.Devices.Device},Engine.Routers.IMutableNetworkTopology)
+  name: Build(IReadOnlyList<Device>, IMutableNetworkTopology)
+  href: api/Engine.Routers.KNearestNetworkBuilder.html#Engine_Routers_KNearestNetworkBuilder_Build_System_Collections_Generic_IReadOnlyList_Engine_Devices_Device__Engine_Routers_IMutableNetworkTopology_
+  commentId: M:Engine.Routers.KNearestNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList{Engine.Devices.Device},Engine.Routers.IMutableNetworkTopology)
+  name.vb: Build(IReadOnlyList(Of Device), IMutableNetworkTopology)
+  fullName: Engine.Routers.KNearestNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList<Engine.Devices.Device>, Engine.Routers.IMutableNetworkTopology)
+  fullName.vb: Engine.Routers.KNearestNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList(Of Engine.Devices.Device), Engine.Routers.IMutableNetworkTopology)
+  nameWithType: KNearestNetworkBuilder.Build(IReadOnlyList<Device>, IMutableNetworkTopology)
+  nameWithType.vb: KNearestNetworkBuilder.Build(IReadOnlyList(Of Device), IMutableNetworkTopology)
+- uid: Engine.Routers.KNearestNetworkBuilder.Build*
+  name: Build
+  href: api/Engine.Routers.KNearestNetworkBuilder.html#Engine_Routers_KNearestNetworkBuilder_Build_
+  commentId: Overload:Engine.Routers.KNearestNetworkBuilder.Build
+  isSpec: "True"
+  fullName: Engine.Routers.KNearestNetworkBuilder.Build
+  nameWithType: KNearestNetworkBuilder.Build
+- uid: Engine.Routers.KNearestNetworkBuilder.MaxDegree
+  name: MaxDegree
+  href: api/Engine.Routers.KNearestNetworkBuilder.html#Engine_Routers_KNearestNetworkBuilder_MaxDegree
+  commentId: P:Engine.Routers.KNearestNetworkBuilder.MaxDegree
+  fullName: Engine.Routers.KNearestNetworkBuilder.MaxDegree
+  nameWithType: KNearestNetworkBuilder.MaxDegree
+- uid: Engine.Routers.KNearestNetworkBuilder.MaxDegree*
+  name: MaxDegree
+  href: api/Engine.Routers.KNearestNetworkBuilder.html#Engine_Routers_KNearestNetworkBuilder_MaxDegree_
+  commentId: Overload:Engine.Routers.KNearestNetworkBuilder.MaxDegree
+  isSpec: "True"
+  fullName: Engine.Routers.KNearestNetworkBuilder.MaxDegree
+  nameWithType: KNearestNetworkBuilder.MaxDegree
+- uid: Engine.Routers.KNearestNetworkBuilder.Name
+  name: Name
+  href: api/Engine.Routers.KNearestNetworkBuilder.html#Engine_Routers_KNearestNetworkBuilder_Name
+  commentId: P:Engine.Routers.KNearestNetworkBuilder.Name
+  fullName: Engine.Routers.KNearestNetworkBuilder.Name
+  nameWithType: KNearestNetworkBuilder.Name
+- uid: Engine.Routers.KNearestNetworkBuilder.Name*
+  name: Name
+  href: api/Engine.Routers.KNearestNetworkBuilder.html#Engine_Routers_KNearestNetworkBuilder_Name_
+  commentId: Overload:Engine.Routers.KNearestNetworkBuilder.Name
+  isSpec: "True"
+  fullName: Engine.Routers.KNearestNetworkBuilder.Name
+  nameWithType: KNearestNetworkBuilder.Name
+- uid: Engine.Routers.MinimumSpanningTreeNetworkBuilder
+  name: MinimumSpanningTreeNetworkBuilder
+  href: api/Engine.Routers.MinimumSpanningTreeNetworkBuilder.html
+  commentId: T:Engine.Routers.MinimumSpanningTreeNetworkBuilder
+  fullName: Engine.Routers.MinimumSpanningTreeNetworkBuilder
+  nameWithType: MinimumSpanningTreeNetworkBuilder
+- uid: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList{Engine.Devices.Device},Engine.Routers.IMutableNetworkTopology)
+  name: Build(IReadOnlyList<Device>, IMutableNetworkTopology)
+  href: api/Engine.Routers.MinimumSpanningTreeNetworkBuilder.html#Engine_Routers_MinimumSpanningTreeNetworkBuilder_Build_System_Collections_Generic_IReadOnlyList_Engine_Devices_Device__Engine_Routers_IMutableNetworkTopology_
+  commentId: M:Engine.Routers.MinimumSpanningTreeNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList{Engine.Devices.Device},Engine.Routers.IMutableNetworkTopology)
+  name.vb: Build(IReadOnlyList(Of Device), IMutableNetworkTopology)
+  fullName: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList<Engine.Devices.Device>, Engine.Routers.IMutableNetworkTopology)
+  fullName.vb: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Build(System.Collections.Generic.IReadOnlyList(Of Engine.Devices.Device), Engine.Routers.IMutableNetworkTopology)
+  nameWithType: MinimumSpanningTreeNetworkBuilder.Build(IReadOnlyList<Device>, IMutableNetworkTopology)
+  nameWithType.vb: MinimumSpanningTreeNetworkBuilder.Build(IReadOnlyList(Of Device), IMutableNetworkTopology)
+- uid: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Build*
+  name: Build
+  href: api/Engine.Routers.MinimumSpanningTreeNetworkBuilder.html#Engine_Routers_MinimumSpanningTreeNetworkBuilder_Build_
+  commentId: Overload:Engine.Routers.MinimumSpanningTreeNetworkBuilder.Build
+  isSpec: "True"
+  fullName: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Build
+  nameWithType: MinimumSpanningTreeNetworkBuilder.Build
+- uid: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Name
+  name: Name
+  href: api/Engine.Routers.MinimumSpanningTreeNetworkBuilder.html#Engine_Routers_MinimumSpanningTreeNetworkBuilder_Name
+  commentId: P:Engine.Routers.MinimumSpanningTreeNetworkBuilder.Name
+  fullName: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Name
+  nameWithType: MinimumSpanningTreeNetworkBuilder.Name
+- uid: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Name*
+  name: Name
+  href: api/Engine.Routers.MinimumSpanningTreeNetworkBuilder.html#Engine_Routers_MinimumSpanningTreeNetworkBuilder_Name_
+  commentId: Overload:Engine.Routers.MinimumSpanningTreeNetworkBuilder.Name
+  isSpec: "True"
+  fullName: Engine.Routers.MinimumSpanningTreeNetworkBuilder.Name
+  nameWithType: MinimumSpanningTreeNetworkBuilder.Name
 - uid: Engine.Routers.NetworkTopology
   name: NetworkTopology
   href: api/Engine.Routers.NetworkTopology.html
@@ -2201,6 +3681,252 @@ references:
   isSpec: "True"
   fullName: Engine.Routers.SmartFloodingPacketRouter.Route
   nameWithType: SmartFloodingPacketRouter.Route
+- uid: Engine.Routers.SwarmProtocolPacketRouter
+  name: SwarmProtocolPacketRouter
+  href: api/Engine.Routers.SwarmProtocolPacketRouter.html
+  commentId: T:Engine.Routers.SwarmProtocolPacketRouter
+  fullName: Engine.Routers.SwarmProtocolPacketRouter
+  nameWithType: SwarmProtocolPacketRouter
+- uid: Engine.Routers.SwarmProtocolPacketRouter.Name
+  name: Name
+  href: api/Engine.Routers.SwarmProtocolPacketRouter.html#Engine_Routers_SwarmProtocolPacketRouter_Name
+  commentId: P:Engine.Routers.SwarmProtocolPacketRouter.Name
+  fullName: Engine.Routers.SwarmProtocolPacketRouter.Name
+  nameWithType: SwarmProtocolPacketRouter.Name
+- uid: Engine.Routers.SwarmProtocolPacketRouter.Name*
+  name: Name
+  href: api/Engine.Routers.SwarmProtocolPacketRouter.html#Engine_Routers_SwarmProtocolPacketRouter_Name_
+  commentId: Overload:Engine.Routers.SwarmProtocolPacketRouter.Name
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolPacketRouter.Name
+  nameWithType: SwarmProtocolPacketRouter.Name
+- uid: Engine.Routers.SwarmProtocolPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)
+  name: Route(Packet, Device, INetworkTopology)
+  href: api/Engine.Routers.SwarmProtocolPacketRouter.html#Engine_Routers_SwarmProtocolPacketRouter_Route_Engine_Packets_Packet_Engine_Devices_Device_Engine_Routers_INetworkTopology_
+  commentId: M:Engine.Routers.SwarmProtocolPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)
+  fullName: Engine.Routers.SwarmProtocolPacketRouter.Route(Engine.Packets.Packet, Engine.Devices.Device, Engine.Routers.INetworkTopology)
+  nameWithType: SwarmProtocolPacketRouter.Route(Packet, Device, INetworkTopology)
+- uid: Engine.Routers.SwarmProtocolPacketRouter.Route*
+  name: Route
+  href: api/Engine.Routers.SwarmProtocolPacketRouter.html#Engine_Routers_SwarmProtocolPacketRouter_Route_
+  commentId: Overload:Engine.Routers.SwarmProtocolPacketRouter.Route
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolPacketRouter.Route
+  nameWithType: SwarmProtocolPacketRouter.Route
+- uid: Engine.Routers.SwarmProtocolVector
+  name: SwarmProtocolVector
+  href: api/Engine.Routers.SwarmProtocolVector.html
+  commentId: T:Engine.Routers.SwarmProtocolVector
+  fullName: Engine.Routers.SwarmProtocolVector
+  nameWithType: SwarmProtocolVector
+- uid: Engine.Routers.SwarmProtocolVector.ChargeDropPerHop
+  name: ChargeDropPerHop
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_ChargeDropPerHop
+  commentId: P:Engine.Routers.SwarmProtocolVector.ChargeDropPerHop
+  fullName: Engine.Routers.SwarmProtocolVector.ChargeDropPerHop
+  nameWithType: SwarmProtocolVector.ChargeDropPerHop
+- uid: Engine.Routers.SwarmProtocolVector.ChargeDropPerHop*
+  name: ChargeDropPerHop
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_ChargeDropPerHop_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.ChargeDropPerHop
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.ChargeDropPerHop
+  nameWithType: SwarmProtocolVector.ChargeDropPerHop
+- uid: Engine.Routers.SwarmProtocolVector.ChargeSpreadFactor
+  name: ChargeSpreadFactor
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_ChargeSpreadFactor
+  commentId: P:Engine.Routers.SwarmProtocolVector.ChargeSpreadFactor
+  fullName: Engine.Routers.SwarmProtocolVector.ChargeSpreadFactor
+  nameWithType: SwarmProtocolVector.ChargeSpreadFactor
+- uid: Engine.Routers.SwarmProtocolVector.ChargeSpreadFactor*
+  name: ChargeSpreadFactor
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_ChargeSpreadFactor_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.ChargeSpreadFactor
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.ChargeSpreadFactor
+  nameWithType: SwarmProtocolVector.ChargeSpreadFactor
+- uid: Engine.Routers.SwarmProtocolVector.Clone
+  name: Clone()
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_Clone
+  commentId: M:Engine.Routers.SwarmProtocolVector.Clone
+  fullName: Engine.Routers.SwarmProtocolVector.Clone()
+  nameWithType: SwarmProtocolVector.Clone()
+- uid: Engine.Routers.SwarmProtocolVector.Clone*
+  name: Clone
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_Clone_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.Clone
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.Clone
+  nameWithType: SwarmProtocolVector.Clone
+- uid: Engine.Routers.SwarmProtocolVector.DecayIntervalSteps
+  name: DecayIntervalSteps
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_DecayIntervalSteps
+  commentId: P:Engine.Routers.SwarmProtocolVector.DecayIntervalSteps
+  fullName: Engine.Routers.SwarmProtocolVector.DecayIntervalSteps
+  nameWithType: SwarmProtocolVector.DecayIntervalSteps
+- uid: Engine.Routers.SwarmProtocolVector.DecayIntervalSteps*
+  name: DecayIntervalSteps
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_DecayIntervalSteps_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.DecayIntervalSteps
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.DecayIntervalSteps
+  nameWithType: SwarmProtocolVector.DecayIntervalSteps
+- uid: Engine.Routers.SwarmProtocolVector.DecayPercent
+  name: DecayPercent
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_DecayPercent
+  commentId: P:Engine.Routers.SwarmProtocolVector.DecayPercent
+  fullName: Engine.Routers.SwarmProtocolVector.DecayPercent
+  nameWithType: SwarmProtocolVector.DecayPercent
+- uid: Engine.Routers.SwarmProtocolVector.DecayPercent*
+  name: DecayPercent
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_DecayPercent_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.DecayPercent
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.DecayPercent
+  nameWithType: SwarmProtocolVector.DecayPercent
+- uid: Engine.Routers.SwarmProtocolVector.LinkBonusMax
+  name: LinkBonusMax
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_LinkBonusMax
+  commentId: P:Engine.Routers.SwarmProtocolVector.LinkBonusMax
+  fullName: Engine.Routers.SwarmProtocolVector.LinkBonusMax
+  nameWithType: SwarmProtocolVector.LinkBonusMax
+- uid: Engine.Routers.SwarmProtocolVector.LinkBonusMax*
+  name: LinkBonusMax
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_LinkBonusMax_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.LinkBonusMax
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.LinkBonusMax
+  nameWithType: SwarmProtocolVector.LinkBonusMax
+- uid: Engine.Routers.SwarmProtocolVector.LinkLearningRate
+  name: LinkLearningRate
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_LinkLearningRate
+  commentId: P:Engine.Routers.SwarmProtocolVector.LinkLearningRate
+  fullName: Engine.Routers.SwarmProtocolVector.LinkLearningRate
+  nameWithType: SwarmProtocolVector.LinkLearningRate
+- uid: Engine.Routers.SwarmProtocolVector.LinkLearningRate*
+  name: LinkLearningRate
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_LinkLearningRate_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.LinkLearningRate
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.LinkLearningRate
+  nameWithType: SwarmProtocolVector.LinkLearningRate
+- uid: Engine.Routers.SwarmProtocolVector.LinkMemory
+  name: LinkMemory
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_LinkMemory
+  commentId: P:Engine.Routers.SwarmProtocolVector.LinkMemory
+  fullName: Engine.Routers.SwarmProtocolVector.LinkMemory
+  nameWithType: SwarmProtocolVector.LinkMemory
+- uid: Engine.Routers.SwarmProtocolVector.LinkMemory*
+  name: LinkMemory
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_LinkMemory_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.LinkMemory
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.LinkMemory
+  nameWithType: SwarmProtocolVector.LinkMemory
+- uid: Engine.Routers.SwarmProtocolVector.NormalizeInPlace
+  name: NormalizeInPlace()
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_NormalizeInPlace
+  commentId: M:Engine.Routers.SwarmProtocolVector.NormalizeInPlace
+  fullName: Engine.Routers.SwarmProtocolVector.NormalizeInPlace()
+  nameWithType: SwarmProtocolVector.NormalizeInPlace()
+- uid: Engine.Routers.SwarmProtocolVector.NormalizeInPlace*
+  name: NormalizeInPlace
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_NormalizeInPlace_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.NormalizeInPlace
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.NormalizeInPlace
+  nameWithType: SwarmProtocolVector.NormalizeInPlace
+- uid: Engine.Routers.SwarmProtocolVector.Normalized
+  name: Normalized()
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_Normalized
+  commentId: M:Engine.Routers.SwarmProtocolVector.Normalized
+  fullName: Engine.Routers.SwarmProtocolVector.Normalized()
+  nameWithType: SwarmProtocolVector.Normalized()
+- uid: Engine.Routers.SwarmProtocolVector.Normalized*
+  name: Normalized
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_Normalized_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.Normalized
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.Normalized
+  nameWithType: SwarmProtocolVector.Normalized
+- uid: Engine.Routers.SwarmProtocolVector.ParentDeadTicks
+  name: ParentDeadTicks
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_ParentDeadTicks
+  commentId: P:Engine.Routers.SwarmProtocolVector.ParentDeadTicks
+  fullName: Engine.Routers.SwarmProtocolVector.ParentDeadTicks
+  nameWithType: SwarmProtocolVector.ParentDeadTicks
+- uid: Engine.Routers.SwarmProtocolVector.ParentDeadTicks*
+  name: ParentDeadTicks
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_ParentDeadTicks_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.ParentDeadTicks
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.ParentDeadTicks
+  nameWithType: SwarmProtocolVector.ParentDeadTicks
+- uid: Engine.Routers.SwarmProtocolVector.PenaltyLambda
+  name: PenaltyLambda
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_PenaltyLambda
+  commentId: P:Engine.Routers.SwarmProtocolVector.PenaltyLambda
+  fullName: Engine.Routers.SwarmProtocolVector.PenaltyLambda
+  nameWithType: SwarmProtocolVector.PenaltyLambda
+- uid: Engine.Routers.SwarmProtocolVector.PenaltyLambda*
+  name: PenaltyLambda
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_PenaltyLambda_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.PenaltyLambda
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.PenaltyLambda
+  nameWithType: SwarmProtocolVector.PenaltyLambda
+- uid: Engine.Routers.SwarmProtocolVector.QForward
+  name: QForward
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_QForward
+  commentId: P:Engine.Routers.SwarmProtocolVector.QForward
+  fullName: Engine.Routers.SwarmProtocolVector.QForward
+  nameWithType: SwarmProtocolVector.QForward
+- uid: Engine.Routers.SwarmProtocolVector.QForward*
+  name: QForward
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_QForward_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.QForward
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.QForward
+  nameWithType: SwarmProtocolVector.QForward
+- uid: Engine.Routers.SwarmProtocolVector.RootSourceCharge
+  name: RootSourceCharge
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_RootSourceCharge
+  commentId: P:Engine.Routers.SwarmProtocolVector.RootSourceCharge
+  fullName: Engine.Routers.SwarmProtocolVector.RootSourceCharge
+  nameWithType: SwarmProtocolVector.RootSourceCharge
+- uid: Engine.Routers.SwarmProtocolVector.RootSourceCharge*
+  name: RootSourceCharge
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_RootSourceCharge_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.RootSourceCharge
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.RootSourceCharge
+  nameWithType: SwarmProtocolVector.RootSourceCharge
+- uid: Engine.Routers.SwarmProtocolVector.SwitchHysteresis
+  name: SwitchHysteresis
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_SwitchHysteresis
+  commentId: P:Engine.Routers.SwarmProtocolVector.SwitchHysteresis
+  fullName: Engine.Routers.SwarmProtocolVector.SwitchHysteresis
+  nameWithType: SwarmProtocolVector.SwitchHysteresis
+- uid: Engine.Routers.SwarmProtocolVector.SwitchHysteresis*
+  name: SwitchHysteresis
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_SwitchHysteresis_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.SwitchHysteresis
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.SwitchHysteresis
+  nameWithType: SwarmProtocolVector.SwitchHysteresis
+- uid: Engine.Routers.SwarmProtocolVector.SwitchHysteresisRatio
+  name: SwitchHysteresisRatio
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_SwitchHysteresisRatio
+  commentId: P:Engine.Routers.SwarmProtocolVector.SwitchHysteresisRatio
+  fullName: Engine.Routers.SwarmProtocolVector.SwitchHysteresisRatio
+  nameWithType: SwarmProtocolVector.SwitchHysteresisRatio
+- uid: Engine.Routers.SwarmProtocolVector.SwitchHysteresisRatio*
+  name: SwitchHysteresisRatio
+  href: api/Engine.Routers.SwarmProtocolVector.html#Engine_Routers_SwarmProtocolVector_SwitchHysteresisRatio_
+  commentId: Overload:Engine.Routers.SwarmProtocolVector.SwitchHysteresisRatio
+  isSpec: "True"
+  fullName: Engine.Routers.SwarmProtocolVector.SwitchHysteresisRatio
+  nameWithType: SwarmProtocolVector.SwitchHysteresisRatio
 - uid: Engine.Statistics
   name: Engine.Statistics
   href: api/Engine.Statistics.html
@@ -2252,6 +3978,19 @@ references:
   isSpec: "True"
   fullName: Engine.Statistics.SimulationStatistics.AvgTickMs
   nameWithType: SimulationStatistics.AvgTickMs
+- uid: Engine.Statistics.SimulationStatistics.CreateIsolated(Engine.Core.SimulationEngine)
+  name: CreateIsolated(SimulationEngine)
+  href: api/Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_CreateIsolated_Engine_Core_SimulationEngine_
+  commentId: M:Engine.Statistics.SimulationStatistics.CreateIsolated(Engine.Core.SimulationEngine)
+  fullName: Engine.Statistics.SimulationStatistics.CreateIsolated(Engine.Core.SimulationEngine)
+  nameWithType: SimulationStatistics.CreateIsolated(SimulationEngine)
+- uid: Engine.Statistics.SimulationStatistics.CreateIsolated*
+  name: CreateIsolated
+  href: api/Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_CreateIsolated_
+  commentId: Overload:Engine.Statistics.SimulationStatistics.CreateIsolated
+  isSpec: "True"
+  fullName: Engine.Statistics.SimulationStatistics.CreateIsolated
+  nameWithType: SimulationStatistics.CreateIsolated
 - uid: Engine.Statistics.SimulationStatistics.DeliveryRate
   name: DeliveryRate
   href: api/Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_DeliveryRate
@@ -2352,6 +4091,19 @@ references:
   isSpec: "True"
   fullName: Engine.Statistics.SimulationStatistics.PlottableMetrics
   nameWithType: SimulationStatistics.PlottableMetrics
+- uid: Engine.Statistics.SimulationStatistics.PushScopedInstance(Engine.Statistics.SimulationStatistics)
+  name: PushScopedInstance(SimulationStatistics)
+  href: api/Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_PushScopedInstance_Engine_Statistics_SimulationStatistics_
+  commentId: M:Engine.Statistics.SimulationStatistics.PushScopedInstance(Engine.Statistics.SimulationStatistics)
+  fullName: Engine.Statistics.SimulationStatistics.PushScopedInstance(Engine.Statistics.SimulationStatistics)
+  nameWithType: SimulationStatistics.PushScopedInstance(SimulationStatistics)
+- uid: Engine.Statistics.SimulationStatistics.PushScopedInstance*
+  name: PushScopedInstance
+  href: api/Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_PushScopedInstance_
+  commentId: Overload:Engine.Statistics.SimulationStatistics.PushScopedInstance
+  isSpec: "True"
+  fullName: Engine.Statistics.SimulationStatistics.PushScopedInstance
+  nameWithType: SimulationStatistics.PushScopedInstance
 - uid: Engine.Statistics.SimulationStatistics.Reset
   name: Reset()
   href: api/Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_Reset

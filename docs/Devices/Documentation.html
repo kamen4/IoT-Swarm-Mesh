@@ -86,11 +86,15 @@
 <tbody>
 <tr>
 <td><code>Device.cs</code></td>
-<td>Abstract base for all devices. Holds a unique <code>Id</code> (GUID), a mutable <code>Name</code>, and a 2D <code>Position</code> (<code>Vector2</code>). Defines <code>Recieve(Packet)</code> which stamps <code>PreviousHop</code>, sends a <code>ConfirmationPacket</code> if requested, and delegates re-routing to <code>SimulationEngine.RoutePacket</code>.</td>
+<td>Abstract base for all devices. Holds identity (<code>Id</code>, <code>MacAddress</code>), 2D position (<code>Vector2</code>), dedup cache, neighbor charge table, local charges (<code>QUpSelf</code>, <code>QTotalSelf</code>), and DOWN-tree parent state. <code>Recieve(Packet)</code> applies dedup, updates neighbor observations (<code>q_up</code> from UP traffic and <code>q_total</code> from DOWN traffic), applies protocol control effects (BEACON/DECAY), and delegates forwarding to <code>SimulationEngine.RoutePacket</code>.</td>
+</tr>
+<tr>
+<td><code>NeighborState.cs</code></td>
+<td>Protocol neighbor model: <code>MacAddress</code>, <code>QUp</code>, <code>QTotal</code>, <code>LastSeenTick</code>, <code>SampleCount</code>. Used for best-neighbor routing decisions and parent selection hysteresis.</td>
 </tr>
 <tr>
 <td><code>HubDevice.cs</code></td>
-<td>Central gateway device; the intended destination for all packets from <code>GeneratorDevice</code>. Overrides <code>Recieve</code> to also send queued <code>ControlPacket</code> commands to <code>EmitterDevice</code> instances on each tick at <code>ControlFrequencyTicks</code> (delegated via <code>SimulationEngine.TickEvent</code>).</td>
+<td>Central gateway device and protocol root. Emits periodic <code>BeaconPacket</code> and <code>DecayPacket</code> on tick events, applies local decay epochs, and starts with high baseline charge to seed convergence.</td>
 </tr>
 <tr>
 <td><code>GeneratorDevice.cs</code></td>
@@ -104,7 +108,7 @@
 </table>
 <hr>
 <h2 id="inheritance">Inheritance</h2>
-<pre><code>Device (abstract)
+<pre><code class="lang-text">Device (abstract)
 +-- HubDevice
 +-- GeneratorDevice
 +-- EmitterDevice
@@ -112,6 +116,12 @@
 <hr>
 <h2 id="extension-points">Extension points</h2>
 <p>Add new device types by subclassing <code>Device</code> and optionally subscribing to <code>SimulationEngine.TickEvent</code> for periodic behavior.</p>
+<p>Protocol-relevant extension points in <code>Device</code>:</p>
+<ul>
+<li><code>OnForwardPacket(Packet)</code> for custom charge accumulation policy.</li>
+<li><code>ApplyDecay(epoch, percent)</code> for alternative damping behavior.</li>
+<li>Parent-selection tuning via <code>QForwardThreshold</code>, <code>ParentSwitchHysteresis</code>, <code>ParentSwitchHysteresisRatio</code>, and <code>ParentDeadTicks</code>.</li>
+</ul>
 <hr>
 <h2 id="parent">Parent</h2>
 <p>See <code>Engine/Documentation.md</code> for full engine architecture.</p>

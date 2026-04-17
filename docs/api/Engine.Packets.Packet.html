@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class Packet | IoT Swarm Mesh  -  Simulation Engine ">
       
-      <meta name="description" content="Represents a unit of data travelling through the simulation network. A packet knows its originator (), its intended destination (), and the  device it will be delivered to on the next simulation tick. Travel time is expressed in engine ticks via , and each hop decrements the  counter  -  a packet that reaches zero TTL is silently dropped.">
+      <meta name="description" content="Represents a unit of data travelling through the simulation network. A packet knows its originator (), its intended destination (), and the  device it will be delivered to on the next simulation tick. Travel time is expressed in engine ticks via , and each hop decrements the  counter - a packet that reaches zero TTL is silently dropped.  The same class also carries a swarm protocol envelope: Routing metadata: version, previous-hop MAC, advertised charge and decay hint.Secure header fields: direction, message type, origin/destination MAC, message id and sequence.End-to-end tag bytes used by HMAC-SHA256 truncation. These fields are optional for legacy routing and are populated by default for newly created packets.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="Engine_Packets_Packet" data-uid="Engine.Packets.Packet" class="text-break">
-Class Packet  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class Packet  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,8 +102,14 @@ A packet knows its originator (<a class="xref" href="Engine.Packets.Packet.html#
 destination (<a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_To">To</a>), and the <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_NextHop">NextHop</a> device it
 will be delivered to on the next simulation tick.
 Travel time is expressed in engine ticks via <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_TicksToTravel">TicksToTravel</a>,
-and each hop decrements the <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_TTL">TTL</a> counter  -  a packet that
+and each hop decrements the <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_TTL">TTL</a> counter - a packet that
 reaches zero TTL is silently dropped.</p>
+<p>
+The same class also carries a swarm protocol envelope:
+<ul><li>Routing metadata: version, previous-hop MAC, advertised charge and decay hint.</li><li>Secure header fields: direction, message type, origin/destination MAC, message id and sequence.</li><li>End-to-end tag bytes used by HMAC-SHA256 truncation.</li></ul>
+These fields are optional for legacy routing and are populated by default
+for newly created packets.
+
 </div>
   <div class="markdown conceptual"></div>
 
@@ -126,8 +132,10 @@ reaches zero TTL is silently dropped.</p>
   <dl class="typelist derived">
     <dt>Derived</dt>
     <dd>
+      <div><a class="xref" href="Engine.Packets.BeaconPacket.html">BeaconPacket</a></div>
       <div><a class="xref" href="Engine.Packets.ConfirmationPacket.html">ConfirmationPacket</a></div>
       <div><a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a></div>
+      <div><a class="xref" href="Engine.Packets.DecayPacket.html">DecayPacket</a></div>
     </dd>
   </dl>
 
@@ -164,7 +172,7 @@ reaches zero TTL is silently dropped.</p>
 
   <h3 id="Engine_Packets_Packet__ctor_Engine_Devices_Device_Engine_Devices_Device_Engine_Packets_PacketData_" data-uid="Engine.Packets.Packet.#ctor(Engine.Devices.Device,Engine.Devices.Device,Engine.Packets.PacketData)">
   Packet(Device, Device, PacketData)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L55"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initialises a new packet.
@@ -199,15 +207,175 @@ original packet's identity.</p>
 
 
 
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Engine_Packets_Packet_DEFAULT_TICKS_TO_TRAVEL" data-uid="Engine.Packets.Packet.DEFAULT_TICKS_TO_TRAVEL">
+  DEFAULT_TICKS_TO_TRAVEL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Library default per-hop travel time used by packet constructors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const long DEFAULT_TICKS_TO_TRAVEL = 3</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Packets_Packet_DEFAULT_TTL" data-uid="Engine.Packets.Packet.DEFAULT_TTL">
+  DEFAULT_TTL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Library default TTL used by packet constructors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int DEFAULT_TTL = 10</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Packets_Packet_PROTOCOL_VERSION" data-uid="Engine.Packets.Packet.PROTOCOL_VERSION">
+  PROTOCOL_VERSION
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Protocol envelope version currently emitted by this simulator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const byte PROTOCOL_VERSION = 1</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Engine_Packets_Packet_TAG_LENGTH" data-uid="Engine.Packets.Packet.TAG_LENGTH">
+  TAG_LENGTH
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Truncated authentication tag length in bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int TAG_LENGTH = 16</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="properties">Properties
 </h2>
+
+
+  <a id="Engine_Packets_Packet_AdvertisedCharge_" data-uid="Engine.Packets.Packet.AdvertisedCharge*"></a>
+
+  <h3 id="Engine_Packets_Packet_AdvertisedCharge" data-uid="Engine.Packets.Packet.AdvertisedCharge">
+  AdvertisedCharge
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the routing-header advertised charge value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort AdvertisedCharge { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
 
 
   <a id="Engine_Packets_Packet_ArrivalTick_" data-uid="Engine.Packets.Packet.ArrivalTick*"></a>
 
   <h3 id="Engine_Packets_Packet_ArrivalTick" data-uid="Engine.Packets.Packet.ArrivalTick">
   ArrivalTick
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L190"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the absolute engine tick at which this packet is due to
@@ -238,11 +406,203 @@ is enqueued.</p>
 
 
 
+  <a id="Engine_Packets_Packet_DecayEpochHint_" data-uid="Engine.Packets.Packet.DecayEpochHint*"></a>
+
+  <h3 id="Engine_Packets_Packet_DecayEpochHint" data-uid="Engine.Packets.Packet.DecayEpochHint">
+  DecayEpochHint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the routing-header decay epoch hint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort DecayEpochHint { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_DestinationMac_" data-uid="Engine.Packets.Packet.DestinationMac*"></a>
+
+  <h3 id="Engine_Packets_Packet_DestinationMac" data-uid="Engine.Packets.Packet.DestinationMac">
+  DestinationMac
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the secure-header destination MAC address (6 bytes).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] DestinationMac { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_Direction_" data-uid="Engine.Packets.Packet.Direction*"></a>
+
+  <h3 id="Engine_Packets_Packet_Direction" data-uid="Engine.Packets.Packet.Direction">
+  Direction
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the secure-header direction field.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PacketDirection Direction { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Packets.PacketDirection.html">PacketDirection</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_FragmentCount_" data-uid="Engine.Packets.Packet.FragmentCount*"></a>
+
+  <h3 id="Engine_Packets_Packet_FragmentCount" data-uid="Engine.Packets.Packet.FragmentCount">
+  FragmentCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the optional total number of fragments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte? FragmentCount { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_FragmentGroupId_" data-uid="Engine.Packets.Packet.FragmentGroupId*"></a>
+
+  <h3 id="Engine_Packets_Packet_FragmentGroupId" data-uid="Engine.Packets.Packet.FragmentGroupId">
+  FragmentGroupId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the optional fragment-group id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort? FragmentGroupId { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_FragmentIndex_" data-uid="Engine.Packets.Packet.FragmentIndex*"></a>
+
+  <h3 id="Engine_Packets_Packet_FragmentIndex" data-uid="Engine.Packets.Packet.FragmentIndex">
+  FragmentIndex
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the optional fragment index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte? FragmentIndex { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Engine_Packets_Packet_From_" data-uid="Engine.Packets.Packet.From*"></a>
 
   <h3 id="Engine_Packets_Packet_From" data-uid="Engine.Packets.Packet.From">
   From
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L214"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the device that originally sent this packet.</p>
@@ -274,7 +634,7 @@ is enqueued.</p>
 
   <h3 id="Engine_Packets_Packet_Id" data-uid="Engine.Packets.Packet.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the unique identifier of this packet instance.</p>
@@ -306,7 +666,7 @@ is enqueued.</p>
 
   <h3 id="Engine_Packets_Packet_InitialTtl" data-uid="Engine.Packets.Packet.InitialTtl">
   InitialTtl
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L176"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the TTL value that was recorded when this packet was first enqueued
@@ -341,11 +701,108 @@ hop count at delivery: <code>hops = InitialTtl - TTL</code>.
 
 
 
+  <a id="Engine_Packets_Packet_IsBroadcastDestination_" data-uid="Engine.Packets.Packet.IsBroadcastDestination*"></a>
+
+  <h3 id="Engine_Packets_Packet_IsBroadcastDestination" data-uid="Engine.Packets.Packet.IsBroadcastDestination">
+  IsBroadcastDestination
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_DestinationMac">DestinationMac</a> is the
+broadcast address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsBroadcastDestination { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_MessageId_" data-uid="Engine.Packets.Packet.MessageId*"></a>
+
+  <h3 id="Engine_Packets_Packet_MessageId" data-uid="Engine.Packets.Packet.MessageId">
+  MessageId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the secure-header message id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort MessageId { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_MessageType_" data-uid="Engine.Packets.Packet.MessageType*"></a>
+
+  <h3 id="Engine_Packets_Packet_MessageType" data-uid="Engine.Packets.Packet.MessageType">
+  MessageType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the secure-header message type field.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SwarmMessageType MessageType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Packets.SwarmMessageType.html">SwarmMessageType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Engine_Packets_Packet_NeedConfirmation_" data-uid="Engine.Packets.Packet.NeedConfirmation*"></a>
 
   <h3 id="Engine_Packets_Packet_NeedConfirmation" data-uid="Engine.Packets.Packet.NeedConfirmation">
   NeedConfirmation
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L227"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the destination device should
@@ -379,7 +836,7 @@ upon successful delivery.</p>
 
   <h3 id="Engine_Packets_Packet_NextHop" data-uid="Engine.Packets.Packet.NextHop">
   NextHop
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L193"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the device that will receive this packet on arrival.</p>
@@ -411,7 +868,7 @@ upon successful delivery.</p>
 
   <h3 id="Engine_Packets_Packet_OriginId" data-uid="Engine.Packets.Packet.OriginId">
   OriginId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the identifier shared by this packet and all of its flood clones.
@@ -447,11 +904,43 @@ the destination it is counted as a duplicate rather than a new delivery.
 
 
 
+  <a id="Engine_Packets_Packet_OriginMac_" data-uid="Engine.Packets.Packet.OriginMac*"></a>
+
+  <h3 id="Engine_Packets_Packet_OriginMac" data-uid="Engine.Packets.Packet.OriginMac">
+  OriginMac
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the secure-header origin MAC address (6 bytes).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] OriginMac { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Engine_Packets_Packet_Payload_" data-uid="Engine.Packets.Packet.Payload*"></a>
 
   <h3 id="Engine_Packets_Packet_Payload" data-uid="Engine.Packets.Packet.Payload">
   Payload
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L220"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the data payload carried by this packet.</p>
@@ -483,7 +972,7 @@ the destination it is counted as a duplicate rather than a new delivery.
 
   <h3 id="Engine_Packets_Packet_PreviousHop" data-uid="Engine.Packets.Packet.PreviousHop">
   PreviousHop
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L205"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the device that forwarded this packet to <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_NextHop">NextHop</a>
@@ -518,11 +1007,75 @@ skip sending the packet back to the node it just came from.
 
 
 
+  <a id="Engine_Packets_Packet_PreviousHopMac_" data-uid="Engine.Packets.Packet.PreviousHopMac*"></a>
+
+  <h3 id="Engine_Packets_Packet_PreviousHopMac" data-uid="Engine.Packets.Packet.PreviousHopMac">
+  PreviousHopMac
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the routing-header previous-hop MAC address (6 bytes).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] PreviousHopMac { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_Sequence_" data-uid="Engine.Packets.Packet.Sequence*"></a>
+
+  <h3 id="Engine_Packets_Packet_Sequence" data-uid="Engine.Packets.Packet.Sequence">
+  Sequence
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the secure-header sequence value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort Sequence { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Engine_Packets_Packet_TTL_" data-uid="Engine.Packets.Packet.TTL*"></a>
 
   <h3 id="Engine_Packets_Packet_TTL" data-uid="Engine.Packets.Packet.TTL">
   TTL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L211"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the time-to-live counter. Decremented on every hop;
@@ -551,11 +1104,43 @@ the packet is dropped when it reaches zero.</p>
 
 
 
+  <a id="Engine_Packets_Packet_Tag_" data-uid="Engine.Packets.Packet.Tag*"></a>
+
+  <h3 id="Engine_Packets_Packet_Tag" data-uid="Engine.Packets.Packet.Tag">
+  Tag
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current authentication tag bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] Tag { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Engine_Packets_Packet_TicksToTravel_" data-uid="Engine.Packets.Packet.TicksToTravel*"></a>
 
   <h3 id="Engine_Packets_Packet_TicksToTravel" data-uid="Engine.Packets.Packet.TicksToTravel">
   TicksToTravel
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L182"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the number of engine ticks the packet takes to travel
@@ -588,7 +1173,7 @@ between two adjacent devices.</p>
 
   <h3 id="Engine_Packets_Packet_To" data-uid="Engine.Packets.Packet.To">
   To
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L217"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the intended destination device for this packet.</p>
@@ -616,20 +1201,88 @@ between two adjacent devices.</p>
 
 
 
+  <a id="Engine_Packets_Packet_Version_" data-uid="Engine.Packets.Packet.Version*"></a>
+
+  <h3 id="Engine_Packets_Packet_Version" data-uid="Engine.Packets.Packet.Version">
+  Version
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the protocol envelope version.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte Version { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
+
+
+  <a id="Engine_Packets_Packet_BuildSecureHeaderAndPayload_" data-uid="Engine.Packets.Packet.BuildSecureHeaderAndPayload*"></a>
+
+  <h3 id="Engine_Packets_Packet_BuildSecureHeaderAndPayload" data-uid="Engine.Packets.Packet.BuildSecureHeaderAndPayload">
+  BuildSecureHeaderAndPayload()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Builds a byte buffer consisting of secure-header fields followed by
+serialized payload bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] BuildSecureHeaderAndPayload()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>Serialized secure-header + payload bytes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
 
 
   <a id="Engine_Packets_Packet_Clone_" data-uid="Engine.Packets.Packet.Clone*"></a>
 
   <h3 id="Engine_Packets_Packet_Clone" data-uid="Engine.Packets.Packet.Clone">
   Clone()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L237"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a shallow copy of this packet, suitable for broadcasting the
 same packet to multiple next-hop neighbours.
-All clones share the same <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_OriginId">OriginId</a> as the original.</p>
+All clones share the same <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_OriginId">OriginId</a> as the original.
+Address and tag arrays are duplicated so clones can mutate envelope
+metadata independently.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -659,7 +1312,7 @@ All clones share the same <a class="xref" href="Engine.Packets.Packet.html#Engin
 
   <h3 id="Engine_Packets_Packet_Equals_System_Object_" data-uid="Engine.Packets.Packet.Equals(System.Object)">
   Equals(object?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L330"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the specified object is equal to the current object.</p>
@@ -698,7 +1351,7 @@ All clones share the same <a class="xref" href="Engine.Packets.Packet.html#Engin
 
   <h3 id="Engine_Packets_Packet_GetHashCode" data-uid="Engine.Packets.Packet.GetHashCode">
   GetHashCode()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L338"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Serves as the default hash function.</p>
@@ -727,11 +1380,113 @@ All clones share the same <a class="xref" href="Engine.Packets.Packet.html#Engin
 
 
 
+  <a id="Engine_Packets_Packet_MarkBroadcastDestination_" data-uid="Engine.Packets.Packet.MarkBroadcastDestination*"></a>
+
+  <h3 id="Engine_Packets_Packet_MarkBroadcastDestination" data-uid="Engine.Packets.Packet.MarkBroadcastDestination">
+  MarkBroadcastDestination()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L250"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_DestinationMac">DestinationMac</a> to the broadcast address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MarkBroadcastDestination()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_UpdateTag_" data-uid="Engine.Packets.Packet.UpdateTag*"></a>
+
+  <h3 id="Engine_Packets_Packet_UpdateTag_System_ReadOnlySpan_System_Byte__" data-uid="Engine.Packets.Packet.UpdateTag(System.ReadOnlySpan{System.Byte})">
+  UpdateTag(ReadOnlySpan&lt;byte&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L261"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_Tag">Tag</a> by computing HMAC-SHA256 over
+secure-header bytes plus payload bytes, then truncating to 16 bytes.
+Routing-header bytes are intentionally excluded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UpdateTag(ReadOnlySpan&lt;byte&gt; sharedSecret)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sharedSecret</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>Shared secret bytes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Packets_Packet_ValidateTag_" data-uid="Engine.Packets.Packet.ValidateTag*"></a>
+
+  <h3 id="Engine_Packets_Packet_ValidateTag_System_ReadOnlySpan_System_Byte__" data-uid="Engine.Packets.Packet.ValidateTag(System.ReadOnlySpan{System.Byte})">
+  ValidateTag(ReadOnlySpan&lt;byte&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Validates <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_Tag">Tag</a> against the current packet fields using
+the provided shared secret.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ValidateTag(ReadOnlySpan&lt;byte&gt; sharedSecret)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sharedSecret</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>Shared secret bytes.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> when the computed tag matches.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Packets/Packet.cs/#L27" class="edit-link">Edit this page</a>
         </div>
 
 

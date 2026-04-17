@@ -100,7 +100,8 @@ Classes
 <p>
 When asked to route a packet the router queries the supplied
 <a class="xref" href="Engine.Routers.INetworkTopology.html">INetworkTopology</a> for all devices <em>visible</em> to the
-sender and enqueues a cloned copy addressed to each of them.
+sender and enqueues a cloned copy addressed to the nearest visible
+neighbors in a deterministic top-k window.
 Flooding uses <em>visibility</em>  -  not established connections  -  because
 it is inherently a broadcast mechanism that needs no prior topology
 knowledge.
@@ -131,6 +132,21 @@ For large networks consider a limited-degree or spanning-tree builder instead.
 </dd>
     </dl>
     <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.KNearestNetworkBuilder.html">KNearestNetworkBuilder</a></dt>
+      <dd><p>Builds a visibility-constrained k-nearest undirected mesh.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.MinimumSpanningTreeNetworkBuilder.html">MinimumSpanningTreeNetworkBuilder</a></dt>
+      <dd><p>Builds a visibility-constrained minimum spanning forest.</p>
+<p>
+For each connected visibility component this builder creates exactly
+<code>n-1</code> links (tree), reducing redundant edges while preserving reachability
+inside the component.
+</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
       <dt><a class="xref" href="Engine.Routers.NetworkTopology.html">NetworkTopology</a></dt>
       <dd><p>Default in-memory implementation of <a class="xref" href="Engine.Routers.IMutableNetworkTopology.html">IMutableNetworkTopology</a>.</p>
 <p>
@@ -148,9 +164,13 @@ managed exclusively by the active <a class="xref" href="Engine.Routers.INetworkB
       <dt><a class="xref" href="Engine.Routers.SmartFloodingPacketRouter.html">SmartFloodingPacketRouter</a></dt>
       <dd><p>An improved flooding router that reduces redundant packet copies by applying
 three optimisations over the naive <a class="xref" href="Engine.Routers.FloodingPacketRouter.html">FloodingPacketRouter</a>:</p>
-<ol><li><span class="term">Direct delivery</span>
+<ol><li><span class="term">Bounded candidate set</span>
+      Routing decisions are made only on the nearest
+      <span class="xref">Engine.Routers.RoutingNeighborPolicy.DefaultMaxVisibleNeighbors</span>
+      visible neighbors for deterministic fairness across protocols.
+    </li><li><span class="term">Direct delivery</span>
       If the intended destination (<a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_To">To</a>) is directly
-      visible from <code class="paramref">sender</code>, the packet is sent
+      visible from <code>sender</code>, the packet is sent
       <em>only</em> to that device  -  no unnecessary flood copies are made.
     </li><li><span class="term">No reverse path</span>
       The packet is never forwarded back to <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_PreviousHop">PreviousHop</a>
@@ -166,6 +186,22 @@ naive flood, especially for unicast packets such as
 <a class="xref" href="Engine.Packets.ControlPacket.html">ControlPacket</a>, while still guaranteeing delivery
 in any connected topology with sufficient TTL.
 </p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.SwarmProtocolPacketRouter.html">SwarmProtocolPacketRouter</a></dt>
+      <dd><p>Protocol-oriented router that combines charge-based UP forwarding and
+tree-first DOWN forwarding.</p>
+<p>
+Behavior summary:
+<ul><li>Visibility: route decisions are limited to nearest visible top-k neighbors.</li><li>UP bootstrap: until q_up signal appears, fan-out over the same top-k window as flooding.</li><li>UP converged: choose one best visible neighbor by observed q_up.</li><li>DOWN unicast: direct if destination is visible; otherwise forward to eligible children first.</li><li>DOWN broadcast: forward to eligible children; fallback to one best q_total neighbor.</li><li>All clones carry previous-hop MAC and charge metadata for neighbor learning.</li></ul>
+
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Engine.Routers.SwarmProtocolVector.html">SwarmProtocolVector</a></dt>
+      <dd><p>Runtime-tunable parameter vector for the swarm protocol implementation.
+Values are aligned with the protocol tuning guide and Python batch model.</p>
 </dd>
     </dl>
     <h3 id="interfaces">

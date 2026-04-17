@@ -74,6 +74,7 @@
 <h1 id="enginerouters">Engine/Routers</h1>
 
 <p>The <code>Routers</code> folder contains the complete routing and network-topology subsystem. It is organized into subfolders by responsibility so that contracts, topology, builders, and each router strategy are cleanly separated.</p>
+<p>It also contains shared router-level policies used by all strategies.</p>
 <hr>
 <h2 id="subfolders">Subfolders</h2>
 <table>
@@ -98,18 +99,38 @@
 </tr>
 <tr>
 <td><code>Flooding/</code></td>
-<td>The <code>FloodingPacketRouter</code>  -  naive broadcast to all visible neighbours. Engine default.</td>
+<td>The <code>FloodingPacketRouter</code> - naive broadcast to all visible neighbours. Useful baseline strategy for comparison.</td>
 </tr>
 <tr>
 <td><code>SmartFlooding/</code></td>
-<td>The <code>SmartFloodingPacketRouter</code>  -  direct delivery if destination visible, filtered flood otherwise. WebApp default.</td>
+<td>The <code>SmartFloodingPacketRouter</code> - direct delivery if destination visible, filtered flood otherwise. Reduced clone fan-out alternative to naive flooding.</td>
+</tr>
+<tr>
+<td><code>SwarmProtocol/</code></td>
+<td>The <code>SwarmProtocolPacketRouter</code> - protocol-oriented direction-aware routing: UP best-neighbor by charge and DOWN tree-first forwarding.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="files">Files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RoutingNeighborPolicy.cs</code></td>
+<td>Shared deterministic visibility policy for all routers. Selects nearest visible top-k neighbors (default k=10) to keep fairness and comparable fan-out across routing strategies.</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h2 id="design-principles">Design principles</h2>
 <ul>
-<li><strong>Visibility vs. Connection</strong>  -  visibility is a Euclidean-distance relation computed on-the-fly; connection is an explicit link established by the active <code>INetworkBuilder</code>. Flooding uses visibility; unicast routing uses connections.</li>
+<li><strong>Visibility vs. Connection</strong>  -  visibility is a Euclidean-distance relation computed on-the-fly; connection is an explicit link established by the active <code>INetworkBuilder</code>. All bundled routers first apply the same nearest-visible top-k filter (<code>k=10</code>) for fair comparison.</li>
+<li><strong>Direction-aware routing</strong> - protocol routers can branch behavior by <code>Packet.Direction</code> and <code>Packet.MessageType</code> while still using the same <code>IPacketRouter</code> contract.</li>
 <li><strong>Hot-swap</strong>  -  both <code>SimulationEngine.Router</code> and <code>SimulationEngine.NetworkBuilder</code> can be replaced at runtime to compare strategies without restarting the simulation.</li>
 <li><strong>Separation of mutation</strong>  -  routers receive <code>INetworkTopology</code> (read-only); only builders receive <code>IMutableNetworkTopology</code>.</li>
 </ul>

@@ -112,6 +112,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Routers/SwarmProtocol/Documentation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Routers/SwarmProtocol/Documentation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Routers/Topology/Documentation.md",
       "output": {
         ".html": {
@@ -216,6 +226,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Benchmark.BenchmarkRunProgress.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Benchmark.BenchmarkRunProgress.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Benchmark.BenchmarkRunProgress",
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkRunProgress.yml\" sourcestartlinenumber=\"1\">Progress snapshot emitted while a benchmark is running.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Engine.Benchmark.BenchmarkRunner.yml",
       "output": {
         ".html": {
@@ -226,7 +250,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Engine.Benchmark.BenchmarkRunner",
-      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkRunner.yml\" sourcestartlinenumber=\"1\">Executes a <xref href=\"Engine.Benchmark.BenchmarkConfig\" data-throw-if-not-resolved=\"false\"></xref> headlessly  -  without any UI  -  and\nproduces a <xref href=\"Engine.Benchmark.BenchmarkSession\" data-throw-if-not-resolved=\"false\"></xref> containing one\n<xref href=\"Engine.Benchmark.BenchmarkResult\" data-throw-if-not-resolved=\"false\"></xref> per configured router.</p>\n<p>\n<b>Threading:</b> designed to be called from <code>Task.Run</code> so that the\nBlazor UI thread stays responsive during the (potentially long) run.\nAll engine interaction happens through the singleton\n<xref href=\"Engine.Core.SimulationEngine.Instance\" data-throw-if-not-resolved=\"false\"></xref> which is fully reset between runs.\n</p>\n<p>\n<b>Progress reporting:</b> the optional <code class=\"paramref\">onProgress</code>\ncallback in <xref href=\"Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig%2cSystem.Collections.Generic.IReadOnlyDictionary%7bSystem.String%2cEngine.Routers.IPacketRouter%7d%2cSystem.Action%7bSystem.Int32%2cSystem.Int32%7d)\" data-throw-if-not-resolved=\"false\"></xref> is invoked after each completed router run\nwith <code>(routerIndex, totalRouters)</code> so callers can display a spinner.\n</p>\n"
+      "Summary": "<p sourcefile=\"api/Engine.Benchmark.BenchmarkRunner.yml\" sourcestartlinenumber=\"1\">Executes a <xref href=\"Engine.Benchmark.BenchmarkConfig\" data-throw-if-not-resolved=\"false\"></xref> headlessly  -  without any UI  -  and\nproduces a <xref href=\"Engine.Benchmark.BenchmarkSession\" data-throw-if-not-resolved=\"false\"></xref> containing one\n<xref href=\"Engine.Benchmark.BenchmarkResult\" data-throw-if-not-resolved=\"false\"></xref> per configured router.</p>\n<p>\n<b>Threading:</b> supports both synchronous and asynchronous execution.\nThe async entry point periodically yields to keep UI render loops responsive\non single-threaded environments such as Blazor WebAssembly.\nEach router run uses an isolated engine/statistics context so independent\nruns can execute in parallel when requested.\n</p>\n<p>\n<b>Progress reporting:</b> the optional <code>onProgress</code>\ncallback in <xref href=\"Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig%2cSystem.Collections.Generic.IReadOnlyDictionary%7bSystem.String%2cEngine.Routers.IPacketRouter%7d%2cSystem.Action%7bEngine.Benchmark.BenchmarkRunProgress%7d%2cEngine.Routers.INetworkBuilder%2cEngine.Routers.SwarmProtocolVector%2cSystem.Int32)\" data-throw-if-not-resolved=\"false\"></xref> receives detailed\n<xref href=\"Engine.Benchmark.BenchmarkRunProgress\" data-throw-if-not-resolved=\"false\"></xref> snapshots while each router is running,\nincluding per-router tick progress and overall progress.\n</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -394,7 +418,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Engine.Core.SimulationEngine",
-      "Summary": "<p sourcefile=\"api/Engine.Core.SimulationEngine.yml\" sourcestartlinenumber=\"1\">The central singleton that drives the entire simulation.\nIt maintains the device registry, owns the tick-based time model, and\nmanages the priority queue of in-flight packets.</p>\n<p>\nEvery call to <xref href=\"Engine.Core.SimulationEngine.Tick\" data-throw-if-not-resolved=\"false\"></xref> advances the simulation by one step:\nthe tick counter is incremented, wall-clock delta time is measured,\nall subscribers to <xref href=\"Engine.Core.SimulationEngine.TickEvent\" data-throw-if-not-resolved=\"false\"></xref> are notified, and any packets\nwhose <xref href=\"Engine.Packets.Packet.ArrivalTick\" data-throw-if-not-resolved=\"false\"></xref> has been reached are dequeued and\ndispatched to their <xref href=\"Engine.Packets.Packet.NextHop\" data-throw-if-not-resolved=\"false\"></xref> device.\n</p>\n<p>\nRouting strategy and network-formation strategy are fully replaceable at\nruntime via <xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Engine.Core.SimulationEngine.NetworkBuilder\" data-throw-if-not-resolved=\"false\"></xref>.\nThe read-only topology view is exposed through <xref href=\"Engine.Core.SimulationEngine.Topology\" data-throw-if-not-resolved=\"false\"></xref>.\n</p>\n"
+      "Summary": "<p sourcefile=\"api/Engine.Core.SimulationEngine.yml\" sourcestartlinenumber=\"1\">The central simulation engine type that drives the entire simulation.\nIt maintains the device registry, owns the tick-based time model, and\nmanages the priority queue of in-flight packets.</p>\n<p>\nEvery call to <xref href=\"Engine.Core.SimulationEngine.Tick\" data-throw-if-not-resolved=\"false\"></xref> advances the simulation by one step:\nthe tick counter is incremented, wall-clock delta time is measured,\nall subscribers to <xref href=\"Engine.Core.SimulationEngine.TickEvent\" data-throw-if-not-resolved=\"false\"></xref> are notified, and any packets\nwhose <xref href=\"Engine.Packets.Packet.ArrivalTick\" data-throw-if-not-resolved=\"false\"></xref> has been reached are dequeued and\ndispatched to their <xref href=\"Engine.Packets.Packet.NextHop\" data-throw-if-not-resolved=\"false\"></xref> device.\n</p>\n<p>\nRouting strategy and network-formation strategy are fully replaceable at\nruntime via <xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Engine.Core.SimulationEngine.NetworkBuilder\" data-throw-if-not-resolved=\"false\"></xref>.\nThe read-only topology view is exposed through <xref href=\"Engine.Core.SimulationEngine.Topology\" data-throw-if-not-resolved=\"false\"></xref>.\n</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -478,7 +502,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Engine.Devices.HubDevice",
-      "Summary": "<p sourcefile=\"api/Engine.Devices.HubDevice.yml\" sourcestartlinenumber=\"1\">Represents the central hub (gateway) device of the simulation network.\nThe hub is the designated destination for packets generated by\n<xref href=\"Engine.Devices.GeneratorDevice\" data-throw-if-not-resolved=\"false\"></xref> instances and the root of the network topology.\nIt is registered as the singleton hub inside <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref>\nwhen added to the simulation.</p>\n"
+      "Summary": "<p sourcefile=\"api/Engine.Devices.HubDevice.yml\" sourcestartlinenumber=\"1\">Represents the central hub (gateway) device of the simulation network.\nThe hub is the designated destination for packets generated by\n<xref href=\"Engine.Devices.GeneratorDevice\" data-throw-if-not-resolved=\"false\"></xref> instances and the root of the network topology.\nIt is registered as the singleton hub inside <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref>\nwhen added to the simulation.</p>\n<p>\nThe hub also emits protocol control traffic:\n<ul><li>BEACON messages to seed DOWN-tree parent selection.</li><li>DECAY messages to prevent unbounded charge growth.</li></ul>\n\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Devices.NeighborState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Devices.NeighborState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Devices.NeighborState",
+      "Summary": "<p sourcefile=\"api/Engine.Devices.NeighborState.yml\" sourcestartlinenumber=\"1\">Tracks protocol neighbor metadata used by charge-based routing and\nparent selection.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -493,6 +531,34 @@
       "IsMRef": true,
       "Title": "Engine.Devices",
       "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.BeaconPacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.BeaconPacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.BeaconPacket",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.BeaconPacket.yml\" sourcestartlinenumber=\"1\">Broadcast gateway beacon used to seed and maintain DOWN-tree convergence.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.BeaconPayload.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.BeaconPayload.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.BeaconPayload",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.BeaconPayload.yml\" sourcestartlinenumber=\"1\">Payload for BEACON messages.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -524,6 +590,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.DecayPacket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.DecayPacket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.DecayPacket",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.DecayPacket.yml\" sourcestartlinenumber=\"1\">Broadcast packet carrying a monotonic decay epoch and damping factor.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.DecayPayload.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.DecayPayload.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.DecayPayload",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.DecayPayload.yml\" sourcestartlinenumber=\"1\">Payload for DECAY messages.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Engine.Packets.Packet.yml",
       "output": {
         ".html": {
@@ -534,7 +628,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Engine.Packets.Packet",
-      "Summary": "<p sourcefile=\"api/Engine.Packets.Packet.yml\" sourcestartlinenumber=\"1\">Represents a unit of data travelling through the simulation network.\nA packet knows its originator (<xref href=\"Engine.Packets.Packet.From\" data-throw-if-not-resolved=\"false\"></xref>), its intended\ndestination (<xref href=\"Engine.Packets.Packet.To\" data-throw-if-not-resolved=\"false\"></xref>), and the <xref href=\"Engine.Packets.Packet.NextHop\" data-throw-if-not-resolved=\"false\"></xref> device it\nwill be delivered to on the next simulation tick.\nTravel time is expressed in engine ticks via <xref href=\"Engine.Packets.Packet.TicksToTravel\" data-throw-if-not-resolved=\"false\"></xref>,\nand each hop decrements the <xref href=\"Engine.Packets.Packet.TTL\" data-throw-if-not-resolved=\"false\"></xref> counter  -  a packet that\nreaches zero TTL is silently dropped.</p>\n"
+      "Summary": "<p sourcefile=\"api/Engine.Packets.Packet.yml\" sourcestartlinenumber=\"1\">Represents a unit of data travelling through the simulation network.\nA packet knows its originator (<xref href=\"Engine.Packets.Packet.From\" data-throw-if-not-resolved=\"false\"></xref>), its intended\ndestination (<xref href=\"Engine.Packets.Packet.To\" data-throw-if-not-resolved=\"false\"></xref>), and the <xref href=\"Engine.Packets.Packet.NextHop\" data-throw-if-not-resolved=\"false\"></xref> device it\nwill be delivered to on the next simulation tick.\nTravel time is expressed in engine ticks via <xref href=\"Engine.Packets.Packet.TicksToTravel\" data-throw-if-not-resolved=\"false\"></xref>,\nand each hop decrements the <xref href=\"Engine.Packets.Packet.TTL\" data-throw-if-not-resolved=\"false\"></xref> counter - a packet that\nreaches zero TTL is silently dropped.</p>\n<p>\nThe same class also carries a swarm protocol envelope:\n<ul><li>Routing metadata: version, previous-hop MAC, advertised charge and decay hint.</li><li>Secure header fields: direction, message type, origin/destination MAC, message id and sequence.</li><li>End-to-end tag bytes used by HMAC-SHA256 truncation.</li></ul>\nThese fields are optional for legacy routing and are populated by default\nfor newly created packets.\n\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.PacketAddress.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.PacketAddress.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.PacketAddress",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.PacketAddress.yml\" sourcestartlinenumber=\"1\">Helpers for fixed-width 6-byte mesh addresses used by protocol headers.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -549,6 +657,34 @@
       "IsMRef": true,
       "Title": "Engine.Packets.PacketData",
       "Summary": "<p sourcefile=\"api/Engine.Packets.PacketData.yml\" sourcestartlinenumber=\"1\">Carries the application-level payload of a <xref href=\"Engine.Packets.Packet\" data-throw-if-not-resolved=\"false\"></xref>.\nThe <xref href=\"Engine.Packets.PacketData.Data\" data-throw-if-not-resolved=\"false\"></xref> property is intentionally untyped so that any\nvalue (sensor readings, command flags, raw bytes, etc.) can be transported\nwithout the engine imposing a schema.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.PacketDirection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.PacketDirection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.PacketDirection",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.PacketDirection.yml\" sourcestartlinenumber=\"1\">Direction of a protocol frame in the swarm mesh.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Packets.SwarmMessageType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Packets.SwarmMessageType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Packets.SwarmMessageType",
+      "Summary": "<p sourcefile=\"api/Engine.Packets.SwarmMessageType.yml\" sourcestartlinenumber=\"1\">Message type registry for the swarm protocol envelope.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -576,7 +712,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Engine.Routers.FloodingPacketRouter",
-      "Summary": "<p sourcefile=\"api/Engine.Routers.FloodingPacketRouter.yml\" sourcestartlinenumber=\"1\">Implements a flooding broadcast routing strategy.</p>\n<p>\nWhen asked to route a packet the router queries the supplied\n<xref href=\"Engine.Routers.INetworkTopology\" data-throw-if-not-resolved=\"false\"></xref> for all devices <em>visible</em> to the\nsender and enqueues a cloned copy addressed to each of them.\nFlooding uses <em>visibility</em>  -  not established connections  -  because\nit is inherently a broadcast mechanism that needs no prior topology\nknowledge.\n</p>\n<p>\nThis class is no longer a singleton. The active router instance is stored\non <xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> and is injected into every routing\ncall automatically by <xref href=\"Engine.Devices.Device.Recieve(Engine.Packets.Packet)\" data-throw-if-not-resolved=\"false\"></xref>.\nTo change the routing strategy at runtime replace\n<xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> with a different\n<xref href=\"Engine.Routers.IPacketRouter\" data-throw-if-not-resolved=\"false\"></xref> implementation.\n</p>\n"
+      "Summary": "<p sourcefile=\"api/Engine.Routers.FloodingPacketRouter.yml\" sourcestartlinenumber=\"1\">Implements a flooding broadcast routing strategy.</p>\n<p>\nWhen asked to route a packet the router queries the supplied\n<xref href=\"Engine.Routers.INetworkTopology\" data-throw-if-not-resolved=\"false\"></xref> for all devices <em>visible</em> to the\nsender and enqueues a cloned copy addressed to the nearest visible\nneighbors in a deterministic top-k window.\nFlooding uses <em>visibility</em>  -  not established connections  -  because\nit is inherently a broadcast mechanism that needs no prior topology\nknowledge.\n</p>\n<p>\nThis class is no longer a singleton. The active router instance is stored\non <xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> and is injected into every routing\ncall automatically by <xref href=\"Engine.Devices.Device.Recieve(Engine.Packets.Packet)\" data-throw-if-not-resolved=\"false\"></xref>.\nTo change the routing strategy at runtime replace\n<xref href=\"Engine.Core.SimulationEngine.Router\" data-throw-if-not-resolved=\"false\"></xref> with a different\n<xref href=\"Engine.Routers.IPacketRouter\" data-throw-if-not-resolved=\"false\"></xref> implementation.\n</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -650,6 +786,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.KNearestNetworkBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.KNearestNetworkBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.KNearestNetworkBuilder",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.KNearestNetworkBuilder.yml\" sourcestartlinenumber=\"1\">Builds a visibility-constrained k-nearest undirected mesh.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.MinimumSpanningTreeNetworkBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.MinimumSpanningTreeNetworkBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.MinimumSpanningTreeNetworkBuilder",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.MinimumSpanningTreeNetworkBuilder.yml\" sourcestartlinenumber=\"1\">Builds a visibility-constrained minimum spanning forest.</p>\n<p>\nFor each connected visibility component this builder creates exactly\n<code>n-1</code> links (tree), reducing redundant edges while preserving reachability\ninside the component.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Engine.Routers.NetworkTopology.yml",
       "output": {
         ".html": {
@@ -674,7 +838,35 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Engine.Routers.SmartFloodingPacketRouter",
-      "Summary": "<p sourcefile=\"api/Engine.Routers.SmartFloodingPacketRouter.yml\" sourcestartlinenumber=\"1\">An improved flooding router that reduces redundant packet copies by applying\nthree optimisations over the naive <xref href=\"Engine.Routers.FloodingPacketRouter\" data-throw-if-not-resolved=\"false\"></xref>:</p>\n<ol><li><span class=\"term\">Direct delivery</span>\n      If the intended destination (<xref href=\"Engine.Packets.Packet.To\" data-throw-if-not-resolved=\"false\"></xref>) is directly\n      visible from <code class=\"paramref\">sender</code>, the packet is sent\n      <em>only</em> to that device  -  no unnecessary flood copies are made.\n    </li><li><span class=\"term\">No reverse path</span>\n      The packet is never forwarded back to <xref href=\"Engine.Packets.Packet.PreviousHop\" data-throw-if-not-resolved=\"false\"></xref>\n      (the device that just sent it here). This eliminates the most common\n      source of duplicate copies in bidirectional flooding.\n    </li><li><span class=\"term\">No source echo</span>\n      The packet is never forwarded back to <xref href=\"Engine.Packets.Packet.From\" data-throw-if-not-resolved=\"false\"></xref>\n      (the original source device), preventing useless round-trips.\n    </li></ol>\n<p>\nTogether these rules drastically shrink the clone fan-out compared to the\nnaive flood, especially for unicast packets such as\n<xref href=\"Engine.Packets.ControlPacket\" data-throw-if-not-resolved=\"false\"></xref>, while still guaranteeing delivery\nin any connected topology with sufficient TTL.\n</p>\n"
+      "Summary": "<p sourcefile=\"api/Engine.Routers.SmartFloodingPacketRouter.yml\" sourcestartlinenumber=\"1\">An improved flooding router that reduces redundant packet copies by applying\nthree optimisations over the naive <xref href=\"Engine.Routers.FloodingPacketRouter\" data-throw-if-not-resolved=\"false\"></xref>:</p>\n<ol><li><span class=\"term\">Bounded candidate set</span>\n      Routing decisions are made only on the nearest\n      <xref href=\"Engine.Routers.RoutingNeighborPolicy.DefaultMaxVisibleNeighbors\" data-throw-if-not-resolved=\"false\"></xref>\n      visible neighbors for deterministic fairness across protocols.\n    </li><li><span class=\"term\">Direct delivery</span>\n      If the intended destination (<xref href=\"Engine.Packets.Packet.To\" data-throw-if-not-resolved=\"false\"></xref>) is directly\n      visible from <code>sender</code>, the packet is sent\n      <em>only</em> to that device  -  no unnecessary flood copies are made.\n    </li><li><span class=\"term\">No reverse path</span>\n      The packet is never forwarded back to <xref href=\"Engine.Packets.Packet.PreviousHop\" data-throw-if-not-resolved=\"false\"></xref>\n      (the device that just sent it here). This eliminates the most common\n      source of duplicate copies in bidirectional flooding.\n    </li><li><span class=\"term\">No source echo</span>\n      The packet is never forwarded back to <xref href=\"Engine.Packets.Packet.From\" data-throw-if-not-resolved=\"false\"></xref>\n      (the original source device), preventing useless round-trips.\n    </li></ol>\n<p>\nTogether these rules drastically shrink the clone fan-out compared to the\nnaive flood, especially for unicast packets such as\n<xref href=\"Engine.Packets.ControlPacket\" data-throw-if-not-resolved=\"false\"></xref>, while still guaranteeing delivery\nin any connected topology with sufficient TTL.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.SwarmProtocolPacketRouter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.SwarmProtocolPacketRouter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.SwarmProtocolPacketRouter",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.SwarmProtocolPacketRouter.yml\" sourcestartlinenumber=\"1\">Protocol-oriented router that combines charge-based UP forwarding and\ntree-first DOWN forwarding.</p>\n<p>\nBehavior summary:\n<ul><li>Visibility: route decisions are limited to nearest visible top-k neighbors.</li><li>UP bootstrap: until q_up signal appears, fan-out over the same top-k window as flooding.</li><li>UP converged: choose one best visible neighbor by observed q_up.</li><li>DOWN unicast: direct if destination is visible; otherwise forward to eligible children first.</li><li>DOWN broadcast: forward to eligible children; fallback to one best q_total neighbor.</li><li>All clones carry previous-hop MAC and charge metadata for neighbor learning.</li></ul>\n\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Engine.Routers.SwarmProtocolVector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Engine.Routers.SwarmProtocolVector.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Engine.Routers.SwarmProtocolVector",
+      "Summary": "<p sourcefile=\"api/Engine.Routers.SwarmProtocolVector.yml\" sourcestartlinenumber=\"1\">Runtime-tunable parameter vector for the swarm protocol implementation.\nValues are aligned with the protocol tuning guide and Python batch model.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -702,7 +894,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Engine.Statistics.SimulationStatistics",
-      "Summary": "<p sourcefile=\"api/Engine.Statistics.SimulationStatistics.yml\" sourcestartlinenumber=\"1\">A singleton that listens to <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> events and\naccumulates simulation metrics.</p>\n<p>\nExtensibility: add a new <xref href=\"Engine.Statistics.StatMetric\" data-throw-if-not-resolved=\"false\"></xref> to <xref href=\"Engine.Statistics.SimulationStatistics.Metrics\" data-throw-if-not-resolved=\"false\"></xref>\nand subscribe to any <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> event to populate it.\nThe <xref href=\"Engine.Statistics.SimulationStatistics.Updated\" data-throw-if-not-resolved=\"false\"></xref> event is raised after every change so UI layers\ncan re-render reactively without polling.\n</p>\n<p>\nEvery tick a <xref href=\"Engine.Statistics.TickSnapshot\" data-throw-if-not-resolved=\"false\"></xref> is appended to <xref href=\"Engine.Statistics.SimulationStatistics.History\" data-throw-if-not-resolved=\"false\"></xref>\n(capped at <xref href=\"Engine.Statistics.SimulationStatistics.MaxHistoryLength\" data-throw-if-not-resolved=\"false\"></xref> entries) for time-series charts.\n</p>\n"
+      "Summary": "<p sourcefile=\"api/Engine.Statistics.SimulationStatistics.yml\" sourcestartlinenumber=\"1\">Statistics collector that listens to <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> events\nand accumulates simulation metrics.</p>\n<p>\nExtensibility: add a new <xref href=\"Engine.Statistics.StatMetric\" data-throw-if-not-resolved=\"false\"></xref> to <xref href=\"Engine.Statistics.SimulationStatistics.Metrics\" data-throw-if-not-resolved=\"false\"></xref>\nand subscribe to any <xref href=\"Engine.Core.SimulationEngine\" data-throw-if-not-resolved=\"false\"></xref> event to populate it.\nThe <xref href=\"Engine.Statistics.SimulationStatistics.Updated\" data-throw-if-not-resolved=\"false\"></xref> event is raised after every change so UI layers\ncan re-render reactively without polling.\n</p>\n<p>\nEvery tick a <xref href=\"Engine.Statistics.TickSnapshot\" data-throw-if-not-resolved=\"false\"></xref> is appended to <xref href=\"Engine.Statistics.SimulationStatistics.History\" data-throw-if-not-resolved=\"false\"></xref>\n(capped at <xref href=\"Engine.Statistics.SimulationStatistics.MaxHistoryLength\" data-throw-if-not-resolved=\"false\"></xref> entries) for time-series charts.\n</p>\n"
     },
     {
       "type": "ManagedReference",

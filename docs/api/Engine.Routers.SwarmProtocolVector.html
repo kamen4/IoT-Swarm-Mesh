@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class SwarmProtocolVector | IoT Swarm Mesh  -  Simulation Engine </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class SwarmProtocolVector | IoT Swarm Mesh  -  Simulation Engine ">
+      
+      <meta name="description" content="Runtime-tunable parameter vector for the swarm protocol implementation. Values are aligned with the protocol tuning guide and Python batch model.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/kamen4/IoT-Swarm-Mesh/new/master/apiSpec/new?filename=Engine_Routers_SwarmProtocolVector.md&amp;value=---%0Auid%3A%20Engine.Routers.SwarmProtocolVector%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="IoT Swarm Mesh">
+            IoT Swarm Mesh
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Engine.Routers.SwarmProtocolVector">
+
+
+
+  <h1 id="Engine_Routers_SwarmProtocolVector" data-uid="Engine.Routers.SwarmProtocolVector" class="text-break">
+Class SwarmProtocolVector  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L7"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Engine.html">Engine</a>.<a class="xref" href="Engine.Routers.html">Routers</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Engine.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Runtime-tunable parameter vector for the swarm protocol implementation.
+Values are aligned with the protocol tuning guide and Python batch model.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class SwarmProtocolVector</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">SwarmProtocolVector</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_ChargeDropPerHop_" data-uid="Engine.Routers.SwarmProtocolVector.ChargeDropPerHop*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_ChargeDropPerHop" data-uid="Engine.Routers.SwarmProtocolVector.ChargeDropPerHop">
+  ChargeDropPerHop
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Expected charge attenuation per hop used in fallback checks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ChargeDropPerHop { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_ChargeSpreadFactor_" data-uid="Engine.Routers.SwarmProtocolVector.ChargeSpreadFactor*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_ChargeSpreadFactor" data-uid="Engine.Routers.SwarmProtocolVector.ChargeSpreadFactor">
+  ChargeSpreadFactor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Charge estimate blending factor in range [0.01, 1].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ChargeSpreadFactor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_DecayIntervalSteps_" data-uid="Engine.Routers.SwarmProtocolVector.DecayIntervalSteps*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_DecayIntervalSteps" data-uid="Engine.Routers.SwarmProtocolVector.DecayIntervalSteps">
+  DecayIntervalSteps
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Decay interval in ticks (0 disables decay).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int DecayIntervalSteps { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_DecayPercent_" data-uid="Engine.Routers.SwarmProtocolVector.DecayPercent*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_DecayPercent" data-uid="Engine.Routers.SwarmProtocolVector.DecayPercent">
+  DecayPercent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Decay factor in range [0, 0.8].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double DecayPercent { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_LinkBonusMax_" data-uid="Engine.Routers.SwarmProtocolVector.LinkBonusMax*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_LinkBonusMax" data-uid="Engine.Routers.SwarmProtocolVector.LinkBonusMax">
+  LinkBonusMax
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Maximum additive parent-score bonus derived from learned link quality.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LinkBonusMax { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_LinkLearningRate_" data-uid="Engine.Routers.SwarmProtocolVector.LinkLearningRate*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_LinkLearningRate" data-uid="Engine.Routers.SwarmProtocolVector.LinkLearningRate">
+  LinkLearningRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Link-quality adaptation speed in range [0.01, 2].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double LinkLearningRate { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_LinkMemory_" data-uid="Engine.Routers.SwarmProtocolVector.LinkMemory*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_LinkMemory" data-uid="Engine.Routers.SwarmProtocolVector.LinkMemory">
+  LinkMemory
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Link-quality memory coefficient in range [0.6, 0.999].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double LinkMemory { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_ParentDeadTicks_" data-uid="Engine.Routers.SwarmProtocolVector.ParentDeadTicks*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_ParentDeadTicks" data-uid="Engine.Routers.SwarmProtocolVector.ParentDeadTicks">
+  ParentDeadTicks
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parent expiration timeout in ticks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ParentDeadTicks { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_PenaltyLambda_" data-uid="Engine.Routers.SwarmProtocolVector.PenaltyLambda*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_PenaltyLambda" data-uid="Engine.Routers.SwarmProtocolVector.PenaltyLambda">
+  PenaltyLambda
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Distance-based score penalty weight used in neighbor ranking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double PenaltyLambda { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_QForward_" data-uid="Engine.Routers.SwarmProtocolVector.QForward*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_QForward" data-uid="Engine.Routers.SwarmProtocolVector.QForward">
+  QForward
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Forward-eligibility threshold for DOWN tree forwarding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int QForward { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_RootSourceCharge_" data-uid="Engine.Routers.SwarmProtocolVector.RootSourceCharge*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_RootSourceCharge" data-uid="Engine.Routers.SwarmProtocolVector.RootSourceCharge">
+  RootSourceCharge
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Root (gateway) source charge bootstrap value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RootSourceCharge { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_SwitchHysteresis_" data-uid="Engine.Routers.SwarmProtocolVector.SwitchHysteresis*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_SwitchHysteresis" data-uid="Engine.Routers.SwarmProtocolVector.SwitchHysteresis">
+  SwitchHysteresis
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Absolute parent-switch hysteresis.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SwitchHysteresis { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_SwitchHysteresisRatio_" data-uid="Engine.Routers.SwarmProtocolVector.SwitchHysteresisRatio*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_SwitchHysteresisRatio" data-uid="Engine.Routers.SwarmProtocolVector.SwitchHysteresisRatio">
+  SwitchHysteresisRatio
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Relative parent-switch hysteresis.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double SwitchHysteresisRatio { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_Clone_" data-uid="Engine.Routers.SwarmProtocolVector.Clone*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_Clone" data-uid="Engine.Routers.SwarmProtocolVector.Clone">
+  Clone()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a deep copy of this vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SwarmProtocolVector Clone()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Routers.SwarmProtocolVector.html">SwarmProtocolVector</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_NormalizeInPlace_" data-uid="Engine.Routers.SwarmProtocolVector.NormalizeInPlace*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_NormalizeInPlace" data-uid="Engine.Routers.SwarmProtocolVector.NormalizeInPlace">
+  NormalizeInPlace()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clamps all fields to safe runtime bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void NormalizeInPlace()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Routers_SwarmProtocolVector_Normalized_" data-uid="Engine.Routers.SwarmProtocolVector.Normalized*"></a>
+
+  <h3 id="Engine_Routers_SwarmProtocolVector_Normalized" data-uid="Engine.Routers.SwarmProtocolVector.Normalized">
+  Normalized()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a normalized copy clamped to safe runtime bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SwarmProtocolVector Normalized()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Routers.SwarmProtocolVector.html">SwarmProtocolVector</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SwarmProtocol/SwarmProtocolVector.cs/#L7" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          IoT Swarm Mesh Simulation Engine * .NET 9 * Blazor WASM
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -89,7 +89,7 @@
 
 
   <h1 id="Engine_Devices_Device" data-uid="Engine.Devices.Device" class="text-break">
-Class Device  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L18"><i class="bi bi-code-slash"></i></a>
+Class Device  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -165,15 +165,78 @@ Devices never reference a concrete router directly.
 
 
 
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Engine_Devices_Device__ctor_" data-uid="Engine.Devices.Device.#ctor*"></a>
+
+  <h3 id="Engine_Devices_Device__ctor" data-uid="Engine.Devices.Device.#ctor">
+  Device()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes protocol defaults shared by all devices.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Device()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="properties">Properties
 </h2>
+
+
+  <a id="Engine_Devices_Device_DedupCacheCapacity_" data-uid="Engine.Devices.Device.DedupCacheCapacity*"></a>
+
+  <h3 id="Engine_Devices_Device_DedupCacheCapacity" data-uid="Engine.Devices.Device.DedupCacheCapacity">
+  DedupCacheCapacity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum number of dedup entries retained locally.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int DedupCacheCapacity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
 
 
   <a id="Engine_Devices_Device_Id_" data-uid="Engine.Devices.Device.Id*"></a>
 
   <h3 id="Engine_Devices_Device_Id" data-uid="Engine.Devices.Device.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the unique identifier of this device.</p>
@@ -201,11 +264,108 @@ Devices never reference a concrete router directly.
 
 
 
+  <a id="Engine_Devices_Device_IsForwardEligible_" data-uid="Engine.Devices.Device.IsForwardEligible*"></a>
+
+  <h3 id="Engine_Devices_Device_IsForwardEligible" data-uid="Engine.Devices.Device.IsForwardEligible">
+  IsForwardEligible
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this device is currently eligible to
+forward DOWN traffic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsForwardEligible { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_LastDecayEpoch_" data-uid="Engine.Devices.Device.LastDecayEpoch*"></a>
+
+  <h3 id="Engine_Devices_Device_LastDecayEpoch" data-uid="Engine.Devices.Device.LastDecayEpoch">
+  LastDecayEpoch
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the latest decay epoch applied on this device.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort LastDecayEpoch { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_MacAddress_" data-uid="Engine.Devices.Device.MacAddress*"></a>
+
+  <h3 id="Engine_Devices_Device_MacAddress" data-uid="Engine.Devices.Device.MacAddress">
+  MacAddress
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the 6-byte mesh address of this device.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] MacAddress { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Engine_Devices_Device_Name_" data-uid="Engine.Devices.Device.Name*"></a>
 
   <h3 id="Engine_Devices_Device_Name" data-uid="Engine.Devices.Device.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the human-readable name of this device.</p>
@@ -233,11 +393,203 @@ Devices never reference a concrete router directly.
 
 
 
+  <a id="Engine_Devices_Device_Neighbors_" data-uid="Engine.Devices.Device.Neighbors*"></a>
+
+  <h3 id="Engine_Devices_Device_Neighbors" data-uid="Engine.Devices.Device.Neighbors">
+  Neighbors
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a read-only view of known neighbors.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyCollection&lt;NeighborState&gt; Neighbors { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="Engine.Devices.NeighborState.html">NeighborState</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_ParentDeadTicks_" data-uid="Engine.Devices.Device.ParentDeadTicks*"></a>
+
+  <h3 id="Engine_Devices_Device_ParentDeadTicks" data-uid="Engine.Devices.Device.ParentDeadTicks">
+  ParentDeadTicks
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the max parent age in ticks before parent state is cleared.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ParentDeadTicks { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_ParentLastSeenTick_" data-uid="Engine.Devices.Device.ParentLastSeenTick*"></a>
+
+  <h3 id="Engine_Devices_Device_ParentLastSeenTick" data-uid="Engine.Devices.Device.ParentLastSeenTick">
+  ParentLastSeenTick
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the tick when the selected parent was last observed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long ParentLastSeenTick { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_ParentMac_" data-uid="Engine.Devices.Device.ParentMac*"></a>
+
+  <h3 id="Engine_Devices_Device_ParentMac" data-uid="Engine.Devices.Device.ParentMac">
+  ParentMac
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the currently selected parent MAC for DOWN tree forwarding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[]? ParentMac { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_ParentSwitchHysteresis_" data-uid="Engine.Devices.Device.ParentSwitchHysteresis*"></a>
+
+  <h3 id="Engine_Devices_Device_ParentSwitchHysteresis" data-uid="Engine.Devices.Device.ParentSwitchHysteresis">
+  ParentSwitchHysteresis
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the absolute charge delta required to switch parent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort ParentSwitchHysteresis { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_ParentSwitchHysteresisRatio_" data-uid="Engine.Devices.Device.ParentSwitchHysteresisRatio*"></a>
+
+  <h3 id="Engine_Devices_Device_ParentSwitchHysteresisRatio" data-uid="Engine.Devices.Device.ParentSwitchHysteresisRatio">
+  ParentSwitchHysteresisRatio
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the relative improvement required to switch parent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double ParentSwitchHysteresisRatio { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Engine_Devices_Device_Position_" data-uid="Engine.Devices.Device.Position*"></a>
 
   <h3 id="Engine_Devices_Device_Position" data-uid="Engine.Devices.Device.Position">
   Position
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the 2D position of this device in the simulation world.</p>
@@ -265,6 +617,102 @@ Devices never reference a concrete router directly.
 
 
 
+  <a id="Engine_Devices_Device_QForwardThreshold_" data-uid="Engine.Devices.Device.QForwardThreshold*"></a>
+
+  <h3 id="Engine_Devices_Device_QForwardThreshold" data-uid="Engine.Devices.Device.QForwardThreshold">
+  QForwardThreshold
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the minimum total charge required for forward eligibility.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort QForwardThreshold { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_QTotalSelf_" data-uid="Engine.Devices.Device.QTotalSelf*"></a>
+
+  <h3 id="Engine_Devices_Device_QTotalSelf" data-uid="Engine.Devices.Device.QTotalSelf">
+  QTotalSelf
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the local TOTAL charge estimate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort QTotalSelf { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_QUpSelf_" data-uid="Engine.Devices.Device.QUpSelf*"></a>
+
+  <h3 id="Engine_Devices_Device_QUpSelf" data-uid="Engine.Devices.Device.QUpSelf">
+  QUpSelf
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the local UP charge estimate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort QUpSelf { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -273,7 +721,7 @@ Devices never reference a concrete router directly.
 
   <h3 id="Engine_Devices_Device_Accept_Engine_Packets_Packet_" data-uid="Engine.Devices.Device.Accept(Engine.Packets.Packet)">
   Accept(Packet)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L296"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Processes a packet that is addressed to and has been delivered to this device.
@@ -303,11 +751,238 @@ Derived classes implement the specific handling logic here.</p>
 
 
 
+  <a id="Engine_Devices_Device_ApplyDecay_" data-uid="Engine.Devices.Device.ApplyDecay*"></a>
+
+  <h3 id="Engine_Devices_Device_ApplyDecay_System_UInt16_System_Double_" data-uid="Engine.Devices.Device.ApplyDecay(System.UInt16,System.Double)">
+  ApplyDecay(ushort, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Applies charge decay for a new epoch and re-evaluates the parent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ApplyDecay(ushort decayEpoch, double decayPercent)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>decayEpoch</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>Monotonic decay epoch.</p>
+</dd>
+    <dt><code>decayPercent</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>Decay factor in range [0, 1].</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_ApplySwarmVector_" data-uid="Engine.Devices.Device.ApplySwarmVector*"></a>
+
+  <h3 id="Engine_Devices_Device_ApplySwarmVector_Engine_Routers_SwarmProtocolVector_" data-uid="Engine.Devices.Device.ApplySwarmVector(Engine.Routers.SwarmProtocolVector)">
+  ApplySwarmVector(SwarmProtocolVector)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L190"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Applies a swarm parameter vector to this device.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void ApplySwarmVector(SwarmProtocolVector vector)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>vector</code> <a class="xref" href="Engine.Routers.SwarmProtocolVector.html">SwarmProtocolVector</a></dt>
+    <dd><p>Swarm protocol parameter vector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_GetNeighborCharge_" data-uid="Engine.Devices.Device.GetNeighborCharge*"></a>
+
+  <h3 id="Engine_Devices_Device_GetNeighborCharge_System_ReadOnlySpan_System_Byte__Engine_Packets_PacketDirection_" data-uid="Engine.Devices.Device.GetNeighborCharge(System.ReadOnlySpan{System.Byte},Engine.Packets.PacketDirection)">
+  GetNeighborCharge(ReadOnlySpan&lt;byte&gt;, PacketDirection)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the best known neighbor charge for a given address and
+direction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ushort GetNeighborCharge(ReadOnlySpan&lt;byte&gt; macAddress, PacketDirection direction)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>macAddress</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>Neighbor MAC address.</p>
+</dd>
+    <dt><code>direction</code> <a class="xref" href="Engine.Packets.PacketDirection.html">PacketDirection</a></dt>
+    <dd><p>Direction to query.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>Known charge value or 0 when the neighbor is unknown.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_GetNeighborLinkBonus_" data-uid="Engine.Devices.Device.GetNeighborLinkBonus*"></a>
+
+  <h3 id="Engine_Devices_Device_GetNeighborLinkBonus_System_ReadOnlySpan_System_Byte__System_Int32_" data-uid="Engine.Devices.Device.GetNeighborLinkBonus(System.ReadOnlySpan{System.Byte},System.Int32)">
+  GetNeighborLinkBonus(ReadOnlySpan&lt;byte&gt;, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L206"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a link-quality bonus score for the given neighbor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetNeighborLinkBonus(ReadOnlySpan&lt;byte&gt; macAddress, int maxBonus)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>macAddress</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>Neighbor MAC address.</p>
+</dd>
+    <dt><code>maxBonus</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Maximum possible bonus.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Integral bonus in range [0, maxBonus].</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_HasParent_" data-uid="Engine.Devices.Device.HasParent*"></a>
+
+  <h3 id="Engine_Devices_Device_HasParent_Engine_Devices_Device_" data-uid="Engine.Devices.Device.HasParent(Engine.Devices.Device)">
+  HasParent(Device)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns <code>true</code> when this device currently uses <code class="paramref">device</code>
+as its selected DOWN-tree parent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasParent(Device device)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>device</code> <a class="xref" href="Engine.Devices.Device.html">Device</a></dt>
+    <dd><p>Candidate parent device.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> when parent MAC matches the candidate.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Engine_Devices_Device_OnForwardPacket_" data-uid="Engine.Devices.Device.OnForwardPacket*"></a>
+
+  <h3 id="Engine_Devices_Device_OnForwardPacket_Engine_Packets_Packet_" data-uid="Engine.Devices.Device.OnForwardPacket(Engine.Packets.Packet)">
+  OnForwardPacket(Packet)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L261"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invoked before this device forwards a packet.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnForwardPacket(Packet packet)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>packet</code> <a class="xref" href="Engine.Packets.Packet.html">Packet</a></dt>
+    <dd><p>Packet being forwarded.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Engine_Devices_Device_Recieve_" data-uid="Engine.Devices.Device.Recieve*"></a>
 
   <h3 id="Engine_Devices_Device_Recieve_Engine_Packets_Packet_" data-uid="Engine.Devices.Device.Recieve(Engine.Packets.Packet)">
   Recieve(Packet)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L122"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Called when a packet arrives at this device.
@@ -342,11 +1017,48 @@ originator before <a class="xref" href="Engine.Devices.Device.html#Engine_Device
 
 
 
+  <a id="Engine_Devices_Device_SetChargeLevels_" data-uid="Engine.Devices.Device.SetChargeLevels*"></a>
+
+  <h3 id="Engine_Devices_Device_SetChargeLevels_System_UInt16_System_UInt16_" data-uid="Engine.Devices.Device.SetChargeLevels(System.UInt16,System.UInt16)">
+  SetChargeLevels(ushort, ushort)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L251"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Overwrites local charge levels. Intended for bootstrap devices such as
+the hub gateway.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void SetChargeLevels(ushort qUp, ushort qTotal)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>qUp</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>Initial UP charge.</p>
+</dd>
+    <dt><code>qTotal</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>Initial total charge.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L18" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Devices/Device.cs/#L20" class="edit-link">Edit this page</a>
         </div>
 
 

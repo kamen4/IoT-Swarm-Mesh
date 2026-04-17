@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class FloodingPacketRouter | IoT Swarm Mesh  -  Simulation Engine ">
       
-      <meta name="description" content="Implements a flooding broadcast routing strategy.  When asked to route a packet the router queries the supplied  for all devices visible to the sender and enqueues a cloned copy addressed to each of them. Flooding uses visibility  -  not established connections  -  because it is inherently a broadcast mechanism that needs no prior topology knowledge.   This class is no longer a singleton. The active router instance is stored on  and is injected into every routing call automatically by . To change the routing strategy at runtime replace  with a different  implementation.">
+      <meta name="description" content="Implements a flooding broadcast routing strategy.  When asked to route a packet the router queries the supplied  for all devices visible to the sender and enqueues a cloned copy addressed to the nearest visible neighbors in a deterministic top-k window. Flooding uses visibility  -  not established connections  -  because it is inherently a broadcast mechanism that needs no prior topology knowledge.   This class is no longer a singleton. The active router instance is stored on  and is injected into every routing call automatically by . To change the routing strategy at runtime replace  with a different  implementation.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="Engine_Routers_FloodingPacketRouter" data-uid="Engine.Routers.FloodingPacketRouter" class="text-break">
-Class FloodingPacketRouter  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Flooding/PacketRouter.cs/#L26"><i class="bi bi-code-slash"></i></a>
+Class FloodingPacketRouter  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Flooding/PacketRouter.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -101,7 +101,8 @@ Class FloodingPacketRouter  <a class="header-action link-secondary" title="View 
 <p>
 When asked to route a packet the router queries the supplied
 <a class="xref" href="Engine.Routers.INetworkTopology.html">INetworkTopology</a> for all devices <em>visible</em> to the
-sender and enqueues a cloned copy addressed to each of them.
+sender and enqueues a cloned copy addressed to the nearest visible
+neighbors in a deterministic top-k window.
 Flooding uses <em>visibility</em>  -  not established connections  -  because
 it is inherently a broadcast mechanism that needs no prior topology
 knowledge.
@@ -179,7 +180,7 @@ To change the routing strategy at runtime replace
 
   <h3 id="Engine_Routers_FloodingPacketRouter_Name" data-uid="Engine.Routers.FloodingPacketRouter.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Flooding/PacketRouter.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Flooding/PacketRouter.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the human-readable name of this routing strategy.
@@ -216,7 +217,7 @@ Shown in the UI when the user selects a routing protocol.</p>
 
   <h3 id="Engine_Routers_FloodingPacketRouter_Route_Engine_Packets_Packet_Engine_Devices_Device_Engine_Routers_INetworkTopology_" data-uid="Engine.Routers.FloodingPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)">
   Route(Packet, Device, INetworkTopology)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Flooding/PacketRouter.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Flooding/PacketRouter.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Routes <code class="paramref">packet</code> from <code class="paramref">sender</code>.
@@ -252,7 +253,10 @@ connections reachable from <code class="paramref">sender</code>.</p>
 
   <h4 class="section" id="Engine_Routers_FloodingPacketRouter_Route_Engine_Packets_Packet_Engine_Devices_Device_Engine_Routers_INetworkTopology__remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>Broadcasts <code class="paramref">packet</code> to every device that is within
-<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_VisibilityDistance">VisibilityDistance</a> of <code class="paramref">sender</code>.
+<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_VisibilityDistance">VisibilityDistance</a> of <code class="paramref">sender</code>
+but limits fan-out to
+<span class="xref">Engine.Routers.RoutingNeighborPolicy.DefaultMaxVisibleNeighbors</span> nearest
+visible neighbors.
 Each visible neighbour receives its own shallow clone so that per-hop
 fields (<a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_NextHop">NextHop</a>, <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_ArrivalTick">ArrivalTick</a>)
 can be set independently.</p>
@@ -265,7 +269,7 @@ can be set independently.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Flooding/PacketRouter.cs/#L26" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/Flooding/PacketRouter.cs/#L27" class="edit-link">Edit this page</a>
         </div>
 
 

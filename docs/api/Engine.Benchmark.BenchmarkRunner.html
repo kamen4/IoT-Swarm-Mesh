@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class BenchmarkRunner | IoT Swarm Mesh  -  Simulation Engine ">
       
-      <meta name="description" content="Executes a  headlessly  -  without any UI  -  and produces a  containing one  per configured router.  Threading: designed to be called from Task.Run so that the Blazor UI thread stays responsive during the (potentially long) run. All engine interaction happens through the singleton  which is fully reset between runs.   Progress reporting: the optional onProgress callback in  is invoked after each completed router run with (routerIndex, totalRouters) so callers can display a spinner.">
+      <meta name="description" content="Executes a  headlessly  -  without any UI  -  and produces a  containing one  per configured router.  Threading: supports both synchronous and asynchronous execution. The async entry point periodically yields to keep UI render loops responsive on single-threaded environments such as Blazor WebAssembly. Each router run uses an isolated engine/statistics context so independent runs can execute in parallel when requested.   Progress reporting: the optional onProgress callback in  receives detailed  snapshots while each router is running, including per-router tick progress and overall progress.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="Engine_Benchmark_BenchmarkRunner" data-uid="Engine.Benchmark.BenchmarkRunner" class="text-break">
-Class BenchmarkRunner  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkRunner.cs/#L26"><i class="bi bi-code-slash"></i></a>
+Class BenchmarkRunner  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkRunner.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -101,15 +101,17 @@ Class BenchmarkRunner  <a class="header-action link-secondary" title="View sourc
 produces a <a class="xref" href="Engine.Benchmark.BenchmarkSession.html">BenchmarkSession</a> containing one
 <a class="xref" href="Engine.Benchmark.BenchmarkResult.html">BenchmarkResult</a> per configured router.</p>
 <p>
-<b>Threading:</b> designed to be called from <code>Task.Run</code> so that the
-Blazor UI thread stays responsive during the (potentially long) run.
-All engine interaction happens through the singleton
-<a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Instance">Instance</a> which is fully reset between runs.
+<b>Threading:</b> supports both synchronous and asynchronous execution.
+The async entry point periodically yields to keep UI render loops responsive
+on single-threaded environments such as Blazor WebAssembly.
+Each router run uses an isolated engine/statistics context so independent
+runs can execute in parallel when requested.
 </p>
 <p>
-<b>Progress reporting:</b> the optional <code class="paramref">onProgress</code>
-callback in <a class="xref" href="Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_Run_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_System_Int32_System_Int32__">Run(BenchmarkConfig, IReadOnlyDictionary&lt;string, IPacketRouter&gt;, Action&lt;int, int&gt;?)</a> is invoked after each completed router run
-with <code>(routerIndex, totalRouters)</code> so callers can display a spinner.
+<b>Progress reporting:</b> the optional <code>onProgress</code>
+callback in <a class="xref" href="Engine.Benchmark.BenchmarkRunner.html#Engine_Benchmark_BenchmarkRunner_Run_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_Engine_Benchmark_BenchmarkRunProgress__Engine_Routers_INetworkBuilder_Engine_Routers_SwarmProtocolVector_System_Int32_">Run(BenchmarkConfig, IReadOnlyDictionary&lt;string, IPacketRouter&gt;, Action&lt;BenchmarkRunProgress&gt;?, INetworkBuilder?, SwarmProtocolVector?, int)</a> receives detailed
+<a class="xref" href="Engine.Benchmark.BenchmarkRunProgress.html">BenchmarkRunProgress</a> snapshots while each router is running,
+including per-router tick progress and overall progress.
 </p>
 </div>
   <div class="markdown conceptual"></div>
@@ -168,9 +170,9 @@ with <code>(routerIndex, totalRouters)</code> so callers can display a spinner.
 
   <a id="Engine_Benchmark_BenchmarkRunner_Run_" data-uid="Engine.Benchmark.BenchmarkRunner.Run*"></a>
 
-  <h3 id="Engine_Benchmark_BenchmarkRunner_Run_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_System_Int32_System_Int32__" data-uid="Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{System.Int32,System.Int32})">
-  Run(BenchmarkConfig, IReadOnlyDictionary&lt;string, IPacketRouter&gt;, Action&lt;int, int&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkRunner.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Engine_Benchmark_BenchmarkRunner_Run_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_Engine_Benchmark_BenchmarkRunProgress__Engine_Routers_INetworkBuilder_Engine_Routers_SwarmProtocolVector_System_Int32_" data-uid="Engine.Benchmark.BenchmarkRunner.Run(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{Engine.Benchmark.BenchmarkRunProgress},Engine.Routers.INetworkBuilder,Engine.Routers.SwarmProtocolVector,System.Int32)">
+  Run(BenchmarkConfig, IReadOnlyDictionary&lt;string, IPacketRouter&gt;, Action&lt;BenchmarkRunProgress&gt;?, INetworkBuilder?, SwarmProtocolVector?, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkRunner.cs/#L69"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Runs the benchmark described by <code class="paramref">config</code> synchronously.
@@ -179,7 +181,7 @@ Call this inside <code>Task.Run()</code> to avoid blocking the UI thread.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static BenchmarkSession Run(BenchmarkConfig config, IReadOnlyDictionary&lt;string, IPacketRouter&gt; availableRouters, Action&lt;int, int&gt;? onProgress = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static BenchmarkSession Run(BenchmarkConfig config, IReadOnlyDictionary&lt;string, IPacketRouter&gt; availableRouters, Action&lt;BenchmarkRunProgress&gt;? onProgress = null, INetworkBuilder? networkBuilder = null, SwarmProtocolVector? swarmVector = null, int maxDegreeOfParallelism = 1)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -193,10 +195,24 @@ Call this inside <code>Task.Run()</code> to avoid blocking the UI thread.</p>
 <a class="xref" href="Engine.Benchmark.BenchmarkConfig.html#Engine_Benchmark_BenchmarkConfig_RouterNames">RouterNames</a> that are not found here are
 silently skipped.</p>
 </dd>
-    <dt><code>onProgress</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
-    <dd><p>Optional callback invoked after each router completes:
-<code>(completedCount, totalCount)</code>.  Called on the thread-pool thread,
-not the Blazor synchronisation context.</p>
+    <dt><code>onProgress</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Engine.Benchmark.BenchmarkRunProgress.html">BenchmarkRunProgress</a>&gt;</dt>
+    <dd><p>Optional callback invoked during execution with detailed
+<a class="xref" href="Engine.Benchmark.BenchmarkRunProgress.html">BenchmarkRunProgress</a> snapshots. Called on the thread-pool
+thread, not the Blazor synchronisation context.</p>
+</dd>
+    <dt><code>networkBuilder</code> <a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a></dt>
+    <dd><p>Optional topology builder override for this benchmark run.
+When null, the current <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Instance">Instance</a>
+builder is used as a template.</p>
+</dd>
+    <dt><code>swarmVector</code> <a class="xref" href="Engine.Routers.SwarmProtocolVector.html">SwarmProtocolVector</a></dt>
+    <dd><p>Optional swarm-vector override for this benchmark run.
+When null, the current <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Instance">Instance</a>
+vector is used as a template.</p>
+</dd>
+    <dt><code>maxDegreeOfParallelism</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Maximum number of router runs executed in parallel.
+Use 1 for fully sequential execution.</p>
 </dd>
   </dl>
 
@@ -218,11 +234,74 @@ found and executed.</p>
 
 
 
+  <a id="Engine_Benchmark_BenchmarkRunner_RunAsync_" data-uid="Engine.Benchmark.BenchmarkRunner.RunAsync*"></a>
+
+  <h3 id="Engine_Benchmark_BenchmarkRunner_RunAsync_Engine_Benchmark_BenchmarkConfig_System_Collections_Generic_IReadOnlyDictionary_System_String_Engine_Routers_IPacketRouter__System_Action_Engine_Benchmark_BenchmarkRunProgress__Engine_Routers_INetworkBuilder_Engine_Routers_SwarmProtocolVector_System_Int32_System_Threading_CancellationToken_" data-uid="Engine.Benchmark.BenchmarkRunner.RunAsync(Engine.Benchmark.BenchmarkConfig,System.Collections.Generic.IReadOnlyDictionary{System.String,Engine.Routers.IPacketRouter},System.Action{Engine.Benchmark.BenchmarkRunProgress},Engine.Routers.INetworkBuilder,Engine.Routers.SwarmProtocolVector,System.Int32,System.Threading.CancellationToken)">
+  RunAsync(BenchmarkConfig, IReadOnlyDictionary&lt;string, IPacketRouter&gt;, Action&lt;BenchmarkRunProgress&gt;?, INetworkBuilder?, SwarmProtocolVector?, int, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkRunner.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Runs the benchmark asynchronously while periodically yielding control so
+UI frameworks can process paint/input between tick batches.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;BenchmarkSession&gt; RunAsync(BenchmarkConfig config, IReadOnlyDictionary&lt;string, IPacketRouter&gt; availableRouters, Action&lt;BenchmarkRunProgress&gt;? onProgress = null, INetworkBuilder? networkBuilder = null, SwarmProtocolVector? swarmVector = null, int maxDegreeOfParallelism = 1, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>config</code> <a class="xref" href="Engine.Benchmark.BenchmarkConfig.html">BenchmarkConfig</a></dt>
+    <dd><p>The benchmark configuration to execute.</p>
+</dd>
+    <dt><code>availableRouters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2">IReadOnlyDictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="Engine.Routers.IPacketRouter.html">IPacketRouter</a>&gt;</dt>
+    <dd><p>Available router registry keyed by name.</p>
+</dd>
+    <dt><code>onProgress</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="Engine.Benchmark.BenchmarkRunProgress.html">BenchmarkRunProgress</a>&gt;</dt>
+    <dd><p>Optional detailed progress callback.</p>
+</dd>
+    <dt><code>networkBuilder</code> <a class="xref" href="Engine.Routers.INetworkBuilder.html">INetworkBuilder</a></dt>
+    <dd><p>Optional topology builder override for this benchmark run.
+When null, the current <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Instance">Instance</a>
+builder is used as a template.</p>
+</dd>
+    <dt><code>swarmVector</code> <a class="xref" href="Engine.Routers.SwarmProtocolVector.html">SwarmProtocolVector</a></dt>
+    <dd><p>Optional swarm-vector override for this benchmark run.
+When null, the current <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Instance">Instance</a>
+vector is used as a template.</p>
+</dd>
+    <dt><code>maxDegreeOfParallelism</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Maximum number of router runs executed in parallel.
+Use 1 for fully sequential execution.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>Optional cancellation token.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Engine.Benchmark.BenchmarkSession.html">BenchmarkSession</a>&gt;</dt>
+    <dd><p>A completed <a class="xref" href="Engine.Benchmark.BenchmarkSession.html">BenchmarkSession</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkRunner.cs/#L26" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Benchmark/BenchmarkRunner.cs/#L29" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -86,11 +86,15 @@
 <tbody>
 <tr>
 <td><code>BenchmarkConfig.cs</code></td>
-<td>Fully serialisable scenario definition: initial device list, scheduled events, engine settings, and the list of router names to compare.</td>
+<td>Fully serialisable scenario definition: initial device list, scheduled events, engine settings (including packet defaults for TTL and travel time), and the list of router names to compare.</td>
 </tr>
 <tr>
 <td><code>BenchmarkRunner.cs</code></td>
-<td>Headless tick loop. For each router in <code>BenchmarkConfig.RouterNames</code> it resets the engine, applies the config, fires scheduled events at their ticks, runs the simulation for <code>DurationTicks</code>, and captures a <code>BenchmarkResult</code>. Returns a <code>BenchmarkSession</code>.</td>
+<td>Headless tick loop. For each router in <code>BenchmarkConfig.RouterNames</code> it creates an isolated engine/statistics context, applies the config (visibility, packet limits, packet defaults, router), fires scheduled events at their ticks, runs the simulation for <code>DurationTicks</code>, captures a <code>BenchmarkResult</code>, and emits optional progress snapshots. Supports optional topology/vector overrides and bounded router-level parallel execution (<code>maxDegreeOfParallelism</code>). Returns a <code>BenchmarkSession</code>.</td>
+</tr>
+<tr>
+<td><code>BenchmarkRunProgress.cs</code></td>
+<td>Progress payload used by <code>BenchmarkRunner</code> callback consumers. Includes current router name/index, completed routers, current tick, duration, per-router progress, and overall progress.</td>
 </tr>
 <tr>
 <td><code>BenchmarkResult.cs</code></td>
@@ -115,12 +119,16 @@
 <pre><code>BenchmarkConfig
   +- BenchmarkRunner.Run()
        for each router:
-         1. Engine.Reset() + Statistics.Reset()
-         2. Apply settings + register initial devices
-         3. Tick loop [0 .. DurationTicks]:
-              - fire scheduled BenchmarkEventEntry at matching ticks
-              - Engine.Tick()
-         4. Capture BenchmarkResult (metrics + TickSnapshot[])
+      1. Create isolated engine/statistics context
+      2. Engine.Reset() + Statistics.Reset()
+      3. Apply network builder/vector overrides (or current engine defaults)
+      4. Apply settings + register initial devices
+      5. Tick loop [0 .. DurationTicks]:
+        - fire scheduled BenchmarkEventEntry at matching ticks
+        - Engine.Tick()
+        - optionally publish `BenchmarkRunProgress`
+      6. Capture BenchmarkResult (metrics + TickSnapshot[])
+  +- Optional: run multiple routers in parallel with bounded degree
   +- Returns BenchmarkSession { Config, Results[] }
 </code></pre>
 <hr>

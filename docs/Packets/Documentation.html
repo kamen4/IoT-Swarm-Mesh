@@ -73,7 +73,7 @@
         <article data-uid="">
 <h1 id="enginepackets">Engine/Packets</h1>
 
-<p>The <code>Packets</code> folder contains all packet types that travel through the simulation network, along with the untyped payload wrapper.</p>
+<p>The <code>Packets</code> folder contains all packet types that travel through the simulation network, including the swarm protocol envelope model and helper payloads.</p>
 <hr>
 <h2 id="files">Files</h2>
 <table>
@@ -86,7 +86,7 @@
 <tbody>
 <tr>
 <td><code>Packet.cs</code></td>
-<td>Core transmission unit. Carries <code>From</code>, <code>To</code>, <code>NextHop</code>, <code>ArrivalTick</code>, <code>TTL</code>, <code>OriginId</code>, <code>InitialTtl</code>, and a <code>PacketData</code> payload. <code>Clone()</code> creates a shallow copy preserving <code>OriginId</code> for flood-clone tracking by <code>SimulationStatistics</code>.</td>
+<td>Core transmission unit. Carries transport fields (<code>From</code>, <code>To</code>, <code>NextHop</code>, <code>ArrivalTick</code>, <code>TTL</code>) and protocol envelope fields (<code>Direction</code>, <code>MessageType</code>, <code>OriginMac</code>, <code>DestinationMac</code>, <code>MessageId</code>, <code>Sequence</code>, <code>AdvertisedCharge</code>, <code>DecayEpochHint</code>, <code>Tag</code>). Provides <code>BuildSecureHeaderAndPayload()</code>, <code>UpdateTag()</code>, and <code>ValidateTag()</code>.</td>
 </tr>
 <tr>
 <td><code>PacketData.cs</code></td>
@@ -100,14 +100,42 @@
 <td><code>ControlPacket.cs</code></td>
 <td>Command packet sent by <code>HubDevice</code> to a specific <code>EmitterDevice</code>. Carries a <code>bool Command</code> (true = on, false = off) that the emitter applies to its <code>State</code> on receipt.</td>
 </tr>
+<tr>
+<td><code>BeaconPacket.cs</code></td>
+<td>Gateway broadcast packet (<code>BEACON</code>) carrying a <code>BeaconPayload</code> with a recommended <code>q_forward</code> threshold for convergence tuning.</td>
+</tr>
+<tr>
+<td><code>DecayPacket.cs</code></td>
+<td>Gateway broadcast packet (<code>DECAY</code>) carrying a <code>DecayPayload</code> with monotonic decay epoch and damping factor.</td>
+</tr>
+<tr>
+<td><code>PacketDirection.cs</code></td>
+<td><code>PacketDirection</code> enum (<code>Up</code>, <code>Down</code>) used by the secure header model.</td>
+</tr>
+<tr>
+<td><code>SwarmMessageType.cs</code></td>
+<td>Protocol message-type registry (FIND/PONG/VERIFY/PROTO/ACK/HELLO/BEACON/DECAY/FRAG and IO message family).</td>
+</tr>
+<tr>
+<td><code>PacketAddress.cs</code></td>
+<td>Fixed-size 6-byte address helpers: GUID-to-MAC derivation, broadcast constant, compare/equality, and stable key conversion.</td>
+</tr>
+<tr>
+<td><code>ProtocolPayloads.cs</code></td>
+<td>Record payloads for protocol control traffic (<code>BeaconPayload</code>, <code>DecayPayload</code>).</td>
+</tr>
 </tbody>
 </table>
 <hr>
 <h2 id="key-concepts">Key concepts</h2>
 <ul>
-<li><strong>TTL</strong>  -  decremented on every hop; packet is dropped and <code>PacketExpired</code> is raised when TTL reaches zero.</li>
-<li><strong>OriginId</strong>  -  equals <code>Id</code> on the original; preserved through <code>Clone()</code> so statistics can detect duplicate flood-clone deliveries.</li>
-<li><strong>InitialTtl</strong>  -  stamped once by <code>SimulationEngine.RegisterPacket</code> on first enqueue; enables hop-count calculation as <code>InitialTtl - TTL</code> at delivery.</li>
+<li><strong>Protocol envelope mapping</strong> - <code>Packet</code> models both protocol headers.</li>
+<li>Routing header fields: <code>Version</code>, <code>PreviousHopMac</code>, <code>AdvertisedCharge</code>, <code>DecayEpochHint</code>.</li>
+<li>Secure header fields: <code>Direction</code>, <code>MessageType</code>, <code>OriginMac</code>, <code>DestinationMac</code>, <code>MessageId</code>, <code>Sequence</code>.</li>
+<li><strong>Tag computation rule</strong> - <code>UpdateTag()</code> and <code>ValidateTag()</code> use <code>HMAC-SHA256</code> over <code>SECURE_HEADER | PAYLOAD</code> only, truncated to 16 bytes. Routing fields are intentionally excluded because hops mutate them.</li>
+<li><strong>TTL</strong> - decremented on every hop; packet is dropped and <code>PacketExpired</code> is raised when TTL reaches zero.</li>
+<li><strong>OriginId</strong> - equals <code>Id</code> on the original; preserved through <code>Clone()</code> so statistics can detect duplicate flood-clone deliveries.</li>
+<li><strong>InitialTtl</strong> - stamped once by <code>SimulationEngine.RegisterPacket</code> on first enqueue; enables hop-count calculation as <code>InitialTtl - TTL</code> at delivery.</li>
 </ul>
 <hr>
 <h2 id="parent">Parent</h2>

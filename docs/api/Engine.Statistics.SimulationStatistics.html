@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class SimulationStatistics | IoT Swarm Mesh  -  Simulation Engine ">
       
-      <meta name="description" content="A singleton that listens to  events and accumulates simulation metrics.  Extensibility: add a new  to  and subscribe to any  event to populate it. The  event is raised after every change so UI layers can re-render reactively without polling.   Every tick a  is appended to  (capped at  entries) for time-series charts.">
+      <meta name="description" content="Statistics collector that listens to  events and accumulates simulation metrics.  Extensibility: add a new  to  and subscribe to any  event to populate it. The  event is raised after every change so UI layers can re-render reactively without polling.   Every tick a  is appended to  (capped at  entries) for time-series charts.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="Engine_Statistics_SimulationStatistics" data-uid="Engine.Statistics.SimulationStatistics" class="text-break">
-Class SimulationStatistics  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L19"><i class="bi bi-code-slash"></i></a>
+Class SimulationStatistics  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,8 +97,8 @@ Class SimulationStatistics  <a class="header-action link-secondary" title="View 
   <dl><dt>Assembly</dt><dd>Engine.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>A singleton that listens to <a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> events and
-accumulates simulation metrics.</p>
+  <div class="markdown summary"><p>Statistics collector that listens to <a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> events
+and accumulates simulation metrics.</p>
 <p>
 Extensibility: add a new <a class="xref" href="Engine.Statistics.StatMetric.html">StatMetric</a> to <a class="xref" href="Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_Metrics">Metrics</a>
 and subscribe to any <a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a> event to populate it.
@@ -164,7 +164,7 @@ Every tick a <a class="xref" href="Engine.Statistics.TickSnapshot.html">TickSnap
 
   <h3 id="Engine_Statistics_SimulationStatistics_MaxHistoryLength" data-uid="Engine.Statistics.SimulationStatistics.MaxHistoryLength">
   MaxHistoryLength
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Maximum number of per-tick snapshots retained in <a class="xref" href="Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_History">History</a>.</p>
@@ -200,7 +200,7 @@ Every tick a <a class="xref" href="Engine.Statistics.TickSnapshot.html">TickSnap
 
   <h3 id="Engine_Statistics_SimulationStatistics_ActivePackets" data-uid="Engine.Statistics.SimulationStatistics.ActivePackets">
   ActivePackets
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L87"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Number of packets currently in-flight in the simulation priority queue.</p>
@@ -232,7 +232,7 @@ Every tick a <a class="xref" href="Engine.Statistics.TickSnapshot.html">TickSnap
 
   <h3 id="Engine_Statistics_SimulationStatistics_AvgHopCount" data-uid="Engine.Statistics.SimulationStatistics.AvgHopCount">
   AvgHopCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L109"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Running arithmetic mean of the number of hops a packet travels from its
@@ -267,7 +267,7 @@ over all unique (first-arrival) deliveries.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_AvgTickMs" data-uid="Engine.Statistics.SimulationStatistics.AvgTickMs">
   AvgTickMs
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Running arithmetic mean of wall-clock milliseconds spent per <a class="xref" href="Engine.Core.SimulationEngine.html#Engine_Core_SimulationEngine_Tick">Tick()</a> call.</p>
@@ -299,7 +299,7 @@ over all unique (first-arrival) deliveries.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_DeliveryRate" data-uid="Engine.Statistics.SimulationStatistics.DeliveryRate">
   DeliveryRate
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Ratio of delivered packets to the total of delivered and expired packets, expressed as a percentage.
@@ -332,7 +332,7 @@ Computed as <code>TotalPacketsDelivered / (TotalPacketsDelivered + TotalPacketsE
 
   <h3 id="Engine_Statistics_SimulationStatistics_DuplicateDeliveries" data-uid="Engine.Statistics.SimulationStatistics.DuplicateDeliveries">
   DuplicateDeliveries
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Number of duplicate deliveries: packets whose <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_OriginId">OriginId</a>
@@ -367,7 +367,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_History" data-uid="Engine.Statistics.SimulationStatistics.History">
   History
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L121"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Per-tick snapshots in chronological order, capped at
@@ -400,10 +400,15 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_Instance" data-uid="Engine.Statistics.SimulationStatistics.Instance">
   Instance
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the singleton instance.</p>
+  <div class="markdown level1 summary"><p>Gets the current statistics collector instance.</p>
+<p>
+Default behavior returns the process-global collector.
+Benchmark code may temporarily override this per async-flow via
+<a class="xref" href="Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_PushScopedInstance_Engine_Statistics_SimulationStatistics_">PushScopedInstance(SimulationStatistics)</a> to isolate metrics for parallel runs.
+</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -432,7 +437,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_Metrics" data-uid="Engine.Statistics.SimulationStatistics.Metrics">
   Metrics
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>All metrics in declaration order  -  drives the summary card grid.</p>
@@ -464,7 +469,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_PlottableMetrics" data-uid="Engine.Statistics.SimulationStatistics.PlottableMetrics">
   PlottableMetrics
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L115"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Metrics that can be selected as a chart series.</p>
@@ -496,7 +501,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_TotalDevicesAdded" data-uid="Engine.Statistics.SimulationStatistics.TotalDevicesAdded">
   TotalDevicesAdded
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L78"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Cumulative number of devices registered in the engine since the last reset.</p>
@@ -528,7 +533,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_TotalPacketsDelivered" data-uid="Engine.Statistics.SimulationStatistics.TotalPacketsDelivered">
   TotalPacketsDelivered
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Packets that successfully reached their intended destination device.</p>
@@ -560,7 +565,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_TotalPacketsExpired" data-uid="Engine.Statistics.SimulationStatistics.TotalPacketsExpired">
   TotalPacketsExpired
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L75"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Packets discarded because their TTL counter reached zero before delivery.</p>
@@ -592,7 +597,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_TotalPacketsRegistered" data-uid="Engine.Statistics.SimulationStatistics.TotalPacketsRegistered">
   TotalPacketsRegistered
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L69"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Total packets enqueued into the simulation, including every flood clone.</p>
@@ -624,7 +629,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_TotalTicks" data-uid="Engine.Statistics.SimulationStatistics.TotalTicks">
   TotalTicks
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Total engine ticks elapsed since the last reset.</p>
@@ -656,11 +661,51 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 </h2>
 
 
+  <a id="Engine_Statistics_SimulationStatistics_CreateIsolated_" data-uid="Engine.Statistics.SimulationStatistics.CreateIsolated*"></a>
+
+  <h3 id="Engine_Statistics_SimulationStatistics_CreateIsolated_Engine_Core_SimulationEngine_" data-uid="Engine.Statistics.SimulationStatistics.CreateIsolated(Engine.Core.SimulationEngine)">
+  CreateIsolated(SimulationEngine)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a detached statistics collector bound to
+<code class="paramref">engine</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SimulationStatistics CreateIsolated(SimulationEngine engine)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>engine</code> <a class="xref" href="Engine.Core.SimulationEngine.html">SimulationEngine</a></dt>
+    <dd><p>Engine instance to observe.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Engine.Statistics.SimulationStatistics.html">SimulationStatistics</a></dt>
+    <dd><p>A new isolated statistics collector.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Engine_Statistics_SimulationStatistics_GetSnapshotValue_" data-uid="Engine.Statistics.SimulationStatistics.GetSnapshotValue*"></a>
 
   <h3 id="Engine_Statistics_SimulationStatistics_GetSnapshotValue_Engine_Statistics_TickSnapshot_Engine_Statistics_StatMetric_System_Collections_Generic_IReadOnlyList_Engine_Statistics_StatMetric__" data-uid="Engine.Statistics.SimulationStatistics.GetSnapshotValue(Engine.Statistics.TickSnapshot,Engine.Statistics.StatMetric,System.Collections.Generic.IReadOnlyList{Engine.Statistics.StatMetric})">
   GetSnapshotValue(TickSnapshot, StatMetric, IReadOnlyList&lt;StatMetric&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L274"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Extracts the value for the given <code class="paramref">metric</code> from a
@@ -698,11 +743,51 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
 
 
+  <a id="Engine_Statistics_SimulationStatistics_PushScopedInstance_" data-uid="Engine.Statistics.SimulationStatistics.PushScopedInstance*"></a>
+
+  <h3 id="Engine_Statistics_SimulationStatistics_PushScopedInstance_Engine_Statistics_SimulationStatistics_" data-uid="Engine.Statistics.SimulationStatistics.PushScopedInstance(Engine.Statistics.SimulationStatistics)">
+  PushScopedInstance(SimulationStatistics)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Overrides <a class="xref" href="Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_Instance">Instance</a> for the current async flow until the
+returned scope is disposed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IDisposable PushScopedInstance(SimulationStatistics statistics)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>statistics</code> <a class="xref" href="Engine.Statistics.SimulationStatistics.html">SimulationStatistics</a></dt>
+    <dd><p>Collector to expose as <a class="xref" href="Engine.Statistics.SimulationStatistics.html#Engine_Statistics_SimulationStatistics_Instance">Instance</a>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></dt>
+    <dd><p>A scope token that restores the previous collector on dispose.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Engine_Statistics_SimulationStatistics_Reset_" data-uid="Engine.Statistics.SimulationStatistics.Reset*"></a>
 
   <h3 id="Engine_Statistics_SimulationStatistics_Reset" data-uid="Engine.Statistics.SimulationStatistics.Reset">
   Reset()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L234"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L293"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Resets all metric counters and clears the history.</p>
@@ -732,7 +817,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 
   <h3 id="Engine_Statistics_SimulationStatistics_Updated" data-uid="Engine.Statistics.SimulationStatistics.Updated">
   Updated
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Raised after any metric value changes.</p>
@@ -764,7 +849,7 @@ redundant paths, or that TTL is set too high for the current topology.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L19" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Statistics/SimulationStatistics.cs/#L20" class="edit-link">Edit this page</a>
         </div>
 
 

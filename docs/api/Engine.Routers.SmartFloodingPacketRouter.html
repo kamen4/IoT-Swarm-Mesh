@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class SmartFloodingPacketRouter | IoT Swarm Mesh  -  Simulation Engine ">
       
-      <meta name="description" content="An improved flooding router that reduces redundant packet copies by applying three optimisations over the naive : Direct delivery       If the intended destination () is directly       visible from sender, the packet is sent       only to that device  -  no unnecessary flood copies are made.     No reverse path       The packet is never forwarded back to        (the device that just sent it here). This eliminates the most common       source of duplicate copies in bidirectional flooding.     No source echo       The packet is never forwarded back to        (the original source device), preventing useless round-trips.       Together these rules drastically shrink the clone fan-out compared to the naive flood, especially for unicast packets such as , while still guaranteeing delivery in any connected topology with sufficient TTL.">
+      <meta name="description" content="An improved flooding router that reduces redundant packet copies by applying three optimisations over the naive : Bounded candidate set       Routing decisions are made only on the nearest              visible neighbors for deterministic fairness across protocols.     Direct delivery       If the intended destination () is directly       visible from sender, the packet is sent       only to that device  -  no unnecessary flood copies are made.     No reverse path       The packet is never forwarded back to        (the device that just sent it here). This eliminates the most common       source of duplicate copies in bidirectional flooding.     No source echo       The packet is never forwarded back to        (the original source device), preventing useless round-trips.       Together these rules drastically shrink the clone fan-out compared to the naive flood, especially for unicast packets such as , while still guaranteeing delivery in any connected topology with sufficient TTL.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="Engine_Routers_SmartFloodingPacketRouter" data-uid="Engine.Routers.SmartFloodingPacketRouter" class="text-break">
-Class SmartFloodingPacketRouter  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SmartFlooding/SmartFloodingPacketRouter.cs/#L42"><i class="bi bi-code-slash"></i></a>
+Class SmartFloodingPacketRouter  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SmartFlooding/SmartFloodingPacketRouter.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -99,9 +99,13 @@ Class SmartFloodingPacketRouter  <a class="header-action link-secondary" title="
 
   <div class="markdown summary"><p>An improved flooding router that reduces redundant packet copies by applying
 three optimisations over the naive <a class="xref" href="Engine.Routers.FloodingPacketRouter.html">FloodingPacketRouter</a>:</p>
-<ol><li><span class="term">Direct delivery</span>
+<ol><li><span class="term">Bounded candidate set</span>
+      Routing decisions are made only on the nearest
+      <span class="xref">Engine.Routers.RoutingNeighborPolicy.DefaultMaxVisibleNeighbors</span>
+      visible neighbors for deterministic fairness across protocols.
+    </li><li><span class="term">Direct delivery</span>
       If the intended destination (<a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_To">To</a>) is directly
-      visible from <code class="paramref">sender</code>, the packet is sent
+      visible from <code>sender</code>, the packet is sent
       <em>only</em> to that device  -  no unnecessary flood copies are made.
     </li><li><span class="term">No reverse path</span>
       The packet is never forwarded back to <a class="xref" href="Engine.Packets.Packet.html#Engine_Packets_Packet_PreviousHop">PreviousHop</a>
@@ -182,7 +186,7 @@ in any connected topology with sufficient TTL.
 
   <h3 id="Engine_Routers_SmartFloodingPacketRouter_Name" data-uid="Engine.Routers.SmartFloodingPacketRouter.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SmartFlooding/SmartFloodingPacketRouter.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SmartFlooding/SmartFloodingPacketRouter.cs/#L53"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the human-readable name of this routing strategy.
@@ -219,7 +223,7 @@ Shown in the UI when the user selects a routing protocol.</p>
 
   <h3 id="Engine_Routers_SmartFloodingPacketRouter_Route_Engine_Packets_Packet_Engine_Devices_Device_Engine_Routers_INetworkTopology_" data-uid="Engine.Routers.SmartFloodingPacketRouter.Route(Engine.Packets.Packet,Engine.Devices.Device,Engine.Routers.INetworkTopology)">
   Route(Packet, Device, INetworkTopology)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SmartFlooding/SmartFloodingPacketRouter.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SmartFlooding/SmartFloodingPacketRouter.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Routes <code class="paramref">packet</code> from <code class="paramref">sender</code>.
@@ -261,7 +265,7 @@ connections reachable from <code class="paramref">sender</code>.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SmartFlooding/SmartFloodingPacketRouter.cs/#L42" class="edit-link">Edit this page</a>
+          <a href="https://github.com/kamen4/IoT-Swarm-Mesh/blob/master/SimModel/SimModel/Engine/Routers/SmartFlooding/SmartFloodingPacketRouter.cs/#L50" class="edit-link">Edit this page</a>
         </div>
 
 

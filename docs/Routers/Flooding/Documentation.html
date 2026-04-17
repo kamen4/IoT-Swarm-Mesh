@@ -73,7 +73,7 @@
         <article data-uid="">
 <h1 id="engineroutersflooding">Engine/Routers/Flooding</h1>
 
-<p>This folder contains the <code>FloodingPacketRouter</code>, the engine's default routing strategy.</p>
+<p>This folder contains the <code>FloodingPacketRouter</code>, the baseline flooding strategy.</p>
 <hr>
 <h2 id="files">Files</h2>
 <table>
@@ -86,7 +86,7 @@
 <tbody>
 <tr>
 <td><code>PacketRouter.cs</code></td>
-<td><code>FloodingPacketRouter</code>  -  implements <code>IPacketRouter</code>. On each <code>Route</code> call it broadcasts a shallow clone of the packet to every device that is <strong>visible</strong> (not just connected) to the sender. Uses visibility to ensure delivery even before a connection graph is established.</td>
+<td><code>FloodingPacketRouter</code>  -  implements <code>IPacketRouter</code>. On each <code>Route</code> call it broadcasts a shallow clone of the packet to the nearest visible neighbors (top-k, default k=10). Uses visibility to ensure delivery even before a connection graph is established, while keeping deterministic bounded fan-out.</td>
 </tr>
 </tbody>
 </table>
@@ -94,8 +94,8 @@
 <h2 id="strategy-characteristics">Strategy characteristics</h2>
 <ul>
 <li><strong>Reliability</strong>  -  delivers to all reachable neighbours regardless of connection state.</li>
-<li><strong>Overhead</strong>  -  produces O(visible-neighbours) clones per hop, growing exponentially in dense grids without TTL capping. High duplicate-delivery rate.</li>
-<li><strong>Use case</strong>  -  engine default; useful as a baseline for benchmark comparisons.</li>
+<li><strong>Overhead</strong>  -  produces O(k) clones per hop with k=10 by default. Duplicate-delivery rate is still high, but bounded compared to unrestricted flooding.</li>
+<li><strong>Use case</strong>  -  useful as a baseline for benchmark comparisons.</li>
 </ul>
 <hr>
 <h2 id="parent">Parent</h2>

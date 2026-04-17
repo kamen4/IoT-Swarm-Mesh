@@ -86,7 +86,7 @@
 <tbody>
 <tr>
 <td><code>SimulationEngine.cs</code></td>
-<td>Singleton tick-loop driver. Owns the device registry, packet priority queue, pluggable <code>Router</code> and <code>NetworkBuilder</code>, and <code>Topology</code>. Each <code>Tick()</code> call increments the tick counter, fires <code>TickEvent</code>, dispatches due packets, and raises <code>Ticked</code>.</td>
+<td>Global-default tick-loop driver with optional scoped-instance override for isolated benchmark runs. Owns the device registry, packet priority queue, pluggable <code>Router</code> and <code>NetworkBuilder</code>, packet defaults (<code>DefaultPacketTtl</code>, <code>DefaultPacketTicksToTravel</code>), and <code>Topology</code>. Each <code>Tick()</code> call increments the tick counter, fires <code>TickEvent</code>, dispatches due packets, and raises <code>Ticked</code>.</td>
 </tr>
 <tr>
 <td><code>SimulationEvents.cs</code></td>
@@ -101,9 +101,10 @@
 <hr>
 <h2 id="key-behaviors">Key behaviors</h2>
 <ul>
-<li><strong>Singleton pattern</strong>  -  <code>SimulationEngine.Instance</code> and <code>SimulationStatistics.Instance</code> are process-level singletons; WASM runs a single instance shared by the whole browser session.</li>
+<li><strong>Context-aware instance access</strong>  -  <code>SimulationEngine.Instance</code> and <code>SimulationStatistics.Instance</code> resolve to process-global instances by default; benchmark code can push per-async-flow scoped instances to isolate parallel runs safely.</li>
 <li><strong>Packet limit guard</strong>  -  prevents unbounded packet storms in flooding topologies. Auto-scales with device count unless <code>MaxActivePackets</code> is set manually.</li>
-<li><strong>Pluggable strategies</strong>  -  <code>Router</code> (type <code>IPacketRouter</code>) and <code>NetworkBuilder</code> (type <code>INetworkBuilder</code>) can be replaced at runtime without restarting the simulation.</li>
+<li><strong>Packet default mapping</strong>  -  <code>RegisterPacket</code> applies <code>DefaultPacketTtl</code> and <code>DefaultPacketTicksToTravel</code> to packets that keep constructor defaults, so scenario-level TTL and travel-time settings are honored globally.</li>
+<li><strong>Pluggable strategies</strong>  -  <code>Router</code> (type <code>IPacketRouter</code>) and <code>NetworkBuilder</code> (type <code>INetworkBuilder</code>) can be replaced at runtime without restarting the simulation. The engine default router is <code>SwarmProtocolPacketRouter</code>.</li>
 </ul>
 <hr>
 <h2 id="parent">Parent</h2>

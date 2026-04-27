@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "GatewayDevice",
+			"path": "Devices/GatewayDevice"
+		},
+		{
+			"name": "RelayDevice",
+			"path": "Devices/ExampleDevices/RelayDevice"
+		},
+		{
+			"name": "ButtonDevice",
+			"path": "Devices/ExampleDevices/ButtonDevice"
+		},
+		{
+			"name": "SwarmLibrary",
+			"path": "Devices/SwarmLibrary"
+		}
+	],
+	"settings": {}
+}

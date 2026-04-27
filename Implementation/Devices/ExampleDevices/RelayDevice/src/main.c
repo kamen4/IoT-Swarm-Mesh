@@ -1,6 +1,7 @@
 #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "swarm_library.h"
 
 #define BLINK_GPIO GPIO_NUM_8
 #define BLINK_PERIOD_MS 500

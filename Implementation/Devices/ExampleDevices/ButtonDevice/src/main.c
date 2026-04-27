@@ -1,6 +1,7 @@
 #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "swarm_library.h"
 
 #define BUTTON_GPIO GPIO_NUM_20
 #define LED_GPIO GPIO_NUM_8

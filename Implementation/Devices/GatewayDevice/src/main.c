@@ -3,6 +3,7 @@
 #include "freertos/task.h"
 #include "driver/usb_serial_jtag.h"
 #include "esp_log.h"
+#include "swarm_library.h"
 
 #define BUF_SIZE 256
 

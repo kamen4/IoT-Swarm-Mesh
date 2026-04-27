@@ -7,6 +7,10 @@ Use these instructions as the default policy for all work in the Implementation 
 
 # Implementation global working instructions
 
+## Language
+
+Use English for all documentation and comments in the Implementation scope, even if some source materials are in other languages. This ensures maximum accessibility for all current and future contributors.
+
 ## Core principles
 
 1. Documentation is the single source of truth for Implementation scope.
@@ -27,9 +31,6 @@ Use these instructions as the default policy for all work in the Implementation 
 
 ### Required documentation hierarchy
 
-- Maintain one index file per major documentation area:
-  - `Implementation/Spec/README.md`
-  - `Implementation/DevPlan/README.md`
 - Every folder under `Implementation` must contain exactly one `Docs.md` file.
 - The local `Docs.md` is the source of truth for that folder.
 - Each `Docs.md` must describe, at minimum:
@@ -65,13 +66,6 @@ Use these instructions as the default policy for all work in the Implementation 
 - Group by responsibility and domain boundary.
 - Keep naming consistent and placement predictable.
 - Keep folder layout stable to preserve link integrity.
-
-### Folder organization guidance
-
-- In `Spec`, separate system, architecture, protocol, server, gateway, device-library, parameter, and risk concerns.
-- In `DevPlan`, separate governance, phased execution, integration, launch, and backlog concerns.
-- Decision-pack documents for blocking items must be in the closest relevant domain folder.
-- Traceability content must be isolated and maintained in dedicated traceability files.
 
 ### Restructuring preference
 
@@ -153,7 +147,3 @@ Concrete substitutions:
 - Do not add major files without updating related index and navigation files.
 - Do not leave outdated references in plan/spec documents.
 - Prefer changes that improve both implementation clarity and document discoverability.
-
-## Expected outcome
-
-The Implementation scope must be understandable by reading `Implementation/Spec/README.md` and `Implementation/DevPlan/README.md`, then drilling down by folder. A developer or AI agent should be able to execute implementation work from these files without guessing hidden decisions.

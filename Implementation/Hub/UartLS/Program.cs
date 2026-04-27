@@ -1,46 +1,18 @@
-﻿using System.IO.Ports;
+﻿using StackExchange.Redis;
+using UartLS.Workers;
 
-namespace UartLS;
-
-class Program
-{
-    static void Main(string[] args)
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((ctx, services) =>
     {
-        string portName = args.Length > 0 ? args[0] : PromptPortName();
-        int baudRate = args.Length > 1 && int.TryParse(args[1], out int b) ? b : 115200;
+        var connectionString = ctx.Configuration["Redis:ConnectionString"]
+            ?? throw new InvalidOperationException("Redis:ConnectionString is not configured.");
 
-        using var port = new SerialPort(portName, baudRate);
+        services.AddSingleton<IConnectionMultiplexer>(_ =>
+            ConnectionMultiplexer.Connect(connectionString));
 
-        port.DataReceived += (_, e) =>
-        {
-            if (e.EventType != SerialData.Chars) return;
-            try
-            {
-                string data = port.ReadExisting();
-                Console.WriteLine("[DEVICE] " + data);
-            }
-            catch { }
-        };
+        services.AddHostedService<UartBridgeWorker>();
+    })
+    .Build();
 
-        port.Open();
-        Console.WriteLine($"Opened {portName} at {baudRate} baud. Type to send, Ctrl+C to exit.");
-
-        while (true)
-        {
-            string? input = Console.ReadLine();
-            if (input == null) break;
-            try { port.Write(input); }
-            catch { break; }
-        }
-    }
-
-    static string PromptPortName()
-    {
-        string[] available = SerialPort.GetPortNames();
-        if (available.Length > 0)
-            Console.WriteLine("Available ports: " + string.Join(", ", available));
-        Console.Write("Enter COM port name: ");
-        return Console.ReadLine() ?? throw new InvalidOperationException("No port name provided.");
-    }
-}
+await host.RunAsync();
 

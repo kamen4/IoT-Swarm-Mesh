@@ -96,6 +96,7 @@ services:
       ASPNETCORE_HTTP_PORTS: "8080"
       ConnectionStrings__DefaultConnection: >
         Host=postgres;Port=5432;Database=${POSTGRES_DB:-hubdb}; Username=${POSTGRES_USER:-hub};Password=${POSTGRES_PASSWORD:-hub_secret}
+      Redis__ConnectionString: redis:6379
     ports:
       - "8080:8080"
     depends_on:
@@ -115,6 +116,24 @@ services:
       BusinessServer__BaseUrl: http://business-server:8080
     depends_on:
       - business-server
+    networks:
+      - hub-net
+
+  uart-ls:
+    build:
+      context: .
+      dockerfile: UartLS/Dockerfile
+    container_name: hub-uart-ls
+    restart: unless-stopped
+    privileged: true
+    environment:
+      Redis__ConnectionString: redis:6379
+      SerialPort__PortName: ${UART_PORT:-/dev/ttyGATEWAY}
+      SerialPort__BaudRate: ${UART_BAUD:-115200}
+    volumes:
+      - /dev:/dev
+    depends_on:
+      - redis
     networks:
       - hub-net
 

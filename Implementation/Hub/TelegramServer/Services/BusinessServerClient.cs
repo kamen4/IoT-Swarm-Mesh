@@ -28,4 +28,19 @@ public class BusinessServerClient : IBusinessServerClient
             return null;
         }
     }
+
+    public async Task<PinToggleResponse?> TogglePinAsync(int pin, CancellationToken ct = default)
+    {
+        try
+        {
+            var response = await _http.PostAsJsonAsync("/api/pin/toggle", new PinToggleRequest(pin), ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<PinToggleResponse>(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to call BusinessServer pin/toggle endpoint");
+            return null;
+        }
+    }
 }

@@ -1,0 +1,131 @@
+services:
+
+  # ──────────────────────────────────────────────────────────────
+  # Core infrastructure
+  # ──────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: hub-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - hub-net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: hub-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-hub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hub_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-hubdb}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - hub-net
+
+  influxdb:
+    image: influxdb:2-alpine
+    container_name: hub-influx
+    restart: unless-stopped
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUX_USER:-admin}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUX_PASSWORD:-influx_secret}
+      DOCKER_INFLUXDB_INIT_ORG: ${INFLUX_ORG:-iot-swarm}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUX_BUCKET:-mesh-telemetry}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUX_TOKEN:-dev-token-change-me}
+    ports:
+      - "8086:8086"
+    volumes:
+      - influx-data:/var/lib/influxdb2
+    healthcheck:
+      test: [ "CMD", "influx", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - hub-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: hub-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-grafana_secret}
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+      # Provisioned dashboard as home page
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /etc/grafana/provisioning/dashboards/mesh-overview.json
+      # Disable external Grafana.com calls
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      GF_USERS_DEFAULT_THEME: dark
+      # InfluxDB vars forwarded for datasource provisioning
+      INFLUX_ORG: ${INFLUX_ORG:-iot-swarm}
+      INFLUX_BUCKET: ${INFLUX_BUCKET:-mesh-telemetry}
+      INFLUX_TOKEN: ${INFLUX_TOKEN:-dev-token-change-me}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro,z
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    networks:
+      - hub-net
+
+  # ──────────────────────────────────────────────────────────────
+  # Application services
+  # ──────────────────────────────────────────────────────────────
+  business-server:
+    build:
+      context: .
+      dockerfile: BusinessServer/Dockerfile
+    container_name: hub-business-server
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__DefaultConnection: >
+        Host=postgres;Port=5432;Database=${POSTGRES_DB:-hubdb}; Username=${POSTGRES_USER:-hub};Password=${POSTGRES_PASSWORD:-hub_secret}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - hub-net
+
+  telegram-server:
+    build:
+      context: .
+      dockerfile: TelegramServer/Dockerfile
+    container_name: hub-telegram-server
+    restart: unless-stopped
+    environment:
+      Telegram__BotToken: ${TELEGRAM_BOT_TOKEN}
+      BusinessServer__BaseUrl: http://business-server:8080
+    depends_on:
+      - business-server
+    networks:
+      - hub-net
+
+# ──────────────────────────────────────────────────────────────
+# Volumes & Networks
+# ──────────────────────────────────────────────────────────────
+volumes:
+  postgres-data:
+  influx-data:
+  grafana-data:
+
+networks:
+  hub-net:
+    driver: bridge

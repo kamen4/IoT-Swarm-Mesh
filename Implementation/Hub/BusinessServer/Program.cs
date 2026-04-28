@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<IDeviceRegistryService, DeviceRegistryService>();
+builder.Services.AddSingleton<IUserService, UserService>();
 
 // Redis
 var redisConn = builder.Configuration["Redis:ConnectionString"] ?? "redis:6379";

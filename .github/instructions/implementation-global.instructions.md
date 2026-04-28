@@ -19,6 +19,9 @@ Use English for all documentation and comments in the Implementation scope, even
 4. Prefer many small, well-named folders and many small, well-named files over large mixed structures.
 5. Every folder in Implementation must have a `Docs.md` file that is the source of truth for that folder.
 6. When changing documents, update related index and traceability files in the same task.
+7. Better to have many short files than a few long files; prefer restructuring over appending to overloaded files.
+8. Try not to place all files in one folder; use subfolders to group by responsibility and domain boundary.
+9. Main files and main functions in whole projects must not contatin direct logic, better call methods from other files. For example, in C# the main method should only call a method from another file, and that method should contain the logic. This improves readability and maintainability. main.c must call library files where possible instead of containing all the logic in one file (but you can use exact logic and code for Example Devices, like if they would use libs to make this device).
 
 ## Documentation authority and synchronization
 
@@ -84,6 +87,7 @@ Use English for all documentation and comments in the Implementation scope, even
 
 ### Commenting requirements
 
+- Always add comments to all logic blocks (functions, classes, complex statements). This comments must be appropriate for auto-documentation extraction and must be concise and meaningful. For example, in C# use XML documentation comments (`/// <summary>...</summary>`). Every block must be well documented.
 - Write concise, meaningful comments for non-trivial logic, decisions, and constraints.
 - In Markdown files, use short explanatory notes where intent is not obvious.
 - In code or config-like files, add format-appropriate comments for non-obvious behavior.

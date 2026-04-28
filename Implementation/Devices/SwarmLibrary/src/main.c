@@ -1,4 +1,4 @@
-/* main.c — SwarmLibrary demo application.
+/* main.c -- SwarmLibrary demo application.
  * Blinks the built-in LED to verify that swarm_library is correctly linked.
  * Seeed XIAO ESP32C3 built-in LED: GPIO 10 (active-HIGH). */
 

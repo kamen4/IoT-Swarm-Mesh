@@ -1,4 +1,4 @@
-﻿using StackExchange.Redis;
+using StackExchange.Redis;
 using UartLS.Workers;
 
 var host = Host.CreateDefaultBuilder(args)

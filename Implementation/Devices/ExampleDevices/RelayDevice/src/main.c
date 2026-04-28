@@ -1,3 +1,6 @@
+/* RelayDevice -- example ESP32-C3 firmware.
+ * Blinks the built-in LED on GPIO 8 at a fixed 500 ms period (active-LOW). */
+
 #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -13,9 +16,9 @@ void app_main(void)
 
     while (1)
     {
-        gpio_set_level(BLINK_GPIO, 0); // Теперь это может быть ВКЛ
+        gpio_set_level(BLINK_GPIO, 0); // LED on when state = 0 (active-LOW)
         vTaskDelay(pdMS_TO_TICKS(BLINK_PERIOD_MS));
-        gpio_set_level(BLINK_GPIO, 1); // Теперь это может быть ВЫКЛ
+        gpio_set_level(BLINK_GPIO, 1); // LED off when state = 1 (active-LOW)
         vTaskDelay(pdMS_TO_TICKS(BLINK_PERIOD_MS));
     }
 }

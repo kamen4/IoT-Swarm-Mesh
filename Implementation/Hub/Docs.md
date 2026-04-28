@@ -10,37 +10,40 @@ belongs to Implementation/Devices.
 
 ## Subfolders
 
-| Folder          | Purpose                                                                    |
-| --------------- | -------------------------------------------------------------------------- |
-| BusinessServer/ | HTTP API; orchestrates Redis pub/sub between TelegramServer and UartLS     |
-| TelegramServer/ | Telegram bot front-end; the only user-facing component                     |
-| UartLS/         | UART Listener/Sender; bridge between Redis and the physical serial port    |
-| Common/         | Shared .NET library: HTTP DTOs and Redis message contracts (no logic)      |
-| grafana/        | Grafana provisioning configuration (dashboards, datasources)               |
+| Folder          | Purpose                                                                 |
+| --------------- | ----------------------------------------------------------------------- |
+| BusinessServer/ | HTTP API; orchestrates Redis pub/sub between TelegramServer and UartLS  |
+| TelegramServer/ | Telegram bot front-end; the only user-facing component                  |
+| UartLS/         | UART Listener/Sender; bridge between Redis and the physical serial port |
+| Common/         | Shared .NET library: HTTP DTOs and Redis message contracts (no logic)   |
+| grafana/        | Grafana provisioning configuration (dashboards, datasources)            |
 
 ## Files
 
-| File               | Responsibility                                                  |
-| ------------------ | --------------------------------------------------------------- |
-| docker-compose.yml | Orchestrates all containers and infrastructure                  |
-| IoTSwarmHub.slnx   | .NET solution file for all Hub projects                         |
-| .env.example       | Environment variable template; copy to .env before first run   |
-| .gitignore         | Excludes .env, bin/, obj/, and build artifacts from VCS        |
+| File               | Responsibility                                               |
+| ------------------ | ------------------------------------------------------------ |
+| docker-compose.yml | Orchestrates all containers and infrastructure               |
+| IoTSwarmHub.slnx   | .NET solution file for all Hub projects                      |
+| .env.example       | Environment variable template; copy to .env before first run |
+| .gitignore         | Excludes .env, bin/, obj/, and build artifacts from VCS      |
 
 ## Infrastructure (docker-compose.yml)
 
-| Service         | Image                       | Port | Role                                      |
-| --------------- | --------------------------- | ---- | ----------------------------------------- |
-| redis           | redis:7-alpine              | 6379 | Message bus: channels hub:cmd / hub:evt   |
-| postgres        | postgres:16-alpine          | 5432 | Relational store (reserved, schema TBD)   |
-| influxdb        | influxdb:2-alpine           | 8086 | Time-series telemetry storage             |
-| grafana         | grafana/grafana:latest      | 3000 | Metrics visualisation                     |
-| business-server | ./BusinessServer/Dockerfile | 8080 | HTTP API + Redis publisher                |
-| telegram-server | ./TelegramServer/Dockerfile | --   | Telegram long polling                     |
-| uart-ls         | ./UartLS/Dockerfile         | --   | UART bridge; requires devices: mount      |
+| Service         | Image                       | Port | Role                                       |
+| --------------- | --------------------------- | ---- | ------------------------------------------ |
+| redis           | redis:7-alpine              | 6379 | Message bus: channels hub:cmd / hub:evt    |
+| postgres        | postgres:16-alpine          | 5432 | Relational store (reserved, schema TBD)    |
+| influxdb        | influxdb:2-alpine           | 8086 | Time-series telemetry storage              |
+| grafana         | grafana/grafana:latest      | 3000 | Metrics visualisation                      |
+| business-server | ./BusinessServer/Dockerfile | 8080 | HTTP API + Redis publisher                 |
+| telegram-server | ./TelegramServer/Dockerfile | --   | Telegram long polling                      |
+| uart-ls         | ./UartLS/Dockerfile         | --   | UART bridge; mounts /dev:/dev (privileged) |
 
 All services share the bridge network hub-net.
-uart-ls mounts the host serial device (default /dev/ttyUSB0, configurable via UART_PORT in .env).
+uart-ls mounts the full host /dev volume (/dev:/dev) with privileged: true. The device is an
+ESP32-C3 USB CDC-ACM adapter that appears as /dev/ttyACM* on Linux. A stable udev symlink
+/dev/ttyGATEWAY is created via /etc/udev/rules.d/99-iot-gateway.rules. Set UART_PORT=/dev/ttyGATEWAY
+in .env so the port path is stable regardless of USB enumeration order.
 
 ## End-to-end trace
 

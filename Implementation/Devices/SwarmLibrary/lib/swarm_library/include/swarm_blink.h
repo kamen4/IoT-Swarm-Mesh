@@ -1,4 +1,4 @@
-/* swarm_blink.h — blink module public API.
+/* swarm_blink.h -- blink module public API.
  *
  * Placeholder module that demonstrates correct library linkage.
  * The blink loop runs in a dedicated FreeRTOS task.

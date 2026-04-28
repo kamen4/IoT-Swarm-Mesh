@@ -12,6 +12,7 @@ Common; Common does not reference any of them.
 | Folder    | Purpose                                                               |
 | --------- | --------------------------------------------------------------------- |
 | Dto/      | HTTP request and response types between TelegramServer/BusinessServer |
+| Enums/    | Shared enumeration types                                              |
 | Messages/ | Redis message payloads for channels hub:cmd and hub:evt               |
 | Entities/ | Domain entity types (devices, mesh messages)                          |
 
@@ -19,33 +20,41 @@ Common; Common does not reference any of them.
 
 ### Dto/
 
-| File                 | Responsibility                                                        |
-| -------------------- | --------------------------------------------------------------------- |
-| EchoRequest.cs       | Request body for the test echo endpoint                               |
-| EchoResponse.cs      | Response body for the test echo endpoint                              |
-| PinToggleRequest.cs  | Request body for POST /api/pin/toggle; contains the pin number        |
-| PinToggleResponse.cs | Response body for POST /api/pin/toggle; contains the resulting state  |
+| File                 | Responsibility                                                       |
+| -------------------- | -------------------------------------------------------------------- |
+| EchoRequest.cs       | Request body for the test echo endpoint                              |
+| EchoResponse.cs      | Response body for the test echo endpoint                             |
+| PinToggleRequest.cs  | Request body for POST /api/pin/toggle; contains the pin number       |
+| PinToggleResponse.cs | Response body for POST /api/pin/toggle; contains the resulting state |
+| UserDtos.cs          | UserDto, RegisterUserRequest, SetRoleRequest, InviteUserRequest,     |
+|                      | CheckAccessResponse -- HTTP contracts for the user management API    |
+
+### Enums/
+
+| File        | Responsibility                                   |
+| ----------- | ------------------------------------------------ |
+| UserRole.cs | UserRole enum: User=0, DedicatedAdmin=1, Admin=2 |
 
 ### Messages/
 
-| File                 | Responsibility                                                           |
-| -------------------- | ------------------------------------------------------------------------ |
-| PinCommandMessage.cs | Payload published to Redis channel hub:cmd; fields: CorrelationId, Pin   |
-| PinEventMessage.cs   | Payload published to Redis channel hub:evt; fields: CorrelationId, Pin,  |
-|                      | State                                                                    |
+| File                 | Responsibility                                                          |
+| -------------------- | ----------------------------------------------------------------------- |
+| PinCommandMessage.cs | Payload published to Redis channel hub:cmd; fields: CorrelationId, Pin  |
+| PinEventMessage.cs   | Payload published to Redis channel hub:evt; fields: CorrelationId, Pin, |
+|                      | State                                                                   |
 
 ### Entities/
 
-| File           | Responsibility                                                            |
-| -------------- | ------------------------------------------------------------------------- |
-| DeviceInfo.cs  | Registered device entity (used by DeviceRegistryService)                  |
-| MeshMessage.cs | Generic mesh network message type (reserved for future extension)         |
+| File           | Responsibility                                                    |
+| -------------- | ----------------------------------------------------------------- |
+| DeviceInfo.cs  | Registered device entity (used by DeviceRegistryService)          |
+| MeshMessage.cs | Generic mesh network message type (reserved for future extension) |
 
 ### Root
 
-| File          | Responsibility                                                      |
-| ------------- | ------------------------------------------------------------------- |
-| Common.csproj | .NET class library definition; referenced by all Hub projects       |
+| File          | Responsibility                                                |
+| ------------- | ------------------------------------------------------------- |
+| Common.csproj | .NET class library definition; referenced by all Hub projects |
 
 ## Interactions and constraints
 

@@ -1,4 +1,4 @@
-/* swarm_blink.c — blink module implementation.
+/* swarm_blink.c -- blink module implementation.
  * Uses a FreeRTOS task to toggle a GPIO at a configurable period.
  * Half the period the pin is high, half the period the pin is low. */
 

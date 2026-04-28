@@ -4,3 +4,4 @@
 #pragma once
 
 #include "swarm_blink.h"
+#include "swarm_connect.h"

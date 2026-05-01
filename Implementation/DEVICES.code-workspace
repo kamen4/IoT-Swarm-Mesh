@@ -18,6 +18,10 @@
 		{
 			"name": "SwarmLibrary",
 			"path": "Devices/SwarmLibrary"
+		},
+		{
+			"name": "ClockDevice",
+			"path": "Devices/ClockDevice"
 		}
 	],
 	"settings": {}

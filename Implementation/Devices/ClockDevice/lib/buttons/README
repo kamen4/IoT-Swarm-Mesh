@@ -1,0 +1,54 @@
+# buttons
+
+Non-blocking button state-machine supporting:
+- Single click
+- Double click
+- Triple click
+- Hold (long press ≥ 700 ms)
+- Simultaneous press of both buttons (click and hold)
+
+Both buttons are configured with **internal pull-up**; the second contact
+of each button is wired to **GND**.  A pressed button reads LOW.
+
+## Hardware connection
+
+| Button | ESP32-C3 GPIO |
+| ------ | ------------- |
+| Left   | GPIO 6        |
+| Right  | GPIO 5        |
+
+Both buttons: second contact → GND.
+
+## API
+
+```c
+// Configure GPIOs and reset internal state.
+void buttons_init(int gpio_l, int gpio_r);
+
+// Poll button state.  Call every ~50 ms from the main loop.
+// Returns a BTN_* event if one is ready, otherwise BTN_NONE.
+btn_event_t buttons_poll(void);
+```
+
+## Event types (`btn_event_t`)
+
+| Value            | Description                                 |
+| ---------------- | ------------------------------------------- |
+| `BTN_NONE`       | No event ready                              |
+| `BTN_L_CLICK`    | Single click — left button                  |
+| `BTN_R_CLICK`    | Single click — right button                 |
+| `BTN_L_DCLICK`   | Double click — left button                  |
+| `BTN_R_DCLICK`   | Double click — right button                 |
+| `BTN_L_TCLICK`   | Triple click — left button                  |
+| `BTN_R_TCLICK`   | Triple click — right button                 |
+| `BTN_L_HOLD`     | Hold (≥ 700 ms) — left button               |
+| `BTN_R_HOLD`     | Hold (≥ 700 ms) — right button              |
+| `BTN_BOTH_CLICK` | Both buttons released before hold threshold |
+| `BTN_BOTH_HOLD`  | Both buttons held ≥ 700 ms                  |
+
+## Timing constants (defined in buttons.c)
+
+| Constant    | Value  | Meaning                                 |
+| ----------- | ------ | --------------------------------------- |
+| `HOLD_MS`   | 700 ms | Minimum press duration to register hold |
+| `DCLICK_MS` | 350 ms | Max gap between clicks in a multi-click |

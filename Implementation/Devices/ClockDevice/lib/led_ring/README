@@ -1,0 +1,41 @@
+# led_ring
+
+Driver for a **12-LED WS2812B ring** using the Espressif `led_strip` IDF component
+(RMT peripheral back-end).
+
+## Hardware connection
+
+| LED ring pin | ESP32-C3 GPIO |
+| ------------ | ------------- |
+| DI (data in) | GPIO 21       |
+| VCC          | 5 V           |
+| GND          | GND           |
+
+> **Note:** WS2812B signal level is nominally 5 V, but ESP32-C3 3.3 V output
+> is usually accepted.  Add a level shifter if you experience glitches.
+
+## IDF component dependency
+
+`led_strip.h` comes from the `espressif/led_strip` managed component declared in
+`src/idf_component.yml`.  No changes to `platformio.ini` are required.
+
+## API
+
+```c
+// Initialise the RMT-backed LED strip.
+//   led_gpio  — GPIO connected to DI
+//   count     — total number of LEDs in the ring (12)
+//   offset    — index shift so that position 0 maps to physical "12 o'clock"
+void led_ring_init(int led_gpio, int count, int offset);
+
+// Render clock hands:
+//   red  pixel at  (hour % 12 + offset) % count
+//   green pixel at (minute / 5 + offset) % count
+//   overlapping position shows yellow (r + g)
+void led_ring_show_clock(uint8_t hour, uint8_t minute, uint8_t brightness);
+
+// Render a linear bar graph — val/max_val fraction of LEDs lit in (r,g,b).
+// Used by the settings UI to show current value on the ring.
+void led_ring_show_bar(uint8_t val, uint8_t max_val,
+                       uint8_t r, uint8_t g, uint8_t b);
+```

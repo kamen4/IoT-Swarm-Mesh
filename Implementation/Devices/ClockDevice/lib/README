@@ -1,0 +1,96 @@
+
+This directory contains project-specific libraries for the ClockDevice firmware.
+Each library is placed in its own subdirectory and compiled by PlatformIO as a
+static library linked into the final firmware binary.
+
+--------------------------------------------------------------------------------
+Directory structure
+--------------------------------------------------------------------------------
+
+lib/
+ ├── buttons/          Button state-machine (single / double / triple click, hold)
+ │   ├── buttons.h
+ │   └── buttons.c
+ │
+ ├── buzzer/           Passive-buzzer driver via ESP32 LEDC (tones + melodies)
+ │   ├── buzzer.h
+ │   └── buzzer.c
+ │
+ ├── clock_ui/         UI state-machine (normal clock view + all settings modes)
+ │   ├── clock_ui.h
+ │   └── clock_ui.c
+ │
+ ├── ds1302/           Bit-banged driver for the DS1302 RTC module
+ │   ├── ds1302.h
+ │   └── ds1302.c
+ │
+ ├── led_ring/         WS2812B 12-LED ring driver via IDF led_strip component
+ │   ├── led_ring.h
+ │   └── led_ring.c
+ │
+ └── tm1637/           Bit-banged driver for the TM1637 4-digit 7-segment display
+     ├── tm1637.h
+     └── tm1637.c
+
+--------------------------------------------------------------------------------
+Dependency diagram
+--------------------------------------------------------------------------------
+
+ main.c
+   ├── ds1302      (RTC read/write)
+   ├── tm1637      (display output)
+   ├── buzzer      (sound output)
+   ├── led_ring    (LED ring output — depends on espressif/led_strip IDF component)
+   ├── buttons     (user input)
+   └── clock_ui    (orchestrates tm1637 + led_ring + buzzer + ds1302 for settings UI)
+
+--------------------------------------------------------------------------------
+IDF component dependency
+--------------------------------------------------------------------------------
+
+led_ring uses the espressif/led_strip IDF component declared in src/idf_component.yml.
+No extra lib_deps entries in platformio.ini are required.
+
+More information about PlatformIO Library Dependency Finder:
+https://docs.platformio.org/page/librarymanager/ldf.html
+
+
+For example, see the structure of the following example libraries `Foo` and `Bar`:
+
+|--lib
+|  |
+|  |--Bar
+|  |  |--docs
+|  |  |--examples
+|  |  |--src
+|  |     |- Bar.c
+|  |     |- Bar.h
+|  |  |- library.json (optional. for custom build options, etc) https://docs.platformio.org/page/librarymanager/config.html
+|  |
+|  |--Foo
+|  |  |- Foo.c
+|  |  |- Foo.h
+|  |
+|  |- README --> THIS FILE
+|
+|- platformio.ini
+|--src
+   |- main.c
+
+Example contents of `src/main.c` using Foo and Bar:
+```
+#include <Foo.h>
+#include <Bar.h>
+
+int main (void)
+{
+  ...
+}
+
+```
+
+The PlatformIO Library Dependency Finder will find automatically dependent
+libraries by scanning project source files.
+
+More information about PlatformIO Library Dependency Finder
+- https://docs.platformio.org/page/librarymanager/ldf.html

@@ -1,0 +1,38 @@
+# buzzer
+
+Passive-buzzer driver built on top of the **ESP32 LEDC** (LED Control) peripheral.
+A passive buzzer requires a PWM signal at the desired frequency; a simple
+HIGH/LOW GPIO toggle does not produce sound with passive buzzers.
+
+## Hardware connection
+
+| Buzzer pin | ESP32-C3 GPIO |
+| ---------- | ------------- |
+| Signal (+) | GPIO 3        |
+| GND (-)    | GND           |
+
+## API
+
+```c
+// Configure LEDC timer 0, channel 0 for the given GPIO.  Call once at startup.
+void buzzer_init(int gpio);
+
+// Play a single tone at freq_hz for dur_ms milliseconds (blocking).
+void buzzer_tone(uint32_t freq_hz, uint32_t dur_ms);
+
+// Convenience wrappers
+void buzzer_beep_short(void);         // single short beep — generic feedback
+void buzzer_beep_confirm(void);       // rising two-tone  — settings saved
+void buzzer_beep_cancel(void);        // low long beep    — exit without saving
+void buzzer_beep_quarter(void);       // double beep      — every 15 minutes / startup
+void buzzer_play_hour_melody(void);   // 7-note melody    — every full hour
+```
+
+## LEDC resource usage
+
+| Resource        | Value          |
+| --------------- | -------------- |
+| LEDC timer      | LEDC_TIMER_0   |
+| LEDC channel    | LEDC_CHANNEL_0 |
+| Duty resolution | 8-bit          |
+| Duty cycle      | 50 % (128/255) |

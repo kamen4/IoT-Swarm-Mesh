@@ -1,0 +1,42 @@
+# ds1302
+
+Bit-banged driver for the **DS1302** Trickle-Charge Timekeeping IC.
+
+## Hardware connection
+
+| DS1302 pin | ESP32-C3 GPIO |
+| ---------- | ------------- |
+| RST / CE   | GPIO 20       |
+| DAT / IO   | GPIO 10       |
+| CLK / SCLK | GPIO 9        |
+| VCC2       | 3.3 V         |
+| GND        | GND           |
+
+A backup coin cell (CR2032) connects between VCC1 and GND to keep time
+when main power is off.
+
+## API
+
+```c
+// Initialise GPIO lines and start the oscillator if it was stopped.
+// Safe to call on every boot — does NOT overwrite time if the oscillator
+// was already running (CH bit == 0).
+void ds1302_init(int rst_gpio, int dat_gpio, int clk_gpio);
+
+// Read current time from the RTC.  All values are decimal (not BCD).
+void ds1302_get_time(uint8_t *hour, uint8_t *minute, uint8_t *second);
+
+// Write new time to the RTC.  Temporarily disables write-protect (WP),
+// writes the three registers, then re-enables WP.
+void ds1302_set_time(uint8_t hour, uint8_t minute, uint8_t second);
+```
+
+## Important notes on power-on safety
+
+RST and CLK are pulled LOW immediately at `ds1302_init()` using
+`gpio_config()` before any communication.  This prevents spurious
+transactions caused by GPIO floating during the ESP32 boot sequence,
+which could corrupt the RTC registers.
+
+Write-protect is re-enabled after every `ds1302_set_time()` call so that
+bus noise cannot accidentally overwrite the stored time.

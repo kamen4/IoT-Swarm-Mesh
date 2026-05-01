@@ -1,0 +1,41 @@
+# tm1637
+
+Bit-banged driver for the **TM1637** 4-digit 7-segment LED display.
+
+## Hardware connection
+
+| TM1637 pin | ESP32-C3 GPIO |
+| ---------- | ------------- |
+| CLK        | GPIO 0        |
+| DIO        | GPIO 1        |
+| VCC        | 3.3 V         |
+| GND        | GND           |
+
+Both CLK and DIO lines are driven as **open-drain with internal pull-up**.
+
+## API
+
+```c
+// Initialise the display. Must be called once before any other function.
+void tm1637_init(int clk_gpio, int dio_gpio);
+
+// Show time as HH:MM with colon between digits 1 and 2.
+void tm1637_show_time(uint8_t h, uint8_t m);
+
+// Show a 2-digit value right-aligned: [ - | - | d0 | d1 ]
+void tm1637_show_right(uint8_t val);
+
+// Show a 2-digit value left-aligned:  [ d0 | d1 | - | - ]
+void tm1637_show_left(uint8_t val);
+
+// Send 4 raw segment bytes.  seg[1] bit 7 controls the colon.
+void tm1637_send_raw(uint8_t seg[4]);
+```
+
+## Protocol notes
+
+Communication follows the TM1637 two-wire protocol:
+1. Start condition — DIO falls while CLK is high.
+2. Bytes transmitted LSB-first; each bit is clocked on the rising edge of CLK.
+3. After each byte the master releases DIO and the device pulls it low as ACK.
+4. Stop condition — DIO rises while CLK is high.

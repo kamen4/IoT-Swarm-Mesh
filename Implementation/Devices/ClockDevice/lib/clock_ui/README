@@ -1,0 +1,69 @@
+# clock_ui
+
+UI state-machine that ties together all hardware drivers and manages all
+interactive setting modes.  `main.c` only needs to call `clock_ui_tick()`
+every loop iteration; the library handles display updates, LED ring output,
+and buzzer feedback internally for every setting mode.
+
+## Modes (`ui_mode_t`)
+
+| Mode                  | Description                                    |
+| --------------------- | ---------------------------------------------- |
+| `UI_MODE_CLOCK`       | Normal operation — shows live time             |
+| `UI_MODE_SET_H`       | Edit hours   (blinking left digits on TM1637)  |
+| `UI_MODE_SET_M`       | Edit minutes (blinking right digits on TM1637) |
+| `UI_MODE_SET_BRIGHT`  | Edit LED ring brightness                       |
+| `UI_MODE_SET_QUIET_F` | Edit quiet-time start hour                     |
+| `UI_MODE_SET_QUIET_T` | Edit quiet-time end hour                       |
+
+After **10 seconds** of inactivity in any setting mode the UI returns to
+`UI_MODE_CLOCK` without saving, and plays `buzzer_beep_cancel()`.
+
+## API
+
+```c
+// Set default brightness, quiet-time window.  Call once at startup.
+void clock_ui_init(uint8_t brightness, uint8_t quiet_from, uint8_t quiet_to);
+
+// Main update function — call every ~50 ms.
+//   hour / minute  current time read from RTC
+//   ev             latest button event (BTN_NONE if none)
+// Returns the current ui_mode_t (useful for main.c to decide what to render).
+ui_mode_t clock_ui_tick(uint8_t hour, uint8_t minute, btn_event_t ev);
+
+// Access current user-configurable settings.
+const ui_settings_t *clock_ui_settings(void);
+```
+
+## Settings structure (`ui_settings_t`)
+
+```c
+typedef struct {
+    uint8_t brightness;   // LED ring brightness 1–64
+    uint8_t quiet_from;   // Start of silent period (hour, 0–23)
+    uint8_t quiet_to;     // End   of silent period (hour, 0–23)
+    bool    sound_mute;   // Manual mute override
+} ui_settings_t;
+```
+
+## Button mapping in `UI_MODE_CLOCK`
+
+| Gesture              | Action                           |
+| -------------------- | -------------------------------- |
+| Both — hold          | Enter time-set (hours)           |
+| Left  — hold         | Toggle sound mute                |
+| Right — hold         | Enter brightness setting         |
+| Left  — double click | Enter quiet-time start setting   |
+| Right — double click | Enter quiet-time end setting     |
+| Both  — click        | Show mute status (beep feedback) |
+
+## Button mapping in setting modes
+
+| Gesture           | Action                     |
+| ----------------- | -------------------------- |
+| Right click       | Increment value (+1)       |
+| Left  click       | Decrement value (−1)       |
+| Right / Left hold | Fast increment / decrement |
+| Both  click       | Next field / back          |
+| Both  hold        | Save and return to clock   |
+| Timeout (10 s)    | Cancel and return to clock |
